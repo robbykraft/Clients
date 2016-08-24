@@ -34,7 +34,6 @@ class MoreViewController: UIViewController {
 		                  NSForegroundColorAttributeName : UIColor.whiteColor()];
 		let titleParagraphStyle = NSMutableParagraphStyle()
 		titleParagraphStyle.alignment = .Center
-		let titleFont = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
 		let attributes2 = [NSFontAttributeName : UIFont(name: SYSTEM_FONT, size: 22)!,
 		                  NSKernAttributeName : CGFloat(2.4),
 		                  NSParagraphStyleAttributeName: titleParagraphStyle,
