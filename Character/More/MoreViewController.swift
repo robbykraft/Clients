@@ -32,19 +32,29 @@ class MoreViewController: UIViewController {
 		let attributes = [NSFontAttributeName : UIFont(name: SYSTEM_FONT, size: 22)!,
 		                  NSKernAttributeName : CGFloat(2.4),
 		                  NSForegroundColorAttributeName : UIColor.whiteColor()];
+		let titleParagraphStyle = NSMutableParagraphStyle()
+		titleParagraphStyle.alignment = .Center
+		let titleFont = UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
+		let attributes2 = [NSFontAttributeName : UIFont(name: SYSTEM_FONT, size: 22)!,
+		                  NSKernAttributeName : CGFloat(2.4),
+		                  NSParagraphStyleAttributeName: titleParagraphStyle,
+		                  NSForegroundColorAttributeName : UIColor.whiteColor()];
+
 		
-		let aTitle1:NSMutableAttributedString = NSMutableAttributedString(string: "MY CHARACTER SCORE")
-		let aTitle2:NSMutableAttributedString = NSMutableAttributedString(string: "THE SIX PILLARS")
-		let aTitle3:NSMutableAttributedString = NSMutableAttributedString(string: "PROVIDE APP FEEDBACK")
-		let aTitle4:NSMutableAttributedString = NSMutableAttributedString(string: "ABOUT CHARACTER APP")
+		let aTitle1:NSMutableAttributedString = NSMutableAttributedString(string: "THE SIX PILLARS")
+		let aTitle2:NSMutableAttributedString = NSMutableAttributedString(string: "catholic faith\nintegration".uppercaseString)
+		let aTitle3:NSMutableAttributedString = NSMutableAttributedString(string: "MY CHARACTER SCORE")
+		let aTitle4:NSMutableAttributedString = NSMutableAttributedString(string: "PROVIDE APP FEEDBACK")
 		let aTitle5:NSMutableAttributedString = NSMutableAttributedString(string: "MANAGE PROFILE")
 		
 		aTitle1.addAttributes(attributes, range: NSMakeRange(0, aTitle1.length))
-		aTitle2.addAttributes(attributes, range: NSMakeRange(0, aTitle2.length))
+		aTitle2.addAttributes(attributes2, range: NSMakeRange(0, aTitle2.length))
 		aTitle3.addAttributes(attributes, range: NSMakeRange(0, aTitle3.length))
 		aTitle4.addAttributes(attributes, range: NSMakeRange(0, aTitle4.length))
 		aTitle5.addAttributes(attributes, range: NSMakeRange(0, aTitle5.length))
-		
+
+		button2.titleLabel?.numberOfLines = 2
+
 		button1.setAttributedTitle(aTitle1, forState: .Normal)
 		button2.setAttributedTitle(aTitle2, forState: .Normal)
 		button3.setAttributedTitle(aTitle3, forState: .Normal)
@@ -57,13 +67,11 @@ class MoreViewController: UIViewController {
 		button4.sizeToFit()
 		button5.sizeToFit()
 		
-		button1.alpha = 0.5
-//		button2.alpha = 0.5
 		button3.alpha = 0.5
 		button4.alpha = 0.5
 
-		button1.center = CGPointMake(self.view.center.x, 100)
-		button2.center = CGPointMake(self.view.center.x, 150)
+		button1.center = CGPointMake(self.view.center.x, 100 - 30)
+		button2.center = CGPointMake(self.view.center.x, 150 - 15)
 		button3.center = CGPointMake(self.view.center.x, 200)
 		button4.center = CGPointMake(self.view.center.x, 250)
 		button5.center = CGPointMake(self.view.center.x, 300)
@@ -74,13 +82,17 @@ class MoreViewController: UIViewController {
 		self.view.addSubview(button4)
 		self.view.addSubview(button5)
 		
-		button2.addTarget(self, action: #selector(sixPillarsHandler), forControlEvents:.TouchUpInside)
+		button1.addTarget(self, action: #selector(sixPillarsHandler), forControlEvents:.TouchUpInside)
+		button2.addTarget(self, action: #selector(catholicHandler), forControlEvents:.TouchUpInside)
 		button5.addTarget(self, action: #selector(profileButtonHandler), forControlEvents:.TouchUpInside)
 
 	}
 	
 	func sixPillarsHandler(sender:UIButton){
 		self.navigationController?.pushViewController(SixPillarsViewController(), animated: true)
+	}
+	func catholicHandler(sender:UIButton){
+		self.navigationController?.pushViewController(CatholicViewController(), animated: true)
 	}
 	func profileButtonHandler(sender:UIButton){
 		self.navigationController?.pushViewController(ProfileViewController(), animated: true)
