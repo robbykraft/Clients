@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, UITextFieldDelegate {
 	
 	var emailField:UITextField = UITextField()
 	var passwordField:UITextField = UITextField()
@@ -21,6 +21,9 @@ class LoginViewController: UIViewController {
 		emailField.backgroundColor = UIColor.whiteColor()
 		passwordField.backgroundColor = UIColor.whiteColor()
 		passwordField.secureTextEntry = true
+		
+		emailField.delegate = self
+		passwordField.delegate = self
 		
 //		let paddingView = UIView.init(frame: CGRectMake(0, 0, 5, 20))
 //		emailField.leftView = paddingView
@@ -36,6 +39,10 @@ class LoginViewController: UIViewController {
 		loginButton.backgroundColor = Style.shared.lightBlue
 		
 		self.view.addSubview(loginButton)
+	}
+	func textFieldShouldReturn(textField: UITextField) -> Bool {
+		self.view.endEditing(true)
+		return false
 	}
 	override func viewWillAppear(animated: Bool) {
 		emailField.frame = CGRectMake(0, self.view.bounds.size.height * 0.5 - 52 - 20, self.view.bounds.size.width, 52)
