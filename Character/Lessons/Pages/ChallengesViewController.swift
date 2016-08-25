@@ -19,6 +19,8 @@ class ChallengesViewController: UIViewController, UITableViewDelegate, UITableVi
 	
 	var completedArray = [false, false, false]
 	
+	var challengeOfTheWeekText:String?
+	
 	func updatePercent() {
 		var numCompleted = 0
 		for completed in completedArray {
@@ -38,6 +40,12 @@ class ChallengesViewController: UIViewController, UITableViewDelegate, UITableVi
 		default:
 			percentLabel.text = "0%"
 		}
+		
+		if(data?.key != nil){
+			let lessonKey:String = (data?.key!)!
+			Fire.shared.updateUserWithKeyAndValue("challenges/\(lessonKey)", value: completedArray, completionHandler: nil)
+		}
+		
 	}
 	
     override func viewDidLoad() {
@@ -48,25 +56,46 @@ class ChallengesViewController: UIViewController, UITableViewDelegate, UITableVi
 		titleLabel.text = "TODAY'S SCORE"
 		titleLabel.font = UIFont(name: SYSTEM_FONT, size: 30)
 		titleLabel.textColor = UIColor.blackColor()
-		titleLabel.sizeToFit()
-		titleLabel.center = CGPointMake(self.view.center.x, 40)
 		self.view.addSubview(titleLabel)
 
-		percentLabel.text = "0%"
 		percentLabel.font = UIFont(name: SYSTEM_FONT, size: 30)
 		percentLabel.textColor = Style.shared.green
 		percentLabel.textAlignment = .Center
-		percentLabel.frame = CGRectMake(0, 0, self.view.frame.size.width, 40)
-		percentLabel.center = CGPointMake(self.view.center.x, 75)
 		self.view.addSubview(percentLabel)
 		
-		// shift tableview down
-		let HEADER:CGFloat = 100.0
 		self.view.addSubview(self.tableView)
 		self.tableView.delegate = self
 		self.tableView.dataSource = self
-		self.tableView.frame = CGRectMake(0, HEADER, self.view.frame.width, self.view.frame.height-HEADER)
+		
+		getChallengeOfTheWeek()
+		
     }
+	
+	override func viewWillAppear(animated: Bool) {
+		titleLabel.sizeToFit()
+		titleLabel.center = CGPointMake(self.view.center.x, 40)
+		percentLabel.frame = CGRectMake(0, 0, self.view.frame.size.width, 40)
+		percentLabel.center = CGPointMake(self.view.center.x, 75)
+
+		let navBarHeight:CGFloat = self.navigationController!.navigationBar.frame.height
+		let tabBarHeight:CGFloat = self.tabBarController!.tabBar.frame.size.height;
+		let statusHeight:CGFloat = statusBarHeight()
+
+		// shift tableview down
+		let HEADER:CGFloat = 100.0
+		self.tableView.frame = CGRectMake(0, HEADER, self.view.frame.size.width, self.view.frame.size.height - navBarHeight - tabBarHeight - statusHeight - HEADER)
+		
+		print("completed")
+		print(completedArray)
+		updatePercent()
+		
+	}
+	func getChallengeOfTheWeek(){
+		Fire.shared.loadData("challenges/0/01") { (data) in
+			self.challengeOfTheWeekText = data as? String
+			self.tableView.reloadData()
+		}
+	}
 
 	func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
 		return 150
@@ -74,6 +103,16 @@ class ChallengesViewController: UIViewController, UITableViewDelegate, UITableVi
 	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 		let cell = ChallengeTableViewCell()
 		cell.completed = completedArray[indexPath.row]
+		switch indexPath.row {
+		case 0:
+			cell.textLabel?.text = challengeOfTheWeekText
+		case 1:
+			cell.textLabel?.text = "Incorporate the quote of the day into a teaching lesson"
+		case 2:
+			cell.textLabel?.text = "Take 10 minutes and share the Lesson of the Day with one of your classes"
+		default:
+			cell.textLabel?.text = ""
+		}
 		return cell
 	}
 	func numberOfSectionsInTableView(tableView: UITableView) -> Int {

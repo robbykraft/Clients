@@ -15,7 +15,7 @@ class MercyViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 		
-		self.title = "WORKS OF MERCY AND THE SIX PILLARS"
+		self.title = "WORKS OF MERCY"
 		self.navigationItem.backBarButtonItem = UIBarButtonItem.init(title: "", style: .Plain, target: nil, action: nil);
 		
 		textView.textContainerInset = UIEdgeInsetsMake(20, 8, 20, 8)

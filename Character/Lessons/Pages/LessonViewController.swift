@@ -105,10 +105,5 @@ class LessonViewController: UIViewController {
 		
 		scrollView.contentSize = CGSizeMake(self.view.frame.size.width, bodyText.frame.origin.y + bodyHeight + 20)
 	}
-
-	override func didReceiveMemoryWarning() {
-		super.didReceiveMemoryWarning()
-	}
-
 }
 

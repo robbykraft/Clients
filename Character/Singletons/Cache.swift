@@ -19,11 +19,11 @@ class Cache {
 	// Key is filename in the images/ folder in the bucket
 	var storageBucket : Dictionary<String, UIImage> = Dictionary()
 
-	func imageFromStorageBucket(filename: String, completionHandler: (image:UIImage?, requiredDownload:Bool) -> ()) {
+	func imageFromStorageBucket(filename: String, completionHandler: (image:UIImage?, didRequireDownload:Bool) -> ()) {
 		if(storageBucket[filename] != nil){
 			//TODO: if image on database has changed, we need a force-refresh command
 //			print("shortcut, we already have an image")
-			completionHandler(image: Cache.shared.storageBucket[filename]!, requiredDownload: false)
+			completionHandler(image: Cache.shared.storageBucket[filename]!, didRequireDownload: false)
 			return
 		}
 		
@@ -36,7 +36,7 @@ class Cache {
 				if let imageData = data as NSData? {
 //					print("setting an image")
 					Cache.shared.storageBucket[filename] = UIImage(data: imageData)
-					completionHandler(image: Cache.shared.storageBucket[filename]!, requiredDownload: true)
+					completionHandler(image: Cache.shared.storageBucket[filename]!, didRequireDownload: true)
 				}
 			}
 		}

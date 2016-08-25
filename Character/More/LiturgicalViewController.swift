@@ -15,7 +15,7 @@ class LiturgicalViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 		
-		self.title = "FAITH AND CHARACTER"
+		self.title = "LITURGICAL CALENDAR"
 		self.navigationItem.backBarButtonItem = UIBarButtonItem.init(title: "", style: .Plain, target: nil, action: nil);
 
 		textView.textContainerInset = UIEdgeInsetsMake(20, 8, 20, 8)

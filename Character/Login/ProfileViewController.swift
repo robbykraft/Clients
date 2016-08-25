@@ -24,6 +24,8 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
     override func viewDidLoad() {
         super.viewDidLoad()
 		self.view.backgroundColor = Style.shared.whiteSmoke
+		
+		self.title = "MY PROFILE"
 
 		// buttons
 		signoutButton.setTitle("Sign Out", forState: UIControlState.Normal)
@@ -99,6 +101,10 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 		if(userData["image"] != nil){
 			profileImageView.profileImageFromUID(uid)
 //			profileImageView.imageFromUrl(userData["image"] as! String)
+		}
+		else{
+			// blank profile image
+			profileImageView.image = UIImage(named: "person")?.imageWithTint(Style.shared.lightBlue)
 		}
 		emailField.text = userData["email"] as? String
 		nameField.text = userData["displayName"] as? String

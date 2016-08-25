@@ -24,7 +24,6 @@ class ChallengeTableViewCell: UITableViewCell {
 	}
 	
 	func initUI() {
-		self.textLabel?.text = "Acknowledge a student for telling the truth when they could have told a lie"
 		self.textLabel?.textColor = Style.shared.darkGray
 		self.textLabel?.numberOfLines = 4
 		self.addSubview(blueCircle)
