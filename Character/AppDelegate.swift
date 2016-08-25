@@ -38,13 +38,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		Cache.shared      // local storage of database
 		Character.shared  // app related content
 		
-		if (FIRAuth.auth()?.currentUser) != nil {
-			// User is signed in.
-			launchApp(false)
-		} else {
-			// No user is signed in.
-			launchApp(true)
-		}
+//		if (FIRAuth.auth()?.currentUser) != nil {
+//			// User is signed in.
+//			launchApp(false)
+//		} else {
+//			// No user is signed in.
+//			launchApp(true)
+//		}
+		
+		self.window = UIWindow()
+		self.window?.frame = UIScreen.mainScreen().bounds
+		self.window?.rootViewController = SetupProfileViewController()
+		self.window?.makeKeyAndVisible()
 		return true
 	}
 

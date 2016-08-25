@@ -99,7 +99,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 							print(error)
 						}
 						else{
-							self.presentViewController(MasterController(), animated: true, completion: nil)
+							self.presentViewController(SetupProfileViewController(), animated: true, completion: nil)
 						}
 					})
 
