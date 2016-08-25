@@ -9,9 +9,6 @@
 import UIKit
 import Firebase
 
-//let NAV_BAR_PADDING :CGFloat = 44 + 20 + 10
-let NAV_BAR_PADDING :CGFloat = 20
-
 class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
 	
 	let profileImageView:UIImageView = UIImageView()
@@ -27,16 +24,6 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
     override func viewDidLoad() {
         super.viewDidLoad()
 		self.view.backgroundColor = Style.shared.whiteSmoke
-
-		// frames
-		let imgSize = self.view.bounds.size.width*0.333
-		profileImageView.frame = CGRectMake(self.view.bounds.size.width*0.5 - imgSize*0.5, NAV_BAR_PADDING, imgSize, imgSize)
-		profileImageButton.frame = profileImageView.frame
-		nameField.frame = CGRectMake(0, NAV_BAR_PADDING + imgSize + 10, self.view.bounds.size.width, 44)
-		emailField.frame = CGRectMake(0, NAV_BAR_PADDING + imgSize + 10*2 + 44, self.view.bounds.size.width, 44)
-		detail1Button.frame = CGRectMake(0, NAV_BAR_PADDING + imgSize + 10*3 + 44*2, self.view.bounds.size.width, 44)
-//		detail2Field.frame = CGRectMake(0, NAV_BAR_PADDING + imgSize + 10*4 + 44*3, self.view.bounds.size.width, 44)
-		signoutButton.frame = CGRectMake(0, NAV_BAR_PADDING + imgSize + 10*5 + 44*4, self.view.bounds.size.width, 44)
 
 		// buttons
 		signoutButton.setTitle("Sign Out", forState: UIControlState.Normal)
@@ -65,26 +52,24 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 		emailField.enabled = false
 		
 		// text field padding
-//		let paddingView = UIView.init(frame: CGRectMake(0, 0, 5, 20))
-//		nameField.leftView = paddingView
-//		emailField.leftView = paddingView
-//		detail2Field.leftView = paddingView
-//		nameField.leftViewMode = UITextFieldViewMode.Always
-//		emailField.leftViewMode = UITextFieldViewMode.Always
-//		detail2Field.leftViewMode = UITextFieldViewMode.Always
+		let paddingName = UIView.init(frame: CGRectMake(0, 0, 5, 40))
+		let paddingEmail = UIView.init(frame: CGRectMake(0, 0, 5, 40))
+		nameField.leftView = paddingName
+		emailField.leftView = paddingEmail
+		nameField.leftViewMode = .Always
+		emailField.leftViewMode = .Always
 
 		self.view.addSubview(profileImageView)
 		self.view.addSubview(profileImageButton)
 		self.view.addSubview(nameField)
 		self.view.addSubview(emailField)
 		self.view.addSubview(detail1Button)
-//		self.view.addSubview(detail2Field)
 		self.view.addSubview(signoutButton)
 		
 		// populate screen
 		Fire.shared.getUser { (uid, userData) in
-			print("Here's the user data:")
-			print(userData)
+//			print("Here's the user data:")
+//			print(userData)
 			if(uid != nil && userData != nil){
 				self.populateUserData(uid!, userData: userData!)
 			}
@@ -92,6 +77,22 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 		
 		NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(textFieldDidChange), name: "UITextFieldTextDidChangeNotification", object: nil)
     }
+	
+	override func viewWillAppear(animated: Bool) {
+		
+		// frames
+		let imgSize:CGFloat = self.view.bounds.size.width * 0.4
+		let imgArea:CGFloat = self.view.bounds.size.width * 0.5
+		profileImageView.frame = CGRectMake(0, 0, imgSize, imgSize)
+		profileImageView.center = CGPointMake(self.view.center.x, imgArea*0.5)
+		profileImageView.layer.cornerRadius = imgSize*0.5
+		profileImageButton.frame = profileImageView.frame
+		nameField.frame = CGRectMake(0, imgArea + 10, self.view.bounds.size.width, 44)
+		emailField.frame = CGRectMake(0, imgArea + 10*2 + 44*1, self.view.bounds.size.width, 44)
+		detail1Button.frame = CGRectMake(0, imgArea + 10*3 + 44*2, self.view.bounds.size.width, 44)
+		signoutButton.frame = CGRectMake(0, imgArea + 10*5 + 44*3, self.view.bounds.size.width, 44)
+		
+	}
 
 	
 	func populateUserData(uid:String, userData:NSDictionary){
@@ -189,6 +190,10 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 		self.presentViewController(alert, animated: true, completion: nil)
 	}
 	
+	func textFieldShouldReturn(textField: UITextField) -> Bool {
+		self.view.endEditing(true)
+		return false
+	}
 	func textFieldDidChange(notif: NSNotification) {
 		let textField = notif.object! as! UITextField
 		let string = textField.text

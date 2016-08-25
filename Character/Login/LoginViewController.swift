@@ -25,11 +25,15 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 		emailField.delegate = self
 		passwordField.delegate = self
 		
-//		let paddingView = UIView.init(frame: CGRectMake(0, 0, 5, 20))
-//		emailField.leftView = paddingView
-//		passwordField.leftView = paddingView
-//		emailField.leftViewMode = .Always
-//		passwordField.leftViewMode = .Always
+		emailField.placeholder = "Email Address"
+		passwordField.placeholder = "Password"
+		
+		let paddingEmail = UIView.init(frame: CGRectMake(0, 0, 5, 20))
+		let paddingPassword = UIView.init(frame: CGRectMake(0, 0, 5, 20))
+		emailField.leftView = paddingEmail
+		passwordField.leftView = paddingPassword
+		emailField.leftViewMode = .Always
+		passwordField.leftViewMode = .Always
 
 		self.view.addSubview(emailField)
 		self.view.addSubview(passwordField)

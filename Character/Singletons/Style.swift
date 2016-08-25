@@ -39,5 +39,11 @@ class Style {
 	let darkGray = UIColor(red:0.22, green:0.22, blue:0.22, alpha:1.00)
 	let whiteSmoke = UIColor(red:0.96, green:0.96, blue:0.96, alpha:1.00)
 
+
+}
+
+func statusBarHeight() -> CGFloat {
+	let statusBarSize = UIApplication.sharedApplication().statusBarFrame.size
+	return Swift.min(statusBarSize.width, statusBarSize.height)
 }
 

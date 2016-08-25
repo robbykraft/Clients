@@ -51,4 +51,24 @@ class ChallengeTableViewCell: UITableViewCell {
 		blueCircle.center = CGPointMake(self.frame.size.width * 0.15 + 10, self.frame.size.height*0.5)
 	}
 	
+	func styleSelected(selected: Bool) {
+		if(selected){
+			self.textLabel?.textColor = Style.shared.lightBlue
+		}
+		else{
+			self.textLabel?.textColor = Style.shared.darkGray
+		}
+	}
+	
+	override func setHighlighted(highlighted: Bool, animated: Bool) {
+//		super.setHighlighted(highlighted, animated: animated)
+		styleSelected(highlighted)
+	}
+	
+	override func setSelected(selected: Bool, animated: Bool) {
+//		super.setSelected(selected, animated: animated)
+		styleSelected(selected)
+	}
+
+	
 }

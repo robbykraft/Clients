@@ -26,18 +26,19 @@ class MoreViewController: UIViewController {
 		preferredStatusBarStyle()
 		
 		self.navigationController?.navigationBar.barStyle = UIBarStyle.BlackTranslucent
+		self.navigationItem.backBarButtonItem = UIBarButtonItem.init(title: "", style: .Plain, target: nil, action: nil);
 
-		self.view.backgroundColor = Style.shared.darkGray
+		self.view.backgroundColor = Style.shared.whiteSmoke
 		
 		let attributes = [NSFontAttributeName : UIFont(name: SYSTEM_FONT, size: 22)!,
 		                  NSKernAttributeName : CGFloat(2.4),
-		                  NSForegroundColorAttributeName : UIColor.whiteColor()];
+		                  NSForegroundColorAttributeName : Style.shared.darkGray];
 		let titleParagraphStyle = NSMutableParagraphStyle()
 		titleParagraphStyle.alignment = .Center
 		let attributes2 = [NSFontAttributeName : UIFont(name: SYSTEM_FONT, size: 22)!,
 		                  NSKernAttributeName : CGFloat(2.4),
 		                  NSParagraphStyleAttributeName: titleParagraphStyle,
-		                  NSForegroundColorAttributeName : UIColor.whiteColor()];
+		                  NSForegroundColorAttributeName : Style.shared.darkGray];
 
 		
 		let aTitle1:NSMutableAttributedString = NSMutableAttributedString(string: "THE SIX PILLARS")

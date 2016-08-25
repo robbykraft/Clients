@@ -16,21 +16,27 @@ class PillarViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+		textView.textContainerInset = UIEdgeInsetsMake(20, 8, 20, 8)
+		textView.font = UIFont(name: SYSTEM_FONT, size: 18)
+		textView.backgroundColor = Style.shared.whiteSmoke
 		self.view.addSubview(textView)
-		textView.textContainerInset = UIEdgeInsetsMake(20, 8, 0, 8)
-		textView.font = UIFont(name: SYSTEM_FONT, size: 15)
-
-        // Do any additional setup after loading the view.
+		
+		self.navigationItem.backBarButtonItem = UIBarButtonItem.init(title: "", style: .Plain, target: nil, action: nil);
     }
 	
 	override func viewWillAppear(animated: Bool) {
-		textView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)
+		let navBarHeight:CGFloat = self.navigationController!.navigationBar.frame.height
+		let tabBarHeight:CGFloat = self.tabBarController!.tabBar.frame.size.height;
+		let statusHeight:CGFloat = statusBarHeight()
+		textView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - navBarHeight - tabBarHeight - statusHeight)
 		
 		var tag = 0
 		if(pillarNumber != nil){
 			tag = pillarNumber!
 		}
-		
+
+		self.title = Character.shared.pillarNames[tag].uppercaseString
+
 		Fire.shared.loadData("evergreen/pillars/\(tag)") { (data) in
 			self.textView.text = data as! String
 		}

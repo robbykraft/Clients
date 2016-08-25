@@ -19,11 +19,23 @@ class CatholicViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		self.view.backgroundColor = Style.shared.darkGray
+		self.view.backgroundColor = Style.shared.whiteSmoke
+		self.navigationItem.backBarButtonItem = UIBarButtonItem.init(title: "", style: .Plain, target: nil, action: nil);		
+		
+		let attribTitle = [NSFontAttributeName : UIFont(name: SYSTEM_FONT_I, size: 22)!,
+		                   NSKernAttributeName : CGFloat(2.4),
+		                   NSForegroundColorAttributeName : Style.shared.gray];
+		let titleText:NSMutableAttributedString = NSMutableAttributedString(string: "The Six Pillars and".uppercaseString)
+		titleText.addAttributes(attribTitle, range: NSMakeRange(0, titleText.length))
+		titleLabel.attributedText = titleText
+		titleLabel.sizeToFit()
+		titleLabel.center = CGPointMake(self.view.center.x, 150)
+		self.view.addSubview(titleLabel)
+
 		
 		let attributes = [NSFontAttributeName : UIFont(name: SYSTEM_FONT, size: 22)!,
 		                  NSKernAttributeName : CGFloat(2.4),
-		                  NSForegroundColorAttributeName : UIColor.whiteColor()];
+		                  NSForegroundColorAttributeName : Style.shared.darkGray];
 		
 		let aTitle1:NSMutableAttributedString = NSMutableAttributedString(string: "Liturgical Calendar".uppercaseString)
 		let aTitle2:NSMutableAttributedString = NSMutableAttributedString(string: "Our Blessed Mother".uppercaseString)
@@ -41,9 +53,9 @@ class CatholicViewController: UIViewController {
 		button2.sizeToFit()
 		button3.sizeToFit()
 		
-		button1.center = CGPointMake(self.view.center.x, 150)
-		button2.center = CGPointMake(self.view.center.x, 200)
-		button3.center = CGPointMake(self.view.center.x, 250)
+		button1.center = CGPointMake(self.view.center.x, 200)
+		button2.center = CGPointMake(self.view.center.x, 250)
+		button3.center = CGPointMake(self.view.center.x, 300)
 		
 		self.view.addSubview(button1)
 		self.view.addSubview(button2)
@@ -52,18 +64,6 @@ class CatholicViewController: UIViewController {
 		button1.addTarget(self, action: #selector(liturgicalHandler), forControlEvents:.TouchUpInside)
 		button2.addTarget(self, action: #selector(motherHandler), forControlEvents:.TouchUpInside)
 		button3.addTarget(self, action: #selector(mercyHandler), forControlEvents:.TouchUpInside)
-		
-		
-		let attrib2 = [NSFontAttributeName : UIFont(name: SYSTEM_FONT_I, size: 22)!,
-		                  NSKernAttributeName : CGFloat(2.4),
-		                  NSForegroundColorAttributeName : UIColor.whiteColor()];
-		let titleText:NSMutableAttributedString = NSMutableAttributedString(string: "The 6 Pillars and".uppercaseString)
-		titleText.addAttributes(attrib2, range: NSMakeRange(0, titleText.length))
-		titleLabel.attributedText = titleText
-		titleLabel.sizeToFit()
-		titleLabel.center = CGPointMake(self.view.center.x, 100)
-		self.view.addSubview(titleLabel)
-
 		
 	}
 	
