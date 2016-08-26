@@ -47,17 +47,20 @@ class Fire {
 		// setup USER listener
 		FIRAuth.auth()?.addAuthStateDidChangeListener { auth, user in
 			if user != nil {
-				print("   AUTH LISTENER: user \(user?.email!) signed in")
+				print("AUTH LISTENER: user \((user?.email!)!) signed in")
 				self.myUID = user?.uid
 				self.checkIfUserExists(user!, completionHandler: { (exists) in
-					if(exists){ }
+					if(exists){
+						print("  - user already in database")
+					}
 					else{
+						print("  - user not in database, creating now")
 						self.createUserInDatabase(user!)
 					}
 				})
 			} else {
 				self.myUID = nil
-				print("   AUTH LISTENER: no user")
+				print("AUTH LISTENER: no user")
 			}
 		}
 	}
@@ -94,7 +97,13 @@ class Fire {
 			if snapshot.value is NSNull {
 				completionHandler(false)
 			} else {
-				completionHandler(true)
+				let userDict:[String:AnyObject] = snapshot.value as! [String:AnyObject]
+				if(userDict["createdAt"] != nil){
+					completionHandler(true)
+				}
+				else{
+					completionHandler(false)
+				}
 			}
 //			print("all the users:")
 //			print(everything)
@@ -119,11 +128,12 @@ class Fire {
 	
 	func createUserInDatabase(user:FIRUser){
 		let emailString:String = user.email!
-		let newUser = [
+		let newUser:[String:AnyObject] = [
 			"email": emailString,
 			"createdAt": NSDate.init().timeIntervalSince1970
 		]
-		database.child("users").child(user.uid).setValue(newUser)
+		database.child("users").child(user.uid).updateChildValues(newUser)
+//		database.child("users").child(user.uid).setValue(newUser)
 		print("added \(emailString) to the database")
 	}
 	

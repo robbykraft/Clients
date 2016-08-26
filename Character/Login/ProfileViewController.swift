@@ -67,17 +67,6 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 		self.view.addSubview(emailField)
 		self.view.addSubview(detail1Button)
 		self.view.addSubview(signoutButton)
-		
-		// populate screen
-		Fire.shared.getUser { (uid, userData) in
-//			print("Here's the user data:")
-//			print(userData)
-			if(uid != nil && userData != nil){
-				self.populateUserData(uid!, userData: userData!)
-			}
-		}
-		
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(textFieldDidChange), name: "UITextFieldTextDidChangeNotification", object: nil)
     }
 	
 	override func viewWillAppear(animated: Bool) {
@@ -93,7 +82,19 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 		emailField.frame = CGRectMake(0, imgArea + 10*2 + 44*1, self.view.bounds.size.width, 44)
 		detail1Button.frame = CGRectMake(0, imgArea + 10*3 + 44*2, self.view.bounds.size.width, 44)
 		signoutButton.frame = CGRectMake(0, imgArea + 10*5 + 44*3, self.view.bounds.size.width, 44)
+
 		
+		// populate screen
+		Fire.shared.getUser { (uid, userData) in
+			//			print("Here's the user data:")
+			//			print(userData)
+			if(uid != nil && userData != nil){
+				self.populateUserData(uid!, userData: userData!)
+			}
+		}
+		
+		NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(textFieldDidChange), name: "UITextFieldTextDidChangeNotification", object: nil)
+
 	}
 
 	

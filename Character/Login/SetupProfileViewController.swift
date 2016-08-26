@@ -73,7 +73,6 @@ class SetupProfileViewController: UIViewController {
 		detailLabel.center = CGPointMake(self.view.center.x, self.view.frame.size.height - detailLabel.frame.size.height - 20)
 
 		continueButton.center = CGPointMake(self.view.center.x, detailLabel.center.y - continueButton.frame.size.height - 20)
-		
 	}
 	
 	
@@ -100,7 +99,9 @@ class SetupProfileViewController: UIViewController {
 	}
 	
 	func continueButtonHandler(){
-		self.presentViewController(MasterController(), animated: true, completion: nil)
+		self.dismissViewControllerAnimated(true) {
+			UIApplication.sharedApplication().keyWindow?.rootViewController?.presentViewController(MasterController(), animated: true, completion: nil)
+		}
 	}
 	
 	func detail1ButtonHandler(sender:UIButton){
