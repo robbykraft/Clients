@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4BFFE63F80108DE71101DD98 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E59A2F097876356A546089EE /* Pods.framework */; };
 		D513BB6E1D6F3FE000BA20A6 /* SetupProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D513BB6D1D6F3FE000BA20A6 /* SetupProfileViewController.swift */; };
+		D52C40B31D7240BB004A4724 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52C40B21D7240BB004A4724 /* FeedbackViewController.swift */; };
 		D572F4991D6DF1EE000391F2 /* LiturgicalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572F4981D6DF1EE000391F2 /* LiturgicalViewController.swift */; };
 		D572F49B1D6DF219000391F2 /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572F49A1D6DF219000391F2 /* MoreViewController.swift */; };
 		D572F49D1D6DF3B9000391F2 /* CatholicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572F49C1D6DF3B9000391F2 /* CatholicViewController.swift */; };
@@ -46,6 +47,7 @@
 		4186CB0921F43977471B2204 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		699EEAF0F2F73CE9D97C4F5C /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		D513BB6D1D6F3FE000BA20A6 /* SetupProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetupProfileViewController.swift; sourceTree = "<group>"; };
+		D52C40B21D7240BB004A4724 /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
 		D572F4981D6DF1EE000391F2 /* LiturgicalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiturgicalViewController.swift; sourceTree = "<group>"; };
 		D572F49A1D6DF219000391F2 /* MoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
 		D572F49C1D6DF3B9000391F2 /* CatholicViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CatholicViewController.swift; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 				D572F4A91D6E3FAC000391F2 /* SixPillarsViewController.swift */,
 				D572F4AB1D6E40F3000391F2 /* PillarViewController.swift */,
 				D572F49C1D6DF3B9000391F2 /* CatholicViewController.swift */,
+				D52C40B21D7240BB004A4724 /* FeedbackViewController.swift */,
 				D572F49E1D6DF486000391F2 /* MercyViewController.swift */,
 				D572F4A01D6DF48A000391F2 /* MotherViewController.swift */,
 				D572F4981D6DF1EE000391F2 /* LiturgicalViewController.swift */,
@@ -370,6 +373,7 @@
 				D572F4A41D6E0C21000391F2 /* Lesson.swift in Sources */,
 				D59B04591D6CB04600E6624B /* QuoteTableViewCell.swift in Sources */,
 				D572F4AA1D6E3FAC000391F2 /* SixPillarsViewController.swift in Sources */,
+				D52C40B31D7240BB004A4724 /* FeedbackViewController.swift in Sources */,
 				D59B045B1D6CB04600E6624B /* LessonsTableViewController.swift in Sources */,
 				D59B04421D6CA75600E6624B /* MasterController.swift in Sources */,
 				D572F49D1D6DF3B9000391F2 /* CatholicViewController.swift in Sources */,

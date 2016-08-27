@@ -53,7 +53,8 @@ class SetupProfileViewController: UIViewController {
 	}
 	
 	override func viewWillAppear(animated: Bool) {
-
+		super.viewWillAppear(animated)
+		
 		// frames
 		welcomeLabel.frame = CGRectMake(0, 0, self.view.frame.size.width * 0.8, self.view.frame.size.height)
 		questionLabel.frame = CGRectMake(0, 0, self.view.frame.size.width * 0.8, self.view.frame.size.height)

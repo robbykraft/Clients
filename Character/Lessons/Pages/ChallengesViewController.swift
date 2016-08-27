@@ -72,6 +72,8 @@ class ChallengesViewController: UIViewController, UITableViewDelegate, UITableVi
     }
 	
 	override func viewWillAppear(animated: Bool) {
+		super.viewWillAppear(animated)
+
 		titleLabel.sizeToFit()
 		titleLabel.center = CGPointMake(self.view.center.x, 40)
 		percentLabel.frame = CGRectMake(0, 0, self.view.frame.size.width, 40)
@@ -109,7 +111,7 @@ class ChallengesViewController: UIViewController, UITableViewDelegate, UITableVi
 		case 1:
 			cell.textLabel?.text = "Incorporate the quote of the day into a teaching lesson"
 		case 2:
-			cell.textLabel?.text = "Take 10 minutes and share the Lesson of the Day with one of your classes"
+			cell.textLabel?.text = "Take some time to share the Lesson of the Day with one of your classes"
 		default:
 			cell.textLabel?.text = ""
 		}

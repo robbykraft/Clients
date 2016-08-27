@@ -25,6 +25,8 @@ class PillarViewController: UIViewController {
     }
 	
 	override func viewWillAppear(animated: Bool) {
+		super.viewWillAppear(animated)
+		
 		let navBarHeight:CGFloat = self.navigationController!.navigationBar.frame.height
 		let tabBarHeight:CGFloat = self.tabBarController!.tabBar.frame.size.height;
 		let statusHeight:CGFloat = statusBarHeight()

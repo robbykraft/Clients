@@ -86,7 +86,15 @@ class Fire {
 			}
 		}
 	}
-		
+	
+	func newUniqueObjectAtPath(childURL:String, object:AnyObject, completionHandler: (() -> ())?) {
+		database.child(childURL).childByAutoId().setValue(object) { (error, ref) in
+			if(completionHandler != nil){
+				completionHandler!()
+			}
+		}
+	}
+	
 	////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////
 	//

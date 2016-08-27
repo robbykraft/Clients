@@ -83,7 +83,6 @@ class MoreViewController: UIViewController {
 		button5.sizeToFit()
 		
 		button3.alpha = 0.5
-		button4.alpha = 0.5
 		
 		self.view.addSubview(button1)
 		self.view.addSubview(button2)
@@ -94,6 +93,7 @@ class MoreViewController: UIViewController {
 
 		button1.addTarget(self, action: #selector(sixPillarsHandler), forControlEvents:.TouchUpInside)
 		button2.addTarget(self, action: #selector(catholicHandler), forControlEvents:.TouchUpInside)
+		button4.addTarget(self, action: #selector(feedbackButtonHandler), forControlEvents:.TouchUpInside)
 		button5.addTarget(self, action: #selector(profileButtonHandler), forControlEvents:.TouchUpInside)
 		profileImageButton.addTarget(self, action: #selector(profileButtonHandler), forControlEvents: .TouchUpInside)
 
@@ -103,6 +103,8 @@ class MoreViewController: UIViewController {
 	}
 	
 	override func viewWillAppear(animated: Bool) {
+		super.viewWillAppear(animated)
+		
 		button1.center = CGPointMake(self.view.center.x, 100 - 30)
 		button2.center = CGPointMake(self.view.center.x, 150 - 15)
 		button3.center = CGPointMake(self.view.center.x, 200)
@@ -133,6 +135,9 @@ class MoreViewController: UIViewController {
 	}
 	func catholicHandler(sender:UIButton){
 		self.navigationController?.pushViewController(CatholicViewController(), animated: true)
+	}
+	func feedbackButtonHandler(sender:UIButton){
+		self.navigationController?.pushViewController(FeedbackViewController(), animated: true)
 	}
 	func profileButtonHandler(sender:UIButton){
 		self.navigationController?.pushViewController(ProfileViewController(), animated: true)

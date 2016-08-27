@@ -70,7 +70,8 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
     }
 	
 	override func viewWillAppear(animated: Bool) {
-		
+		super.viewWillAppear(animated)
+				
 		// frames
 		let imgSize:CGFloat = self.view.bounds.size.width * 0.4
 		let imgArea:CGFloat = self.view.bounds.size.width * 0.5
