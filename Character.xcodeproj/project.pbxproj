@@ -10,16 +10,10 @@
 		4BFFE63F80108DE71101DD98 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E59A2F097876356A546089EE /* Pods.framework */; };
 		D513BB6E1D6F3FE000BA20A6 /* SetupProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D513BB6D1D6F3FE000BA20A6 /* SetupProfileViewController.swift */; };
 		D52C40B31D7240BB004A4724 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52C40B21D7240BB004A4724 /* FeedbackViewController.swift */; };
-		D572F4991D6DF1EE000391F2 /* LiturgicalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572F4981D6DF1EE000391F2 /* LiturgicalViewController.swift */; };
 		D572F49B1D6DF219000391F2 /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572F49A1D6DF219000391F2 /* MoreViewController.swift */; };
-		D572F49D1D6DF3B9000391F2 /* CatholicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572F49C1D6DF3B9000391F2 /* CatholicViewController.swift */; };
-		D572F49F1D6DF486000391F2 /* MercyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572F49E1D6DF486000391F2 /* MercyViewController.swift */; };
-		D572F4A11D6DF48A000391F2 /* MotherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572F4A01D6DF48A000391F2 /* MotherViewController.swift */; };
 		D572F4A41D6E0C21000391F2 /* Lesson.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572F4A31D6E0C21000391F2 /* Lesson.swift */; };
 		D572F4A61D6E2729000391F2 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572F4A51D6E2729000391F2 /* Extensions.swift */; };
 		D572F4A81D6E273D000391F2 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572F4A71D6E273D000391F2 /* Character.swift */; };
-		D572F4AA1D6E3FAC000391F2 /* SixPillarsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572F4A91D6E3FAC000391F2 /* SixPillarsViewController.swift */; };
-		D572F4AC1D6E40F3000391F2 /* PillarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572F4AB1D6E40F3000391F2 /* PillarViewController.swift */; };
 		D59B04161D6C96D500E6624B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59B04151D6C96D500E6624B /* AppDelegate.swift */; };
 		D59B041D1D6C96D500E6624B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D59B041C1D6C96D500E6624B /* Assets.xcassets */; };
 		D59B04201D6C96D500E6624B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D59B041E1D6C96D500E6624B /* LaunchScreen.storyboard */; };
@@ -41,6 +35,10 @@
 		D59B04601D6CB04600E6624B /* LessonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59B04501D6CB04600E6624B /* LessonViewController.swift */; };
 		D59B04611D6CB04600E6624B /* QuoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59B04511D6CB04600E6624B /* QuoteViewController.swift */; };
 		D59B04681D6CBF7000E6624B /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59B04671D6CBF7000E6624B /* Style.swift */; };
+		D5F3CE421D735393003FABEF /* CatholicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F3CE3C1D735393003FABEF /* CatholicViewController.swift */; };
+		D5F3CE471D735393003FABEF /* SixPillarsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F3CE411D735393003FABEF /* SixPillarsViewController.swift */; };
+		D5F3CE491D7353EA003FABEF /* CharacterToolsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F3CE481D7353EA003FABEF /* CharacterToolsViewController.swift */; };
+		D5F3CE4B1D7356F0003FABEF /* DatabasePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F3CE4A1D7356F0003FABEF /* DatabasePageViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,16 +46,10 @@
 		699EEAF0F2F73CE9D97C4F5C /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		D513BB6D1D6F3FE000BA20A6 /* SetupProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetupProfileViewController.swift; sourceTree = "<group>"; };
 		D52C40B21D7240BB004A4724 /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
-		D572F4981D6DF1EE000391F2 /* LiturgicalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiturgicalViewController.swift; sourceTree = "<group>"; };
 		D572F49A1D6DF219000391F2 /* MoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
-		D572F49C1D6DF3B9000391F2 /* CatholicViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CatholicViewController.swift; sourceTree = "<group>"; };
-		D572F49E1D6DF486000391F2 /* MercyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MercyViewController.swift; sourceTree = "<group>"; };
-		D572F4A01D6DF48A000391F2 /* MotherViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MotherViewController.swift; sourceTree = "<group>"; };
 		D572F4A31D6E0C21000391F2 /* Lesson.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lesson.swift; sourceTree = "<group>"; };
 		D572F4A51D6E2729000391F2 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		D572F4A71D6E273D000391F2 /* Character.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
-		D572F4A91D6E3FAC000391F2 /* SixPillarsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SixPillarsViewController.swift; sourceTree = "<group>"; };
-		D572F4AB1D6E40F3000391F2 /* PillarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PillarViewController.swift; sourceTree = "<group>"; };
 		D59B04121D6C96D500E6624B /* Character.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Character.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D59B04151D6C96D500E6624B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D59B041C1D6C96D500E6624B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -81,6 +73,10 @@
 		D59B04501D6CB04600E6624B /* LessonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LessonViewController.swift; sourceTree = "<group>"; };
 		D59B04511D6CB04600E6624B /* QuoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuoteViewController.swift; sourceTree = "<group>"; };
 		D59B04671D6CBF7000E6624B /* Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
+		D5F3CE3C1D735393003FABEF /* CatholicViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CatholicViewController.swift; sourceTree = "<group>"; };
+		D5F3CE411D735393003FABEF /* SixPillarsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SixPillarsViewController.swift; sourceTree = "<group>"; };
+		D5F3CE481D7353EA003FABEF /* CharacterToolsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CharacterToolsViewController.swift; path = Character/More/CharacterToolsViewController.swift; sourceTree = SOURCE_ROOT; };
+		D5F3CE4A1D7356F0003FABEF /* DatabasePageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabasePageViewController.swift; sourceTree = "<group>"; };
 		E59A2F097876356A546089EE /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -117,13 +113,9 @@
 			isa = PBXGroup;
 			children = (
 				D572F49A1D6DF219000391F2 /* MoreViewController.swift */,
-				D572F4A91D6E3FAC000391F2 /* SixPillarsViewController.swift */,
-				D572F4AB1D6E40F3000391F2 /* PillarViewController.swift */,
-				D572F49C1D6DF3B9000391F2 /* CatholicViewController.swift */,
 				D52C40B21D7240BB004A4724 /* FeedbackViewController.swift */,
-				D572F49E1D6DF486000391F2 /* MercyViewController.swift */,
-				D572F4A01D6DF48A000391F2 /* MotherViewController.swift */,
-				D572F4981D6DF1EE000391F2 /* LiturgicalViewController.swift */,
+				D5F3CE481D7353EA003FABEF /* CharacterToolsViewController.swift */,
+				D5F3CE3B1D735393003FABEF /* Additional */,
 			);
 			path = More;
 			sourceTree = "<group>";
@@ -235,6 +227,16 @@
 				D59B044F1D6CB04600E6624B /* ChallengeTableViewCell.swift */,
 			);
 			path = Pages;
+			sourceTree = "<group>";
+		};
+		D5F3CE3B1D735393003FABEF /* Additional */ = {
+			isa = PBXGroup;
+			children = (
+				D5F3CE4A1D7356F0003FABEF /* DatabasePageViewController.swift */,
+				D5F3CE3C1D735393003FABEF /* CatholicViewController.swift */,
+				D5F3CE411D735393003FABEF /* SixPillarsViewController.swift */,
+			);
+			path = Additional;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -363,32 +365,30 @@
 				D572F49B1D6DF219000391F2 /* MoreViewController.swift in Sources */,
 				D59B043D1D6CA4B700E6624B /* Fire.swift in Sources */,
 				D59B045E1D6CB04600E6624B /* ChallengesViewController.swift in Sources */,
-				D572F49F1D6DF486000391F2 /* MercyViewController.swift in Sources */,
+				D5F3CE471D735393003FABEF /* SixPillarsViewController.swift in Sources */,
 				D59B045A1D6CB04600E6624B /* SuperLessonTableViewCell.swift in Sources */,
 				D59B04611D6CB04600E6624B /* QuoteViewController.swift in Sources */,
+				D5F3CE421D735393003FABEF /* CatholicViewController.swift in Sources */,
 				D59B043C1D6CA4B700E6624B /* Cache.swift in Sources */,
 				D59B04561D6CB04600E6624B /* ChallengesTableViewCell.swift in Sources */,
 				D59B04601D6CB04600E6624B /* LessonViewController.swift in Sources */,
 				D59B04391D6CA4B700E6624B /* LoginViewController.swift in Sources */,
 				D572F4A41D6E0C21000391F2 /* Lesson.swift in Sources */,
 				D59B04591D6CB04600E6624B /* QuoteTableViewCell.swift in Sources */,
-				D572F4AA1D6E3FAC000391F2 /* SixPillarsViewController.swift in Sources */,
 				D52C40B31D7240BB004A4724 /* FeedbackViewController.swift in Sources */,
 				D59B045B1D6CB04600E6624B /* LessonsTableViewController.swift in Sources */,
 				D59B04421D6CA75600E6624B /* MasterController.swift in Sources */,
-				D572F49D1D6DF3B9000391F2 /* CatholicViewController.swift in Sources */,
-				D572F4991D6DF1EE000391F2 /* LiturgicalViewController.swift in Sources */,
 				D59B04581D6CB04600E6624B /* LessonTableViewCell.swift in Sources */,
 				D572F4A81D6E273D000391F2 /* Character.swift in Sources */,
 				D59B043B1D6CA4B700E6624B /* ProfileViewController.swift in Sources */,
 				D59B045C1D6CB04600E6624B /* LessonTableViewController.swift in Sources */,
-				D572F4A11D6DF48A000391F2 /* MotherViewController.swift in Sources */,
 				D572F4A61D6E2729000391F2 /* Extensions.swift in Sources */,
+				D5F3CE4B1D7356F0003FABEF /* DatabasePageViewController.swift in Sources */,
 				D59B045F1D6CB04600E6624B /* ChallengeTableViewCell.swift in Sources */,
-				D572F4AC1D6E40F3000391F2 /* PillarViewController.swift in Sources */,
 				D59B04161D6C96D500E6624B /* AppDelegate.swift in Sources */,
 				D59B04571D6CB04600E6624B /* LessonsTableViewCell.swift in Sources */,
 				D59B04681D6CBF7000E6624B /* Style.swift in Sources */,
+				D5F3CE491D7353EA003FABEF /* CharacterToolsViewController.swift in Sources */,
 				D513BB6E1D6F3FE000BA20A6 /* SetupProfileViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

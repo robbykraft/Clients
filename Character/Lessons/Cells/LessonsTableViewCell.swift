@@ -12,6 +12,19 @@ class LessonsTableViewCell: UITableViewCell {
 	
 	var dateLabel: UILabel = UILabel()
 	
+	var gradeLabel: UILabel = UILabel()
+	
+	var gradeLevel:Int = 0{
+		didSet{
+			let attributes = [NSFontAttributeName : UIFont(name: SYSTEM_FONT, size: 12)!,
+			                  NSKernAttributeName : CGFloat(2.4),
+			                  NSForegroundColorAttributeName : Style.shared.gray];
+			let aText:NSMutableAttributedString = NSMutableAttributedString(string: Character.shared.gradeNames[gradeLevel])
+			aText.addAttributes(attributes, range: NSMakeRange(0, aText.length))
+			self.gradeLabel.attributedText = aText
+		}
+	}
+	
 	var dateText:String = ""{
 		didSet{
 			let attributes = [NSFontAttributeName : UIFont(name: SYSTEM_FONT, size: 14)!,
@@ -45,6 +58,7 @@ class LessonsTableViewCell: UITableViewCell {
 	
 	func initUI(){
 		self.addSubview(dateLabel)
+		self.addSubview(gradeLabel)
 //		dateLabel.textColor = UIColor.darkGrayColor()
 //		self.textLabel?.textColor = UIColor.grayColor()
 		self.textLabel?.numberOfLines = 3
@@ -65,16 +79,16 @@ class LessonsTableViewCell: UITableViewCell {
 		self.dateLabel.frame = CGRectMake(4 + imgWidth + textPad, self.frame.size.height*0.5 - 40,
 		                                  self.frame.size.width - imgWidth - 4 - textPad,
 		                                  20)
+		self.gradeLabel.sizeToFit()
+		let gradePad:CGFloat = 5
+		self.gradeLabel.frame = CGRectMake(self.frame.size.width - self.gradeLabel.frame.size.width - gradePad,
+		                                   self.frame.size.height - self.gradeLabel.frame.size.height - gradePad,
+		                                   self.gradeLabel.frame.size.width,
+		                                   self.gradeLabel.frame.size.height)
 		
 //		let imageFile:String = objectForRow["image"] as! String
 //		cell.imageView?.imageFromStorageBucket(imageFile)
 	}
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-		
-    }
 
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

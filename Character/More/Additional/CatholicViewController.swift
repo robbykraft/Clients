@@ -68,13 +68,22 @@ class CatholicViewController: UIViewController {
 	}
 	
 	func liturgicalHandler(sender:UIButton){
-		self.navigationController?.pushViewController(LiturgicalViewController(), animated: true)
+		let vc = DatabasePageViewController()
+		vc.databasePath = "evergreen/integration/liturgical"
+		vc.title = "LITURGICAL CALENDAR"
+		self.navigationController?.pushViewController(vc, animated: true)
 	}
 	func motherHandler(sender:UIButton){
-		self.navigationController?.pushViewController(MotherViewController(), animated: true)
+		let vc = DatabasePageViewController()
+		vc.databasePath = "evergreen/integration/mother"
+		vc.title = "OUR BLESSED MOTHER"
+		self.navigationController?.pushViewController(vc, animated: true)
 	}
 	func mercyHandler(sender:UIButton){
-		self.navigationController?.pushViewController(MercyViewController(), animated: true)
+		let vc = DatabasePageViewController()
+		vc.databasePath = "evergreen/integration/mercy"
+		vc.title = "WORKS OF MERCY"
+		self.navigationController?.pushViewController(vc, animated: true)
 	}
 
 }

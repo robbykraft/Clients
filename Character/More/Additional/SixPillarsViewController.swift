@@ -20,7 +20,7 @@ class SixPillarsViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		self.title = "SIX PILLARS"
+		self.title = "THE SIX PILLARS"
 		self.navigationItem.backBarButtonItem = UIBarButtonItem.init(title: "", style: .Plain, target: nil, action: nil);
 
 		self.view.backgroundColor = Style.shared.whiteSmoke
@@ -88,8 +88,9 @@ class SixPillarsViewController: UIViewController {
 	}
 	
 	func buttonHandler(sender:UIButton){
-		let vc = PillarViewController()
-		vc.pillarNumber = sender.tag
+		let vc = DatabasePageViewController()
+		vc.title = Character.shared.pillarNames[sender.tag].uppercaseString
+		vc.databasePath = "evergreen/pillars/\(sender.tag)"
 		self.navigationController?.pushViewController(vc, animated: true)
 	}
 

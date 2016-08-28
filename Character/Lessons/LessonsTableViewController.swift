@@ -86,6 +86,8 @@ class LessonsTableViewController: UITableViewController {
 			}
 		})
 //		cell.imageView?.imageFromStorageBucket(imageFile)
+		
+		cell.gradeLevel = objectForRow.grade!
 
 		cell.titleText = text.uppercaseString
 		cell.dateText = dateText.uppercaseString
