@@ -28,7 +28,7 @@ class CharacterToolsViewController: UIViewController {
 		let titleParagraphStyle = NSMutableParagraphStyle()
 		titleParagraphStyle.alignment = .Center
 
-		let attributes = [NSFontAttributeName : UIFont(name: SYSTEM_FONT, size: 22)!,
+		let attributes = [NSFontAttributeName : UIFont(name: SYSTEM_FONT, size: 20)!,
 		                  NSKernAttributeName : CGFloat(2.4),
 		                  NSParagraphStyleAttributeName: titleParagraphStyle,
 		                  NSForegroundColorAttributeName : Style.shared.darkGray];

@@ -18,6 +18,28 @@ class LessonsTableViewController: UITableViewController {
 		}
 	}
 	
+	// FILTER GRADE LEVELS
+	var showFilter:Bool = false
+	var filteredData: [Lesson]?
+	var filter:Int?{
+		didSet{
+			if(filter != nil){
+				filteredData = filterLessons(filter!)
+			}
+			self.tableView.reloadData()
+		}
+	}
+	func filterLessons(filterBy:Int) -> [Lesson] {
+		var array:[Lesson] = []
+		for lesson in data! {
+			if lesson.grade == filterBy{
+				array.append(lesson)
+			}
+		}
+		return array
+	}
+	
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		self.tableView.cellLayoutMarginsFollowReadableWidth = false;
@@ -26,6 +48,11 @@ class LessonsTableViewController: UITableViewController {
 		self.title = "ALL LESSONS"
 
 		self.navigationItem.backBarButtonItem = UIBarButtonItem.init(title: "", style: .Plain, target: nil, action: nil);
+	}
+	
+	override func viewWillAppear(animated: Bool) {
+		super.viewWillAppear(animated)
+		self.tableView.reloadData()
 	}
 	
 	override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -52,6 +79,9 @@ class LessonsTableViewController: UITableViewController {
 	}
 	
 	override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+		if(showFilter && filter != nil){
+			return (self.filteredData?.count)!
+		}
 		return (self.data?.count)!
 	}
 	
@@ -62,6 +92,51 @@ class LessonsTableViewController: UITableViewController {
 		case 3, 23: return "rd"
 		default: return "th"
 		}
+	}
+	
+	override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+		if(showFilter == false){
+			return nil
+		}
+		let viewH:CGFloat = 34
+		
+		let view = UIView()
+		view.backgroundColor = Style.shared.darkGray
+		
+		let buttonW = self.view.frame.size.width * 0.8
+		let button = UIButton()
+		button.backgroundColor = UIColor.clearColor()
+		button.frame = CGRectMake((self.view.frame.size.width - buttonW) * 0.5, 0, buttonW, viewH)
+		button.addTarget(self, action: #selector(filterButtonHandler), forControlEvents: .TouchUpInside)
+
+		let filterLabel = UILabel()
+		filterLabel.font = UIFont(name: SYSTEM_FONT, size: 15)
+		filterLabel.textColor = Style.shared.whiteSmoke
+		filterLabel.frame = CGRectMake(0, 0, self.view.frame.size.width*0.5 - 10, viewH)
+		filterLabel.textAlignment = .Right
+		filterLabel.text = "Filter:"
+
+		let gradeLabel = UILabel()
+		gradeLabel.font = UIFont(name: SYSTEM_FONT, size: 15)
+		gradeLabel.textColor = UIColor.whiteColor()
+		gradeLabel.frame = CGRectMake(self.view.frame.size.width*0.5, 0, self.view.frame.size.width*0.5, viewH)
+		gradeLabel.textAlignment = .Left
+		if(filter == nil){
+			gradeLabel.text = "All Grades"
+		} else{
+			gradeLabel.text = Character.shared.gradeNames[filter!]
+		}
+		
+		view.addSubview(filterLabel)
+		view.addSubview(gradeLabel)
+		view.addSubview(button)
+		return view
+	}
+	override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+		if(showFilter == true){
+			return 34
+		}
+		return 0
 	}
 	
 	override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -76,7 +151,13 @@ class LessonsTableViewController: UITableViewController {
 		let dayString = "\(dateComponents.day)" + daySuffix(dateComponents.day)
 		let dateText: String = monthAbbrevs[dateComponents.month - 1] + " " + dayString
 		
-		let objectForRow = self.data![indexPath.row]
+		var objectForRow:Lesson
+		if(showFilter && filter != nil){
+			objectForRow = self.filteredData![indexPath.row]
+		} else{
+			objectForRow = self.data![indexPath.row]
+		}
+		
 		text = objectForRow.title!
 		let imageFilename:String = objectForRow.image!
 		Cache.shared.imageFromStorageBucket(imageFilename, completionHandler: { (image, requiredDownload) in
@@ -96,7 +177,12 @@ class LessonsTableViewController: UITableViewController {
 	}
 	
 	override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-		let nextObject = self.data![indexPath.row]
+		var nextObject:Lesson
+		if(showFilter && filter != nil){
+			nextObject = self.filteredData![indexPath.row]
+		} else{
+			nextObject = self.data![indexPath.row]
+		}
 		
 		let vc: LessonTableViewController = LessonTableViewController()
 		vc.data = nextObject
@@ -105,4 +191,33 @@ class LessonsTableViewController: UITableViewController {
 		vc.title = "TRUSTWORTHINESS"
 		self.navigationController?.pushViewController(vc, animated: true)
 	}
+	
+	
+	func filterButtonHandler(sender:UIButton){
+		let alert = UIAlertController.init(title: "", message: nil, preferredStyle: .ActionSheet)
+		let action1 = UIAlertAction.init(title: Character.shared.gradeNames[0], style: .Default) { (action) in
+			self.filter = 0
+		}
+		let action2 = UIAlertAction.init(title: Character.shared.gradeNames[1], style: .Default) { (action) in
+			self.filter = 1
+		}
+		let action3 = UIAlertAction.init(title: Character.shared.gradeNames[2], style: .Default) { (action) in
+			self.filter = 2
+		}
+		let action4 = UIAlertAction.init(title: Character.shared.gradeNames[3], style: .Default) { (action) in
+			self.filter = 3
+		}
+		let action5 = UIAlertAction.init(title: "All Grades", style: .Default) { (action) in
+			self.filter = nil
+		}
+		let cancel = UIAlertAction.init(title: "Cancel", style: .Cancel) { (action) in }
+		alert.addAction(action1)
+		alert.addAction(action2)
+		alert.addAction(action3)
+		alert.addAction(action4)
+		alert.addAction(action5)
+		alert.addAction(cancel)
+		self.presentViewController(alert, animated: true, completion: nil)
+	}
+
 }

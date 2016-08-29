@@ -74,6 +74,11 @@ class MasterController: UITabBarController {
 		if(lessons != nil){
 			self.allLessonsVC.data = lessons
 			self.todayLessonVC.data = lessons![0]
+			if(gradeLevels == [0,1,2,3]){
+				self.allLessonsVC.showFilter = true
+			} else{
+				self.allLessonsVC.showFilter = false
+			}
 			
 			let todaysPillar:Int = lessons![0].pillar!
 			self.todayLessonVC.navigationItem.title = Character.shared.pillarNames[todaysPillar].uppercaseString
