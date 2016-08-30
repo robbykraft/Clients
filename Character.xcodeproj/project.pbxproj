@@ -39,7 +39,6 @@
 		D5F3CE471D735393003FABEF /* SixPillarsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F3CE411D735393003FABEF /* SixPillarsViewController.swift */; };
 		D5F3CE491D7353EA003FABEF /* CharacterToolsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F3CE481D7353EA003FABEF /* CharacterToolsViewController.swift */; };
 		D5F3CE4B1D7356F0003FABEF /* DatabasePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F3CE4A1D7356F0003FABEF /* DatabasePageViewController.swift */; };
-		D5F3CE4D1D73839C003FABEF /* NavBarTitleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F3CE4C1D73839C003FABEF /* NavBarTitleButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -78,7 +77,6 @@
 		D5F3CE411D735393003FABEF /* SixPillarsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SixPillarsViewController.swift; sourceTree = "<group>"; };
 		D5F3CE481D7353EA003FABEF /* CharacterToolsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CharacterToolsViewController.swift; path = Character/More/CharacterToolsViewController.swift; sourceTree = SOURCE_ROOT; };
 		D5F3CE4A1D7356F0003FABEF /* DatabasePageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabasePageViewController.swift; sourceTree = "<group>"; };
-		D5F3CE4C1D73839C003FABEF /* NavBarTitleButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavBarTitleButton.swift; sourceTree = "<group>"; };
 		E59A2F097876356A546089EE /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -192,7 +190,6 @@
 			isa = PBXGroup;
 			children = (
 				D59B04411D6CA75600E6624B /* MasterController.swift */,
-				D5F3CE4C1D73839C003FABEF /* NavBarTitleButton.swift */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";
@@ -376,7 +373,6 @@
 				D59B04561D6CB04600E6624B /* ChallengesTableViewCell.swift in Sources */,
 				D59B04601D6CB04600E6624B /* LessonViewController.swift in Sources */,
 				D59B04391D6CA4B700E6624B /* LoginViewController.swift in Sources */,
-				D5F3CE4D1D73839C003FABEF /* NavBarTitleButton.swift in Sources */,
 				D572F4A41D6E0C21000391F2 /* Lesson.swift in Sources */,
 				D59B04591D6CB04600E6624B /* QuoteTableViewCell.swift in Sources */,
 				D52C40B31D7240BB004A4724 /* FeedbackViewController.swift in Sources */,
@@ -505,7 +501,7 @@
 				INFOPLIST_FILE = Character/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.robbykraft.Character;
+				PRODUCT_BUNDLE_IDENTIFIER = com.character.CharacterDaily;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -519,7 +515,7 @@
 				INFOPLIST_FILE = Character/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.robbykraft.Character;
+				PRODUCT_BUNDLE_IDENTIFIER = com.character.CharacterDaily;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

@@ -23,7 +23,7 @@ class LessonTableViewCell: SuperLessonTableViewCell {
 	
     override func initUI() {
 		super.initUI()
-		cornerTitleLabel.text = "Lesson"
+		cornerTitleLabel.text = "Daily Lesson"
 		self.textLabel?.textColor = Style.shared.darkGray
 		self.textLabel?.numberOfLines = 3
 		self.imageView?.contentMode = .ScaleAspectFill

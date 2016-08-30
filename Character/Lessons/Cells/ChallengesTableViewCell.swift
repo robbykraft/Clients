@@ -22,13 +22,13 @@ class ChallengesTableViewCell: SuperLessonTableViewCell {
 	override func initUI() {
 		super.initUI()
 		
-		cornerTitleLabel.text = "Challenge"
+		cornerTitleLabel.text = "Daily Challenge"
 		
 		viewChallengeLabel.backgroundColor = Style.shared.lightBlue
 		viewChallengeLabel.textColor = UIColor.whiteColor()
 		viewChallengeLabel.textAlignment = .Center
 		viewChallengeLabel.font = UIFont(name: SYSTEM_FONT, size: 30)
-		viewChallengeLabel.text = "View Challenge"
+		viewChallengeLabel.text = "My Challenges"
 		
 		completedLabel.textColor = UIColor.blackColor()
 		completedLabel.text = "0/3 TASKS COMPLETE"

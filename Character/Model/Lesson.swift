@@ -15,6 +15,8 @@
 //		"title" : "text"
 //	}
 
+import Foundation
+
 class Lesson {
 
 	// ID
@@ -23,6 +25,9 @@ class Lesson {
 	// tags
 	var grade:Int?
 	var pillar:Int?
+	
+	// time stamp
+	var date:NSDate?
 
 	// lesson
 	var title:String?

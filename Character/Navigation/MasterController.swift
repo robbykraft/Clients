@@ -47,40 +47,46 @@ class MasterController: UITabBarController {
 		
 		self.selectedIndex = 1
 		
-		Character.shared.loadLessons { (lessons) in
-			if(lessons == nil){
-				// problem connecting to the database
-			}
-			else{
-				Fire.shared.getUser { (uid, userData) in
-					if(uid != nil && userData != nil){
-						if(userData!["grade"] == nil){
-							// user hasn't been updated with a Grade Level
-							let gradeLevels:[Int] = [0,1,2,3]
-							self.reloadLessons(gradeLevels)
-						}
-						else{
-							let gradeLevels:[Int] = userData!["grade"] as! [Int]
-							self.reloadLessons(gradeLevels)
-						}
-					}
+		loadDataAppWide()
+	}
+	
+	func loadDataAppWide() {
+		Fire.shared.getUser { (uid, userData) in
+			if(uid != nil && userData != nil){
+				var gradeLevels:[Int]
+				if(userData!["grade"] == nil){
+					// user hasn't been updated with a Grade Level
+					gradeLevels = [0,1,2,3]
 				}
+				else{
+					gradeLevels = userData!["grade"] as! [Int]
+				}
+//				self.reloadLessons(gradeLevels)
+				Character.shared.downloadAndPrepareLessons({ (success) in
+					self.reloadLessons(gradeLevels)
+				})
 			}
 		}
 	}
-	
+
 	func reloadLessons(gradeLevels:[Int]){
-		let lessons:Array? = Character.shared.lessonsArray([0], gradeLevels: gradeLevels)
-		if(lessons != nil){
-			self.allLessonsVC.data = lessons
-			self.todayLessonVC.data = lessons![0]
+		let (todaysLesson, lessonArray) = Character.shared.lessonsWithFilter(gradeLevels)
+		
+		print("RECEIVED LESSONS")
+		print(todaysLesson)
+		print(lessonArray)
+		
+		if(lessonArray.count > 0){
+			self.allLessonsVC.data = lessonArray
 			if(gradeLevels == [0,1,2,3]){
 				self.allLessonsVC.showFilter = true
 			} else{
 				self.allLessonsVC.showFilter = false
 			}
-			
-			let todaysPillar:Int = lessons![0].pillar!
+		}
+		if(todaysLesson != nil){
+			self.todayLessonVC.data = todaysLesson
+			let todaysPillar:Int = todaysLesson!.pillar!
 			self.todayLessonVC.navigationItem.title = Character.shared.pillarNames[todaysPillar].uppercaseString
 		}
 	}

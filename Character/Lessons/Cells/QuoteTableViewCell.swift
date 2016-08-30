@@ -15,7 +15,7 @@ class QuoteTableViewCell: SuperLessonTableViewCell {
 	
 	override func initUI() {
 		super.initUI()
-		cornerTitleLabel.text = "Quote"
+		cornerTitleLabel.text = "Daily Quote"
 //		self.textLabel?.font = UIFont.systemFontOfSize(15)
 		self.textLabel?.font = UIFont(name: SYSTEM_FONT, size: 16)
 		self.textLabel?.numberOfLines = 4

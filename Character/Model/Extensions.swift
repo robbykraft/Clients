@@ -17,3 +17,16 @@ extension UIImage{
 		return tintedImage
 	}
 }
+
+extension NSDate {
+	func isLessThanDate(dateToCompare: NSDate) -> Bool {
+		//Declare Variables
+		var isLess = false
+		//Compare Values
+		if self.compare(dateToCompare) == NSComparisonResult.OrderedAscending {
+			isLess = true
+		}
+		//Return Result
+		return isLess
+	}
+}

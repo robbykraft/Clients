@@ -142,15 +142,6 @@ class LessonsTableViewController: UITableViewController {
 	override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 		let cell = LessonsTableViewCell.init(style: .Value1, reuseIdentifier: "tableCell")
 		
-		var text: String = "Title"
-		
-		let deltaDate = NSDateComponents()
-		deltaDate.day = indexPath.row
-		let cellDate:NSDate = NSCalendar.currentCalendar().dateByAddingComponents(deltaDate, toDate: NSDate(), options: NSCalendarOptions.MatchFirst)!
-		let dateComponents:NSDateComponents = NSCalendar.currentCalendar().components([.Month, .Day], fromDate: cellDate)
-		let dayString = "\(dateComponents.day)" + daySuffix(dateComponents.day)
-		let dateText: String = monthAbbrevs[dateComponents.month - 1] + " " + dayString
-		
 		var objectForRow:Lesson
 		if(showFilter && filter != nil){
 			objectForRow = self.filteredData![indexPath.row]
@@ -158,7 +149,14 @@ class LessonsTableViewController: UITableViewController {
 			objectForRow = self.data![indexPath.row]
 		}
 		
-		text = objectForRow.title!
+		let text:String = objectForRow.title!
+		
+		// date
+		let dateComponents:NSDateComponents = NSCalendar.currentCalendar().components([.Month, .Day], fromDate: objectForRow.date!)
+		let dayString = "\(dateComponents.day)" + daySuffix(dateComponents.day)
+		let dateText: String = monthAbbrevs[dateComponents.month - 1] + " " + dayString
+
+		// image
 		let imageFilename:String = objectForRow.image!
 		Cache.shared.imageFromStorageBucket(imageFilename, completionHandler: { (image, requiredDownload) in
 			cell.imageView?.image = image
@@ -166,7 +164,6 @@ class LessonsTableViewController: UITableViewController {
 				self.tableView.reloadData()
 			}
 		})
-//		cell.imageView?.imageFromStorageBucket(imageFile)
 		
 		cell.gradeLevel = objectForRow.grade!
 

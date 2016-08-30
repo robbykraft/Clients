@@ -5,43 +5,279 @@ class Character{
 	
 	private init() { }
 
-	var lessons:[String:AnyObject]?  // lessons data
+//	var lessons:[String:AnyObject]?  // lessons data
 	let pillarNames = ["trustworthiness", "respect", "responsibility", "fairness", "caring", "citizenship"]
 	let gradeNames = ["K-2nd", "3rd-5th", "6th-8th", "9th-12th"]
 	
 	
-	func loadLessons(completionHandler: ([String:AnyObject]?) -> ()) {
+	// each entry is an array of 4 lessons, one of each grade level
+	var todaysLesson:[Lesson]?
+	var upcomingLessons:[NSDate:[Lesson]]?
+	var pastLessons:[NSDate:[Lesson]]?
+	
+	
+	func lessonsWithFilter(gradeLevels:[Int]) -> (Lesson?, [Lesson]){
+		var today:Lesson? = nil
+		if(todaysLesson != nil){
+			for lesson in todaysLesson!{
+				if (gradeLevels.contains(lesson.grade!)){
+					today = lesson
+				}
+			}
+		}
+		var allLessons:[Lesson] = []
+		if(pastLessons != nil){
+			let past:[NSDate:[Lesson]] = pastLessons!
+			var keys:[NSDate] = Array(past.keys)
+			keys.sortInPlace({ $0.compare($1) == NSComparisonResult.OrderedAscending })
+			for key in keys{
+				let daysLessons = pastLessons![key]
+				if(daysLessons != nil){
+					for lesson in daysLessons!{
+						if(gradeLevels.contains(lesson.grade!)){
+							allLessons.append(lesson)
+						}
+					}
+				}
+			}
+		}
+		if(upcomingLessons != nil){
+			let upcoming:[NSDate:[Lesson]] = upcomingLessons!
+			var keys:[NSDate] = Array(upcoming.keys)
+			keys.sortInPlace({ $0.compare($1) == NSComparisonResult.OrderedAscending })
+			for key in keys{
+				let daysLessons = upcomingLessons![key]
+				if(daysLessons != nil){
+					for lesson in daysLessons!{
+						if(gradeLevels.contains(lesson.grade!)){
+							allLessons.append(lesson)
+						}
+					}
+				}
+			}
+		}
+		return (today,allLessons)
+	}
+
+	
+	func downloadAndPrepareLessons(completionHandler: (success:Bool) -> () ) {
 		FIRDatabase.database().reference().child("lessons").observeSingleEventOfType(.Value) { (snapshot: FIRDataSnapshot) in
 			if snapshot.value is NSNull {
-				completionHandler(nil)
+				completionHandler(success: false)
 			} else {
-				self.lessons = snapshot.value as? [String:AnyObject]
-				completionHandler(self.lessons)
+				// SUCCESS connecting to the database
+				let lessonsJSON = snapshot.value as? [String:AnyObject]
+
+				self.getScheduleArray({ (scheduleArray) in
+
+					let lessonArray:[Lesson] = self.lessonsFromJSON(lessonsJSON!)
+					
+					let lessonDictionary = self.sortLessonByPillarAndGrade(lessonArray)
+
+					let lessonSchedule = self.makeLessonSchedule(lessonDictionary, scheduleArray: scheduleArray)
+
+					self.todaysLesson = self.getTodaysLesson(lessonSchedule)
+					self.upcomingLessons = self.getNext5Lessons(lessonSchedule)
+					self.pastLessons = self.getLast15Lessons(lessonSchedule)
+
+//					print("TODAY'S LESSON")
+//					print(self.todaysLesson)
+//					print("FUTURE LESSONS")
+//					print(self.upcomingLessons)
+//					print("PAST LESSONS")
+//					print(self.pastLessons)
+					
+					completionHandler(success: true)
+				})
 			}
 		}
 	}
 	
-	func lessonsArray(pillars:[Int], gradeLevels:[Int])->Array<Lesson>?{
-		if(lessons == nil){
-			return nil
-		}
-		else{
-			var lessonArray:Array<Lesson> = []
-			let keyArray:[String] = Array(lessons!.keys)
-			for key in keyArray {
-				let object:[String:AnyObject] = lessons![key] as! [String:AnyObject]
-				let lesson:Lesson = Lesson.init(key: key, dictionary: object)
-				lessonArray.append(lesson)
-			}
-			
-			var filteredArray:[Lesson] = []
-			for lesson in lessonArray{
-				if(pillars.contains(lesson.pillar!) && gradeLevels.contains(lesson.grade!)){
-					filteredArray.append(lesson)
-				}
-			}
+	
+	// array:
+	//  0: (date, pillar, pillar count index)
+	//  1: (date, pillar, pillar count index)
+	func getScheduleArray(completionHandler: ( [ [String:AnyObject] ] ) -> () ) {
+		FIRDatabase.database().reference().child("schedule/pillar").observeSingleEventOfType(.Value) { (snapshot: FIRDataSnapshot) in
+			if snapshot.value is NSNull {
 
-			return filteredArray
+			} else {
+				var array:[ [String:AnyObject] ] = []
+				let ONE_MONTH:NSTimeInterval = 2678400
+				let startTimes:[Double] = snapshot.value as! [Double]
+				let firstDate:NSDate = NSDate(timeIntervalSince1970: startTimes[0])
+				let endDate:NSDate = NSDate(timeInterval: ONE_MONTH, sinceDate: NSDate(timeIntervalSince1970: startTimes.last!))
+				
+				var pillarCounts:[Int] = []
+				for _ in startTimes{
+					pillarCounts.append(0)
+				}
+				
+				var date:NSDate = firstDate
+				while(date.isLessThanDate(endDate)){
+					
+					// find current pillar
+					var thisPillar:Int? = nil
+					for i in 0..<startTimes.count{
+						if(date.timeIntervalSince1970 > startTimes[i]){
+							thisPillar = i
+						}
+					}
+					
+					if( !NSCalendar.currentCalendar().isDateInWeekend(date) ){
+						if(thisPillar != nil){
+							let entry = ["date":date, "pillar":thisPillar!, "count":pillarCounts[thisPillar!] ]
+							array.append(entry)
+							// increment pillar count
+							pillarCounts[thisPillar!] += 1
+						}
+					}
+					// increment day
+					let deltaDate = NSDateComponents()
+					deltaDate.day = 1
+					date = NSCalendar.currentCalendar().dateByAddingComponents(deltaDate, toDate: date, options: NSCalendarOptions.MatchFirst)!
+				}
+				completionHandler(array)
+			}
 		}
 	}
+	
+
+	
+	func lessonsFromJSON(lessonsJSON:[String:AnyObject]) -> [Lesson]{
+		var lessonArray:Array<Lesson> = []
+		let keyArray:[String] = Array(lessonsJSON.keys)
+		for key in keyArray {
+			let object:[String:AnyObject] = lessonsJSON[key] as! [String:AnyObject]
+			let lesson:Lesson = Lesson.init(key: key, dictionary: object)
+			lessonArray.append(lesson)
+		}
+		return lessonArray
+	}
+	
+	
+	
+	// 0: {    // pillar 0
+	//      0: [Lesson, Lesson, Lesson]   // grade 0
+	//      1: [Lesson, Lesson, Lesson]   // grade 1
+	//      ...
+	func sortLessonByPillarAndGrade(lessons:[Lesson]) -> [Int:[Int:[Lesson]]]{
+		var dictionary:[Int:[Int:[Lesson]]] = [:]
+		// initialize the dictionary
+		for i in 0..<6{
+			var gradeEntry:[Int:[Lesson]] = [:]
+			for j in 0..<4{
+				gradeEntry[j] = []
+			}
+			dictionary[i] = gradeEntry
+		}
+		// now we have an initialized dictionary
+		for lesson in lessons{
+			if(lesson.grade != nil && lesson.pillar != nil){
+				dictionary[lesson.pillar!]![lesson.grade!]?.append(lesson)
+			}
+		}
+		return dictionary
+	}
+
+
+	// Date: [Lesson, Lesson, Lesson]    // each with different grade numbers
+	func makeLessonSchedule(lessonDictionary:[Int:[Int:[Lesson]]], scheduleArray:[[String:AnyObject]]  )->[NSDate:[Lesson]]{
+		var dateDictionary:[NSDate:[Lesson]] = [:]
+		
+		for entry in scheduleArray {
+			let date:NSDate = entry["date"] as! NSDate
+			let pillar:Int = entry["pillar"] as! Int
+			let count:Int = entry["count"] as! Int
+
+			if(dateDictionary[date] == nil){
+				dateDictionary[date] = []
+			}
+
+			let gradeArrays = lessonDictionary[pillar]!
+			for i in 0..<4{
+				let thisGradeArray = gradeArrays[i]
+				if(thisGradeArray != nil && thisGradeArray?.count > count){
+					let thisGradeObject:Lesson? = thisGradeArray![count]
+					if(thisGradeObject != nil){
+						thisGradeObject?.date = date
+						dateDictionary[date]?.append(thisGradeObject!)
+					}
+				}
+			}
+		}
+		return dateDictionary
+	}
+	
+	func getTodaysLesson(lessonSchedule:[NSDate:[Lesson]])->[Lesson]?{
+		let keys = lessonSchedule.keys
+		
+		let date:NSDate = NSDate()
+		
+		for key in keys{
+			if(NSCalendar.currentCalendar().isDate(date, inSameDayAsDate: key)){
+				return lessonSchedule[key]
+			}
+		}
+		return nil
+	}
+	
+	
+	func getNext5Lessons(lessonSchedule:[NSDate:[Lesson]])->[NSDate:[Lesson]]{
+		var fiveLessons:[NSDate:[Lesson]] = [:]
+		let keys = lessonSchedule.keys
+		
+		var date:NSDate = NSDate()
+		var iterations:Int = 0
+		
+		while(fiveLessons.count < 5 && iterations < 1000){
+			for key in keys{
+				if(NSCalendar.currentCalendar().isDate(date, inSameDayAsDate: key)){
+					fiveLessons[key] = lessonSchedule[key]
+				}
+			}
+			
+			let deltaDate = NSDateComponents()
+			deltaDate.day = 1
+			date = NSCalendar.currentCalendar().dateByAddingComponents(deltaDate, toDate: date, options: NSCalendarOptions.MatchFirst)!
+			iterations += 1
+		}
+		return fiveLessons
+	}
+	
+	func getLast15Lessons(lessonSchedule:[NSDate:[Lesson]])->[NSDate:[Lesson]]{
+		var fifteenLessons:[NSDate:[Lesson]] = [:]
+		let keys = lessonSchedule.keys
+		
+		var date:NSDate = NSDate()
+		var iterations:Int = 0
+		
+		while(fifteenLessons.count < 15 && iterations < 1000){
+			for key in keys{
+				if(NSCalendar.currentCalendar().isDate(date, inSameDayAsDate: key)){
+					fifteenLessons[key] = lessonSchedule[key]
+				}
+			}
+			
+			let deltaDate = NSDateComponents()
+			deltaDate.day = -1
+			date = NSCalendar.currentCalendar().dateByAddingComponents(deltaDate, toDate: date, options: NSCalendarOptions.MatchFirst)!
+			iterations += 1
+		}
+		return fifteenLessons
+	}
+	
+
+	
+	func filterLessonsByAudience(lessons:[Lesson], pillars:[Int], gradeLevels:[Int])->Array<Lesson>?{
+		var filteredArray:[Lesson] = []
+		for lesson in lessons{
+			if(pillars.contains(lesson.pillar!) && gradeLevels.contains(lesson.grade!)){
+				filteredArray.append(lesson)
+			}
+		}
+		return filteredArray
+	}
+	
+	
 }
