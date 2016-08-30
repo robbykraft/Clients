@@ -79,7 +79,7 @@ class LessonTableViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		if(data != nil){
-			return 3
+			return 4
 		}
 		return 0
     }
@@ -111,6 +111,11 @@ class LessonTableViewController: UITableViewController {
 			vc.title = "DAILY CHALLENGE"
 			self.navigationController?.pushViewController(vc, animated: true)
 			break
+		case 3:
+			let vc: PrayerViewController = PrayerViewController()
+			vc.title = "DAILY PRAYER"
+			self.navigationController?.pushViewController(vc, animated: true)
+			break
 		default:
 			break
 		}
@@ -124,6 +129,8 @@ class LessonTableViewController: UITableViewController {
 			return quoteCellWithData(data)
 		case 2:
 			return challengesCellWithData(data)
+		case 3:
+			return prayerCellWithData(data)
 		default:
 			return UITableViewCell()
 		}
@@ -154,4 +161,11 @@ class LessonTableViewController: UITableViewController {
 		return cell
 	}
 	
+	func prayerCellWithData(data:Lesson?) -> PrayerTableViewCell {
+		let cell = PrayerTableViewCell()
+		cell.textLabel?.text = "Dear God,"
+//		cell.textLabel?.text = "Dear God,\n \nThank you for this new day.\nHelp me to be a person of character and follow Your way,\n \nto be worthy of trust,\nto be respectful and responsible, doing what I must.\n \nHelp me to act with fairness, show that I care,\nbe a good citizen, and always live this prayer.\n \nAmen."
+		return cell
+	}
+
 }

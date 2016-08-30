@@ -10,6 +10,8 @@
 		4BFFE63F80108DE71101DD98 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E59A2F097876356A546089EE /* Pods.framework */; };
 		D513BB6E1D6F3FE000BA20A6 /* SetupProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D513BB6D1D6F3FE000BA20A6 /* SetupProfileViewController.swift */; };
 		D52C40B31D7240BB004A4724 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52C40B21D7240BB004A4724 /* FeedbackViewController.swift */; };
+		D53F1D201D76256A00B1A194 /* PrayerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53F1D1F1D76256A00B1A194 /* PrayerTableViewCell.swift */; };
+		D53F1D221D7625AF00B1A194 /* PrayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53F1D211D7625AF00B1A194 /* PrayerViewController.swift */; };
 		D572F49B1D6DF219000391F2 /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572F49A1D6DF219000391F2 /* MoreViewController.swift */; };
 		D572F4A41D6E0C21000391F2 /* Lesson.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572F4A31D6E0C21000391F2 /* Lesson.swift */; };
 		D572F4A61D6E2729000391F2 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572F4A51D6E2729000391F2 /* Extensions.swift */; };
@@ -46,6 +48,8 @@
 		699EEAF0F2F73CE9D97C4F5C /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		D513BB6D1D6F3FE000BA20A6 /* SetupProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetupProfileViewController.swift; sourceTree = "<group>"; };
 		D52C40B21D7240BB004A4724 /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
+		D53F1D1F1D76256A00B1A194 /* PrayerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrayerTableViewCell.swift; sourceTree = "<group>"; };
+		D53F1D211D7625AF00B1A194 /* PrayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrayerViewController.swift; sourceTree = "<group>"; };
 		D572F49A1D6DF219000391F2 /* MoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
 		D572F4A31D6E0C21000391F2 /* Lesson.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lesson.swift; sourceTree = "<group>"; };
 		D572F4A51D6E2729000391F2 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -212,6 +216,7 @@
 				D59B04451D6CB04600E6624B /* ChallengesTableViewCell.swift */,
 				D59B04471D6CB04600E6624B /* LessonTableViewCell.swift */,
 				D59B04481D6CB04600E6624B /* QuoteTableViewCell.swift */,
+				D53F1D1F1D76256A00B1A194 /* PrayerTableViewCell.swift */,
 				D59B04491D6CB04600E6624B /* SuperLessonTableViewCell.swift */,
 			);
 			name = "Lesson Cells";
@@ -223,6 +228,7 @@
 			children = (
 				D59B04501D6CB04600E6624B /* LessonViewController.swift */,
 				D59B04511D6CB04600E6624B /* QuoteViewController.swift */,
+				D53F1D211D7625AF00B1A194 /* PrayerViewController.swift */,
 				D59B044E1D6CB04600E6624B /* ChallengesViewController.swift */,
 				D59B044F1D6CB04600E6624B /* ChallengeTableViewCell.swift */,
 			);
@@ -364,6 +370,7 @@
 			files = (
 				D572F49B1D6DF219000391F2 /* MoreViewController.swift in Sources */,
 				D59B043D1D6CA4B700E6624B /* Fire.swift in Sources */,
+				D53F1D201D76256A00B1A194 /* PrayerTableViewCell.swift in Sources */,
 				D59B045E1D6CB04600E6624B /* ChallengesViewController.swift in Sources */,
 				D5F3CE471D735393003FABEF /* SixPillarsViewController.swift in Sources */,
 				D59B045A1D6CB04600E6624B /* SuperLessonTableViewCell.swift in Sources */,
@@ -382,6 +389,7 @@
 				D572F4A81D6E273D000391F2 /* Character.swift in Sources */,
 				D59B043B1D6CA4B700E6624B /* ProfileViewController.swift in Sources */,
 				D59B045C1D6CB04600E6624B /* LessonTableViewController.swift in Sources */,
+				D53F1D221D7625AF00B1A194 /* PrayerViewController.swift in Sources */,
 				D572F4A61D6E2729000391F2 /* Extensions.swift in Sources */,
 				D5F3CE4B1D7356F0003FABEF /* DatabasePageViewController.swift in Sources */,
 				D59B045F1D6CB04600E6624B /* ChallengeTableViewCell.swift in Sources */,
