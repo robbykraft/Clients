@@ -18,7 +18,7 @@ class PrayerTableViewCell: SuperLessonTableViewCell {
 //		self.textLabel?.numberOfLines = 6
 		self.textLabel?.numberOfLines = 1
 		self.textLabel?.textColor = Style.shared.darkGray
-		self.textLabel?.text = "Dear God,"
+		self.textLabel?.text = "Dear God,..."
 	}
 	override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)

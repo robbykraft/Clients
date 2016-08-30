@@ -27,6 +27,7 @@ class PrayerViewController: UIViewController {
 		self.view.backgroundColor = UIColor.whiteColor()
 		
 		prayerBodyView.scrollEnabled = false;
+		prayerBodyView.editable = false
 		prayerBodyView.font = UIFont(name: SYSTEM_FONT, size: 20)
 		prayerBodyView.text = "Dear God,\n \nThank you for this new day.\nHelp me to be a person of character and follow Your way,\n \nto be worthy of trust,\nto be respectful and responsible, doing what I must.\n \nHelp me to act with fairness, show that I care,\nbe a good citizen, and always live this prayer.\n \nAmen."
 		

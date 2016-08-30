@@ -75,6 +75,7 @@ class LessonViewController: UIViewController {
 		authorLabel.textAlignment = .Center
 		authorLabel.textColor = Style.shared.lightBlue
 		bodyText.scrollEnabled = false
+		bodyText.editable = false
 		authorHR1.backgroundColor = UIColor.blackColor()
 		authorHR2.backgroundColor = UIColor.blackColor()
 		

@@ -105,15 +105,15 @@ class LessonTableViewController: UITableViewController {
 			self.navigationController?.pushViewController(vc, animated: true)
 			break
 		case 2:
+			let vc: PrayerViewController = PrayerViewController()
+			vc.title = "DAILY PRAYER"
+			self.navigationController?.pushViewController(vc, animated: true)
+			break
+		case 3:
 			let vc: ChallengesViewController = ChallengesViewController()
 			vc.data = self.data
 			vc.completedArray = self.completedChallengeArray
 			vc.title = "DAILY CHALLENGE"
-			self.navigationController?.pushViewController(vc, animated: true)
-			break
-		case 3:
-			let vc: PrayerViewController = PrayerViewController()
-			vc.title = "DAILY PRAYER"
 			self.navigationController?.pushViewController(vc, animated: true)
 			break
 		default:
@@ -128,9 +128,9 @@ class LessonTableViewController: UITableViewController {
 		case 1:
 			return quoteCellWithData(data)
 		case 2:
-			return challengesCellWithData(data)
-		case 3:
 			return prayerCellWithData(data)
+		case 3:
+			return challengesCellWithData(data)
 		default:
 			return UITableViewCell()
 		}
@@ -163,7 +163,7 @@ class LessonTableViewController: UITableViewController {
 	
 	func prayerCellWithData(data:Lesson?) -> PrayerTableViewCell {
 		let cell = PrayerTableViewCell()
-		cell.textLabel?.text = "Dear God,"
+		cell.textLabel?.text = "Dear God,..."
 //		cell.textLabel?.text = "Dear God,\n \nThank you for this new day.\nHelp me to be a person of character and follow Your way,\n \nto be worthy of trust,\nto be respectful and responsible, doing what I must.\n \nHelp me to act with fairness, show that I care,\nbe a good citizen, and always live this prayer.\n \nAmen."
 		return cell
 	}

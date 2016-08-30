@@ -9,6 +9,36 @@ class Character{
 	let pillarNames = ["trustworthiness", "respect", "responsibility", "fairness", "caring", "citizenship"]
 	let gradeNames = ["K-2nd", "3rd-5th", "6th-8th", "9th-12th"]
 	
+//	let SchoolNames = [0: "Holy Cross",
+//	                   1: "Our Mother of Sorrows/ St. Ignatius of Loyola",
+//	                   2: "St. Barnabas",
+//	                   3: "St. Cyril of Alexandria",
+//	                   4: "St. Frances Cabrini",
+//	                   5: "St. Gabriel",
+//	                   6: "St. Helena Incarnation",
+//	                   7: "St. Malachy",
+//	                   8: "St. Martin de Porres",
+//	                   9: "St. Martin of Tours",
+//	                   10:"St. Raymond of Penafort",
+//	                   11:"St. Rose of Lima",
+//	                   12:"The DePaul Catholic School",
+//	                   13:"St. Thomas Aquinas",
+//	                   14:"St. Veronica"]
+	let SchoolNames = ["Holy Cross",
+	                   "Our Mother of Sorrows/ St. Ignatius of Loyola",
+	                   "St. Barnabas",
+	                   "St. Cyril of Alexandria",
+	                   "St. Frances Cabrini",
+	                   "St. Gabriel",
+	                   "St. Helena Incarnation",
+	                   "St. Malachy",
+	                   "St. Martin de Porres",
+	                   "St. Martin of Tours",
+	                   "St. Raymond of Penafort",
+	                   "St. Rose of Lima",
+	                   "The DePaul Catholic School",
+	                   "St. Thomas Aquinas",
+	                   "St. Veronica"]
 	
 	// each entry is an array of 4 lessons, one of each grade level
 	var todaysLesson:[Lesson]?

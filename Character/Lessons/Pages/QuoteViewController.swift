@@ -34,6 +34,7 @@ class QuoteViewController: UIViewController {
 		quoteMarkImageView.image = UIImage.init(named: "quote-image")
 
 		quoteBodyView.scrollEnabled = false;
+		quoteBodyView.editable = false
 		quoteBodyView.font = UIFont(name: SYSTEM_FONT, size: 25)
 		quoteAuthorLabel.font = UIFont(name: SYSTEM_FONT_I, size: 25)
 		quoteAuthorLabel.textAlignment = .Center
