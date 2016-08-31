@@ -72,10 +72,6 @@ class MasterController: UITabBarController {
 	func reloadLessons(gradeLevels:[Int]){
 		let (todaysLesson, lessonArray) = Character.shared.lessonsWithFilter(gradeLevels)
 		
-		print("RECEIVED LESSONS")
-		print(todaysLesson)
-		print(lessonArray)
-		
 		if(lessonArray.count > 0){
 			self.allLessonsVC.data = lessonArray
 			if(gradeLevels == [0,1,2,3]){

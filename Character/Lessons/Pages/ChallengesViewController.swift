@@ -89,15 +89,28 @@ class ChallengesViewController: UIViewController, UITableViewDelegate, UITableVi
 		let HEADER:CGFloat = percentLabel.center.y + percentLabel.frame.size.height * 0.6
 		self.tableView.frame = CGRectMake(0, HEADER, self.view.frame.size.width, self.view.frame.size.height - navBarHeight - tabBarHeight - statusHeight - HEADER)
 		
-		print("completed")
-		print(completedArray)
 		updatePercent()
 		
 	}
 	func getChallengeOfTheWeek(){
-		Fire.shared.loadData("challenges/0/01") { (data) in
-			self.challengeOfTheWeekText = data as? String
-			self.tableView.reloadData()
+		let calendar = NSCalendar.currentCalendar()
+		
+		let dateComponent = calendar.components([.WeekOfMonth], fromDate: (data?.date!)! )
+		let weekNumber:Int = dateComponent.weekOfMonth
+		
+		let pillarNumber = data?.pillar
+		if(pillarNumber != nil){
+			let pillarInt:Int = pillarNumber!
+			Fire.shared.loadData("challenges/\(pillarInt)/\(weekNumber)") { (data) in
+				if(data != nil){
+					self.challengeOfTheWeekText = data as? String
+					self.tableView.reloadData()
+				}
+				else{
+					self.challengeOfTheWeekText = "(No Unique Challenge this week!)"
+					self.tableView.reloadData()
+				}
+			}
 		}
 	}
 

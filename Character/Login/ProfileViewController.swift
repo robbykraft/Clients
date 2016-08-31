@@ -87,8 +87,6 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 		
 		// populate screen
 		Fire.shared.getUser { (uid, userData) in
-			//			print("Here's the user data:")
-			//			print(userData)
 			if(uid != nil && userData != nil){
 				self.populateUserData(uid!, userData: userData!)
 			}
@@ -213,9 +211,6 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 		return false
 	}
 	func textFieldDidChange(notif: NSNotification) {
-		let textField = notif.object! as! UITextField
-		let string = textField.text
-		print(string)
 		if(updateTimer != nil){
 			updateTimer?.invalidate()
 			updateTimer = nil
@@ -225,7 +220,6 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 	
 	func updateWithDelay() {
 		// hanging text fields
-		print("update delay")
 		Fire.shared.updateUserWithKeyAndValue("displayName", value: nameField.text!, completionHandler: nil)
 
 		if(updateTimer != nil){
@@ -282,7 +276,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 			})
 		}
 		if(data == nil){
-			print("data is nil")
+			print("image picker data is nil")
 		}
 		self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
 	}

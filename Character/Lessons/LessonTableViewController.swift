@@ -68,9 +68,13 @@ class LessonTableViewController: UITableViewController {
 		iconImageView.center = CGPointMake(self.view.center.x, iconImageView.frame.size.height * 0.5)
 		noLessonCoverView.addSubview(iconImageView)
 		let noLessonLabel = UILabel()
-		noLessonLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P40)
 		noLessonLabel.text = "NO LESSON TODAY"
+		noLessonLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P40)
 		noLessonLabel.sizeToFit()
+		if(noLessonLabel.frame.size.width > self.view.frame.size.width){
+			noLessonLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P30)
+			noLessonLabel.sizeToFit()
+		}
 		noLessonLabel.center = CGPointMake(self.view.center.x, iconImageView.center.y + iconImageView.frame.size.height * 0.4)
 		noLessonLabel.textColor = UIColor.blackColor()
 		noLessonLabel.alpha = 0.05

@@ -51,10 +51,10 @@ class Fire {
 				self.myUID = user?.uid
 				self.checkIfUserExists(user!, completionHandler: { (exists) in
 					if(exists){
-						print("  - user already in database")
+//						print("  - user already in database")
 					}
 					else{
-						print("  - user not in database, creating now")
+//						print("  - user not in database, creating now")
 						self.createUserInDatabase(user!)
 					}
 				})
@@ -113,8 +113,6 @@ class Fire {
 					completionHandler(false)
 				}
 			}
-//			print("all the users:")
-//			print(everything)
 		}
 	}
 	

@@ -104,7 +104,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 				let action1: UIAlertAction = UIAlertAction.init(title: "Create Account", style: UIAlertActionStyle.Default, handler: { (action) in
 
 					FIRAuth.auth()?.createUserWithEmail(username, password:pass, completion: { (user, error) in
-						print(user)
 						if (error != nil){
 							print(error)
 						}

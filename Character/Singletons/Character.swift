@@ -109,13 +109,6 @@ class Character{
 					self.todaysLesson = self.getTodaysLesson(lessonSchedule)
 					self.upcomingLessons = self.getNext5Lessons(lessonSchedule)
 					self.pastLessons = self.getLast15Lessons(lessonSchedule)
-
-//					print("TODAY'S LESSON")
-//					print(self.todaysLesson)
-//					print("FUTURE LESSONS")
-//					print(self.upcomingLessons)
-//					print("PAST LESSONS")
-//					print(self.pastLessons)
 					
 					completionHandler(success: true)
 				})
