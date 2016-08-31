@@ -9,21 +9,6 @@ class Character{
 	let pillarNames = ["trustworthiness", "respect", "responsibility", "fairness", "caring", "citizenship"]
 	let gradeNames = ["K-2nd", "3rd-5th", "6th-8th", "9th-12th"]
 	
-//	let SchoolNames = [0: "Holy Cross",
-//	                   1: "Our Mother of Sorrows/ St. Ignatius of Loyola",
-//	                   2: "St. Barnabas",
-//	                   3: "St. Cyril of Alexandria",
-//	                   4: "St. Frances Cabrini",
-//	                   5: "St. Gabriel",
-//	                   6: "St. Helena Incarnation",
-//	                   7: "St. Malachy",
-//	                   8: "St. Martin de Porres",
-//	                   9: "St. Martin of Tours",
-//	                   10:"St. Raymond of Penafort",
-//	                   11:"St. Rose of Lima",
-//	                   12:"The DePaul Catholic School",
-//	                   13:"St. Thomas Aquinas",
-//	                   14:"St. Veronica"]
 	let SchoolNames = ["Holy Cross",
 	                   "Our Mother of Sorrows/ St. Ignatius of Loyola",
 	                   "St. Barnabas",
@@ -45,6 +30,83 @@ class Character{
 	var upcomingLessons:[NSDate:[Lesson]]?
 	var pastLessons:[NSDate:[Lesson]]?
 	
+	
+	
+	func getMyScore(completionHandler: ( [NSDate:Int]? ) -> () ) {
+		Fire.shared.getUser { (uid, userData) in
+			if(userData != nil){
+
+				var challengeDictionary:[NSDate:Int] = [:]
+
+				// gather all challenges user has visited
+				var challenges:[String:[Bool]]? = userData!["challenges"] as! [String:[Bool]]?
+				if(challenges == nil){
+					challenges = [:]
+				}
+				let lessonKeysCompleted:[String] = Array((challenges!).keys)
+				
+				// all the dates
+				let dateLessonPairs = self.allLoadedDateLessonPairs()
+
+				for date in Array(dateLessonPairs.keys){
+					// iterate over all the dates
+					challengeDictionary[date] = 0
+
+					// though, if user completed one fill it in
+					let lessonKeys:[String] = dateLessonPairs[date]!
+					for key in lessonKeys{
+						if(lessonKeysCompleted.contains(key)){
+							let boolArray = challenges![key]
+							var count:Int = 0
+							if(boolArray != nil){
+								for entry in boolArray!{
+									if(entry){
+										count += 1
+									}
+								}
+							}
+							challengeDictionary[date] = challengeDictionary[date]! + count
+						}
+					}
+				}
+				completionHandler(challengeDictionary)
+			}
+		}
+	}
+	
+	func allLoadedDateLessonPairs() -> [ NSDate:[String] ] {  // [String]: is array of lesson keys in database
+		var dates:[ NSDate:[String] ] = [:]
+		if(self.upcomingLessons != nil){
+			let upcomingDates:[NSDate] = Array( (upcomingLessons?.keys)! )
+			for date in upcomingDates{
+				let lessons:[Lesson]? = upcomingLessons![date]
+				if(lessons != nil){
+					var keyArray:[String] = []
+					for lesson in lessons!{
+						keyArray.append(lesson.key!)
+					}
+					dates[date] = keyArray
+				}
+			}
+		}
+		if(self.pastLessons != nil){
+			let pastDates:[NSDate] = Array( (pastLessons?.keys)! )
+			for date in pastDates{
+				let lessons:[Lesson]? = pastLessons![date]
+				if(lessons != nil){
+					var keyArray:[String] = []
+					for lesson in lessons!{
+						keyArray.append(lesson.key!)
+					}
+					dates[date] = keyArray
+				}
+			}
+		}
+		return dates
+	}
+	
+	
+	// MASSIVE AMOUNT OF CODE FOR GETTING LESSONS
 	
 	func lessonsWithFilter(gradeLevels:[Int]) -> (Lesson?, [Lesson]){
 		var today:Lesson? = nil

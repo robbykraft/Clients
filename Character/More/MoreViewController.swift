@@ -63,8 +63,6 @@ class MoreViewController: UIViewController {
 		button3.sizeToFit()
 		button4.sizeToFit()
 		
-		button2.alpha = 0.5
-		
 		self.view.addSubview(button1)
 		self.view.addSubview(button2)
 		self.view.addSubview(button3)
@@ -72,7 +70,7 @@ class MoreViewController: UIViewController {
 		self.view.addSubview(profileImageButton)
 
 		button1.addTarget(self, action: #selector(characterToolsHandler), forControlEvents:.TouchUpInside)
-//		button2.addTarget(self, action: #selector(), forControlEvents:.TouchUpInside)
+		button2.addTarget(self, action: #selector(scoreButtonHandler), forControlEvents:.TouchUpInside)
 		button3.addTarget(self, action: #selector(feedbackButtonHandler), forControlEvents:.TouchUpInside)
 		button4.addTarget(self, action: #selector(profileButtonHandler), forControlEvents:.TouchUpInside)
 		profileImageButton.addTarget(self, action: #selector(profileButtonHandler), forControlEvents: .TouchUpInside)
@@ -120,6 +118,9 @@ class MoreViewController: UIViewController {
 	}
 	func feedbackButtonHandler(sender:UIButton){
 		self.navigationController?.pushViewController(FeedbackViewController(), animated: true)
+	}
+	func scoreButtonHandler(sender:UIButton){
+		self.navigationController?.pushViewController(ScoreViewController(), animated: true)
 	}
 	func profileButtonHandler(sender:UIButton){
 		self.navigationController?.pushViewController(ProfileViewController(), animated: true)
