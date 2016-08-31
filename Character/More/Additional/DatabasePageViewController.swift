@@ -20,7 +20,7 @@ class DatabasePageViewController: UIViewController {
 		self.navigationItem.backBarButtonItem = UIBarButtonItem.init(title: "", style: .Plain, target: nil, action: nil);
 		
 		textView.textContainerInset = UIEdgeInsetsMake(20, 8, 20, 8)
-		textView.font = UIFont(name: SYSTEM_FONT, size: 18)
+		textView.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
 		textView.backgroundColor = Style.shared.whiteSmoke
 		textView.editable = false
 		self.view.addSubview(textView)

@@ -35,8 +35,8 @@ class QuoteViewController: UIViewController {
 
 		quoteBodyView.scrollEnabled = false;
 		quoteBodyView.editable = false
-		quoteBodyView.font = UIFont(name: SYSTEM_FONT, size: 25)
-		quoteAuthorLabel.font = UIFont(name: SYSTEM_FONT_I, size: 25)
+		quoteBodyView.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P24)
+		quoteAuthorLabel.font = UIFont(name: SYSTEM_FONT_I, size: Style.shared.P24)
 		quoteAuthorLabel.textAlignment = .Center
 		quoteAuthorLabel.numberOfLines = 0
 		quoteAuthorLabel.textColor = Style.shared.lightBlue

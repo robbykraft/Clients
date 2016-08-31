@@ -22,7 +22,7 @@ class SuperLessonTableViewCell: UITableViewCell {
 		
 		cornerTitleLabel.backgroundColor = Style.shared.darkGray
 		cornerTitleLabel.textColor = UIColor.whiteColor()
-		cornerTitleLabel.font = UIFont(name: SYSTEM_FONT_I, size: 17)
+		cornerTitleLabel.font = UIFont(name: SYSTEM_FONT_I, size: Style.shared.P18)
 		cornerTitleLabel.textAlignment = .Center
 
 		self.addSubview(textBoxView)

@@ -11,9 +11,11 @@ import Firebase
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
 	
-	var emailField:UITextField = UITextField()
-	var passwordField:UITextField = UITextField()
-	var loginButton:UIButton = UIButton()
+	let emailField:UITextField = UITextField()
+	let passwordField:UITextField = UITextField()
+	let loginButton:UIButton = UIButton()
+	
+	let iconImageView = UIImageView()
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -43,6 +45,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 		loginButton.backgroundColor = Style.shared.lightBlue
 		
 		self.view.addSubview(loginButton)
+		
+		iconImageView.image = UIImage(named: "icon")
+		iconImageView.alpha = 0.05
+		self.view.addSubview(iconImageView)
 	}
 	func textFieldShouldReturn(textField: UITextField) -> Bool {
 		self.view.endEditing(true)
@@ -54,6 +60,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 		emailField.frame = CGRectMake(0, self.view.bounds.size.height * 0.5 - 52 - 20, self.view.bounds.size.width, 52)
 		passwordField.frame = CGRectMake(0, self.view.bounds.size.height * 0.5, self.view.bounds.size.width, 52)
 		loginButton.frame = CGRectMake(0, self.view.bounds.size.height * 0.5 + 52 + 20, self.view.bounds.size.width, 44)
+		iconImageView.frame = CGRectMake(0, 0, self.view.bounds.size.height * 0.4, self.view.bounds.size.height * 0.4)
+		iconImageView.center = CGPointMake(self.view.center.x, (self.view.bounds.size.height * 0.5 - 52 - 20) * 0.5)
 	}
 	
 	func copyUserFromAuth(){
@@ -111,6 +119,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 				
 				alert.addAction(action1)
 				alert.addAction(action2)
+
 				self.presentViewController(alert, animated: true, completion: nil)
 			}
 		})

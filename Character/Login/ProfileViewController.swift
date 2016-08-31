@@ -181,6 +181,11 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 		alert.addAction(action4)
 		alert.addAction(action5)
 		alert.addAction(cancel)
+
+		if let popoverController = alert.popoverPresentationController {
+			popoverController.sourceView = sender
+			popoverController.sourceRect = sender.bounds
+		}
 		self.presentViewController(alert, animated: true, completion: nil)
 	}
 	
@@ -195,6 +200,11 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 		alert.addAction(action1)
 		alert.addAction(action2)
 		alert.addAction(action3)
+
+		if let popoverController = alert.popoverPresentationController {
+			popoverController.sourceView = sender
+			popoverController.sourceRect = sender.bounds
+		}
 		self.presentViewController(alert, animated: true, completion: nil)
 	}
 	

@@ -110,14 +110,14 @@ class LessonsTableViewController: UITableViewController {
 		button.addTarget(self, action: #selector(filterButtonHandler), forControlEvents: .TouchUpInside)
 
 		let filterLabel = UILabel()
-		filterLabel.font = UIFont(name: SYSTEM_FONT, size: 15)
+		filterLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15)
 		filterLabel.textColor = Style.shared.whiteSmoke
 		filterLabel.frame = CGRectMake(0, 0, self.view.frame.size.width*0.5 - 10, viewH)
 		filterLabel.textAlignment = .Right
 		filterLabel.text = "Filter:"
 
 		let gradeLabel = UILabel()
-		gradeLabel.font = UIFont(name: SYSTEM_FONT, size: 15)
+		gradeLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15)
 		gradeLabel.textColor = UIColor.whiteColor()
 		gradeLabel.frame = CGRectMake(self.view.frame.size.width*0.5, 0, self.view.frame.size.width*0.5, viewH)
 		gradeLabel.textAlignment = .Left
@@ -214,6 +214,11 @@ class LessonsTableViewController: UITableViewController {
 		alert.addAction(action4)
 		alert.addAction(action5)
 		alert.addAction(cancel)
+
+		if let popoverController = alert.popoverPresentationController {
+			popoverController.sourceView = sender
+			popoverController.sourceRect = sender.bounds
+		}
 		self.presentViewController(alert, animated: true, completion: nil)
 	}
 

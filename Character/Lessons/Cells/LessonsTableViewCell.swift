@@ -16,7 +16,7 @@ class LessonsTableViewCell: UITableViewCell {
 	
 	var gradeLevel:Int = 0{
 		didSet{
-			let attributes = [NSFontAttributeName : UIFont(name: SYSTEM_FONT, size: 12)!,
+			let attributes = [NSFontAttributeName : UIFont(name: SYSTEM_FONT, size: Style.shared.P12)!,
 			                  NSKernAttributeName : CGFloat(2.4),
 			                  NSForegroundColorAttributeName : Style.shared.gray];
 			let aText:NSMutableAttributedString = NSMutableAttributedString(string: Character.shared.gradeNames[gradeLevel])
@@ -27,7 +27,7 @@ class LessonsTableViewCell: UITableViewCell {
 	
 	var dateText:String = ""{
 		didSet{
-			let attributes = [NSFontAttributeName : UIFont(name: SYSTEM_FONT, size: 14)!,
+			let attributes = [NSFontAttributeName : UIFont(name: SYSTEM_FONT, size: Style.shared.P15)!,
 			                  NSKernAttributeName : CGFloat(2.4),
 			                  NSForegroundColorAttributeName : Style.shared.darkGray];
 			let aText:NSMutableAttributedString = NSMutableAttributedString(string: dateText)
@@ -37,7 +37,7 @@ class LessonsTableViewCell: UITableViewCell {
 	}
 	var titleText:String = ""{
 		didSet{
-			let attributes = [NSFontAttributeName : UIFont(name: SYSTEM_FONT, size: 14)!,
+			let attributes = [NSFontAttributeName : UIFont(name: SYSTEM_FONT, size: Style.shared.P15)!,
 			                  NSKernAttributeName : CGFloat(2.4),
 			                  NSForegroundColorAttributeName : Style.shared.gray];
 			let aText:NSMutableAttributedString = NSMutableAttributedString(string: titleText)

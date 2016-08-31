@@ -27,7 +27,7 @@ class ChallengesTableViewCell: SuperLessonTableViewCell {
 		viewChallengeLabel.backgroundColor = Style.shared.lightBlue
 		viewChallengeLabel.textColor = UIColor.whiteColor()
 		viewChallengeLabel.textAlignment = .Center
-		viewChallengeLabel.font = UIFont(name: SYSTEM_FONT, size: 30)
+		viewChallengeLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P30)
 		viewChallengeLabel.text = "My Challenges"
 		
 		completedLabel.textColor = UIColor.blackColor()

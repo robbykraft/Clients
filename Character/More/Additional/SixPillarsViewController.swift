@@ -25,10 +25,6 @@ class SixPillarsViewController: UIViewController {
 
 		self.view.backgroundColor = Style.shared.whiteSmoke
 		
-		let attributes = [NSFontAttributeName : UIFont(name: SYSTEM_FONT, size: 22)!,
-		                  NSKernAttributeName : CGFloat(2.4),
-		                  NSForegroundColorAttributeName : Style.shared.darkGray];
-		
 		let aTitle1:NSMutableAttributedString = NSMutableAttributedString(string: Character.shared.pillarNames[0].uppercaseString)
 		let aTitle2:NSMutableAttributedString = NSMutableAttributedString(string: Character.shared.pillarNames[1].uppercaseString)
 		let aTitle3:NSMutableAttributedString = NSMutableAttributedString(string: Character.shared.pillarNames[2].uppercaseString)
@@ -36,12 +32,12 @@ class SixPillarsViewController: UIViewController {
 		let aTitle5:NSMutableAttributedString = NSMutableAttributedString(string: Character.shared.pillarNames[4].uppercaseString)
 		let aTitle6:NSMutableAttributedString = NSMutableAttributedString(string: Character.shared.pillarNames[5].uppercaseString)
 		
-		aTitle1.addAttributes(attributes, range: NSMakeRange(0, aTitle1.length))
-		aTitle2.addAttributes(attributes, range: NSMakeRange(0, aTitle2.length))
-		aTitle3.addAttributes(attributes, range: NSMakeRange(0, aTitle3.length))
-		aTitle4.addAttributes(attributes, range: NSMakeRange(0, aTitle4.length))
-		aTitle5.addAttributes(attributes, range: NSMakeRange(0, aTitle5.length))
-		aTitle6.addAttributes(attributes, range: NSMakeRange(0, aTitle6.length))
+		aTitle1.addAttributes(Style.shared.heading1Attributes(), range: NSMakeRange(0, aTitle1.length))
+		aTitle2.addAttributes(Style.shared.heading1Attributes(), range: NSMakeRange(0, aTitle2.length))
+		aTitle3.addAttributes(Style.shared.heading1Attributes(), range: NSMakeRange(0, aTitle3.length))
+		aTitle4.addAttributes(Style.shared.heading1Attributes(), range: NSMakeRange(0, aTitle4.length))
+		aTitle5.addAttributes(Style.shared.heading1Attributes(), range: NSMakeRange(0, aTitle5.length))
+		aTitle6.addAttributes(Style.shared.heading1Attributes(), range: NSMakeRange(0, aTitle6.length))
 
 		button1.setAttributedTitle(aTitle1, forState: .Normal)
 		button2.setAttributedTitle(aTitle2, forState: .Normal)

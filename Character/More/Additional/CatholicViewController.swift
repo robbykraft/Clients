@@ -22,9 +22,9 @@ class CatholicViewController: UIViewController {
 		self.view.backgroundColor = Style.shared.whiteSmoke
 		self.navigationItem.backBarButtonItem = UIBarButtonItem.init(title: "", style: .Plain, target: nil, action: nil);		
 		
-		let attribTitle = [NSFontAttributeName : UIFont(name: SYSTEM_FONT_I, size: 22)!,
-		                   NSKernAttributeName : CGFloat(2.4),
-		                   NSForegroundColorAttributeName : Style.shared.gray];
+		var attribTitle = Style.shared.heading1Attributes()
+		attribTitle[NSForegroundColorAttributeName] = Style.shared.gray;
+		
 		let titleText:NSMutableAttributedString = NSMutableAttributedString(string: "The Six Pillars and".uppercaseString)
 		titleText.addAttributes(attribTitle, range: NSMakeRange(0, titleText.length))
 		titleLabel.attributedText = titleText
@@ -32,18 +32,14 @@ class CatholicViewController: UIViewController {
 		titleLabel.center = CGPointMake(self.view.center.x, 150)
 		self.view.addSubview(titleLabel)
 
-		
-		let attributes = [NSFontAttributeName : UIFont(name: SYSTEM_FONT, size: 22)!,
-		                  NSKernAttributeName : CGFloat(2.4),
-		                  NSForegroundColorAttributeName : Style.shared.darkGray];
-		
+				
 		let aTitle1:NSMutableAttributedString = NSMutableAttributedString(string: "Liturgical Calendar".uppercaseString)
 		let aTitle2:NSMutableAttributedString = NSMutableAttributedString(string: "Our Blessed Mother".uppercaseString)
 		let aTitle3:NSMutableAttributedString = NSMutableAttributedString(string: "Works of Mercy".uppercaseString)
 		
-		aTitle1.addAttributes(attributes, range: NSMakeRange(0, aTitle1.length))
-		aTitle2.addAttributes(attributes, range: NSMakeRange(0, aTitle2.length))
-		aTitle3.addAttributes(attributes, range: NSMakeRange(0, aTitle3.length))
+		aTitle1.addAttributes(Style.shared.heading1Attributes(), range: NSMakeRange(0, aTitle1.length))
+		aTitle2.addAttributes(Style.shared.heading1Attributes(), range: NSMakeRange(0, aTitle2.length))
+		aTitle3.addAttributes(Style.shared.heading1Attributes(), range: NSMakeRange(0, aTitle3.length))
 
 		button1.setAttributedTitle(aTitle1, forState: .Normal)
 		button2.setAttributedTitle(aTitle2, forState: .Normal)

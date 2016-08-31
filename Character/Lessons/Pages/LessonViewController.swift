@@ -21,19 +21,19 @@ class LessonViewController: UIViewController {
 				self.imageView.image = image
 			}
 			
-			let attributes = [NSFontAttributeName : UIFont(name: SYSTEM_FONT, size: 21)!,
-			                  NSKernAttributeName : CGFloat(4.0),
-			                  NSForegroundColorAttributeName : Style.shared.darkGray];
+//			let attributes = [NSFontAttributeName : UIFont(name: SYSTEM_FONT, size: 21)!,
+//			                  NSKernAttributeName : CGFloat(4.0),
+//			                  NSForegroundColorAttributeName : Style.shared.darkGray];
 			let aText:NSMutableAttributedString = NSMutableAttributedString(string: title.uppercaseString)
-			aText.addAttributes(attributes, range: NSMakeRange(0, aText.length))
+			aText.addAttributes(Style.shared.heading1Attributes(), range: NSMakeRange(0, aText.length))
 			self.titleLabel.numberOfLines = 0
 			self.titleLabel.attributedText = aText
 
 			
-			bodyText.font = UIFont(name: SYSTEM_FONT, size: 15)
+			bodyText.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15)
 			bodyText.text = body
 			
-			authorLabel.font = UIFont(name: SYSTEM_FONT, size: 15)
+			authorLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15)
 			authorLabel.text = author
 		}
 	}

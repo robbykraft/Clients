@@ -26,9 +26,9 @@ class SetupProfileViewController: UIViewController {
 		
 		questionLabel.numberOfLines = 0
 		detailLabel.numberOfLines = 0
-		welcomeLabel.font = UIFont(name: SYSTEM_FONT, size: 40)
-		questionLabel.font = UIFont(name: SYSTEM_FONT, size: 23)
-		detailLabel.font = UIFont(name: SYSTEM_FONT, size: 14)
+		welcomeLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P40)
+		questionLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P24)
+		detailLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15)
 		welcomeLabel.text = "Welcome!"
 		questionLabel.text = "What grade do you teach?"
 		detailLabel.text = "These can be changed under \"My Profile\""
@@ -145,6 +145,11 @@ class SetupProfileViewController: UIViewController {
 		alert.addAction(action4)
 		alert.addAction(action5)
 		alert.addAction(cancel)
+
+		if let popoverController = alert.popoverPresentationController {
+			popoverController.sourceView = sender
+			popoverController.sourceRect = sender.bounds
+		}
 		self.presentViewController(alert, animated: true, completion: nil)
 	}
 	
@@ -257,9 +262,14 @@ class SetupProfileViewController: UIViewController {
 		}
 		alert.addAction(action14)
 
-
 		let cancel = UIAlertAction.init(title: "Cancel", style: .Cancel) { (action) in }
 		alert.addAction(cancel)
+
+		
+		if let popoverController = alert.popoverPresentationController {
+			popoverController.sourceView = sender
+			popoverController.sourceRect = sender.bounds
+		}
 		self.presentViewController(alert, animated: true, completion: nil)
 	}
 

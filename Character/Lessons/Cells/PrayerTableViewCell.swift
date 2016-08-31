@@ -13,9 +13,7 @@ class PrayerTableViewCell: SuperLessonTableViewCell {
 	override func initUI() {
 		super.initUI()
 		cornerTitleLabel.text = "Daily Prayer"
-//		self.textLabel?.font = UIFont(name: SYSTEM_FONT, size: 16)
-		self.textLabel?.font = UIFont(name: SYSTEM_FONT_I, size: 32)
-//		self.textLabel?.numberOfLines = 6
+		self.textLabel?.font = UIFont(name: SYSTEM_FONT_I, size: Style.shared.P30)
 		self.textLabel?.numberOfLines = 1
 		self.textLabel?.textColor = Style.shared.darkGray
 		self.textLabel?.text = "Dear God,..."

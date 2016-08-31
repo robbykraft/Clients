@@ -25,7 +25,7 @@ class ChallengeTableViewCell: UITableViewCell {
 	
 	func initUI() {
 		self.textLabel?.textColor = Style.shared.darkGray
-		self.textLabel?.font = UIFont(name: SYSTEM_FONT, size: 18)
+		self.textLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
 		self.textLabel?.numberOfLines = 4
 		self.addSubview(blueCircle)
 	}

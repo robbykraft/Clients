@@ -41,24 +41,15 @@ class MoreViewController: UIViewController {
 		profileImageView.clipsToBounds = true
 		self.view.addSubview(profileImageView)
 
-		
-		let titleParagraphStyle = NSMutableParagraphStyle()
-		titleParagraphStyle.alignment = .Center
-		
-		let attributes = [NSFontAttributeName : UIFont(name: SYSTEM_FONT, size: 20)!,
-		                  NSKernAttributeName : CGFloat(2.4),
-		                  NSParagraphStyleAttributeName: titleParagraphStyle,
-		                  NSForegroundColorAttributeName : Style.shared.darkGray];
-		
 		let aTitle1:NSMutableAttributedString = NSMutableAttributedString(string: "MORE CHARACTER TOOLS")
 		let aTitle2:NSMutableAttributedString = NSMutableAttributedString(string: "MY CHARACTER SCORE")
 		let aTitle3:NSMutableAttributedString = NSMutableAttributedString(string: "PROVIDE APP FEEDBACK")
 		let aTitle4:NSMutableAttributedString = NSMutableAttributedString(string: "MY PROFILE")
 		
-		aTitle1.addAttributes(attributes, range: NSMakeRange(0, aTitle1.length))
-		aTitle2.addAttributes(attributes, range: NSMakeRange(0, aTitle2.length))
-		aTitle3.addAttributes(attributes, range: NSMakeRange(0, aTitle3.length))
-		aTitle4.addAttributes(attributes, range: NSMakeRange(0, aTitle4.length))
+		aTitle1.addAttributes(Style.shared.heading1Attributes(), range: NSMakeRange(0, aTitle1.length))
+		aTitle2.addAttributes(Style.shared.heading1Attributes(), range: NSMakeRange(0, aTitle2.length))
+		aTitle3.addAttributes(Style.shared.heading1Attributes(), range: NSMakeRange(0, aTitle3.length))
+		aTitle4.addAttributes(Style.shared.heading1Attributes(), range: NSMakeRange(0, aTitle4.length))
 
 		button2.titleLabel?.numberOfLines = 2
 

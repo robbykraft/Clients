@@ -28,7 +28,7 @@ class FeedbackViewController: UIViewController, UITextViewDelegate {
 		textView.delegate = self
 		textView.backgroundColor = UIColor.whiteColor()
 		textView.returnKeyType = .Done
-		textView.font = UIFont(name: SYSTEM_FONT, size: 18)
+		textView.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
 
 		self.view.addSubview(textView)
 		self.view.addSubview(submitButton)
@@ -66,6 +66,7 @@ class FeedbackViewController: UIViewController, UITextViewDelegate {
 				self.navigationController?.popViewControllerAnimated(true)
 			})
 			alertController.addAction(okayButton)
+
 			self.presentViewController(alertController, animated: true, completion: nil)
 		}
 	}

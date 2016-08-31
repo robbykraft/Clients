@@ -54,11 +54,11 @@ class ChallengesViewController: UIViewController, UITableViewDelegate, UITableVi
 		
 		// header
 		titleLabel.text = "TODAY'S SCORE"
-		titleLabel.font = UIFont(name: SYSTEM_FONT, size: 30)
+		titleLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P30)
 		titleLabel.textColor = UIColor.blackColor()
 		self.view.addSubview(titleLabel)
 
-		percentLabel.font = UIFont(name: SYSTEM_FONT, size: 30)
+		percentLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P30)
 		percentLabel.textColor = Style.shared.green
 		percentLabel.textAlignment = .Center
 		self.view.addSubview(percentLabel)
