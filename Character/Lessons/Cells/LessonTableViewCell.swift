@@ -45,7 +45,9 @@ class LessonTableViewCell: SuperLessonTableViewCell {
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		let PAD:CGFloat = 15.0
-		let imgSize:CGFloat = self.frame.size.width*0.33 - 30
+		
+		let imgSize:CGFloat = min(self.frame.size.width*0.33 - 30,
+		                          self.textBoxView.frame.size.height - 10.0)
 		self.imageView?.frame = CGRectMake(0, 0, imgSize, imgSize)
 		self.imageView?.center = CGPointMake(8 + self.textBoxView.frame.origin.x + imgSize*0.5,
 		                                     self.frame.size.height*0.5)

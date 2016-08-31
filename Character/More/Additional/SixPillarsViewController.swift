@@ -60,12 +60,20 @@ class SixPillarsViewController: UIViewController {
 		button5.tag = 4
 		button6.tag = 5
 		
-		button1.center = CGPointMake(self.view.center.x, 100)
-		button2.center = CGPointMake(self.view.center.x, 150)
-		button3.center = CGPointMake(self.view.center.x, 200)
-		button4.center = CGPointMake(self.view.center.x, 250)
-		button5.center = CGPointMake(self.view.center.x, 300)
-		button6.center = CGPointMake(self.view.center.x, 350)
+		
+		var startY:CGFloat = 100
+		var spacing:CGFloat = 50
+		if(IS_IPAD){
+			startY = 200
+			spacing = 100
+		}
+		
+		button1.center = CGPointMake(self.view.center.x, startY)
+		button2.center = CGPointMake(self.view.center.x, startY + spacing)
+		button3.center = CGPointMake(self.view.center.x, startY + spacing*2)
+		button4.center = CGPointMake(self.view.center.x, startY + spacing*3)
+		button5.center = CGPointMake(self.view.center.x, startY + spacing*4)
+		button6.center = CGPointMake(self.view.center.x, startY + spacing*5)
 		
 		self.view.addSubview(button1)
 		self.view.addSubview(button2)

@@ -32,6 +32,7 @@ class ChallengesTableViewCell: SuperLessonTableViewCell {
 		
 		completedLabel.textColor = UIColor.blackColor()
 		completedLabel.text = "0/3 TASKS COMPLETE"
+		completedLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15)
 		
 		self.addSubview(viewChallengeLabel)
 		self.addSubview(completedLabel)

@@ -60,12 +60,21 @@ class CharacterToolsViewController: UIViewController {
 //		button5.sizeToFit()
 //		button6.sizeToFit()
 		
-		button1.center = CGPointMake(self.view.center.x, 150 - 44)
-		button2.center = CGPointMake(self.view.center.x, 200 - 22)
-		button3.center = CGPointMake(self.view.center.x, 250)
-		button4.center = CGPointMake(self.view.center.x, 300)
+		var startY:CGFloat = 150
+		var spacing:CGFloat = 50
+		var adjust:CGFloat = 22
+		if(IS_IPAD){
+			startY = 300
+			spacing = 100
+			adjust = 44
+		}
+		
+		button1.center = CGPointMake(self.view.center.x, startY - adjust*2)
+		button2.center = CGPointMake(self.view.center.x, startY + spacing - adjust)
+		button3.center = CGPointMake(self.view.center.x, startY + spacing*2 )
+		button4.center = CGPointMake(self.view.center.x, startY + spacing*3 )
 //		button5.center = CGPointMake(self.view.center.x, 350)
-//		button6.center = CGPointMake(self.view.center.x, 350 + 22)
+//		button6.center = CGPointMake(self.view.center.x, 350 + adjust)
 		
 		self.view.addSubview(button1)
 		self.view.addSubview(button2)

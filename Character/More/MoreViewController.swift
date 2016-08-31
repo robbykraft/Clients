@@ -85,9 +85,15 @@ class MoreViewController: UIViewController {
 	override func viewWillAppear(animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		button1.center = CGPointMake(self.view.center.x, 150)
-		button2.center = CGPointMake(self.view.center.x, 200)
-		button3.center = CGPointMake(self.view.center.x, 250)
+		let startY:CGFloat = 150
+		var spacing:CGFloat = 50
+		if(IS_IPAD){
+			spacing = 100
+		}
+
+		button1.center = CGPointMake(self.view.center.x, startY)
+		button2.center = CGPointMake(self.view.center.x, startY + spacing)
+		button3.center = CGPointMake(self.view.center.x, startY + spacing*2)
 		
 		let bottomPad:CGFloat = self.view.bounds.size.width * 0.1
 		button4.center = CGPointMake(self.view.center.x, self.view.frame.size.height - bottomPad - button4.frame.size.height*0.5)

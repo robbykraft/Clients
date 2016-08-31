@@ -75,6 +75,9 @@ class LessonsTableViewController: UITableViewController {
 	}
 	
 	override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+		if(IS_IPAD){
+			return 200
+		}
 		return 120;
 	}
 	
@@ -98,7 +101,10 @@ class LessonsTableViewController: UITableViewController {
 		if(showFilter == false){
 			return nil
 		}
-		let viewH:CGFloat = 34
+		var viewH:CGFloat = 34
+		if(IS_IPAD){
+			viewH = 60
+		}
 		
 		let view = UIView()
 		view.backgroundColor = Style.shared.darkGray
@@ -134,6 +140,9 @@ class LessonsTableViewController: UITableViewController {
 	}
 	override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
 		if(showFilter == true){
+			if(IS_IPAD){
+				return 60
+			}
 			return 34
 		}
 		return 0

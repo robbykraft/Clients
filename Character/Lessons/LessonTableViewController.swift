@@ -9,12 +9,21 @@
 import UIKit
 
 class LessonTableViewController: UITableViewController {
+	
+	let noLessonCoverView = UIView()
 
 	var data: Lesson?{
 		didSet{
 			self.tableView.reloadData()
 			if(data?.key != nil){
 				getCompletedChallenges((data?.key)!)
+			}
+			
+			if(data == nil){
+				self.view.addSubview(noLessonCoverView)
+			}
+			else{
+				noLessonCoverView.removeFromSuperview()
 			}
 		}
 	}
@@ -39,6 +48,8 @@ class LessonTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 		
+		self.view.addSubview(noLessonCoverView)
+		
 		self.view.backgroundColor = Style.shared.whiteSmoke
 		self.tableView.backgroundColor = Style.shared.whiteSmoke
 		self.tableView.separatorColor = UIColor.clearColor();
@@ -47,6 +58,24 @@ class LessonTableViewController: UITableViewController {
 	
 	override func viewWillAppear(animated: Bool) {
 		super.viewWillAppear(animated)
+		
+		noLessonCoverView.frame = self.view.bounds
+		noLessonCoverView.backgroundColor = UIColor.clearColor()
+		let iconImageView = UIImageView()
+		iconImageView.image = UIImage(named: "icon")
+		iconImageView.alpha = 0.05
+		iconImageView.frame = CGRectMake(0, 0, self.view.frame.size.width*0.75, self.view.frame.size.width*0.75)
+		iconImageView.center = CGPointMake(self.view.center.x, iconImageView.frame.size.height * 0.5)
+		noLessonCoverView.addSubview(iconImageView)
+		let noLessonLabel = UILabel()
+		noLessonLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P40)
+		noLessonLabel.text = "NO LESSON TODAY"
+		noLessonLabel.sizeToFit()
+		noLessonLabel.center = CGPointMake(self.view.center.x, iconImageView.center.y + iconImageView.frame.size.height * 0.4)
+		noLessonLabel.textColor = UIColor.blackColor()
+		noLessonLabel.alpha = 0.05
+		noLessonCoverView.addSubview(noLessonLabel)
+		
 
 		if(data != nil && data?.key != nil){
 			getCompletedChallenges((data?.key)!)
@@ -85,6 +114,9 @@ class LessonTableViewController: UITableViewController {
     }
 	
 	override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+		if(IS_IPAD){
+			return 280
+		}
 		return 180
 	}
 
@@ -163,8 +195,6 @@ class LessonTableViewController: UITableViewController {
 	
 	func prayerCellWithData(data:Lesson?) -> PrayerTableViewCell {
 		let cell = PrayerTableViewCell()
-		cell.textLabel?.text = "Dear God,..."
-//		cell.textLabel?.text = "Dear God,\n \nThank you for this new day.\nHelp me to be a person of character and follow Your way,\n \nto be worthy of trust,\nto be respectful and responsible, doing what I must.\n \nHelp me to act with fairness, show that I care,\nbe a good citizen, and always live this prayer.\n \nAmen."
 		return cell
 	}
 

@@ -75,16 +75,18 @@ class ChallengesViewController: UIViewController, UITableViewDelegate, UITableVi
 		super.viewWillAppear(animated)
 
 		titleLabel.sizeToFit()
-		titleLabel.center = CGPointMake(self.view.center.x, 40)
-		percentLabel.frame = CGRectMake(0, 0, self.view.frame.size.width, 40)
-		percentLabel.center = CGPointMake(self.view.center.x, 75)
+		titleLabel.center = CGPointMake(self.view.center.x, titleLabel.frame.size.height*0.75)
+		percentLabel.text = "%"
+		percentLabel.sizeToFit()
+		percentLabel.frame = CGRectMake(0, 0, self.view.frame.size.width, percentLabel.frame.size.height)
+		percentLabel.center = CGPointMake(self.view.center.x, titleLabel.center.y + titleLabel.frame.size.height)
 
 		let navBarHeight:CGFloat = self.navigationController!.navigationBar.frame.height
 		let tabBarHeight:CGFloat = self.tabBarController!.tabBar.frame.size.height;
 		let statusHeight:CGFloat = statusBarHeight()
 
 		// shift tableview down
-		let HEADER:CGFloat = 100.0
+		let HEADER:CGFloat = percentLabel.center.y + percentLabel.frame.size.height * 0.6
 		self.tableView.frame = CGRectMake(0, HEADER, self.view.frame.size.width, self.view.frame.size.height - navBarHeight - tabBarHeight - statusHeight - HEADER)
 		
 		print("completed")
@@ -100,6 +102,9 @@ class ChallengesViewController: UIViewController, UITableViewDelegate, UITableVi
 	}
 
 	func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+		if(IS_IPAD){
+			return 260
+		}
 		return 150
 	}
 	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

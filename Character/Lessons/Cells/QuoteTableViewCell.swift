@@ -40,6 +40,9 @@ class QuoteTableViewCell: SuperLessonTableViewCell {
 		super.layoutSubviews()
 		let pad = self.textBoxView.frame.size.width*0.1
 		quoteMarkImageView.frame = CGRectMake(0, 0, 30, 30)
+		if(IS_IPAD){
+			quoteMarkImageView.frame = CGRectMake(0, 0, 70, 70)
+		}
 		quoteMarkImageView.center = CGPointMake(self.frame.size.width*0.5,
 		                                    quoteMarkImageView.frame.size.height*0.5 + self.textBoxView.frame.origin.y + 20)
 		let textY:CGFloat = quoteMarkImageView.frame.origin.y + quoteMarkImageView.frame.size.height + 20

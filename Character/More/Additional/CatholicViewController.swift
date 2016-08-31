@@ -29,7 +29,6 @@ class CatholicViewController: UIViewController {
 		titleText.addAttributes(attribTitle, range: NSMakeRange(0, titleText.length))
 		titleLabel.attributedText = titleText
 		titleLabel.sizeToFit()
-		titleLabel.center = CGPointMake(self.view.center.x, 150)
 		self.view.addSubview(titleLabel)
 
 				
@@ -49,9 +48,7 @@ class CatholicViewController: UIViewController {
 		button2.sizeToFit()
 		button3.sizeToFit()
 		
-		button1.center = CGPointMake(self.view.center.x, 200)
-		button2.center = CGPointMake(self.view.center.x, 250)
-		button3.center = CGPointMake(self.view.center.x, 300)
+		
 		
 		self.view.addSubview(button1)
 		self.view.addSubview(button2)
@@ -60,6 +57,22 @@ class CatholicViewController: UIViewController {
 		button1.addTarget(self, action: #selector(liturgicalHandler), forControlEvents:.TouchUpInside)
 		button2.addTarget(self, action: #selector(motherHandler), forControlEvents:.TouchUpInside)
 		button3.addTarget(self, action: #selector(mercyHandler), forControlEvents:.TouchUpInside)
+		
+	}
+	
+	override func viewWillAppear(animated: Bool) {
+		
+		let startY:CGFloat = 150
+		var spacing:CGFloat = 50
+		if(IS_IPAD){
+			spacing = 100
+		}
+		
+		titleLabel.center = CGPointMake(self.view.center.x, startY)
+	
+		button1.center = CGPointMake(self.view.center.x, startY + spacing)
+		button2.center = CGPointMake(self.view.center.x, startY + spacing*2)
+		button3.center = CGPointMake(self.view.center.x, startY + spacing*3)
 		
 	}
 	
