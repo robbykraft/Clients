@@ -10,6 +10,12 @@ import UIKit
 
 class ScoreViewController: UITableViewController {
 	
+	var maxChallenges:Int? {
+		didSet{
+			self.tableView.reloadData()
+		}
+	}
+	
 	var percentArray:[String] = [ "0%", "33%", "66%", "100%" ]
 	
 	var keyArray:[NSDate]?
@@ -38,6 +44,19 @@ class ScoreViewController: UITableViewController {
 		Character.shared.getMyScore({ (dateDictionary) in
 			self.data = dateDictionary
 		})
+		
+		Fire.shared.getUser { (uid, userData) in
+			if(userData != nil && userData!["grade"] != nil){
+				let gradeArray:[Int] = userData!["grade"] as! [Int]
+				
+				if(gradeArray.contains(0) && gradeArray.contains(1) && gradeArray.contains(2) && gradeArray.contains(3)){
+					self.maxChallenges = 12
+				}
+				else{
+					self.maxChallenges = 3
+				}
+			}
+		}
 	}
 	
 	override func viewWillAppear(animated: Bool) {
@@ -138,7 +157,12 @@ class ScoreViewController: UITableViewController {
 					cell.detailTextLabel?.textColor = Style.shared.green
 					break
 				}
-				cell.detailTextLabel?.text = "\(completed!)"
+//				if(maxChallenges != nil){
+//					cell.detailTextLabel?.text = "\(completed!) / \(maxChallenges!)"
+//				}
+//				else{
+					cell.detailTextLabel?.text = "\(completed!)"
+//				}
 			}
 		}
 		
