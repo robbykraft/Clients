@@ -283,7 +283,8 @@ class Character{
 			for i in 0..<4{
 				let thisGradeArray = gradeArrays[i]
 				if(thisGradeArray != nil && thisGradeArray?.count > count){
-					let thisGradeObject:Lesson? = thisGradeArray![count]
+					let thisSortedGradeArray = thisGradeArray!.sort({ $0.order < $1.order })
+					let thisGradeObject:Lesson? = thisSortedGradeArray[count]
 					if(thisGradeObject != nil){
 						thisGradeObject?.date = date
 						dateDictionary[date]?.append(thisGradeObject!)

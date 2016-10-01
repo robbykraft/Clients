@@ -23,7 +23,9 @@ class ScoreViewController: UITableViewController {
 	var data: [ NSDate:Int ]? {
 		didSet{
 			if(data != nil){
-				self.keyArray = Array( (data?.keys)! )
+				let unsorted = Array( (data?.keys)! )
+				self.keyArray = unsorted.sort({ $0.compare($1) == NSComparisonResult.OrderedAscending })
+//				self.keyArray = unsorted.sort({ $0.order < $1.order })
 			}
 			self.tableView.reloadData()
 		}

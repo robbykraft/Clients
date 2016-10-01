@@ -12,7 +12,8 @@
 //		"pillar" : 0,
 //		"quote" : "text",
 //		"quote_author" : "text",
-//		"title" : "text"
+//		"title" : "text",
+//      "order" : 22
 //	}
 
 import Foundation
@@ -26,8 +27,9 @@ class Lesson {
 	var grade:Int?
 	var pillar:Int?
 	
-	// time stamp
+	// time
 	var date:NSDate?
+	var order:Int?
 
 	// lesson
 	var title:String?
@@ -50,6 +52,7 @@ class Lesson {
 		self.quote = dictionary["quote"] as? String
 		self.quoteAuthor = dictionary["quote_author"] as? String
 		self.title = dictionary["title"] as? String
+		self.order = dictionary["order"] as? Int
 	}
 }
 
