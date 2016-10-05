@@ -15,7 +15,7 @@ class LessonTableViewCell: SuperLessonTableViewCell {
 //			let attributes = [NSFontAttributeName : UIFont(name: SYSTEM_FONT, size: 21)!,
 //			                  NSKernAttributeName : CGFloat(4.0),
 //			                  NSForegroundColorAttributeName : Style.shared.darkGray];
-			let aText:NSMutableAttributedString = NSMutableAttributedString(string: title!.uppercaseString)
+			let aText:NSMutableAttributedString = NSMutableAttributedString(string: title!.uppercased())
 			aText.addAttributes(Style.shared.heading1Attributes(), range: NSMakeRange(0, aText.length))
 			self.textLabel?.attributedText = aText
 		}
@@ -26,7 +26,7 @@ class LessonTableViewCell: SuperLessonTableViewCell {
 		cornerTitleLabel.text = "Daily Lesson"
 		self.textLabel?.textColor = Style.shared.darkGray
 		self.textLabel?.numberOfLines = 3
-		self.imageView?.contentMode = .ScaleAspectFill
+		self.imageView?.contentMode = .scaleAspectFill
 		self.imageView?.clipsToBounds = true
     }
 	override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -48,10 +48,10 @@ class LessonTableViewCell: SuperLessonTableViewCell {
 		
 		let imgSize:CGFloat = min(self.frame.size.width*0.33 - 30,
 		                          self.textBoxView.frame.size.height - 10.0)
-		self.imageView?.frame = CGRectMake(0, 0, imgSize, imgSize)
-		self.imageView?.center = CGPointMake(8 + self.textBoxView.frame.origin.x + imgSize*0.5,
-		                                     self.frame.size.height*0.5)
-		self.textLabel?.frame = CGRectMake(self.frame.size.width*0.33 + 10, 0, self.frame.size.width*0.66 - PAD - 10, self.frame.size.height)
+		self.imageView?.frame = CGRect(x: 0, y: 0, width: imgSize, height: imgSize)
+		self.imageView?.center = CGPoint(x: 8 + self.textBoxView.frame.origin.x + imgSize*0.5,
+		                                     y: self.frame.size.height*0.5)
+		self.textLabel?.frame = CGRect(x: self.frame.size.width*0.33 + 10, y: 0, width: self.frame.size.width*0.66 - PAD - 10, height: self.frame.size.height)
 	}
 
 

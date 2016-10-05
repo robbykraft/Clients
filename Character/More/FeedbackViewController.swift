@@ -21,13 +21,13 @@ class FeedbackViewController: UIViewController, UITextViewDelegate {
 		self.title = "APP FEEDBACK"
 		
 		submitButton.backgroundColor = Style.shared.lightBlue
-		submitButton.setTitle("SUBMIT", forState: .Normal)
-		submitButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-		submitButton.addTarget(self, action: #selector(submitButtonHandler), forControlEvents: .TouchUpInside)
+		submitButton.setTitle("SUBMIT", for: UIControlState())
+		submitButton.setTitleColor(UIColor.white, for: UIControlState())
+		submitButton.addTarget(self, action: #selector(submitButtonHandler), for: .touchUpInside)
 		
 		textView.delegate = self
-		textView.backgroundColor = UIColor.whiteColor()
-		textView.returnKeyType = .Done
+		textView.backgroundColor = UIColor.white
+		textView.returnKeyType = .done
 		textView.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
 
 		self.view.addSubview(textView)
@@ -35,20 +35,20 @@ class FeedbackViewController: UIViewController, UITextViewDelegate {
         // Do any additional setup after loading the view.
 	}
 	
-	override func viewWillAppear(animated: Bool) {
+	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 
 		let navBarHeight:CGFloat = self.navigationController!.navigationBar.frame.height
 		let tabBarHeight:CGFloat = self.tabBarController!.tabBar.frame.size.height;
 	
 		let pad:CGFloat = 30
-		textView.frame = CGRectMake(pad, pad, self.view.frame.size.width - pad*2, self.view.frame.size.height - pad*2 - 60 - navBarHeight - tabBarHeight - statusBarHeight())
-		submitButton.frame = CGRectMake(0, 0, self.view.frame.size.width, 44)
-		submitButton.center = CGPointMake(self.view.center.x, self.view.frame.size.height - pad - 22 - navBarHeight - tabBarHeight - statusBarHeight())
+		textView.frame = CGRect(x: pad, y: pad, width: self.view.frame.size.width - pad*2, height: self.view.frame.size.height - pad*2 - 60 - navBarHeight - tabBarHeight - statusBarHeight())
+		submitButton.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 44)
+		submitButton.center = CGPoint(x: self.view.center.x, y: self.view.frame.size.height - pad - 22 - navBarHeight - tabBarHeight - statusBarHeight())
 
 	}
 	
-	override func viewDidAppear(animated: Bool) {
+	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		
 		textView.becomeFirstResponder()
@@ -56,22 +56,22 @@ class FeedbackViewController: UIViewController, UITextViewDelegate {
 	
 	func submitButtonHandler(){
 		let feedbackObject:[String:AnyObject] = [
-			"text": textView.text,
-			"createdAt": NSDate.init().timeIntervalSince1970
+			"text": textView.text as AnyObject,
+			"createdAt": Date.init().timeIntervalSince1970 as AnyObject
 		]
 
-		Fire.shared.newUniqueObjectAtPath("feedback", object: feedbackObject) {
-			let alertController = UIAlertController.init(title: "Feedback Sent", message: "Thank you for taking time to help!", preferredStyle: .Alert)
-			let okayButton = UIAlertAction.init(title: "Okay", style: .Default, handler: { (action) in
-				self.navigationController?.popViewControllerAnimated(true)
+		Fire.shared.newUniqueObjectAtPath("feedback", object: feedbackObject as AnyObject) {
+			let alertController = UIAlertController.init(title: "Feedback Sent", message: "Thank you for taking time to help!", preferredStyle: .alert)
+			let okayButton = UIAlertAction.init(title: "Okay", style: .default, handler: { (action) in
+				self.navigationController?.popViewController(animated: true)
 			})
 			alertController.addAction(okayButton)
 
-			self.presentViewController(alertController, animated: true, completion: nil)
+			self.present(alertController, animated: true, completion: nil)
 		}
 	}
 	
-	func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+	func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
 		if(text == "\n"){
 			textView.resignFirstResponder()
 			return false

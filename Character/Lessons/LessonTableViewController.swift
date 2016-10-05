@@ -52,20 +52,20 @@ class LessonTableViewController: UITableViewController {
 		
 		self.view.backgroundColor = Style.shared.whiteSmoke
 		self.tableView.backgroundColor = Style.shared.whiteSmoke
-		self.tableView.separatorColor = UIColor.clearColor();
-		self.navigationItem.backBarButtonItem = UIBarButtonItem.init(title: "", style: .Plain, target: nil, action: nil);
+		self.tableView.separatorColor = UIColor.clear;
+		self.navigationItem.backBarButtonItem = UIBarButtonItem.init(title: "", style: .plain, target: nil, action: nil);
 	}
 	
-	override func viewWillAppear(animated: Bool) {
+	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
 		noLessonCoverView.frame = self.view.bounds
-		noLessonCoverView.backgroundColor = UIColor.clearColor()
+		noLessonCoverView.backgroundColor = UIColor.clear
 		let iconImageView = UIImageView()
 		iconImageView.image = UIImage(named: "icon")
 		iconImageView.alpha = 0.05
-		iconImageView.frame = CGRectMake(0, 0, self.view.frame.size.width*0.75, self.view.frame.size.width*0.75)
-		iconImageView.center = CGPointMake(self.view.center.x, iconImageView.frame.size.height * 0.5)
+		iconImageView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width*0.75, height: self.view.frame.size.width*0.75)
+		iconImageView.center = CGPoint(x: self.view.center.x, y: iconImageView.frame.size.height * 0.5)
 		noLessonCoverView.addSubview(iconImageView)
 		let noLessonLabel = UILabel()
 		noLessonLabel.text = "NO LESSON TODAY"
@@ -75,8 +75,8 @@ class LessonTableViewController: UITableViewController {
 			noLessonLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P30)
 			noLessonLabel.sizeToFit()
 		}
-		noLessonLabel.center = CGPointMake(self.view.center.x, iconImageView.center.y + iconImageView.frame.size.height * 0.4)
-		noLessonLabel.textColor = UIColor.blackColor()
+		noLessonLabel.center = CGPoint(x: self.view.center.x, y: iconImageView.center.y + iconImageView.frame.size.height * 0.4)
+		noLessonLabel.textColor = UIColor.black
 		noLessonLabel.alpha = 0.05
 		noLessonCoverView.addSubview(noLessonLabel)
 		
@@ -86,7 +86,7 @@ class LessonTableViewController: UITableViewController {
 		}
 	}
 	
-	func getCompletedChallenges(lessonKey:String){
+	func getCompletedChallenges(_ lessonKey:String){
 		Fire.shared.getUser { (uid, userData) in
 			if(userData != nil){
 				if(userData!["challenges"] != nil){
@@ -103,21 +103,21 @@ class LessonTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
 		if(data == nil){
 			return 0
 		}
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		if(data != nil){
 			return 4
 		}
 		return 0
     }
 	
-	override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+	override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 		if(IS_IPAD){
 			return 280
 		}
@@ -125,9 +125,9 @@ class LessonTableViewController: UITableViewController {
 	}
 
 	
-	override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-		self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
-		switch indexPath.row {
+	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		self.tableView.deselectRow(at: indexPath, animated: true)
+		switch (indexPath as NSIndexPath).row {
 		case 0:
 			let vc: LessonViewController = LessonViewController()
 			vc.data = self.data
@@ -157,8 +157,8 @@ class LessonTableViewController: UITableViewController {
 		}
 	}
 	
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		switch indexPath.row {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		switch (indexPath as NSIndexPath).row {
 		case 0:
 			return lessonCellWithData(data)
 		case 1:
@@ -172,9 +172,9 @@ class LessonTableViewController: UITableViewController {
 		}
     }
 	
-	func lessonCellWithData(data:Lesson?) -> LessonTableViewCell {
+	func lessonCellWithData(_ data:Lesson?) -> LessonTableViewCell {
 		let cell = LessonTableViewCell()
-		cell.title = data?.title?.uppercaseString
+		cell.title = data?.title?.uppercased()
 		let imageFilename:String = (data?.image!)!
 		Cache.shared.imageFromStorageBucket(imageFilename, completionHandler: { (image, didRequireDownload) in
 			cell.imageView?.image = image
@@ -185,19 +185,19 @@ class LessonTableViewController: UITableViewController {
 		return cell
 	}
 	
-	func quoteCellWithData(data:Lesson?) -> QuoteTableViewCell {
+	func quoteCellWithData(_ data:Lesson?) -> QuoteTableViewCell {
 		let cell = QuoteTableViewCell()
 		cell.textLabel?.text = data?.quote!
 		return cell
 	}
 
-	func challengesCellWithData(data:Lesson?) -> ChallengesTableViewCell {
+	func challengesCellWithData(_ data:Lesson?) -> ChallengesTableViewCell {
 		let cell = ChallengesTableViewCell()
 		cell.numberCompleted = numChallengesCompleted
 		return cell
 	}
 	
-	func prayerCellWithData(data:Lesson?) -> PrayerTableViewCell {
+	func prayerCellWithData(_ data:Lesson?) -> PrayerTableViewCell {
 		let cell = PrayerTableViewCell()
 		return cell
 	}

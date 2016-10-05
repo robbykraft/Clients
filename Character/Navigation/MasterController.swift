@@ -15,7 +15,7 @@ class MasterController: UITabBarController {
 	let todayLessonVC = LessonTableViewController()
 	let moreVC = MoreViewController()
 
-	override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+	override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
 		// calling init() calls this function
 		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
 		initCustom()
@@ -69,7 +69,7 @@ class MasterController: UITabBarController {
 		}
 	}
 
-	func reloadLessons(gradeLevels:[Int]){
+	func reloadLessons(_ gradeLevels:[Int]){
 		let (todaysLesson, lessonArray) = Character.shared.lessonsWithFilter(gradeLevels)
 		
 		if(lessonArray.count > 0){
@@ -83,17 +83,19 @@ class MasterController: UITabBarController {
 		if(todaysLesson != nil){
 			self.todayLessonVC.data = todaysLesson
 			let todaysPillar:Int = todaysLesson!.pillar!
-			self.todayLessonVC.navigationItem.title = Character.shared.pillarNames[todaysPillar].uppercaseString
+			self.todayLessonVC.navigationItem.title = Character.shared.pillarNames[todaysPillar].uppercased()
 		}
 	}
 
 	
 	func dateImageCircle() -> UIImage{
-		let size:CGSize = CGSizeMake(72, 72)
-		let dateDay:NSDateComponents = NSCalendar.currentCalendar().components(.Day, fromDate: NSDate())
+		let size:CGSize = CGSize(width: 72, height: 72)
+		let dateDay:DateComponents = (Calendar.current as NSCalendar).components(.day, from: Date())
 		
 		let numberLabel = UILabel()
-		numberLabel.text = "\(dateDay.day)"
+		if let dayInt = dateDay.day {
+			numberLabel.text = "\(dayInt)"
+		}
 		numberLabel.font = UIFont(name: SYSTEM_FONT, size: 36)!
 		numberLabel.textColor = Style.shared.lightBlue
 		numberLabel.sizeToFit()
@@ -104,32 +106,30 @@ class MasterController: UITabBarController {
 		todayLabel.textColor = Style.shared.lightBlue
 		todayLabel.sizeToFit()
 		
-		UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.mainScreen().scale)
+		UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale)
 		let context = UIGraphicsGetCurrentContext()
 		
-		UIColor.whiteColor().setFill()
+		UIColor.white.setFill()
 		Style.shared.lightBlue.setStroke()
-		CGContextFillEllipseInRect(context, CGRectMake(2, 2, size.width - 4, size.height - 4))
-		CGContextStrokeEllipseInRect(context, CGRectMake(2, 2, size.width - 4, size.height - 4))
+		context?.fillEllipse(in: CGRect(x: 2, y: 2, width: size.width - 4, height: size.height - 4))
+		context?.strokeEllipse(in: CGRect(x: 2, y: 2, width: size.width - 4, height: size.height - 4))
 		
 		Style.shared.lightBlue.setFill()
 		
-		CGContextSaveGState(context);
-		CGContextTranslateCTM(context,
-		                      size.width*0.5 - numberLabel.frame.size.width*0.5,
-		                      size.height*0.36 - numberLabel.frame.size.height*0.5)
-		numberLabel.layer.drawInContext(context!)
-		CGContextRestoreGState(context)
+		context?.saveGState();
+		context?.translateBy(x: size.width*0.5 - numberLabel.frame.size.width*0.5,
+		                      y: size.height*0.36 - numberLabel.frame.size.height*0.5)
+		numberLabel.layer.draw(in: context!)
+		context?.restoreGState()
 		
-		CGContextSaveGState(context);
-		CGContextTranslateCTM(context,
-		                      size.width*0.5 - todayLabel.frame.size.width*0.5,
-		                      size.height*0.66 - todayLabel.frame.size.height*0.5)
-		todayLabel.layer.drawInContext(context!)
-		CGContextRestoreGState(context)
+		context?.saveGState();
+		context?.translateBy(x: size.width*0.5 - todayLabel.frame.size.width*0.5,
+		                      y: size.height*0.66 - todayLabel.frame.size.height*0.5)
+		todayLabel.layer.draw(in: context!)
+		context?.restoreGState()
 		
 		let image = UIGraphicsGetImageFromCurrentImageContext()
 		UIGraphicsEndImageContext()
-		return image.imageWithRenderingMode(.AlwaysOriginal)
+		return image!.withRenderingMode(.alwaysOriginal)
 	}
 }

@@ -11,8 +11,8 @@ import UIKit
 let SYSTEM_FONT:String = "GillSans"
 let SYSTEM_FONT_I:String = "GillSans-Italic"
 
-let IS_IPAD:Bool = UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdiom.Pad
-let IS_IPHONE:Bool = UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdiom.Phone
+let IS_IPAD:Bool = UIDevice.current.userInterfaceIdiom == UIUserInterfaceIdiom.pad
+let IS_IPHONE:Bool = UIDevice.current.userInterfaceIdiom == UIUserInterfaceIdiom.phone
 
 
 class Style {
@@ -32,7 +32,7 @@ class Style {
 	
 	static let shared = Style()
 	
-	private init() {
+	fileprivate init() {
 		if(IS_IPAD){
 			P40 = 60
 			P30 = 50
@@ -50,32 +50,32 @@ class Style {
 			fontSize = 36
 		}
 		let titleParagraphStyle = NSMutableParagraphStyle()
-		titleParagraphStyle.alignment = .Center
+		titleParagraphStyle.alignment = .center
 		return [NSFontAttributeName : UIFont(name: SYSTEM_FONT, size: fontSize)!,
-		        NSKernAttributeName : CGFloat(2.4),
+		        NSKernAttributeName : CGFloat(2.4) as NSObject,
 		        NSParagraphStyleAttributeName: titleParagraphStyle,
 		        NSForegroundColorAttributeName : Style.shared.darkGray];
 	}
 	
 	func styleUIAppearance(){
 		let navigationBarAppearace = UINavigationBar.appearance()
-		navigationBarAppearace.tintColor = UIColor.whiteColor()
-		navigationBarAppearace.setBackgroundImage(UIImage.init(named: "darkGray"), forBarMetrics: .Default)
-		navigationBarAppearace.barStyle = UIBarStyle.BlackTranslucent
+		navigationBarAppearace.tintColor = UIColor.white
+		navigationBarAppearace.setBackgroundImage(UIImage.init(named: "darkGray"), for: .default)
+		navigationBarAppearace.barStyle = UIBarStyle.blackTranslucent
 		navigationBarAppearace.titleTextAttributes = [NSFontAttributeName : UIFont(name: SYSTEM_FONT, size: 22)!,
-		                                              NSForegroundColorAttributeName : UIColor.whiteColor()]
+		                                              NSForegroundColorAttributeName : UIColor.white]
 		//	                                              NSKernAttributeName : CGFloat(-4.0)]
 		UITabBarItem.appearance().setTitleTextAttributes([NSFontAttributeName: UIFont(name: SYSTEM_FONT, size: 16)!,
-			NSForegroundColorAttributeName: UIColor.whiteColor()], forState: .Normal)
+			NSForegroundColorAttributeName: UIColor.white], for: UIControlState())
 		UITabBar.appearance().shadowImage = UIImage()
 		UITabBar.appearance().backgroundImage = UIImage(named: "gray")
-		UITabBar.appearance().tintColor = UIColor.whiteColor()
+		UITabBar.appearance().tintColor = UIColor.white
 		
 	}
 }
 
 func statusBarHeight() -> CGFloat {
-	let statusBarSize = UIApplication.sharedApplication().statusBarFrame.size
+	let statusBarSize = UIApplication.shared.statusBarFrame.size
 	return Swift.min(statusBarSize.width, statusBarSize.height)
 }
 

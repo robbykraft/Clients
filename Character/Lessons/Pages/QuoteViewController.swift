@@ -29,15 +29,15 @@ class QuoteViewController: UIViewController {
 		
 		scrollView.frame = self.view.frame
 		self.view = scrollView
-		self.view.backgroundColor = UIColor.whiteColor()
+		self.view.backgroundColor = UIColor.white
 		
 		quoteMarkImageView.image = UIImage.init(named: "quote-image")
 
-		quoteBodyView.scrollEnabled = false;
-		quoteBodyView.editable = false
+		quoteBodyView.isScrollEnabled = false;
+		quoteBodyView.isEditable = false
 		quoteBodyView.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P24)
 		quoteAuthorLabel.font = UIFont(name: SYSTEM_FONT_I, size: Style.shared.P24)
-		quoteAuthorLabel.textAlignment = .Center
+		quoteAuthorLabel.textAlignment = .center
 		quoteAuthorLabel.numberOfLines = 0
 		quoteAuthorLabel.textColor = Style.shared.lightBlue
 		
@@ -50,25 +50,25 @@ class QuoteViewController: UIViewController {
 		
 		// FRAME SETTING
 		// QUOTE MARK
-		quoteMarkImageView.frame = CGRectMake(0, 0, 40, 40)
-		quoteMarkImageView.center = CGPointMake(self.view.frame.size.width*0.5, 70)
+		quoteMarkImageView.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+		quoteMarkImageView.center = CGPoint(x: self.view.frame.size.width*0.5, y: 70)
 		let imgHeight = quoteMarkImageView.frame.origin.y + quoteMarkImageView.frame.size.height
 
 		// QUOTE BODY
-		quoteBodyView.frame = CGRectMake(sidePad, imgHeight + 20,
-		                                 self.view.frame.size.width - sidePad*2, self.view.frame.size.height)
+		quoteBodyView.frame = CGRect(x: sidePad, y: imgHeight + 20,
+		                                 width: self.view.frame.size.width - sidePad*2, height: self.view.frame.size.height)
 		quoteBodyView.sizeToFit()
 		let quoteBodyHeight = quoteBodyView.frame.size.height
-		quoteBodyView.frame = CGRectMake(sidePad, imgHeight + 20,
-		                                 self.view.frame.size.width - sidePad*2, quoteBodyHeight)
+		quoteBodyView.frame = CGRect(x: sidePad, y: imgHeight + 20,
+		                                 width: self.view.frame.size.width - sidePad*2, height: quoteBodyHeight)
 		
 		// AUTHOR LABEL
-		quoteAuthorLabel.frame = CGRectMake(sidePad, quoteBodyView.frame.origin.y + quoteBodyHeight + 20, self.view.frame.size.width - sidePad*2, self.view.frame.size.height)
+		quoteAuthorLabel.frame = CGRect(x: sidePad, y: quoteBodyView.frame.origin.y + quoteBodyHeight + 20, width: self.view.frame.size.width - sidePad*2, height: self.view.frame.size.height)
 		quoteAuthorLabel.sizeToFit()
 		let authorHeight = quoteAuthorLabel.frame.size.height
-		quoteAuthorLabel.frame = CGRectMake(sidePad, quoteBodyView.frame.origin.y + quoteBodyHeight + 20, self.view.frame.size.width - sidePad*2, authorHeight)
+		quoteAuthorLabel.frame = CGRect(x: sidePad, y: quoteBodyView.frame.origin.y + quoteBodyHeight + 20, width: self.view.frame.size.width - sidePad*2, height: authorHeight)
 		
-		scrollView.contentSize = CGSizeMake(self.view.frame.size.width, quoteAuthorLabel.frame.origin.y + authorHeight + 20)
+		scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: quoteAuthorLabel.frame.origin.y + authorHeight + 20)
     }
 	
 	override func didReceiveMemoryWarning() {

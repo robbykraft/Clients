@@ -18,26 +18,26 @@ class MoreViewController: UIViewController {
 	let profileImageView:UIImageView = UIImageView()
 	let profileImageButton:UIButton = UIButton()
 
-	override func preferredStatusBarStyle() -> UIStatusBarStyle {
-		return .LightContent
+	override var preferredStatusBarStyle : UIStatusBarStyle {
+		return .lightContent
 	}
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-		preferredStatusBarStyle()
+		preferredStatusBarStyle
 		
-		self.navigationController?.navigationBar.barStyle = UIBarStyle.BlackTranslucent
-		self.navigationItem.backBarButtonItem = UIBarButtonItem.init(title: "", style: .Plain, target: nil, action: nil);
+		self.navigationController?.navigationBar.barStyle = UIBarStyle.blackTranslucent
+		self.navigationItem.backBarButtonItem = UIBarButtonItem.init(title: "", style: .plain, target: nil, action: nil);
 
 		self.view.backgroundColor = Style.shared.whiteSmoke
 		
 		
 		let imgSize:CGFloat = 75
-		profileImageView.frame = CGRectMake(0, 0, imgSize, imgSize)
+		profileImageView.frame = CGRect(x: 0, y: 0, width: imgSize, height: imgSize)
 		profileImageView.layer.cornerRadius = imgSize*0.5
-		profileImageView.contentMode = .ScaleAspectFill
-		profileImageView.backgroundColor = UIColor.whiteColor()
+		profileImageView.contentMode = .scaleAspectFill
+		profileImageView.backgroundColor = UIColor.white
 		profileImageView.clipsToBounds = true
 		self.view.addSubview(profileImageView)
 
@@ -53,10 +53,10 @@ class MoreViewController: UIViewController {
 
 		button2.titleLabel?.numberOfLines = 2
 
-		button1.setAttributedTitle(aTitle1, forState: .Normal)
-		button2.setAttributedTitle(aTitle2, forState: .Normal)
-		button3.setAttributedTitle(aTitle3, forState: .Normal)
-		button4.setAttributedTitle(aTitle4, forState: .Normal)
+		button1.setAttributedTitle(aTitle1, for: UIControlState())
+		button2.setAttributedTitle(aTitle2, for: UIControlState())
+		button3.setAttributedTitle(aTitle3, for: UIControlState())
+		button4.setAttributedTitle(aTitle4, for: UIControlState())
 		
 		button1.sizeToFit()
 		button2.sizeToFit()
@@ -69,18 +69,18 @@ class MoreViewController: UIViewController {
 		self.view.addSubview(button4)
 		self.view.addSubview(profileImageButton)
 
-		button1.addTarget(self, action: #selector(characterToolsHandler), forControlEvents:.TouchUpInside)
-		button2.addTarget(self, action: #selector(scoreButtonHandler), forControlEvents:.TouchUpInside)
-		button3.addTarget(self, action: #selector(feedbackButtonHandler), forControlEvents:.TouchUpInside)
-		button4.addTarget(self, action: #selector(profileButtonHandler), forControlEvents:.TouchUpInside)
-		profileImageButton.addTarget(self, action: #selector(profileButtonHandler), forControlEvents: .TouchUpInside)
+		button1.addTarget(self, action: #selector(characterToolsHandler), for:.touchUpInside)
+		button2.addTarget(self, action: #selector(scoreButtonHandler), for:.touchUpInside)
+		button3.addTarget(self, action: #selector(feedbackButtonHandler), for:.touchUpInside)
+		button4.addTarget(self, action: #selector(profileButtonHandler), for:.touchUpInside)
+		profileImageButton.addTarget(self, action: #selector(profileButtonHandler), for: .touchUpInside)
 
 		
 
 		getProfileImage()
 	}
 	
-	override func viewWillAppear(animated: Bool) {
+	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
 		let startY:CGFloat = 150
@@ -89,13 +89,13 @@ class MoreViewController: UIViewController {
 			spacing = 100
 		}
 
-		button1.center = CGPointMake(self.view.center.x, startY)
-		button2.center = CGPointMake(self.view.center.x, startY + spacing)
-		button3.center = CGPointMake(self.view.center.x, startY + spacing*2)
+		button1.center = CGPoint(x: self.view.center.x, y: startY)
+		button2.center = CGPoint(x: self.view.center.x, y: startY + spacing)
+		button3.center = CGPoint(x: self.view.center.x, y: startY + spacing*2)
 		
 		let bottomPad:CGFloat = self.view.bounds.size.width * 0.1
-		button4.center = CGPointMake(self.view.center.x, self.view.frame.size.height - bottomPad - button4.frame.size.height*0.5)
-		profileImageView.center = CGPointMake(self.view.center.x, button4.center.y - button4.frame.size.height*0.5 - profileImageView.frame.size.height * 0.5 - 10)
+		button4.center = CGPoint(x: self.view.center.x, y: self.view.frame.size.height - bottomPad - button4.frame.size.height*0.5)
+		profileImageView.center = CGPoint(x: self.view.center.x, y: button4.center.y - button4.frame.size.height*0.5 - profileImageView.frame.size.height * 0.5 - 10)
 		profileImageButton.frame = profileImageView.frame
 		
 	}
@@ -113,16 +113,16 @@ class MoreViewController: UIViewController {
 		}
 	}
 	
-	func characterToolsHandler(sender:UIButton){
+	func characterToolsHandler(_ sender:UIButton){
 		self.navigationController?.pushViewController(CharacterToolsViewController(), animated: true)
 	}
-	func feedbackButtonHandler(sender:UIButton){
+	func feedbackButtonHandler(_ sender:UIButton){
 		self.navigationController?.pushViewController(FeedbackViewController(), animated: true)
 	}
-	func scoreButtonHandler(sender:UIButton){
+	func scoreButtonHandler(_ sender:UIButton){
 		self.navigationController?.pushViewController(ScoreViewController(), animated: true)
 	}
-	func profileButtonHandler(sender:UIButton){
+	func profileButtonHandler(_ sender:UIButton){
 		self.navigationController?.pushViewController(ProfileViewController(), animated: true)
 	}
 

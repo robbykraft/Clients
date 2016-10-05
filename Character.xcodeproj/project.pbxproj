@@ -48,6 +48,7 @@
 		4186CB0921F43977471B2204 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		699EEAF0F2F73CE9D97C4F5C /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		D513BB6D1D6F3FE000BA20A6 /* SetupProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetupProfileViewController.swift; sourceTree = "<group>"; };
+		D523C32C1DA58A7900490E71 /* Character.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Character.entitlements; sourceTree = "<group>"; };
 		D52C40B21D7240BB004A4724 /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
 		D53F1D1F1D76256A00B1A194 /* PrayerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrayerTableViewCell.swift; sourceTree = "<group>"; };
 		D53F1D211D7625AF00B1A194 /* PrayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrayerViewController.swift; sourceTree = "<group>"; };
@@ -157,6 +158,7 @@
 		D59B04141D6C96D500E6624B /* Character */ = {
 			isa = PBXGroup;
 			children = (
+				D523C32C1DA58A7900490E71 /* Character.entitlements */,
 				D59B04151D6C96D500E6624B /* AppDelegate.swift */,
 				D572F4A21D6E0C21000391F2 /* Model */,
 				D59B04361D6CA4B700E6624B /* Singletons */,
@@ -284,6 +286,12 @@
 					D59B04111D6C96D500E6624B = {
 						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = AC32UAUZT6;
+						LastSwiftMigration = 0800;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -509,6 +517,7 @@
 			baseConfigurationReference = 699EEAF0F2F73CE9D97C4F5C /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Character/Character.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Jorge Díaz (3EL4K35UPC)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jorge Díaz (3EL4K35UPC)";
 				INFOPLIST_FILE = Character/Info.plist;
@@ -517,6 +526,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.character.CharacterDaily;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "ffa84f42-3e3d-40b8-b31a-3a7c94aae5c2";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -525,6 +535,7 @@
 			baseConfigurationReference = 4186CB0921F43977471B2204 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Character/Character.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Camera Mundi Inc. (AC32UAUZT6)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Camera Mundi Inc. (AC32UAUZT6)";
 				INFOPLIST_FILE = Character/Info.plist;
@@ -533,6 +544,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.character.CharacterDaily;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "3264969d-3c9f-4ef3-a4f1-7b353746d8f1";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

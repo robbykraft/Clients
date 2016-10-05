@@ -18,13 +18,13 @@ class ScoreViewController: UITableViewController {
 	
 	var percentArray:[String] = [ "0%", "33%", "66%", "100%" ]
 	
-	var keyArray:[NSDate]?
+	var keyArray:[Date]?
 	
-	var data: [ NSDate:Int ]? {
+	var data: [ Date:Int ]? {
 		didSet{
 			if(data != nil){
 				let unsorted = Array( (data?.keys)! )
-				self.keyArray = unsorted.sort({ $0.compare($1) == NSComparisonResult.OrderedAscending })
+				self.keyArray = unsorted.sorted(by: { $0.compare($1) == ComparisonResult.orderedAscending })
 //				self.keyArray = unsorted.sort({ $0.order < $1.order })
 			}
 			self.tableView.reloadData()
@@ -39,9 +39,9 @@ class ScoreViewController: UITableViewController {
 		
 		self.title = "MY SCORE"
 		
-		self.tableView.separatorColor = UIColor.clearColor();
+		self.tableView.separatorColor = UIColor.clear;
 
-		self.navigationItem.backBarButtonItem = UIBarButtonItem.init(title: "", style: .Plain, target: nil, action: nil);
+		self.navigationItem.backBarButtonItem = UIBarButtonItem.init(title: "", style: .plain, target: nil, action: nil);
 
 		Character.shared.getMyScore({ (dateDictionary) in
 			self.data = dateDictionary
@@ -61,42 +61,42 @@ class ScoreViewController: UITableViewController {
 		}
 	}
 	
-	override func viewWillAppear(animated: Bool) {
+	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		self.tableView.reloadData()
 	}
 	
-	override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-		if cell.respondsToSelector(Selector("setSeparatorInset:")){
-			cell.separatorInset = UIEdgeInsetsZero
+	override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+		if cell.responds(to: #selector(setter: UITableViewCell.separatorInset)){
+			cell.separatorInset = UIEdgeInsets.zero
 		}
-		if cell.respondsToSelector(Selector("setPreservesSuperviewLayoutMargins:")) {
+		if cell.responds(to: #selector(setter: UIView.preservesSuperviewLayoutMargins)) {
 			cell.preservesSuperviewLayoutMargins = false
 		}
-		if cell.respondsToSelector(Selector("setLayoutMargins:")){
-			cell.layoutMargins = UIEdgeInsetsZero
+		if cell.responds(to: #selector(setter: UIView.layoutMargins)){
+			cell.layoutMargins = UIEdgeInsets.zero
 		}
 	}
 	
-	override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+	override func numberOfSections(in tableView: UITableView) -> Int {
 		if(self.data != nil){
 			return 1
 		}
 		return 0
 	}
 	
-	override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+	override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 		if(IS_IPAD){
 			return 80
 		}
 		return 60;
 	}
 	
-	override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return (self.data?.count)!
 	}
 	
-	func daySuffix(dayOfMonth: Int) -> String {
+	func daySuffix(_ dayOfMonth: Int) -> String {
 		switch dayOfMonth {
 		case 1, 21, 31: return "st"
 		case 2, 22: return "nd"
@@ -105,26 +105,26 @@ class ScoreViewController: UITableViewController {
 		}
 	}
 	
-	override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+	override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
 		return 44
 	}
 	
-	override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+	override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
 		return "# Completed:"
 	}
 	
-	override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		let cell = UITableViewCell.init(style: .Value1, reuseIdentifier: "scoreTableViewCell")
+	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		let cell = UITableViewCell.init(style: .value1, reuseIdentifier: "scoreTableViewCell")
 		
 	
 
 		if(keyArray != nil){
 
 			// date
-			let date = keyArray![indexPath.row]
-			let dateComponents:NSDateComponents = NSCalendar.currentCalendar().components([.Month, .Day], fromDate: date)
-			let dayString = "\(dateComponents.day)" + daySuffix(dateComponents.day)
-			let dateText: String = monthAbbrevs[dateComponents.month - 1] + " " + dayString
+			let date = keyArray![(indexPath as NSIndexPath).row]
+			let dateComponents:DateComponents = (Calendar.current as NSCalendar).components([.month, .day], from: date)
+			let dayString = "\(dateComponents.day)" + daySuffix(dateComponents.day!)
+			let dateText: String = monthAbbrevs[dateComponents.month! - 1] + " " + dayString
 			cell.textLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P24)
 			cell.textLabel?.text = dateText
 
@@ -181,8 +181,8 @@ class ScoreViewController: UITableViewController {
 		return cell
 	}
 	
-	override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-		tableView.deselectRowAtIndexPath(indexPath, animated: false)
+	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		tableView.deselectRow(at: indexPath, animated: false)
 	}
 	
 	

@@ -14,30 +14,30 @@ class SuperLessonTableViewCell: UITableViewCell {
 	let cornerTitleLabel = UILabel()
 	
 	func initUI() {
-		self.backgroundColor = UIColor.clearColor()
+		self.backgroundColor = UIColor.clear
 	
-		textBoxView.layer.borderColor = Style.shared.lightBlue.CGColor
+		textBoxView.layer.borderColor = Style.shared.lightBlue.cgColor
 		textBoxView.layer.borderWidth = 1
-		textBoxView.backgroundColor = UIColor.whiteColor()
+		textBoxView.backgroundColor = UIColor.white
 		
 		cornerTitleLabel.backgroundColor = Style.shared.darkGray
-		cornerTitleLabel.textColor = UIColor.whiteColor()
+		cornerTitleLabel.textColor = UIColor.white
 		cornerTitleLabel.font = UIFont(name: SYSTEM_FONT_I, size: Style.shared.P18)
-		cornerTitleLabel.textAlignment = .Center
+		cornerTitleLabel.textAlignment = .center
 
 		self.addSubview(textBoxView)
-		self.sendSubviewToBack(textBoxView)
+		self.sendSubview(toBack: textBoxView)
 		self.addSubview(cornerTitleLabel)
 	}
 	
 	override func layoutSubviews() {
 		let pad:CGFloat = 15
-		textBoxView.frame = CGRectMake(pad, pad,
-		                               self.frame.size.width-pad*2, self.frame.size.height-pad*2)
+		textBoxView.frame = CGRect(x: pad, y: pad,
+		                               width: self.frame.size.width-pad*2, height: self.frame.size.height-pad*2)
 		cornerTitleLabel.sizeToFit()
 		let cornerW = cornerTitleLabel.frame.size.width*1.2
-		cornerTitleLabel.frame = CGRectMake(textBoxView.frame.origin.x+textBoxView.frame.size.width - cornerW, pad,
-		                                    cornerW, cornerTitleLabel.frame.size.height)
+		cornerTitleLabel.frame = CGRect(x: textBoxView.frame.origin.x+textBoxView.frame.size.width - cornerW, y: pad,
+		                                    width: cornerW, height: cornerTitleLabel.frame.size.height)
 	}
 	
 	override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -54,23 +54,23 @@ class SuperLessonTableViewCell: UITableViewCell {
 		self.initUI()
     }
 	
-	func styleSelected(selected: Bool){
+	func styleSelected(_ selected: Bool){
 		if(selected){
 			cornerTitleLabel.backgroundColor = Style.shared.lightBlue
 			self.textLabel?.textColor = Style.shared.lightBlue
 		}
 		else{
 			cornerTitleLabel.backgroundColor = Style.shared.darkGray
-			self.textLabel?.textColor = UIColor.blackColor()
+			self.textLabel?.textColor = UIColor.black
 		}
 	}
 	
-	override func setHighlighted(highlighted: Bool, animated: Bool) {
+	override func setHighlighted(_ highlighted: Bool, animated: Bool) {
 		// don't call super
 		styleSelected(highlighted)
 	}
 	
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
 		// don't call super
 		styleSelected(selected)
 	}

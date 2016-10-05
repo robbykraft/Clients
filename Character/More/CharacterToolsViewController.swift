@@ -21,7 +21,7 @@ class CharacterToolsViewController: UIViewController {
         super.viewDidLoad()
 		
 		self.title = "CHARACTER TOOLS"
-		self.navigationItem.backBarButtonItem = UIBarButtonItem.init(title: "", style: .Plain, target: nil, action: nil);
+		self.navigationItem.backBarButtonItem = UIBarButtonItem.init(title: "", style: .plain, target: nil, action: nil);
 		
 		self.view.backgroundColor = Style.shared.whiteSmoke
 		
@@ -46,10 +46,10 @@ class CharacterToolsViewController: UIViewController {
 //		button5.titleLabel?.numberOfLines = 0
 //		button6.titleLabel?.numberOfLines = 0
 		
-		button1.setAttributedTitle(aTitle1, forState: .Normal)
-		button2.setAttributedTitle(aTitle2, forState: .Normal)
-		button3.setAttributedTitle(aTitle3, forState: .Normal)
-		button4.setAttributedTitle(aTitle4, forState: .Normal)
+		button1.setAttributedTitle(aTitle1, for: UIControlState())
+		button2.setAttributedTitle(aTitle2, for: UIControlState())
+		button3.setAttributedTitle(aTitle3, for: UIControlState())
+		button4.setAttributedTitle(aTitle4, for: UIControlState())
 //		button5.setAttributedTitle(aTitle5, forState: .Normal)
 //		button6.setAttributedTitle(aTitle6, forState: .Normal)
 		
@@ -69,10 +69,10 @@ class CharacterToolsViewController: UIViewController {
 			adjust = 44
 		}
 		
-		button1.center = CGPointMake(self.view.center.x, startY - adjust*2)
-		button2.center = CGPointMake(self.view.center.x, startY + spacing - adjust)
-		button3.center = CGPointMake(self.view.center.x, startY + spacing*2 )
-		button4.center = CGPointMake(self.view.center.x, startY + spacing*3 )
+		button1.center = CGPoint(x: self.view.center.x, y: startY - adjust*2)
+		button2.center = CGPoint(x: self.view.center.x, y: startY + spacing - adjust)
+		button3.center = CGPoint(x: self.view.center.x, y: startY + spacing*2 )
+		button4.center = CGPoint(x: self.view.center.x, y: startY + spacing*3 )
 //		button5.center = CGPointMake(self.view.center.x, 350)
 //		button6.center = CGPointMake(self.view.center.x, 350 + adjust)
 		
@@ -83,33 +83,33 @@ class CharacterToolsViewController: UIViewController {
 //		self.view.addSubview(button5)
 //		self.view.addSubview(button6)
 		
-		button1.addTarget(self, action: #selector(sixPillarsHandler), forControlEvents:.TouchUpInside)
-		button2.addTarget(self, action: #selector(catholicHandler), forControlEvents:.TouchUpInside)
-		button3.addTarget(self, action: #selector(lockHandler), forControlEvents:.TouchUpInside)
-		button4.addTarget(self, action: #selector(teamHandler), forControlEvents:.TouchUpInside)
+		button1.addTarget(self, action: #selector(sixPillarsHandler), for:.touchUpInside)
+		button2.addTarget(self, action: #selector(catholicHandler), for:.touchUpInside)
+		button3.addTarget(self, action: #selector(lockHandler), for:.touchUpInside)
+		button4.addTarget(self, action: #selector(teamHandler), for:.touchUpInside)
 //		button5.addTarget(self, action: #selector(decisionHandler), forControlEvents:.TouchUpInside)
 //		button6.addTarget(self, action: #selector(commitmentHandler), forControlEvents:.TouchUpInside)
     }
 	
-	func sixPillarsHandler(sender:UIButton){
+	func sixPillarsHandler(_ sender:UIButton){
 		self.navigationController?.pushViewController(SixPillarsViewController(), animated: true)
 	}
-	func catholicHandler(sender:UIButton){
+	func catholicHandler(_ sender:UIButton){
 		self.navigationController?.pushViewController(CatholicViewController(), animated: true)
 	}
-	func lockHandler(sender:UIButton){
+	func lockHandler(_ sender:UIButton){
 		let vc = DatabasePageViewController()
 		vc.databasePath = "evergreen/integration/locksandkeys"
 		vc.title = "LOCKS AND KEYS"
 		self.navigationController?.pushViewController(vc, animated: true)
 	}
-	func teamHandler(sender:UIButton){
+	func teamHandler(_ sender:UIButton){
 		let vc = DatabasePageViewController()
 		vc.databasePath = "evergreen/integration/team"
 		vc.title = "T.E.A.M"
 		self.navigationController?.pushViewController(vc, animated: true)
 	}
-	func decisionHandler(sender:UIButton){
+	func decisionHandler(_ sender:UIButton){
 		let vc = DatabasePageViewController()
 		vc.databasePath = "evergreen/integration/decision"
 		vc.title = "DECISION MAKING"

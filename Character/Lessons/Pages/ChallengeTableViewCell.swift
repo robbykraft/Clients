@@ -46,12 +46,12 @@ class ChallengeTableViewCell: UITableViewCell {
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		let pad:CGFloat = 20
-		self.textLabel?.frame = CGRectMake(self.frame.size.width * 0.33, pad, self.frame.size.width * 0.66 - pad, self.frame.size.height-pad*2)
-		blueCircle.frame = CGRectMake(0, 0, self.frame.size.width * 0.18, self.frame.size.width * 0.18)
-		blueCircle.center = CGPointMake(self.frame.size.width * 0.15 + 10, self.frame.size.height*0.5)
+		self.textLabel?.frame = CGRect(x: self.frame.size.width * 0.33, y: pad, width: self.frame.size.width * 0.66 - pad, height: self.frame.size.height-pad*2)
+		blueCircle.frame = CGRect(x: 0, y: 0, width: self.frame.size.width * 0.18, height: self.frame.size.width * 0.18)
+		blueCircle.center = CGPoint(x: self.frame.size.width * 0.15 + 10, y: self.frame.size.height*0.5)
 	}
 	
-	func styleSelected(selected: Bool) {
+	func styleSelected(_ selected: Bool) {
 		if(selected){
 			self.textLabel?.textColor = Style.shared.lightBlue
 		}
@@ -60,12 +60,12 @@ class ChallengeTableViewCell: UITableViewCell {
 		}
 	}
 	
-	override func setHighlighted(highlighted: Bool, animated: Bool) {
+	override func setHighlighted(_ highlighted: Bool, animated: Bool) {
 //		super.setHighlighted(highlighted, animated: animated)
 		styleSelected(highlighted)
 	}
 	
-	override func setSelected(selected: Bool, animated: Bool) {
+	override func setSelected(_ selected: Bool, animated: Bool) {
 //		super.setSelected(selected, animated: animated)
 		styleSelected(selected)
 	}

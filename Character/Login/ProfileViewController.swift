@@ -19,7 +19,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 //	let detail2Field: UITextField = UITextField()
 	let signoutButton: UIButton = UIButton()
 	
-	var updateTimer:NSTimer?
+	var updateTimer:Timer?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,38 +28,38 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 		self.title = "MY PROFILE"
 
 		// buttons
-		signoutButton.setTitle("Sign Out", forState: UIControlState.Normal)
-		profileImageButton.addTarget(self, action: #selector(profilePictureButtonHandler), forControlEvents: .TouchUpInside)
-		detail1Button.addTarget(self, action: #selector(detail1ButtonHandler), forControlEvents: UIControlEvents.TouchUpInside)
-		signoutButton.addTarget(self, action: #selector(logOut), forControlEvents: UIControlEvents.TouchUpInside)
+		signoutButton.setTitle("Sign Out", for: UIControlState())
+		profileImageButton.addTarget(self, action: #selector(profilePictureButtonHandler), for: .touchUpInside)
+		detail1Button.addTarget(self, action: #selector(detail1ButtonHandler), for: UIControlEvents.touchUpInside)
+		signoutButton.addTarget(self, action: #selector(logOut), for: UIControlEvents.touchUpInside)
 
 		// ui custom
 		nameField.delegate = self
 		emailField.delegate = self
 //		detail2Field.delegate = self
-		profileImageView.contentMode = .ScaleAspectFill
-		profileImageView.backgroundColor = UIColor.whiteColor()
+		profileImageView.contentMode = .scaleAspectFill
+		profileImageView.backgroundColor = UIColor.white
 		profileImageView.clipsToBounds = true
-		nameField.backgroundColor = UIColor.whiteColor()
-		emailField.backgroundColor = UIColor.whiteColor()
-		detail1Button.backgroundColor = UIColor.whiteColor()
-		detail1Button.setTitleColor(UIColor.blackColor(), forState: .Normal)
-		detail1Button.titleLabel?.textAlignment = .Center
+		nameField.backgroundColor = UIColor.white
+		emailField.backgroundColor = UIColor.white
+		detail1Button.backgroundColor = UIColor.white
+		detail1Button.setTitleColor(UIColor.black, for: UIControlState())
+		detail1Button.titleLabel?.textAlignment = .center
 //		detail2Field.backgroundColor = UIColor.whiteColor()
 		signoutButton.backgroundColor = Style.shared.lightBlue
 		nameField.placeholder = "Name"
 		emailField.placeholder = "Email Address"
 //		detail2Field.placeholder = "Detail Text"
 		
-		emailField.enabled = false
+		emailField.isEnabled = false
 		
 		// text field padding
-		let paddingName = UIView.init(frame: CGRectMake(0, 0, 5, 40))
-		let paddingEmail = UIView.init(frame: CGRectMake(0, 0, 5, 40))
+		let paddingName = UIView.init(frame: CGRect(x: 0, y: 0, width: 5, height: 40))
+		let paddingEmail = UIView.init(frame: CGRect(x: 0, y: 0, width: 5, height: 40))
 		nameField.leftView = paddingName
 		emailField.leftView = paddingEmail
-		nameField.leftViewMode = .Always
-		emailField.leftViewMode = .Always
+		nameField.leftViewMode = .always
+		emailField.leftViewMode = .always
 
 		self.view.addSubview(profileImageView)
 		self.view.addSubview(profileImageButton)
@@ -69,20 +69,20 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 		self.view.addSubview(signoutButton)
     }
 	
-	override func viewWillAppear(animated: Bool) {
+	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 				
 		// frames
 		let imgSize:CGFloat = self.view.bounds.size.width * 0.4
 		let imgArea:CGFloat = self.view.bounds.size.width * 0.5
-		profileImageView.frame = CGRectMake(0, 0, imgSize, imgSize)
-		profileImageView.center = CGPointMake(self.view.center.x, imgArea*0.5)
+		profileImageView.frame = CGRect(x: 0, y: 0, width: imgSize, height: imgSize)
+		profileImageView.center = CGPoint(x: self.view.center.x, y: imgArea*0.5)
 		profileImageView.layer.cornerRadius = imgSize*0.5
 		profileImageButton.frame = profileImageView.frame
-		nameField.frame = CGRectMake(0, imgArea + 10, self.view.bounds.size.width, 44)
-		emailField.frame = CGRectMake(0, imgArea + 10*2 + 44*1, self.view.bounds.size.width, 44)
-		detail1Button.frame = CGRectMake(0, imgArea + 10*3 + 44*2, self.view.bounds.size.width, 44)
-		signoutButton.frame = CGRectMake(0, imgArea + 10*5 + 44*3, self.view.bounds.size.width, 44)
+		nameField.frame = CGRect(x: 0, y: imgArea + 10, width: self.view.bounds.size.width, height: 44)
+		emailField.frame = CGRect(x: 0, y: imgArea + 10*2 + 44*1, width: self.view.bounds.size.width, height: 44)
+		detail1Button.frame = CGRect(x: 0, y: imgArea + 10*3 + 44*2, width: self.view.bounds.size.width, height: 44)
+		signoutButton.frame = CGRect(x: 0, y: imgArea + 10*5 + 44*3, width: self.view.bounds.size.width, height: 44)
 
 		
 		// populate screen
@@ -92,12 +92,12 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 			}
 		}
 		
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(textFieldDidChange), name: "UITextFieldTextDidChangeNotification", object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(textFieldDidChange), name: NSNotification.Name(rawValue: "UITextFieldTextDidChangeNotification"), object: nil)
 
 	}
 
 	
-	func populateUserData(uid:String, userData:NSDictionary){
+	func populateUserData(_ uid:String, userData:[String:AnyObject]){
 		if(userData["image"] != nil){
 			profileImageView.profileImageFromUID(uid)
 //			profileImageView.imageFromUrl(userData["image"] as! String)
@@ -115,64 +115,64 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 			gradeLevels = [0,1,2,3]
 		}
 		if(gradeLevels!.contains(0) && gradeLevels!.contains(1) && gradeLevels!.contains(2) && gradeLevels!.contains(3)){
-			detail1Button.setTitle("All Grades", forState: .Normal)
+			detail1Button.setTitle("All Grades", for: UIControlState())
 		}
 		else if(gradeLevels!.contains(0)){
-			detail1Button.setTitle(Character.shared.gradeNames[0], forState: .Normal)
+			detail1Button.setTitle(Character.shared.gradeNames[0], for: UIControlState())
 		}
 		else if(gradeLevels!.contains(1)){
-			detail1Button.setTitle(Character.shared.gradeNames[1], forState: .Normal)
+			detail1Button.setTitle(Character.shared.gradeNames[1], for: UIControlState())
 		}
 		else if(gradeLevels!.contains(2)){
-			detail1Button.setTitle(Character.shared.gradeNames[2], forState: .Normal)
+			detail1Button.setTitle(Character.shared.gradeNames[2], for: UIControlState())
 		}
 		else if(gradeLevels!.contains(3)){
-			detail1Button.setTitle(Character.shared.gradeNames[3], forState: .Normal)
+			detail1Button.setTitle(Character.shared.gradeNames[3], for: UIControlState())
 		}
 	}
 	
 	func logOut(){
 		do{
 			try FIRAuth.auth()?.signOut()
-			self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+			self.navigationController?.dismiss(animated: true, completion: nil)
 		}catch{
 			
 		}
 	}
 	
-	func detail1ButtonHandler(sender:UIButton){
-		let alert = UIAlertController.init(title: "", message: nil, preferredStyle: .ActionSheet)
-		let action1 = UIAlertAction.init(title: Character.shared.gradeNames[0], style: .Default) { (action) in
-			self.detail1Button.setTitle(Character.shared.gradeNames[0], forState: .Normal)
-			Fire.shared.updateUserWithKeyAndValue("grade", value: [0], completionHandler: nil)
+	func detail1ButtonHandler(_ sender:UIButton){
+		let alert = UIAlertController.init(title: "", message: nil, preferredStyle: .actionSheet)
+		let action1 = UIAlertAction.init(title: Character.shared.gradeNames[0], style: .default) { (action) in
+			self.detail1Button.setTitle(Character.shared.gradeNames[0], for: UIControlState())
+			Fire.shared.updateUserWithKeyAndValue("grade", value: [0] as AnyObject, completionHandler: nil)
 			let master:MasterController = self.tabBarController as! MasterController
 			master.reloadLessons([0])
 		}
-		let action2 = UIAlertAction.init(title: Character.shared.gradeNames[1], style: .Default) { (action) in
-			self.detail1Button.setTitle(Character.shared.gradeNames[1], forState: .Normal)
-			Fire.shared.updateUserWithKeyAndValue("grade", value: [1], completionHandler: nil)
+		let action2 = UIAlertAction.init(title: Character.shared.gradeNames[1], style: .default) { (action) in
+			self.detail1Button.setTitle(Character.shared.gradeNames[1], for: UIControlState())
+			Fire.shared.updateUserWithKeyAndValue("grade", value: [1] as AnyObject, completionHandler: nil)
 			let master:MasterController = self.tabBarController as! MasterController
 			master.reloadLessons([1])
 		}
-		let action3 = UIAlertAction.init(title: Character.shared.gradeNames[2], style: .Default) { (action) in
-			self.detail1Button.setTitle(Character.shared.gradeNames[2], forState: .Normal)
-			Fire.shared.updateUserWithKeyAndValue("grade", value: [2], completionHandler: nil)
+		let action3 = UIAlertAction.init(title: Character.shared.gradeNames[2], style: .default) { (action) in
+			self.detail1Button.setTitle(Character.shared.gradeNames[2], for: UIControlState())
+			Fire.shared.updateUserWithKeyAndValue("grade", value: [2] as AnyObject, completionHandler: nil)
 			let master:MasterController = self.tabBarController as! MasterController
 			master.reloadLessons([2])
 		}
-		let action4 = UIAlertAction.init(title: Character.shared.gradeNames[3], style: .Default) { (action) in
-			self.detail1Button.setTitle(Character.shared.gradeNames[3], forState: .Normal)
-			Fire.shared.updateUserWithKeyAndValue("grade", value: [3], completionHandler: nil)
+		let action4 = UIAlertAction.init(title: Character.shared.gradeNames[3], style: .default) { (action) in
+			self.detail1Button.setTitle(Character.shared.gradeNames[3], for: UIControlState())
+			Fire.shared.updateUserWithKeyAndValue("grade", value: [3] as AnyObject, completionHandler: nil)
 			let master:MasterController = self.tabBarController as! MasterController
 			master.reloadLessons([3])
 		}
-		let action5 = UIAlertAction.init(title: "All Grades", style: .Default) { (action) in
-			self.detail1Button.setTitle("All Grades", forState: .Normal)
-			Fire.shared.updateUserWithKeyAndValue("grade", value: [0,1,2,3], completionHandler: nil)
+		let action5 = UIAlertAction.init(title: "All Grades", style: .default) { (action) in
+			self.detail1Button.setTitle("All Grades", for: UIControlState())
+			Fire.shared.updateUserWithKeyAndValue("grade", value: [0,1,2,3] as AnyObject, completionHandler: nil)
 			let master:MasterController = self.tabBarController as! MasterController
 			master.reloadLessons([0,1,2,3])
 		}
-		let cancel = UIAlertAction.init(title: "Cancel", style: .Cancel) { (action) in }
+		let cancel = UIAlertAction.init(title: "Cancel", style: .cancel) { (action) in }
 		alert.addAction(action1)
 		alert.addAction(action2)
 		alert.addAction(action3)
@@ -184,18 +184,18 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 			popoverController.sourceView = sender
 			popoverController.sourceRect = sender.bounds
 		}
-		self.presentViewController(alert, animated: true, completion: nil)
+		self.present(alert, animated: true, completion: nil)
 	}
 	
-	func profilePictureButtonHandler(sender:UIButton){
-		let alert = UIAlertController.init(title: "Change Profile Image", message: nil, preferredStyle: .ActionSheet)
-		let action1 = UIAlertAction.init(title: "Camera", style: .Default) { (action) in
-			self.openImagePicker(.Camera)
+	func profilePictureButtonHandler(_ sender:UIButton){
+		let alert = UIAlertController.init(title: "Change Profile Image", message: nil, preferredStyle: .actionSheet)
+		let action1 = UIAlertAction.init(title: "Camera", style: .default) { (action) in
+			self.openImagePicker(.camera)
 		}
-		let action2 = UIAlertAction.init(title: "Photos", style: .Default) { (action) in
-			self.openImagePicker(.PhotoLibrary)
+		let action2 = UIAlertAction.init(title: "Photos", style: .default) { (action) in
+			self.openImagePicker(.photoLibrary)
 		}
-		let action3 = UIAlertAction.init(title: "Cancel", style: .Cancel) { (action) in }
+		let action3 = UIAlertAction.init(title: "Cancel", style: .cancel) { (action) in }
 		alert.addAction(action1)
 		alert.addAction(action2)
 		alert.addAction(action3)
@@ -204,24 +204,24 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 			popoverController.sourceView = sender
 			popoverController.sourceRect = sender.bounds
 		}
-		self.presentViewController(alert, animated: true, completion: nil)
+		self.present(alert, animated: true, completion: nil)
 	}
 	
-	func textFieldShouldReturn(textField: UITextField) -> Bool {
+	func textFieldShouldReturn(_ textField: UITextField) -> Bool {
 		self.view.endEditing(true)
 		return false
 	}
-	func textFieldDidChange(notif: NSNotification) {
+	func textFieldDidChange(_ notif: Notification) {
 		if(updateTimer != nil){
 			updateTimer?.invalidate()
 			updateTimer = nil
 		}
-		updateTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(updateWithDelay), userInfo: nil, repeats: false)
+		updateTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateWithDelay), userInfo: nil, repeats: false)
 	}
 	
 	func updateWithDelay() {
 		// hanging text fields
-		Fire.shared.updateUserWithKeyAndValue("displayName", value: nameField.text!, completionHandler: nil)
+		Fire.shared.updateUserWithKeyAndValue("displayName", value: nameField.text! as AnyObject, completionHandler: nil)
 
 		if(updateTimer != nil){
 			updateTimer?.invalidate()
@@ -236,9 +236,9 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 	}
 	
 	
-	func textFieldDidEndEditing(textField: UITextField) {
+	func textFieldDidEndEditing(_ textField: UITextField) {
 		if(textField.isEqual(nameField)){
-			Fire.shared.updateUserWithKeyAndValue("displayName", value: textField.text!, completionHandler: nil)
+			Fire.shared.updateUserWithKeyAndValue("displayName", value: textField.text! as AnyObject, completionHandler: nil)
 		}
 //		if(textField.isEqual(detail2Field)){
 //			Fire.shared.updateUserWithKeyAndValue("detail2", value: textField.text!, completionHandler: nil)
@@ -249,21 +249,21 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 //	}
 	
 	
-	func openImagePicker(sourceType:UIImagePickerControllerSourceType) {
+	func openImagePicker(_ sourceType:UIImagePickerControllerSourceType) {
 		let imagePicker = UIImagePickerController()
 		imagePicker.delegate = self
 		imagePicker.allowsEditing = false
 		imagePicker.sourceType = sourceType
-		self.navigationController?.presentViewController(imagePicker, animated: true, completion: nil)
+		self.navigationController?.present(imagePicker, animated: true, completion: nil)
 	}
 	
-	func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
 		let image = info[UIImagePickerControllerOriginalImage] as! UIImage
 		let data = UIImageJPEGRepresentation(image, 0.5)
 		if(data != nil){
-			Fire.shared.uploadFileAndMakeRecord(data!, fileType: .IMAGE_JPG, description: nil, completionHandler: { (downloadURL) in
+			Fire.shared.uploadFileAndMakeRecord(data!, fileType: .image_JPG, description: nil, completionHandler: { (downloadURL) in
 				if(downloadURL != nil){
-					Fire.shared.updateUserWithKeyAndValue("image", value: downloadURL!.absoluteString, completionHandler: { (success) in
+					Fire.shared.updateUserWithKeyAndValue("image", value: downloadURL!.absoluteString as AnyObject, completionHandler: { (success) in
 						if(success){
 							Cache.shared.profileImage[Fire.shared.myUID!] = image
 							self.profileImageView.image = image
@@ -278,7 +278,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 		if(data == nil){
 			print("image picker data is nil")
 		}
-		self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+		self.navigationController?.dismiss(animated: true, completion: nil)
 	}
 	
 }

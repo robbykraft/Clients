@@ -25,12 +25,12 @@ class ChallengesTableViewCell: SuperLessonTableViewCell {
 		cornerTitleLabel.text = "Daily Challenge"
 		
 		viewChallengeLabel.backgroundColor = Style.shared.lightBlue
-		viewChallengeLabel.textColor = UIColor.whiteColor()
-		viewChallengeLabel.textAlignment = .Center
+		viewChallengeLabel.textColor = UIColor.white
+		viewChallengeLabel.textAlignment = .center
 		viewChallengeLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P30)
 		viewChallengeLabel.text = "My Challenges"
 		
-		completedLabel.textColor = UIColor.blackColor()
+		completedLabel.textColor = UIColor.black
 		completedLabel.text = "0/3 TASKS COMPLETE"
 		completedLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15)
 		
@@ -54,28 +54,28 @@ class ChallengesTableViewCell: SuperLessonTableViewCell {
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		viewChallengeLabel.sizeToFit()
-		viewChallengeLabel.frame = CGRectMake(0, 0, self.textBoxView.frame.size.width*0.8, viewChallengeLabel.frame.size.height*1.2)
-		viewChallengeLabel.center = CGPointMake(self.frame.size.width*0.5, self.frame.size.height*0.4)
+		viewChallengeLabel.frame = CGRect(x: 0, y: 0, width: self.textBoxView.frame.size.width*0.8, height: viewChallengeLabel.frame.size.height*1.2)
+		viewChallengeLabel.center = CGPoint(x: self.frame.size.width*0.5, y: self.frame.size.height*0.4)
 		completedLabel.sizeToFit()
-		completedLabel.center = CGPointMake(self.frame.size.width*0.5, self.frame.size.height*0.7)
+		completedLabel.center = CGPoint(x: self.frame.size.width*0.5, y: self.frame.size.height*0.7)
 	}
 
-	override func styleSelected(selected: Bool) {
+	override func styleSelected(_ selected: Bool) {
 		super.styleSelected(selected)
 		if(selected){
 			completedLabel.textColor = Style.shared.lightBlue
 		}
 		else{
-			completedLabel.textColor = UIColor.blackColor()
+			completedLabel.textColor = UIColor.black
 		}
 	}
 	
-	override func setHighlighted(highlighted: Bool, animated: Bool) {
+	override func setHighlighted(_ highlighted: Bool, animated: Bool) {
 		super.setHighlighted(highlighted, animated: animated)
 		styleSelected(highlighted)
 	}
 
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 		styleSelected(selected)
 	}

@@ -29,7 +29,7 @@ class LessonsTableViewController: UITableViewController {
 			self.tableView.reloadData()
 		}
 	}
-	func filterLessons(filterBy:Int) -> [Lesson] {
+	func filterLessons(_ filterBy:Int) -> [Lesson] {
 		var array:[Lesson] = []
 		for lesson in data! {
 			if lesson.grade == filterBy{
@@ -47,48 +47,48 @@ class LessonsTableViewController: UITableViewController {
 		
 		self.title = "ALL LESSONS"
 
-		self.navigationItem.backBarButtonItem = UIBarButtonItem.init(title: "", style: .Plain, target: nil, action: nil);
+		self.navigationItem.backBarButtonItem = UIBarButtonItem.init(title: "", style: .plain, target: nil, action: nil);
 	}
 	
-	override func viewWillAppear(animated: Bool) {
+	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		self.tableView.reloadData()
 	}
 	
-	override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-		if cell.respondsToSelector(Selector("setSeparatorInset:")){
-			cell.separatorInset = UIEdgeInsetsZero
+	override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+		if cell.responds(to: #selector(setter: UITableViewCell.separatorInset)){
+			cell.separatorInset = UIEdgeInsets.zero
 		}
-		if cell.respondsToSelector(Selector("setPreservesSuperviewLayoutMargins:")) {
+		if cell.responds(to: #selector(setter: UIView.preservesSuperviewLayoutMargins)) {
 			cell.preservesSuperviewLayoutMargins = false
 		}
-		if cell.respondsToSelector(Selector("setLayoutMargins:")){
-			cell.layoutMargins = UIEdgeInsetsZero
+		if cell.responds(to: #selector(setter: UIView.layoutMargins)){
+			cell.layoutMargins = UIEdgeInsets.zero
 		}
 	}
 	
-	override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+	override func numberOfSections(in tableView: UITableView) -> Int {
 		if(self.data != nil){
 			return 1
 		}
 		return 0
 	}
 	
-	override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+	override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 		if(IS_IPAD){
 			return 200
 		}
 		return 120;
 	}
 	
-	override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		if(showFilter && filter != nil){
 			return (self.filteredData?.count)!
 		}
 		return (self.data?.count)!
 	}
 	
-	func daySuffix(dayOfMonth: Int) -> String {
+	func daySuffix(_ dayOfMonth: Int) -> String {
 		switch dayOfMonth {
 		case 1, 21, 31: return "st"
 		case 2, 22: return "nd"
@@ -97,7 +97,7 @@ class LessonsTableViewController: UITableViewController {
 		}
 	}
 	
-	override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+	override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 		if(showFilter == false){
 			return nil
 		}
@@ -111,22 +111,22 @@ class LessonsTableViewController: UITableViewController {
 		
 		let buttonW = self.view.frame.size.width * 0.8
 		let button = UIButton()
-		button.backgroundColor = UIColor.clearColor()
-		button.frame = CGRectMake((self.view.frame.size.width - buttonW) * 0.5, 0, buttonW, viewH)
-		button.addTarget(self, action: #selector(filterButtonHandler), forControlEvents: .TouchUpInside)
+		button.backgroundColor = UIColor.clear
+		button.frame = CGRect(x: (self.view.frame.size.width - buttonW) * 0.5, y: 0, width: buttonW, height: viewH)
+		button.addTarget(self, action: #selector(filterButtonHandler), for: .touchUpInside)
 
 		let filterLabel = UILabel()
 		filterLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15)
 		filterLabel.textColor = Style.shared.whiteSmoke
-		filterLabel.frame = CGRectMake(0, 0, self.view.frame.size.width*0.5 - 10, viewH)
-		filterLabel.textAlignment = .Right
+		filterLabel.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width*0.5 - 10, height: viewH)
+		filterLabel.textAlignment = .right
 		filterLabel.text = "Filter:"
 
 		let gradeLabel = UILabel()
 		gradeLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15)
-		gradeLabel.textColor = UIColor.whiteColor()
-		gradeLabel.frame = CGRectMake(self.view.frame.size.width*0.5, 0, self.view.frame.size.width*0.5, viewH)
-		gradeLabel.textAlignment = .Left
+		gradeLabel.textColor = UIColor.white
+		gradeLabel.frame = CGRect(x: self.view.frame.size.width*0.5, y: 0, width: self.view.frame.size.width*0.5, height: viewH)
+		gradeLabel.textAlignment = .left
 		if(filter == nil){
 			gradeLabel.text = "All Grades"
 		} else{
@@ -138,7 +138,7 @@ class LessonsTableViewController: UITableViewController {
 		view.addSubview(button)
 		return view
 	}
-	override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+	override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
 		if(showFilter == true){
 			if(IS_IPAD){
 				return 60
@@ -148,22 +148,20 @@ class LessonsTableViewController: UITableViewController {
 		return 0
 	}
 	
-	override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		let cell = LessonsTableViewCell.init(style: .Value1, reuseIdentifier: "tableCell")
+	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		let cell = LessonsTableViewCell.init(style: .value1, reuseIdentifier: "tableCell")
 		
 		var objectForRow:Lesson
 		if(showFilter && filter != nil){
-			objectForRow = self.filteredData![indexPath.row]
+			objectForRow = self.filteredData![(indexPath as NSIndexPath).row]
 		} else{
-			objectForRow = self.data![indexPath.row]
+			objectForRow = self.data![(indexPath as NSIndexPath).row]
 		}
 		
 		let text:String = objectForRow.title!
 		
 		// date
-		let dateComponents:NSDateComponents = NSCalendar.currentCalendar().components([.Month, .Day], fromDate: objectForRow.date!)
-		let dayString = "\(dateComponents.day)" + daySuffix(dateComponents.day)
-		let dateText: String = monthAbbrevs[dateComponents.month - 1] + " " + dayString
+		let dateComponents:DateComponents = (Calendar.current as NSCalendar).components([.month, .day], from: objectForRow.date! as Date)
 
 		// image
 		let imageFilename:String = objectForRow.image!
@@ -175,19 +173,22 @@ class LessonsTableViewController: UITableViewController {
 		})
 		
 		cell.gradeLevel = objectForRow.grade!
-
-		cell.titleText = text.uppercaseString
-		cell.dateText = dateText.uppercaseString
+		cell.titleText = text.uppercased()
+		if let dateInt = dateComponents.day {
+			let dayString = "\(dateInt)" + daySuffix(dateInt)
+			let dateText: String = monthAbbrevs[dateComponents.month! - 1] + " " + dayString
+			cell.dateText = dateText.uppercased()
+		}
 		
 		return cell
 	}
 	
-	override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		var nextObject:Lesson
 		if(showFilter && filter != nil){
-			nextObject = self.filteredData![indexPath.row]
+			nextObject = self.filteredData![(indexPath as NSIndexPath).row]
 		} else{
-			nextObject = self.data![indexPath.row]
+			nextObject = self.data![(indexPath as NSIndexPath).row]
 		}
 		
 		let vc: LessonTableViewController = LessonTableViewController()
@@ -199,24 +200,24 @@ class LessonsTableViewController: UITableViewController {
 	}
 	
 	
-	func filterButtonHandler(sender:UIButton){
-		let alert = UIAlertController.init(title: "", message: nil, preferredStyle: .ActionSheet)
-		let action1 = UIAlertAction.init(title: Character.shared.gradeNames[0], style: .Default) { (action) in
+	func filterButtonHandler(_ sender:UIButton){
+		let alert = UIAlertController.init(title: "", message: nil, preferredStyle: .actionSheet)
+		let action1 = UIAlertAction.init(title: Character.shared.gradeNames[0], style: .default) { (action) in
 			self.filter = 0
 		}
-		let action2 = UIAlertAction.init(title: Character.shared.gradeNames[1], style: .Default) { (action) in
+		let action2 = UIAlertAction.init(title: Character.shared.gradeNames[1], style: .default) { (action) in
 			self.filter = 1
 		}
-		let action3 = UIAlertAction.init(title: Character.shared.gradeNames[2], style: .Default) { (action) in
+		let action3 = UIAlertAction.init(title: Character.shared.gradeNames[2], style: .default) { (action) in
 			self.filter = 2
 		}
-		let action4 = UIAlertAction.init(title: Character.shared.gradeNames[3], style: .Default) { (action) in
+		let action4 = UIAlertAction.init(title: Character.shared.gradeNames[3], style: .default) { (action) in
 			self.filter = 3
 		}
-		let action5 = UIAlertAction.init(title: "All Grades", style: .Default) { (action) in
+		let action5 = UIAlertAction.init(title: "All Grades", style: .default) { (action) in
 			self.filter = nil
 		}
-		let cancel = UIAlertAction.init(title: "Cancel", style: .Cancel) { (action) in }
+		let cancel = UIAlertAction.init(title: "Cancel", style: .cancel) { (action) in }
 		alert.addAction(action1)
 		alert.addAction(action2)
 		alert.addAction(action3)
@@ -228,7 +229,7 @@ class LessonsTableViewController: UITableViewController {
 			popoverController.sourceView = sender
 			popoverController.sourceRect = sender.bounds
 		}
-		self.presentViewController(alert, animated: true, completion: nil)
+		self.present(alert, animated: true, completion: nil)
 	}
 
 }

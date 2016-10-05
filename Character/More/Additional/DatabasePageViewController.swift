@@ -17,22 +17,22 @@ class DatabasePageViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		self.navigationItem.backBarButtonItem = UIBarButtonItem.init(title: "", style: .Plain, target: nil, action: nil);
+		self.navigationItem.backBarButtonItem = UIBarButtonItem.init(title: "", style: .plain, target: nil, action: nil);
 		
 		textView.textContainerInset = UIEdgeInsetsMake(20, 8, 20, 8)
 		textView.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
 		textView.backgroundColor = Style.shared.whiteSmoke
-		textView.editable = false
+		textView.isEditable = false
 		self.view.addSubview(textView)
 	}
 	
-	override func viewWillAppear(animated: Bool) {
+	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
 		let navBarHeight:CGFloat = self.navigationController!.navigationBar.frame.height
 		let tabBarHeight:CGFloat = self.tabBarController!.tabBar.frame.size.height;
 		let statusHeight:CGFloat = statusBarHeight()
-		textView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - navBarHeight - tabBarHeight - statusHeight)
+		textView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height - navBarHeight - tabBarHeight - statusHeight)
 		if(databasePath != nil){
 			Fire.shared.loadData(databasePath) { (data) in
 				self.textView.text = data as! String

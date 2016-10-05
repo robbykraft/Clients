@@ -35,24 +35,24 @@ class PrayerTableViewCell: SuperLessonTableViewCell {
 		super.layoutSubviews()
 		let pad = self.textBoxView.frame.size.width*0.1
 		let topBottomPad:CGFloat = 30
-		self.textLabel?.frame = CGRectMake(self.textBoxView.frame.origin.x + pad, topBottomPad,
-		                                   self.textBoxView.frame.size.width - pad*2, self.frame.size.height - topBottomPad*2)
+		self.textLabel?.frame = CGRect(x: self.textBoxView.frame.origin.x + pad, y: topBottomPad,
+		                                   width: self.textBoxView.frame.size.width - pad*2, height: self.frame.size.height - topBottomPad*2)
 		self.textLabel?.sizeToFit()
 //		self.textLabel?.frame = CGRectMake(self.textBoxView.frame.origin.x + pad, topBottomPad,
 //		                                   self.textBoxView.frame.size.width - pad*2, (self.textLabel?.frame.size.height)!)
 		self.textLabel?.center = textBoxView.center
 	}
 	
-	override func styleSelected(selected: Bool) {
+	override func styleSelected(_ selected: Bool) {
 		super.styleSelected(selected)
 	}
 	
-	override func setHighlighted(highlighted: Bool, animated: Bool) {
+	override func setHighlighted(_ highlighted: Bool, animated: Bool) {
 		super.setHighlighted(highlighted, animated: animated)
 		styleSelected(highlighted)
 	}
 	
-	override func setSelected(selected: Bool, animated: Bool) {
+	override func setSelected(_ selected: Bool, animated: Bool) {
 		super.setSelected(selected, animated: animated)
 		styleSelected(selected)
 	}

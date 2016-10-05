@@ -28,7 +28,7 @@ class Lesson {
 	var pillar:Int?
 	
 	// time
-	var date:NSDate?
+	var date:Date?
 	var order:Int?
 
 	// lesson

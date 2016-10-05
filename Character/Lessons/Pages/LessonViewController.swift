@@ -24,7 +24,7 @@ class LessonViewController: UIViewController {
 //			let attributes = [NSFontAttributeName : UIFont(name: SYSTEM_FONT, size: 21)!,
 //			                  NSKernAttributeName : CGFloat(4.0),
 //			                  NSForegroundColorAttributeName : Style.shared.darkGray];
-			let aText:NSMutableAttributedString = NSMutableAttributedString(string: title.uppercaseString)
+			let aText:NSMutableAttributedString = NSMutableAttributedString(string: title.uppercased())
 			aText.addAttributes(Style.shared.heading1Attributes(), range: NSMakeRange(0, aText.length))
 			self.titleLabel.numberOfLines = 0
 			self.titleLabel.attributedText = aText
@@ -58,7 +58,7 @@ class LessonViewController: UIViewController {
 		scrollView.frame = self.view.frame
 		self.view = scrollView
 		
-		self.view.backgroundColor = UIColor.whiteColor()
+		self.view.backgroundColor = UIColor.white
 		
 		self.view.addSubview(imageView)
 		self.view.addSubview(authorLabel)
@@ -67,44 +67,44 @@ class LessonViewController: UIViewController {
 		self.view.addSubview(authorHR1)
 		self.view.addSubview(authorHR2)
 		
-		imageView.contentMode = .ScaleAspectFill
+		imageView.contentMode = .scaleAspectFill
 		imageView.clipsToBounds = true
-		titleLabel.textAlignment = .Center
+		titleLabel.textAlignment = .center
 		titleLabel.numberOfLines = 0
 		authorLabel.numberOfLines = 0
-		authorLabel.textAlignment = .Center
+		authorLabel.textAlignment = .center
 		authorLabel.textColor = Style.shared.lightBlue
-		bodyText.scrollEnabled = false
-		bodyText.editable = false
-		authorHR1.backgroundColor = UIColor.blackColor()
-		authorHR2.backgroundColor = UIColor.blackColor()
+		bodyText.isScrollEnabled = false
+		bodyText.isEditable = false
+		authorHR1.backgroundColor = UIColor.black
+		authorHR2.backgroundColor = UIColor.black
 		
 		// FRAME SETTING
 		// IMAGE VIEW
 		let imgHeight:CGFloat = self.view.frame.size.width * 175.0/300.0
-		imageView.frame = CGRectMake(0, navPad, self.view.frame.size.width, imgHeight)
+		imageView.frame = CGRect(x: 0, y: navPad, width: self.view.frame.size.width, height: imgHeight)
 		
 		// TITLE LABEL
-		titleLabel.frame = CGRectMake(sidePad, navPad + imgHeight + 20, self.view.frame.size.width - sidePad*2, self.view.frame.size.height)
+		titleLabel.frame = CGRect(x: sidePad, y: navPad + imgHeight + 20, width: self.view.frame.size.width - sidePad*2, height: self.view.frame.size.height)
 		titleLabel.sizeToFit()
 		let titleHeight = titleLabel.frame.size.height
-		titleLabel.frame = CGRectMake(sidePad, navPad + imgHeight + 20, self.view.frame.size.width - sidePad*2, titleHeight)
+		titleLabel.frame = CGRect(x: sidePad, y: navPad + imgHeight + 20, width: self.view.frame.size.width - sidePad*2, height: titleHeight)
 		
 		// AUTHOR LABEL
-		authorLabel.frame = CGRectMake(sidePad, titleLabel.frame.origin.y + titleHeight + 20, self.view.frame.size.width - sidePad*2, self.view.frame.size.height)
+		authorLabel.frame = CGRect(x: sidePad, y: titleLabel.frame.origin.y + titleHeight + 20, width: self.view.frame.size.width - sidePad*2, height: self.view.frame.size.height)
 		authorLabel.sizeToFit()
 		let authorHeight = authorLabel.frame.size.height
-		authorLabel.frame = CGRectMake(sidePad, titleLabel.frame.origin.y + titleHeight + 20, self.view.frame.size.width - sidePad*2, authorHeight)
+		authorLabel.frame = CGRect(x: sidePad, y: titleLabel.frame.origin.y + titleHeight + 20, width: self.view.frame.size.width - sidePad*2, height: authorHeight)
 		
 		// LESSON BODY
-		bodyText.frame = CGRectMake(sidePad, authorLabel.frame.origin.y + authorHeight + 20, self.view.frame.size.width - sidePad*2, self.view.frame.size.height)
+		bodyText.frame = CGRect(x: sidePad, y: authorLabel.frame.origin.y + authorHeight + 20, width: self.view.frame.size.width - sidePad*2, height: self.view.frame.size.height)
 		bodyText.sizeToFit()
 		let bodyHeight = bodyText.frame.size.height
 		
-		authorHR1.frame = CGRectMake(sidePad, authorLabel.frame.origin.y - 10, self.view.frame.size.width - sidePad*2, 1)
-		authorHR2.frame = CGRectMake(sidePad, authorLabel.frame.origin.y + authorHeight + 10, self.view.frame.size.width - sidePad*2, 1)
+		authorHR1.frame = CGRect(x: sidePad, y: authorLabel.frame.origin.y - 10, width: self.view.frame.size.width - sidePad*2, height: 1)
+		authorHR2.frame = CGRect(x: sidePad, y: authorLabel.frame.origin.y + authorHeight + 10, width: self.view.frame.size.width - sidePad*2, height: 1)
 		
-		scrollView.contentSize = CGSizeMake(self.view.frame.size.width, bodyText.frame.origin.y + bodyHeight + 20)
+		scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: bodyText.frame.origin.y + bodyHeight + 20)
 	}
 }
 
