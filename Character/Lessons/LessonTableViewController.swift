@@ -11,6 +11,20 @@ import UIKit
 class LessonTableViewController: UITableViewController {
 	
 	let noLessonCoverView = UIView()
+	
+	let loadingLessonsCoverView = UIView()
+	
+	var isLoadingLessons: Bool?{
+		didSet{
+			if(isLoadingLessons)!{
+				if(!loadingLessonsCoverView.isDescendant(of: self.view)){
+					self.view.addSubview(loadingLessonsCoverView)
+				}
+			}else{
+				loadingLessonsCoverView.removeFromSuperview()
+			}
+		}
+	}
 
 	var data: Lesson?{
 		didSet{
@@ -48,7 +62,13 @@ class LessonTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 		
-		self.view.addSubview(noLessonCoverView)
+		self.buildChildViews()
+		if(!noLessonCoverView.isDescendant(of: self.view)){
+			self.view.addSubview(noLessonCoverView)
+		}
+		if(!loadingLessonsCoverView.isDescendant(of: self.view)){
+			self.view.addSubview(loadingLessonsCoverView)
+		}
 		
 		self.view.backgroundColor = Style.shared.whiteSmoke
 		self.tableView.backgroundColor = Style.shared.whiteSmoke
@@ -58,7 +78,15 @@ class LessonTableViewController: UITableViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
+
+		if(data != nil && data?.key != nil){
+			getCompletedChallenges((data?.key)!)
+		}
+	}
+	
+	func buildChildViews(){
 		
+		// make "No Lesson Today" view
 		noLessonCoverView.frame = self.view.bounds
 		noLessonCoverView.backgroundColor = UIColor.clear
 		let iconImageView = UIImageView()
@@ -80,10 +108,28 @@ class LessonTableViewController: UITableViewController {
 		noLessonLabel.alpha = 0.05
 		noLessonCoverView.addSubview(noLessonLabel)
 		
-
-		if(data != nil && data?.key != nil){
-			getCompletedChallenges((data?.key)!)
-		}
+		// make "Loading Lessons" view
+		loadingLessonsCoverView.frame = self.view.bounds
+		loadingLessonsCoverView.backgroundColor = UIColor(white: 0.0, alpha: 0.1)
+		let loadingWindow = UIView()
+		loadingWindow.frame = CGRect(x: 0, y: 0, width: self.view.bounds.size.width*CGFloat(0.5), height: self.view.bounds.size.width*CGFloat(0.5))
+		loadingWindow.layer.cornerRadius = self.view.bounds.size.width*0.05
+		loadingWindow.clipsToBounds = true
+		loadingWindow.layer.masksToBounds = true
+		loadingWindow.backgroundColor = Style.shared.darkGray
+		loadingWindow.center = loadingLessonsCoverView.center
+		loadingLessonsCoverView.addSubview(loadingWindow)
+		let loadingLabel = UILabel()
+		loadingLabel.text = "LOADING"
+		loadingLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P24)
+		loadingLabel.textColor = UIColor.white
+		loadingLabel.sizeToFit()
+		loadingLabel.center = CGPoint(x: loadingWindow.frame.size.width*0.5, y: loadingWindow.frame.size.height*0.5 + 30)
+		loadingWindow.addSubview(loadingLabel)
+		let activityView = UIActivityIndicatorView.init(activityIndicatorStyle: .whiteLarge)
+		activityView.startAnimating()
+		activityView.center = CGPoint(x: loadingWindow.frame.size.width*0.5, y: loadingWindow.frame.size.height*0.5 - 30)
+		loadingWindow.addSubview(activityView)
 	}
 	
 	func getCompletedChallenges(_ lessonKey:String){
