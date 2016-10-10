@@ -123,10 +123,14 @@ class ScoreViewController: UITableViewController {
 			// date
 			let date = keyArray![(indexPath as NSIndexPath).row]
 			let dateComponents:DateComponents = (Calendar.current as NSCalendar).components([.month, .day], from: date)
-			let dayString = "\(dateComponents.day)" + daySuffix(dateComponents.day!)
-			let dateText: String = monthAbbrevs[dateComponents.month! - 1] + " " + dayString
+
 			cell.textLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P24)
-			cell.textLabel?.text = dateText
+
+			if let dateInt = dateComponents.day {
+				let dayString = "\(dateInt)" + daySuffix(dateInt)
+				let dateText: String = monthAbbrevs[dateComponents.month! - 1] + " " + dayString
+				cell.textLabel?.text = dateText
+			}
 
 			// percent
 //			let completedArray:[Bool]? = self.data![date]
@@ -168,6 +172,8 @@ class ScoreViewController: UITableViewController {
 			}
 		}
 		
+		
+		cell.selectionStyle = .none
 		
 //		let text:String = objectForRow.title!
 //		

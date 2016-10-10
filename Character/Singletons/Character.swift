@@ -137,14 +137,14 @@ class Character{
 				}
 			}
 		}
+		var pastLessonKeys:[Date] = [] // this is to check for duplicates in upcoming lessons
 		var allLessons:[Lesson] = []
 		if(pastLessons != nil){
 			let past:[Date:[Lesson]] = pastLessons!
 			var keys:[Date] = Array(past.keys)
 			keys.sort(by: { $0.compare($1) == ComparisonResult.orderedAscending })
-			print("past keys:")
+			pastLessonKeys = keys
 			for key in keys{
-				print(key)
 				let daysLessons = pastLessons![key]
 				if(daysLessons != nil){
 					for lesson in daysLessons!{
@@ -159,20 +159,29 @@ class Character{
 			let upcoming:[Date:[Lesson]] = upcomingLessons!
 			var keys:[Date] = Array(upcoming.keys)
 			keys.sort(by: { $0.compare($1) == ComparisonResult.orderedAscending })
-			print("upcoming keys:")
 			for key in keys{
-				print(key)
 				let daysLessons = upcomingLessons![key]
 				if(daysLessons != nil){
 					for lesson in daysLessons!{
 						if(gradeLevels.contains(lesson.grade!)){
-							allLessons.append(lesson)
+							if(!dateExistsInArray(date: key, dateArray: pastLessonKeys)){
+								allLessons.append(lesson)
+							}
 						}
 					}
 				}
 			}
 		}
 		return (today,allLessons)
+	}
+	
+	func dateExistsInArray(date:Date, dateArray:[Date]) -> Bool{
+		for d in dateArray{
+			if(d.timeIntervalSinceNow == date.timeIntervalSinceNow){
+				return true
+			}
+		}
+		return false
 	}
 
 	

@@ -55,9 +55,15 @@ class FeedbackViewController: UIViewController, UITextViewDelegate {
 	}
 	
 	func submitButtonHandler(){
+		var userString:String = ""
+		if let uid = Fire.shared.myUID {
+			userString = uid
+		}
 		let feedbackObject:[String:AnyObject] = [
 			"text": textView.text as AnyObject,
-			"createdAt": Date.init().timeIntervalSince1970 as AnyObject
+			"createdAt": Date.init().timeIntervalSince1970 as AnyObject,
+			"user": userString as AnyObject
+//					let user = FIRAuth.auth()?.currentUser
 		]
 
 		Fire.shared.newUniqueObjectAtPath("feedback", object: feedbackObject as AnyObject) {

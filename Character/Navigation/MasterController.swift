@@ -62,9 +62,7 @@ class MasterController: UITabBarController {
 					gradeLevels = userData!["grade"] as! [Int]
 				}
 //				self.reloadLessons(gradeLevels)
-				print("555 beginning to download and prepare");
 				Character.shared.downloadAndPrepareLessons({ (success) in
-					print("555 beginning to reloadLessons");
 					self.setLoadingScreen(visible: true)
 					self.reloadLessons(gradeLevels)
 				})
@@ -82,7 +80,6 @@ class MasterController: UITabBarController {
 
 	func reloadLessons(_ gradeLevels:[Int]){
 		let (todaysLesson, lessonArray) = Character.shared.lessonsWithFilter(gradeLevels)
-		print("555 lessons sorted");
 		
 		if(lessonArray.count > 0){
 			self.allLessonsVC.data = lessonArray
@@ -97,7 +94,6 @@ class MasterController: UITabBarController {
 			let todaysPillar:Int = todaysLesson!.pillar!
 			self.todayLessonVC.navigationItem.title = Character.shared.pillarNames[todaysPillar].uppercased()
 		}
-		print("555 all done");
 		self.setLoadingScreen(visible: false)
 	}
 

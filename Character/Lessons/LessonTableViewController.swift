@@ -117,7 +117,7 @@ class LessonTableViewController: UITableViewController {
 		loadingWindow.clipsToBounds = true
 		loadingWindow.layer.masksToBounds = true
 		loadingWindow.backgroundColor = Style.shared.darkGray
-		loadingWindow.center = loadingLessonsCoverView.center
+		loadingWindow.center = CGPoint(x: loadingLessonsCoverView.center.x, y: loadingLessonsCoverView.center.y - (44 + 12)*0.5 )
 		loadingLessonsCoverView.addSubview(loadingWindow)
 		let loadingLabel = UILabel()
 		loadingLabel.text = "LOADING"
