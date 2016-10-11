@@ -177,7 +177,7 @@ class Character{
 	
 	func dateExistsInArray(date:Date, dateArray:[Date]) -> Bool{
 		for d in dateArray{
-			if(d.timeIntervalSinceNow == date.timeIntervalSinceNow){
+			if(Int(d.timeIntervalSince1970) == Int(date.timeIntervalSince1970)){
 				return true
 			}
 		}
