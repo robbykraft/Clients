@@ -25,7 +25,7 @@ class MoreViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-		preferredStatusBarStyle
+//		preferredStatusBarStyle
 		
 		self.navigationController?.navigationBar.barStyle = UIBarStyle.blackTranslucent
 		self.navigationItem.backBarButtonItem = UIBarButtonItem.init(title: "", style: .plain, target: nil, action: nil);

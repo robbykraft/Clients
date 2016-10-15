@@ -193,6 +193,7 @@ class LessonsTableViewController: UITableViewController {
 		
 		let vc: LessonTableViewController = LessonTableViewController()
 		vc.data = nextObject
+		vc.isLoadingLessons = false
 //		let pillarName = nextObject["pillar"]!!
 //		vc.title = String(pillarName).uppercaseString
 		vc.title = "TRUSTWORTHINESS"

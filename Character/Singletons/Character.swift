@@ -52,11 +52,14 @@ class Character{
 	
 	
 	
-	func getMyScore(_ completionHandler: @escaping ( [Date:Int]? ) -> () ) {
+	// each entry for a Date has an array of array of Bool
+	// inner array is always the [Bool Bool Bool], 1 2 3 challenge completion
+	// outer array is if they are teachers of multiple grades, multiple challenges per day
+	func getMyScore(_ completionHandler: @escaping ( [Date:[[Bool]]]? ) -> () ) {
 		Fire.shared.getUser { (uid, userData) in
 			if(userData != nil){
-
-				var challengeDictionary:[Date:Int] = [:]
+				
+				var challengeDictionary:[Date:[[Bool]]] = [:]
 
 				// gather all challenges user has visited
 				var challenges:[String:[Bool]]? = userData!["challenges"] as! [String:[Bool]]?
@@ -70,22 +73,25 @@ class Character{
 
 				for date in Array(dateLessonPairs.keys){
 					// iterate over all the dates
-					challengeDictionary[date] = 0
+					if(challengeDictionary[date] == nil){
+						challengeDictionary[date] = []
+					}
 
 					// though, if user completed one fill it in
 					let lessonKeys:[String] = dateLessonPairs[date]!
 					for key in lessonKeys{
 						if(lessonKeysCompleted.contains(key)){
 							let boolArray = challenges![key]
-							var count:Int = 0
+//							var count:Int = 0
 							if(boolArray != nil){
-								for entry in boolArray!{
-									if(entry){
-										count += 1
-									}
-								}
+								(challengeDictionary[date])?.append(boolArray!)
+//								for entry in boolArray!{
+//									if(entry){
+//										count += 1
+//									}
+//								}
 							}
-							challengeDictionary[date] = challengeDictionary[date]! + count
+//							challengeDictionary[date] = challengeDictionary[date]! + count
 						}
 					}
 				}

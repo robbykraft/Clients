@@ -93,7 +93,7 @@ class LessonTableViewController: UITableViewController {
 		iconImageView.image = UIImage(named: "icon")
 		iconImageView.alpha = 0.05
 		iconImageView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width*0.75, height: self.view.frame.size.width*0.75)
-		iconImageView.center = CGPoint(x: self.view.center.x, y: iconImageView.frame.size.height * 0.5)
+		iconImageView.center = CGPoint(x: self.view.center.x, y: (self.view.frame.size.height-44) * 0.33)
 		noLessonCoverView.addSubview(iconImageView)
 		let noLessonLabel = UILabel()
 		noLessonLabel.text = "NO LESSON TODAY"
@@ -110,7 +110,7 @@ class LessonTableViewController: UITableViewController {
 		
 		// make "Loading Lessons" view
 		loadingLessonsCoverView.frame = self.view.bounds
-		loadingLessonsCoverView.backgroundColor = UIColor(white: 0.0, alpha: 0.1)
+		loadingLessonsCoverView.backgroundColor = Style.shared.whiteSmoke//UIColor(white: 0.0, alpha: 0.1)
 		let loadingWindow = UIView()
 		loadingWindow.frame = CGRect(x: 0, y: 0, width: self.view.bounds.size.width*CGFloat(0.5), height: self.view.bounds.size.width*CGFloat(0.5))
 		loadingWindow.layer.cornerRadius = self.view.bounds.size.width*0.05

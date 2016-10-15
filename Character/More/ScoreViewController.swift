@@ -10,17 +10,11 @@ import UIKit
 
 class ScoreViewController: UITableViewController {
 	
-	var maxChallenges:Int? {
-		didSet{
-			self.tableView.reloadData()
-		}
-	}
-	
 	var percentArray:[String] = [ "0%", "33%", "66%", "100%" ]
 	
 	var keyArray:[Date]?
 	
-	var data: [ Date:Int ]? {
+	var data: [ Date:[[Bool]] ]? {
 		didSet{
 			if(data != nil){
 				let unsorted = Array( (data?.keys)! )
@@ -43,26 +37,13 @@ class ScoreViewController: UITableViewController {
 
 		self.navigationItem.backBarButtonItem = UIBarButtonItem.init(title: "", style: .plain, target: nil, action: nil);
 
-		Character.shared.getMyScore({ (dateDictionary) in
-			self.data = dateDictionary
-		})
-		
-		Fire.shared.getUser { (uid, userData) in
-			if(userData != nil && userData!["grade"] != nil){
-				let gradeArray:[Int] = userData!["grade"] as! [Int]
-				
-				if(gradeArray.contains(0) && gradeArray.contains(1) && gradeArray.contains(2) && gradeArray.contains(3)){
-					self.maxChallenges = 12
-				}
-				else{
-					self.maxChallenges = 3
-				}
-			}
-		}
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
+		Character.shared.getMyScore({ (dateDictionary) in
+			self.data = dateDictionary
+		})
 		self.tableView.reloadData()
 	}
 	
@@ -110,7 +91,7 @@ class ScoreViewController: UITableViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-		return "# Completed:"
+		return "Daily Challenges:"
 	}
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -143,32 +124,36 @@ class ScoreViewController: UITableViewController {
 //				}
 //				cell.detailTextLabel?.text = percentArray[count]
 //			}
-			cell.detailTextLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15)
-			let completed:Int? = self.data![date]
+			cell.detailTextLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
+			cell.detailTextLabel?.textColor = UIColor.black
+			let completed:[[Bool]]? = self.data![date]
+
+			var totalCount:Int = 0
+			var yesCount:Int = 0
+			var noCount:Int = 0
+			
 			if(completed != nil){
-				switch completed! {
-				case 0:
-					cell.detailTextLabel?.textColor = UIColor(white: 0.85, alpha: 1.0)
-					break
-					
-				case 1:
-					cell.detailTextLabel?.textColor = Style.shared.gray
-					break
-					
-				case 2:
-					cell.detailTextLabel?.textColor = Style.shared.gray
-					break
-					
-				default:
-					cell.detailTextLabel?.textColor = Style.shared.green
-					break
+				var emojiString:String = ""
+				for boolArray in completed!{
+					if(boolArray != nil){
+						for entry in boolArray{
+							if(entry){
+								emojiString.append("✅")
+								yesCount += 1
+							} else{
+								emojiString.append("❎")
+								noCount += 1
+							}
+							totalCount += 1
+						}
+					}
 				}
-//				if(maxChallenges != nil){
-//					cell.detailTextLabel?.text = "\(completed!) / \(maxChallenges!)"
-//				}
-//				else{
-					cell.detailTextLabel?.text = "\(completed!)"
-//				}
+
+				if(totalCount <= 3){
+					cell.detailTextLabel?.text = emojiString
+				} else{
+					cell.detailTextLabel?.text = "\(yesCount):✔︎  \(noCount):✘"
+				}
 			}
 		}
 		
