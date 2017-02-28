@@ -22,7 +22,7 @@ class ChallengesTableViewCell: SuperLessonTableViewCell {
 	override func initUI() {
 		super.initUI()
 		
-		cornerTitleLabel.text = "Daily Challenge"
+		cornerTitleLabel.text = "Daily Behavior"
 		
 		viewChallengeLabel.backgroundColor = Style.shared.lightBlue
 		viewChallengeLabel.textColor = UIColor.white

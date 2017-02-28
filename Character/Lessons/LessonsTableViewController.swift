@@ -196,7 +196,15 @@ class LessonsTableViewController: UITableViewController {
 		vc.isLoadingLessons = false
 //		let pillarName = nextObject["pillar"]!!
 //		vc.title = String(pillarName).uppercaseString
-		vc.title = "TRUSTWORTHINESS"
+//		vc.title = "TRUSTWORTHINESS"
+		vc.title = ""
+		if Character.shared.currentPillar != nil{
+			let currentPillar:Int = Character.shared.currentPillar!
+			if(currentPillar < Character.shared.pillarNames.count){
+				let currentPillarName = Character.shared.pillarNames[currentPillar]
+				vc.title = String(currentPillarName).uppercased()
+			}
+		}
 		self.navigationController?.pushViewController(vc, animated: true)
 	}
 	

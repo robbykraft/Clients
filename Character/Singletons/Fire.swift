@@ -21,6 +21,7 @@
 
 
 import Firebase
+import BRYXBanner
 
 let IMAGE_DIRECTORY:String = "images/"
 let DOCUMENT_DIRECTORY:String = "documents/"
@@ -42,6 +43,8 @@ class Fire {
 	var currentUpload:FIRStorageUploadTask?
 	
 	var myUID:String?
+	
+	let startTime:Date = Date()
 	
 	fileprivate init() {
 		// setup USER listener
@@ -65,9 +68,19 @@ class Fire {
 		let connectedRef = FIRDatabase.database().reference(withPath: ".info/connected")
 		connectedRef.observe(.value, with: { snapshot in
 			if let connected = snapshot.value as? Bool , connected {
-				print("INTERNET CONNECTION ESTABLISHED")
+//				print("INTERNET CONNECTION ESTABLISHED")
+				if(abs(self.startTime.timeIntervalSinceNow) > 2.0){
+					let banner = Banner(title: "Internet", subtitle: "Connection Established", image: UIImage(named: "Icon"), backgroundColor: UIColor(red:48.00/255.0, green:174.0/255.0, blue:51.5/255.0, alpha:1.000))
+					banner.dismissesOnTap = true
+					banner.show(duration: 2.0)
+				}
 			} else {
-				print("INTERNET CONNECTION DOWN")
+//				print("INTERNET CONNECTION DOWN")
+				if(abs(self.startTime.timeIntervalSinceNow) > 2.0){
+					let banner = Banner(title: "Internet", subtitle: "Not Connected", image: UIImage(named: "Icon"), backgroundColor: UIColor(red:174.0/255.0, green:48.0/255.0, blue:51.5/255.0, alpha:1.000))
+					banner.dismissesOnTap = true
+					banner.show(duration: 2.0)
+				}
 			}
 		})
 	}

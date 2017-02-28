@@ -187,15 +187,15 @@ class LessonTableViewController: UITableViewController {
 			self.navigationController?.pushViewController(vc, animated: true)
 			break
 		case 2:
-			let vc: PrayerViewController = PrayerViewController()
-			vc.title = "DAILY PRAYER"
-			self.navigationController?.pushViewController(vc, animated: true)
-			break
-		case 3:
 			let vc: ChallengesViewController = ChallengesViewController()
 			vc.data = self.data
 			vc.completedArray = self.completedChallengeArray
-			vc.title = "DAILY CHALLENGE"
+			vc.title = "DAILY BEHAVIOR"
+			self.navigationController?.pushViewController(vc, animated: true)
+			break
+		case 3:
+			let vc: PrayerViewController = PrayerViewController()
+			vc.title = "DAILY PRAYER"
 			self.navigationController?.pushViewController(vc, animated: true)
 			break
 		default:
@@ -210,9 +210,9 @@ class LessonTableViewController: UITableViewController {
 		case 1:
 			return quoteCellWithData(data)
 		case 2:
-			return prayerCellWithData(data)
-		case 3:
 			return challengesCellWithData(data)
+		case 3:
+			return prayerCellWithData(data)
 		default:
 			return UITableViewCell()
 		}

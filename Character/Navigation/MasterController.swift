@@ -51,24 +51,36 @@ class MasterController: UITabBarController {
 	}
 	
 	func loadDataAppWide() {
-		Fire.shared.getUser { (uid, userData) in
-			if(uid != nil && userData != nil){
-				var gradeLevels:[Int]
-				if(userData!["grade"] == nil){
-					// user hasn't been updated with a Grade Level
-					gradeLevels = [0,1,2,3]
+		if(Character.shared.VERBOSE){ print("load data appwide") }
+	
+		// first load USER info (grade levels, client name)
+		Character.shared.getMyGradeLevels { (successGrades, gradeLevels) in
+			Character.shared.getMyClientID({ (successClient, client) in
+				if(!successGrades || !successClient){
+					// alert, something wrong with user, try logging in again, maybe a different user
+					// exit to login screen
+					return;
 				}
-				else{
-					gradeLevels = userData!["grade"] as! [Int]
+				// SUCCESS we have grade levels and client, let's download lessons:
+				Schedule.shared.buildSchoolYearCalendar(client: client) { (successBuildYear, schoolYear) in
+					if(successBuildYear){
+						print("got school year data")
+						print(schoolYear!)
+						Schedule.shared.buildLessonData({ (successLesson) in
+							print("got lessons")
+						})
+					}
 				}
+				
 //				self.reloadLessons(gradeLevels)
-				Character.shared.downloadAndPrepareLessons({ (success) in
-					self.setLoadingScreen(visible: true)
-					self.reloadLessons(gradeLevels)
-				})
-			}
+//				Character.shared.downloadAndPrepareLessons({ (success) in
+//					self.setLoadingScreen(visible: true)
+//					self.reloadLessons(gradeLevels)
+//				})
+			})
 		}
 	}
+	
 	
 	func setLoadingScreen(visible:Bool){
 		if(visible){

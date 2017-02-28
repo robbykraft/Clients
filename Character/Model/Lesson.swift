@@ -42,7 +42,7 @@ class Lesson {
 
 	var image:String?
 	
-	init(key:String, dictionary:Dictionary<String,AnyObject>) {
+	init(key:String, dictionary:Dictionary<String,Any>) {
 		self.key = key
 		self.body = dictionary["body"] as? String
 		self.grade = dictionary["grade"] as? Int

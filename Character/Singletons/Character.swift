@@ -21,6 +21,8 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 
 class Character{
+	let VERBOSE = true
+	
 	static let shared = Character()
 	
 	fileprivate init() { }
@@ -50,7 +52,62 @@ class Character{
 	var upcomingLessons:[Date:[Lesson]]?
 	var pastLessons:[Date:[Lesson]]?
 	
+	var pillarStartTimeStamps:[Double] = [] // store all the pillar's start dates
+	var currentPillar:Int? = nil // store current pillar index in pillar array
 	
+	func findCurrentPillar(){
+		// find current pillar
+		var thisPillar:Int? = nil
+		let nowDate:Date = Date()
+		for i in 0..<pillarStartTimeStamps.count{
+			if(nowDate.timeIntervalSince1970 > pillarStartTimeStamps[i]){
+				thisPillar = i
+			}
+		}
+		self.currentPillar = thisPillar;
+	}
+	
+	func getMyGradeLevels(_ completionHandler: @escaping ( Bool, [Int] ) -> ()){
+		Fire.shared.getUser { (uid, data) in
+			if let userData = data{
+				if let userGrades = userData["grade"] as? [Int]{
+					// grades okay
+					completionHandler(true, userGrades)
+				} else{
+					// user has not been assigned a grade yet
+					let userGrades = [0,1,2,3]
+					Fire.shared.updateUserWithKeyAndValue("grade", value: userGrades as AnyObject, completionHandler: { (success) in
+						// NOW grades okay
+						completionHandler(true, userGrades)
+					})
+				}
+			} else{
+				// nah, something wrong with getting this user...
+				completionHandler(false, [])
+			}
+		}
+	}
+	
+	func getMyClientID(_ completionHandler: @escaping ( Bool, String ) -> ()){
+		Fire.shared.getUser { (uid, data) in
+			if let userData = data{
+				if let userClient = userData["client"] as? String{
+					// we have a client
+					completionHandler(true, userClient)
+				} else{
+					// user has not been assigned a grade yet
+					let userClient = "0000"
+					Fire.shared.updateUserWithKeyAndValue("client", value: userClient as AnyObject, completionHandler: { (success) in
+						// NOW client okay
+						completionHandler(true, userClient)
+					})
+				}
+			} else{
+				// nah, something wrong with getting this user...
+				completionHandler(false, "")
+			}
+		}
+	}
 	
 	// each entry for a Date has an array of array of Bool
 	// inner array is always the [Bool Bool Bool], 1 2 3 challenge completion
@@ -190,29 +247,52 @@ class Character{
 		return false
 	}
 
+	func getScheduleForClient(clientName:String, _ completionHandler: @escaping (_ success:Bool,  [String:AnyObject] ) -> () ){
+		FIRDatabase.database().reference().child("schedules").observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in
+			print("client schedule")
+			if snapshot.value is NSNull {
+				completionHandler(false, [:])
+			} else {
+				let clientSchedules = snapshot.value as! [String:AnyObject]
+				if clientSchedules[clientName] is NSNull{
+					
+				} else{
+					completionHandler(true, clientSchedules[clientName] as! [String : AnyObject])
+				}
+			}
+		}
+	}
+
 	
 	func downloadAndPrepareLessons(_ completionHandler: @escaping (_ success:Bool) -> () ) {
+		if(self.VERBOSE){ print("download and prepare lessons") }
+		
 		FIRDatabase.database().reference().child("lessons").observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in
 			if snapshot.value is NSNull {
 				completionHandler(false)
 			} else {
 				// SUCCESS connecting to the database
 				let lessonsJSON = snapshot.value as? [String:AnyObject]
-
-				self.getScheduleArray({ (scheduleArray) in
-
-					let lessonArray:[Lesson] = self.lessonsFromJSON(lessonsJSON!)
+				self.getScheduleForClient(clientName: "0000", { (success) in
 					
-					let lessonDictionary = self.sortLessonByPillarAndGrade(lessonArray)
-
-					let lessonSchedule = self.makeLessonSchedule(lessonDictionary, scheduleArray: scheduleArray)
-
-					self.todaysLesson = self.getTodaysLesson(lessonSchedule)
-					self.upcomingLessons = self.getNext5Lessons(lessonSchedule)
-					self.pastLessons = self.getLast15Lessons(lessonSchedule)
-					
-					completionHandler(true)
 				})
+
+//				self.getScheduleArray({ (scheduleArray) in
+//
+//					let lessonArray:[Lesson] = self.lessonsFromJSON(lessonsJSON!)
+//					
+//					let lessonDictionary = self.sortLessonByPillarAndGrade(lessonArray)
+//
+//					let lessonSchedule = self.makeLessonSchedule(lessonDictionary, scheduleArray: scheduleArray)
+//
+//					self.todaysLesson = self.getTodaysLesson(lessonSchedule)
+//					self.upcomingLessons = self.getNext5Lessons(lessonSchedule)
+//					self.pastLessons = self.getLast15Lessons(lessonSchedule)
+//					
+//					self.findCurrentPillar()
+//					
+//					completionHandler(true)
+//				})
 			}
 		}
 	}
@@ -222,18 +302,21 @@ class Character{
 	//  0: (date, pillar, pillar count index)
 	//  1: (date, pillar, pillar count index)
 	func getScheduleArray(_ completionHandler: @escaping ( [ [String:AnyObject] ] ) -> () ) {
-		FIRDatabase.database().reference().child("schedule/pillar").observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in
+		FIRDatabase.database().reference().child("schedules/0000/pillar").observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in
 			if snapshot.value is NSNull {
-
+				
 			} else {
+				if(self.VERBOSE){ print("first batch of schedule data") }
+				if(self.VERBOSE){ print(snapshot.value) }
+				
 				var array:[ [String:AnyObject] ] = []
 				let ONE_MONTH:TimeInterval = 2678400
-				let startTimes:[Double] = snapshot.value as! [Double]
-				let firstDate:Date = Date(timeIntervalSince1970: startTimes[0])
-				let endDate:Date = Date(timeInterval: ONE_MONTH, since: Date(timeIntervalSince1970: startTimes.last!))
+				self.pillarStartTimeStamps = snapshot.value as! [Double]
+				let firstDate:Date = Date(timeIntervalSince1970: self.pillarStartTimeStamps[0])
+				let endDate:Date = Date(timeInterval: ONE_MONTH, since: Date(timeIntervalSince1970: self.pillarStartTimeStamps.last!))
 				
 				var pillarCounts:[Int] = []
-				for _ in startTimes{
+				for _ in self.pillarStartTimeStamps{
 					pillarCounts.append(0)
 				}
 				
@@ -242,8 +325,8 @@ class Character{
 					
 					// find current pillar
 					var thisPillar:Int? = nil
-					for i in 0..<startTimes.count{
-						if(date.timeIntervalSince1970 > startTimes[i]){
+					for i in 0..<self.pillarStartTimeStamps.count{
+						if(date.timeIntervalSince1970 > self.pillarStartTimeStamps[i]){
 							thisPillar = i
 						}
 					}

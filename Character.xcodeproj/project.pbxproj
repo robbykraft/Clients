@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3B48A92C7D217435CF908E04 /* Pods_Character.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37345BBC5059B616A69B6EB1 /* Pods_Character.framework */; };
 		D513BB6E1D6F3FE000BA20A6 /* SetupProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D513BB6D1D6F3FE000BA20A6 /* SetupProfileViewController.swift */; };
+		D521BCD81E5DF182004A7756 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D521BCD71E5DF182004A7756 /* Schedule.swift */; };
 		D52C40B31D7240BB004A4724 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52C40B21D7240BB004A4724 /* FeedbackViewController.swift */; };
 		D53F1D201D76256A00B1A194 /* PrayerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53F1D1F1D76256A00B1A194 /* PrayerTableViewCell.swift */; };
 		D53F1D221D7625AF00B1A194 /* PrayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53F1D211D7625AF00B1A194 /* PrayerViewController.swift */; };
@@ -48,6 +49,7 @@
 		37345BBC5059B616A69B6EB1 /* Pods_Character.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Character.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D815774EF862690FFA80C6F /* Pods-Character.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Character.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Character/Pods-Character.debug.xcconfig"; sourceTree = "<group>"; };
 		D513BB6D1D6F3FE000BA20A6 /* SetupProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetupProfileViewController.swift; sourceTree = "<group>"; };
+		D521BCD71E5DF182004A7756 /* Schedule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
 		D523C32C1DA58A7900490E71 /* Character.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Character.entitlements; sourceTree = "<group>"; };
 		D52C40B21D7240BB004A4724 /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
 		D53F1D1F1D76256A00B1A194 /* PrayerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrayerTableViewCell.swift; sourceTree = "<group>"; };
@@ -182,6 +184,7 @@
 			children = (
 				D59B04381D6CA4B700E6624B /* Fire.swift */,
 				D572F4A71D6E273D000391F2 /* Character.swift */,
+				D521BCD71E5DF182004A7756 /* Schedule.swift */,
 				D59B04671D6CBF7000E6624B /* Style.swift */,
 				D59B04371D6CA4B700E6624B /* Cache.swift */,
 			);
@@ -371,7 +374,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -403,6 +406,7 @@
 				D56ED1DC1D77532E009D61E6 /* ScoreViewController.swift in Sources */,
 				D59B043B1D6CA4B700E6624B /* ProfileViewController.swift in Sources */,
 				D59B045C1D6CB04600E6624B /* LessonTableViewController.swift in Sources */,
+				D521BCD81E5DF182004A7756 /* Schedule.swift in Sources */,
 				D53F1D221D7625AF00B1A194 /* PrayerViewController.swift in Sources */,
 				D572F4A61D6E2729000391F2 /* Extensions.swift in Sources */,
 				D5F3CE4B1D7356F0003FABEF /* DatabasePageViewController.swift in Sources */,

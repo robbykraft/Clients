@@ -1,4 +1,5 @@
 PODS:
+  - BRYXBanner (0.7.1)
   - Firebase (3.4.0):
     - Firebase/Core (= 3.4.0)
   - Firebase/Analytics (3.4.0):
@@ -42,12 +43,14 @@ PODS:
     - GoogleSymbolUtilities (~> 1.0)
 
 DEPENDENCIES:
+  - BRYXBanner (~> 0.7)
   - Firebase
   - Firebase/Auth
   - Firebase/Database
   - Firebase/Storage
 
 SPEC CHECKSUMS:
+  BRYXBanner: 34eabf9c6c009f187948ca78a4f3bba3767d0f04
   Firebase: 754562547af419cc2f4b15247fee419081924bc2
   FirebaseAnalytics: 228be2991cb28efb96cdafc4d62f64680e615c69
   FirebaseAuth: 26fd291c3b552fc9658420b867520d5ae080421c
@@ -60,6 +63,6 @@ SPEC CHECKSUMS:
   GoogleSymbolUtilities: 33117db1b5f290c6fbf259585e4885b4c84b98d7
   GoogleUtilities: 56c5ac05b7aa5dc417a1bb85221a9516e04d7032
 
-PODFILE CHECKSUM: a2d150e9fd36b27be045f012f87043f24010dafc
+PODFILE CHECKSUM: 5d5d7d3ad144f5dffd8929a23efbb288dc5aed53
 
-COCOAPODS: 1.0.1
+COCOAPODS: 1.1.1

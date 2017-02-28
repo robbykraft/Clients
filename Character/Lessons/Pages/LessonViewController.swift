@@ -76,6 +76,7 @@ class LessonViewController: UIViewController {
 		authorLabel.textColor = Style.shared.lightBlue
 		bodyText.isScrollEnabled = false
 		bodyText.isEditable = false
+		bodyText.dataDetectorTypes = .link
 		authorHR1.backgroundColor = UIColor.black
 		authorHR2.backgroundColor = UIColor.black
 		
