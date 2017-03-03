@@ -31,27 +31,38 @@ class Character{
 	let pillarNames = ["trustworthiness", "respect", "responsibility", "fairness", "caring", "citizenship"]
 	let gradeNames = ["K-2nd", "3rd-5th", "6th-8th", "9th-12th"]
 	
-	// each entry is an array of 4 lessons, one of each grade level
-	var todaysLesson:[Lesson]?
-	var upcomingLessons:[Date:[Lesson]]?
-	var pastLessons:[Date:[Lesson]]?
+	var cachedLessons:[String:Lesson] = [:]
 	
-	var pillarStartTimeStamps:[Double] = [] // store all the pillar's start dates
-	var currentPillar:Int? = nil // store current pillar index in pillar array
-	
-	func findCurrentPillar(){
-		// find current pillar
-		var thisPillar:Int? = nil
-		let nowDate:Date = Date()
-		for i in 0..<pillarStartTimeStamps.count{
-			if(nowDate.timeIntervalSince1970 > pillarStartTimeStamps[i]){
-				thisPillar = i
-			}
+	func boot(_ completionHandler: @escaping (Bool, String?) -> ()){ // success, clientID, gradeLevels
+		self.getMyGradeLevels { (successGrades, gradeLevels) in
+			self.getMyClientID({ (successClient, client) in
+				if(!successGrades){
+					completionHandler(false, "problem loading this user's grade levels")
+				} else if(!successClient){
+					completionHandler(false, "problem loading this user's client id")
+				}
+				// SUCCESS: we have grade levels and client
+				Schedule.shared.buildSchoolYearCalendar(client: client) { (successBuildYear, schoolYear) in
+					if(!successBuildYear){
+						completionHandler(false, "problem assembling school year calendar")
+					} else{
+//						print(schoolYear!)
+						Schedule.shared.preDownloadAllLessons({ (successLesson) in
+							print("got lessons")
+							completionHandler(true, nil)
+//							self.reloadLessons(gradeLevels)
+//							Character.shared.downloadAndPrepareLessons({ (success) in
+//								self.setLoadingScreen(visible: true)
+//								self.reloadLessons(gradeLevels)
+//							})
+						})
+					}
+				}
+			})
 		}
-		self.currentPillar = thisPillar;
 	}
-	
-	func getMyGradeLevels(_ completionHandler: @escaping ( Bool, [Int] ) -> ()){
+
+	fileprivate func getMyGradeLevels(_ completionHandler: @escaping ( Bool, [Int] ) -> ()){
 		Fire.shared.getUser { (uid, data) in
 			if let userData = data{
 				if let userGrades = userData["grade"] as? [Int]{
@@ -72,7 +83,7 @@ class Character{
 		}
 	}
 	
-	func getMyClientID(_ completionHandler: @escaping ( Bool, String ) -> ()){
+	fileprivate func getMyClientID(_ completionHandler: @escaping ( Bool, String ) -> ()){
 		Fire.shared.getUser { (uid, data) in
 			if let userData = data{
 				if let userClient = userData["client"] as? String{
@@ -107,96 +118,40 @@ class Character{
 				if(challenges == nil){
 					challenges = [:]
 				}
-				let lessonKeysCompleted:[String] = Array((challenges!).keys)
+//				let lessonKeysCompleted:[String] = Array((challenges!).keys)
 				
 				// all the dates
-				let dateLessonPairs = self.allLoadedDateLessonPairs()
-
-				for date in Array(dateLessonPairs.keys){
-					// iterate over all the dates
-					if(challengeDictionary[date] == nil){
-						challengeDictionary[date] = []
-					}
-
-					// though, if user completed one fill it in
-					let lessonKeys:[String] = dateLessonPairs[date]!
-					for key in lessonKeys{
-						if(lessonKeysCompleted.contains(key)){
-							let boolArray = challenges![key]
-//							var count:Int = 0
-							if(boolArray != nil){
-								(challengeDictionary[date])?.append(boolArray!)
-//								for entry in boolArray!{
-//									if(entry){
-//										count += 1
-//									}
-//								}
-							}
-//							challengeDictionary[date] = challengeDictionary[date]! + count
-						}
-					}
-				}
+//				let dateLessonPairs = self.allLoadedDateLessonPairs()
+//
+//				for date in Array(dateLessonPairs.keys){
+//					// iterate over all the dates
+//					if(challengeDictionary[date] == nil){
+//						challengeDictionary[date] = []
+//					}
+//
+//					// though, if user completed one fill it in
+//					let lessonKeys:[String] = dateLessonPairs[date]!
+//					for key in lessonKeys{
+//						if(lessonKeysCompleted.contains(key)){
+//							let boolArray = challenges![key]
+////							var count:Int = 0
+//							if(boolArray != nil){
+//								(challengeDictionary[date])?.append(boolArray!)
+////								for entry in boolArray!{
+////									if(entry){
+////										count += 1
+////									}
+////								}
+//							}
+////							challengeDictionary[date] = challengeDictionary[date]! + count
+//						}
+//					}
+//				}
 				completionHandler(challengeDictionary)
 			}
 		}
 	}
 	
-	func allLoadedDateLessonPairs() -> [ Date:[String] ] {  // [String]: is array of lesson keys in database
-		var dates:[ Date:[String] ] = [:]
-		if(self.upcomingLessons != nil){
-			let upcomingDates:[Date] = Array( (upcomingLessons?.keys)! )
-			for date in upcomingDates{
-				let lessons:[Lesson]? = upcomingLessons![date]
-				if(lessons != nil){
-					var keyArray:[String] = []
-					for lesson in lessons!{
-						keyArray.append(lesson.key!)
-					}
-					dates[date] = keyArray
-				}
-			}
-		}
-		if(self.pastLessons != nil){
-			let pastDates:[Date] = Array( (pastLessons?.keys)! )
-			for date in pastDates{
-				let lessons:[Lesson]? = pastLessons![date]
-				if(lessons != nil){
-					var keyArray:[String] = []
-					for lesson in lessons!{
-						keyArray.append(lesson.key!)
-					}
-					dates[date] = keyArray
-				}
-			}
-		}
-		return dates
-	}
-	
-	
-	func dateExistsInArray(date:Date, dateArray:[Date]) -> Bool{
-		for d in dateArray{
-			if(Int(d.timeIntervalSince1970) == Int(date.timeIntervalSince1970)){
-				return true
-			}
-		}
-		return false
-	}
-
-	func getScheduleForClient(clientName:String, _ completionHandler: @escaping (_ success:Bool,  [String:AnyObject] ) -> () ){
-		FIRDatabase.database().reference().child("schedules").observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in
-			print("client schedule")
-			if snapshot.value is NSNull {
-				completionHandler(false, [:])
-			} else {
-				let clientSchedules = snapshot.value as! [String:AnyObject]
-				if clientSchedules[clientName] is NSNull{
-					
-				} else{
-					completionHandler(true, clientSchedules[clientName] as! [String : AnyObject])
-				}
-			}
-		}
-	}
 	
 	func filterLessonsByAudience(_ lessons:[Lesson], pillars:[Int], gradeLevels:[Int])->Array<Lesson>?{
 		var filteredArray:[Lesson] = []

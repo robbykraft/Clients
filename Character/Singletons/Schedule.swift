@@ -122,7 +122,7 @@ class Schedule{
 		}
 	}
 	
-	func buildLessonData(_ completionHandler: @escaping (_ success:Bool) -> () ){
+	func preDownloadAllLessons(_ completionHandler: @escaping (_ success:Bool) -> () ){
 
 //		var todaysLesson:[Lesson]?
 //		var upcomingLessons:[Date:[Lesson]]?
@@ -161,15 +161,6 @@ class Schedule{
 
 	}
 	
-	func dateExistsInArray(date:Date, dateArray:[Date]) -> Bool{
-		for d in dateArray{
-			if(Int(d.timeIntervalSince1970) == Int(date.timeIntervalSince1970)){
-				return true
-			}
-		}
-		return false
-	}
-
 	func getScheduleForClient(clientName:String, _ completionHandler: @escaping (_ success:Bool,  [String:AnyObject] ) -> () ){
 		FIRDatabase.database().reference().child("schedules").observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in
 			print("client schedule")
@@ -186,58 +177,6 @@ class Schedule{
 		}
 	}
 
-	
-	// array:
-	//  0: (date, pillar, pillar count index)
-	//  1: (date, pillar, pillar count index)
-	func getScheduleArray(_ completionHandler: @escaping ( [ [String:AnyObject] ] ) -> () ) {
-		FIRDatabase.database().reference().child("schedules/0000/pillar").observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in
-			if snapshot.value is NSNull {
-				
-			} else {
-				if(self.VERBOSE){ print("first batch of schedule data") }
-				if(self.VERBOSE){ print(snapshot.value!) }
-				
-				var array:[ [String:AnyObject] ] = []
-				let ONE_MONTH:TimeInterval = 2678400
-				self.pillarStartTimeStamps = snapshot.value as! [Double]
-				let firstDate:Date = Date(timeIntervalSince1970: self.pillarStartTimeStamps[0])
-				let endDate:Date = Date(timeInterval: ONE_MONTH, since: Date(timeIntervalSince1970: self.pillarStartTimeStamps.last!))
-				
-				var pillarCounts:[Int] = []
-				for _ in self.pillarStartTimeStamps{
-					pillarCounts.append(0)
-				}
-				
-				var date:Date = firstDate
-				while(date.isLessThanDate(endDate)){
-					
-					// find current pillar
-					var thisPillar:Int? = nil
-					for i in 0..<self.pillarStartTimeStamps.count{
-						if(date.timeIntervalSince1970 > self.pillarStartTimeStamps[i]){
-							thisPillar = i
-						}
-					}
-					
-					if( !Calendar.current.isDateInWeekend(date) ){
-						if(thisPillar != nil){
-							let entry = ["date":date, "pillar":thisPillar!, "count":pillarCounts[thisPillar!] ] as [String : Any]
-							array.append(entry as [String : AnyObject])
-							// increment pillar count
-							pillarCounts[thisPillar!] += 1
-						}
-					}
-					// increment day
-					var deltaDate = DateComponents()
-					deltaDate.day = 1
-					date = (Calendar.current as NSCalendar).date(byAdding: deltaDate, to: date, options: NSCalendar.Options.matchFirst)!
-				}
-				completionHandler(array)
-			}
-		}
-	}
-	
 
 	func lessonsFromJSON(_ lessonsJSON:[String:Any]) -> [Lesson]{
 		var lessonArray:Array<Lesson> = []
@@ -274,7 +213,7 @@ class Schedule{
 	}
 
 	// consider using:
-	//			if(Calendar.current.isDate(date, inSameDayAs: key)){
+//			if(Calendar.current.isDate(date, inSameDayAs: key)){
 
 	
 	// TODO: This is GMT timezone, it will get day after today if it's late enough in the day
@@ -359,5 +298,46 @@ class Schedule{
 		}
 		return dateArray
 	}
+
+	
+	
+//	func findCurrentPillar() {
+//		var date:Date = firstDate
+//		while(date.isLessThanDate(endDate)){
+//			
+//			// find current pillar
+//			var thisPillar:Int? = nil
+//			for i in 0..<self.pillarStartTimeStamps.count{
+//				if(date.timeIntervalSince1970 > self.pillarStartTimeStamps[i]){
+//					thisPillar = i
+//				}
+//			}
+//			
+//			if( !Calendar.current.isDateInWeekend(date) ){
+//				if(thisPillar != nil){
+//					let entry = ["date":date, "pillar":thisPillar!, "count":pillarCounts[thisPillar!] ] as [String : Any]
+//					array.append(entry as [String : AnyObject])
+//					// increment pillar count
+//					pillarCounts[thisPillar!] += 1
+//				}
+//			}
+//			// increment day
+//			var deltaDate = DateComponents()
+//			deltaDate.day = 1
+//			date = (Calendar.current as NSCalendar).date(byAdding: deltaDate, to: date, options: NSCalendar.Options.matchFirst)!
+//		}
+//		
+//	}
+	
+	
+//	func dateExistsInArray(date:Date, dateArray:[Date]) -> Bool{
+//		for d in dateArray{
+//			if(Int(d.timeIntervalSince1970) == Int(date.timeIntervalSince1970)){
+//				return true
+//			}
+//		}
+//		return false
+//	}
+//	
 
 }
