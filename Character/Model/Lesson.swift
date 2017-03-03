@@ -17,6 +17,7 @@
 //	}
 
 import Foundation
+import Firebase
 
 class Lesson {
 
@@ -42,6 +43,10 @@ class Lesson {
 
 	var image:String?
 	
+	init() {
+	}
+
+	
 	init(key:String, dictionary:Dictionary<String,Any>) {
 		self.key = key
 		self.body = dictionary["body"] as? String
@@ -53,6 +58,25 @@ class Lesson {
 		self.quoteAuthor = dictionary["quote_author"] as? String
 		self.title = dictionary["title"] as? String
 		self.order = dictionary["order"] as? Int
+	}
+	
+	func setFromDatabase(lessonKey:String, quoteKey:String, date:Date, _ completionHandler: @escaping (_ success:Bool,  Lesson ) -> () ){
+		FIRDatabase.database().reference().child("lessons/" + lessonKey).observeSingleEvent(of: .value, with: { (lessonSnapshot) in
+			let lessonJSON = lessonSnapshot.value as! [String:Any]
+			self.body = lessonJSON["body"] as? String
+			self.grade = lessonJSON["grade"] as? Int
+			self.image = lessonJSON["image"] as? String
+			self.author = lessonJSON["lesson_author"] as? String
+			self.pillar = lessonJSON["pillar"] as? Int
+			self.title = lessonJSON["title"] as? String
+
+			FIRDatabase.database().reference().child("quotes/" + quoteKey).observeSingleEvent(of: .value, with: { (quoteSnapshot) in
+				let quoteJSON = quoteSnapshot.value as! [String:Any]
+				self.quote = quoteJSON["quote"] as? String
+				self.quoteAuthor = quoteJSON["quote_author"] as? String
+				completionHandler(true, self)
+			})
+		})
 	}
 }
 

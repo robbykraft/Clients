@@ -65,7 +65,7 @@ class MasterController: UITabBarController {
 				Schedule.shared.buildSchoolYearCalendar(client: client) { (successBuildYear, schoolYear) in
 					if(successBuildYear){
 						print("got school year data")
-						print(schoolYear!)
+//						print(schoolYear!)
 						Schedule.shared.buildLessonData({ (successLesson) in
 							print("got lessons")
 						})
@@ -91,6 +91,8 @@ class MasterController: UITabBarController {
 	}
 
 	func reloadLessons(_ gradeLevels:[Int]){
+		
+/*
 		let (todaysLesson, lessonArray) = Character.shared.lessonsWithFilter(gradeLevels)
 		
 		if(lessonArray.count > 0){
@@ -106,6 +108,7 @@ class MasterController: UITabBarController {
 			let todaysPillar:Int = todaysLesson!.pillar!
 			self.todayLessonVC.navigationItem.title = Character.shared.pillarNames[todaysPillar].uppercased()
 		}
+*/
 		self.setLoadingScreen(visible: false)
 	}
 

@@ -48,7 +48,7 @@ class SetupProfileViewController: UIViewController {
 		continueButton.backgroundColor = Style.shared.lightBlue
 		continueButton.setTitle("Continue", for: UIControlState())
 		detail1Button.setTitle("All Grades", for: UIControlState())
-		detail2Button.setTitle(Character.shared.SchoolNames[0], for: UIControlState())
+//		detail2Button.setTitle(Character.shared.SchoolNames[0], for: UIControlState())
 		
 		self.view.addSubview(welcomeLabel)
 		self.view.addSubview(questionLabel)
@@ -172,95 +172,95 @@ class SetupProfileViewController: UIViewController {
 	func detail2ButtonHandler(_ sender:UIButton){
 		let alert = UIAlertController.init(title: "", message: nil, preferredStyle: .actionSheet)
 
-		let action0 = UIAlertAction.init(title: Character.shared.SchoolNames[0], style: .default) { (action) in
-			self.detail2Button.setTitle(Character.shared.SchoolNames[0], for: UIControlState())
-			Fire.shared.updateUserWithKeyAndValue("school", value: 0 as AnyObject, completionHandler: nil)
-		}
-		alert.addAction(action0)
-
-		let action1 = UIAlertAction.init(title: Character.shared.SchoolNames[1], style: .default) { (action) in
-			self.detail2Button.setTitle(Character.shared.SchoolNames[1], for: UIControlState())
-			Fire.shared.updateUserWithKeyAndValue("school", value: 1 as AnyObject, completionHandler: nil)
-		}
-		alert.addAction(action1)
-
-		let action2 = UIAlertAction.init(title: Character.shared.SchoolNames[2], style: .default) { (action) in
-			self.detail2Button.setTitle(Character.shared.SchoolNames[2], for: UIControlState())
-			Fire.shared.updateUserWithKeyAndValue("school", value: 2 as AnyObject, completionHandler: nil)
-		}
-		alert.addAction(action2)
-
-		let action3 = UIAlertAction.init(title: Character.shared.SchoolNames[3], style: .default) { (action) in
-			self.detail2Button.setTitle(Character.shared.SchoolNames[3], for: UIControlState())
-			Fire.shared.updateUserWithKeyAndValue("school", value: 3 as AnyObject, completionHandler: nil)
-		}
-		alert.addAction(action3)
-
-		let action4 = UIAlertAction.init(title: Character.shared.SchoolNames[4], style: .default) { (action) in
-			self.detail2Button.setTitle(Character.shared.SchoolNames[4], for: UIControlState())
-			Fire.shared.updateUserWithKeyAndValue("school", value: 4 as AnyObject, completionHandler: nil)
-		}
-		alert.addAction(action4)
-
-		let action5 = UIAlertAction.init(title: Character.shared.SchoolNames[5], style: .default) { (action) in
-			self.detail2Button.setTitle(Character.shared.SchoolNames[5], for: UIControlState())
-			Fire.shared.updateUserWithKeyAndValue("school", value: 5 as AnyObject, completionHandler: nil)
-		}
-		alert.addAction(action5)
-		
-		let action6 = UIAlertAction.init(title: Character.shared.SchoolNames[6], style: .default) { (action) in
-			self.detail2Button.setTitle(Character.shared.SchoolNames[6], for: UIControlState())
-			Fire.shared.updateUserWithKeyAndValue("school", value: 6 as AnyObject, completionHandler: nil)
-		}
-		alert.addAction(action6)
-		
-		let action7 = UIAlertAction.init(title: Character.shared.SchoolNames[7], style: .default) { (action) in
-			self.detail2Button.setTitle(Character.shared.SchoolNames[7], for: UIControlState())
-			Fire.shared.updateUserWithKeyAndValue("school", value: 7 as AnyObject, completionHandler: nil)
-		}
-		alert.addAction(action7)
-
-		let action8 = UIAlertAction.init(title: Character.shared.SchoolNames[8], style: .default) { (action) in
-			self.detail2Button.setTitle(Character.shared.SchoolNames[8], for: UIControlState())
-			Fire.shared.updateUserWithKeyAndValue("school", value: 8 as AnyObject, completionHandler: nil)
-		}
-		alert.addAction(action8)
-
-		let action9 = UIAlertAction.init(title: Character.shared.SchoolNames[9], style: .default) { (action) in
-			self.detail2Button.setTitle(Character.shared.SchoolNames[9], for: UIControlState())
-			Fire.shared.updateUserWithKeyAndValue("school", value: 9 as AnyObject, completionHandler: nil)
-		}
-		alert.addAction(action9)
-
-		let action10 = UIAlertAction.init(title: Character.shared.SchoolNames[10], style: .default) { (action) in
-			self.detail2Button.setTitle(Character.shared.SchoolNames[10], for: UIControlState())
-			Fire.shared.updateUserWithKeyAndValue("school", value: 10 as AnyObject, completionHandler: nil)
-		}
-		alert.addAction(action10)
-
-		let action11 = UIAlertAction.init(title: Character.shared.SchoolNames[11], style: .default) { (action) in
-			self.detail2Button.setTitle(Character.shared.SchoolNames[11], for: UIControlState())
-			Fire.shared.updateUserWithKeyAndValue("school", value: 11 as AnyObject, completionHandler: nil)
-		}
-		alert.addAction(action11)
-
-		let action12 = UIAlertAction.init(title: Character.shared.SchoolNames[12], style: .default) { (action) in
-			self.detail2Button.setTitle(Character.shared.SchoolNames[12], for: UIControlState())
-			Fire.shared.updateUserWithKeyAndValue("school", value: 12 as AnyObject, completionHandler: nil)
-		}
-		alert.addAction(action12)
-
-		let action13 = UIAlertAction.init(title: Character.shared.SchoolNames[13], style: .default) { (action) in
-			self.detail2Button.setTitle(Character.shared.SchoolNames[13], for: UIControlState())
-			Fire.shared.updateUserWithKeyAndValue("school", value: 13 as AnyObject, completionHandler: nil)
-		}
-		alert.addAction(action13)
-
-		let action14 = UIAlertAction.init(title: Character.shared.SchoolNames[14], style: .default) { (action) in
-			self.detail2Button.setTitle(Character.shared.SchoolNames[14], for: UIControlState())
-			Fire.shared.updateUserWithKeyAndValue("school", value: 14 as AnyObject, completionHandler: nil)
-		}
-		alert.addAction(action14)
+//		let action0 = UIAlertAction.init(title: Character.shared.SchoolNames[0], style: .default) { (action) in
+//			self.detail2Button.setTitle(Character.shared.SchoolNames[0], for: UIControlState())
+//			Fire.shared.updateUserWithKeyAndValue("school", value: 0 as AnyObject, completionHandler: nil)
+//		}
+//		alert.addAction(action0)
+//
+//		let action1 = UIAlertAction.init(title: Character.shared.SchoolNames[1], style: .default) { (action) in
+//			self.detail2Button.setTitle(Character.shared.SchoolNames[1], for: UIControlState())
+//			Fire.shared.updateUserWithKeyAndValue("school", value: 1 as AnyObject, completionHandler: nil)
+//		}
+//		alert.addAction(action1)
+//
+//		let action2 = UIAlertAction.init(title: Character.shared.SchoolNames[2], style: .default) { (action) in
+//			self.detail2Button.setTitle(Character.shared.SchoolNames[2], for: UIControlState())
+//			Fire.shared.updateUserWithKeyAndValue("school", value: 2 as AnyObject, completionHandler: nil)
+//		}
+//		alert.addAction(action2)
+//
+//		let action3 = UIAlertAction.init(title: Character.shared.SchoolNames[3], style: .default) { (action) in
+//			self.detail2Button.setTitle(Character.shared.SchoolNames[3], for: UIControlState())
+//			Fire.shared.updateUserWithKeyAndValue("school", value: 3 as AnyObject, completionHandler: nil)
+//		}
+//		alert.addAction(action3)
+//
+//		let action4 = UIAlertAction.init(title: Character.shared.SchoolNames[4], style: .default) { (action) in
+//			self.detail2Button.setTitle(Character.shared.SchoolNames[4], for: UIControlState())
+//			Fire.shared.updateUserWithKeyAndValue("school", value: 4 as AnyObject, completionHandler: nil)
+//		}
+//		alert.addAction(action4)
+//
+//		let action5 = UIAlertAction.init(title: Character.shared.SchoolNames[5], style: .default) { (action) in
+//			self.detail2Button.setTitle(Character.shared.SchoolNames[5], for: UIControlState())
+//			Fire.shared.updateUserWithKeyAndValue("school", value: 5 as AnyObject, completionHandler: nil)
+//		}
+//		alert.addAction(action5)
+//		
+//		let action6 = UIAlertAction.init(title: Character.shared.SchoolNames[6], style: .default) { (action) in
+//			self.detail2Button.setTitle(Character.shared.SchoolNames[6], for: UIControlState())
+//			Fire.shared.updateUserWithKeyAndValue("school", value: 6 as AnyObject, completionHandler: nil)
+//		}
+//		alert.addAction(action6)
+//		
+//		let action7 = UIAlertAction.init(title: Character.shared.SchoolNames[7], style: .default) { (action) in
+//			self.detail2Button.setTitle(Character.shared.SchoolNames[7], for: UIControlState())
+//			Fire.shared.updateUserWithKeyAndValue("school", value: 7 as AnyObject, completionHandler: nil)
+//		}
+//		alert.addAction(action7)
+//
+//		let action8 = UIAlertAction.init(title: Character.shared.SchoolNames[8], style: .default) { (action) in
+//			self.detail2Button.setTitle(Character.shared.SchoolNames[8], for: UIControlState())
+//			Fire.shared.updateUserWithKeyAndValue("school", value: 8 as AnyObject, completionHandler: nil)
+//		}
+//		alert.addAction(action8)
+//
+//		let action9 = UIAlertAction.init(title: Character.shared.SchoolNames[9], style: .default) { (action) in
+//			self.detail2Button.setTitle(Character.shared.SchoolNames[9], for: UIControlState())
+//			Fire.shared.updateUserWithKeyAndValue("school", value: 9 as AnyObject, completionHandler: nil)
+//		}
+//		alert.addAction(action9)
+//
+//		let action10 = UIAlertAction.init(title: Character.shared.SchoolNames[10], style: .default) { (action) in
+//			self.detail2Button.setTitle(Character.shared.SchoolNames[10], for: UIControlState())
+//			Fire.shared.updateUserWithKeyAndValue("school", value: 10 as AnyObject, completionHandler: nil)
+//		}
+//		alert.addAction(action10)
+//
+//		let action11 = UIAlertAction.init(title: Character.shared.SchoolNames[11], style: .default) { (action) in
+//			self.detail2Button.setTitle(Character.shared.SchoolNames[11], for: UIControlState())
+//			Fire.shared.updateUserWithKeyAndValue("school", value: 11 as AnyObject, completionHandler: nil)
+//		}
+//		alert.addAction(action11)
+//
+//		let action12 = UIAlertAction.init(title: Character.shared.SchoolNames[12], style: .default) { (action) in
+//			self.detail2Button.setTitle(Character.shared.SchoolNames[12], for: UIControlState())
+//			Fire.shared.updateUserWithKeyAndValue("school", value: 12 as AnyObject, completionHandler: nil)
+//		}
+//		alert.addAction(action12)
+//
+//		let action13 = UIAlertAction.init(title: Character.shared.SchoolNames[13], style: .default) { (action) in
+//			self.detail2Button.setTitle(Character.shared.SchoolNames[13], for: UIControlState())
+//			Fire.shared.updateUserWithKeyAndValue("school", value: 13 as AnyObject, completionHandler: nil)
+//		}
+//		alert.addAction(action13)
+//
+//		let action14 = UIAlertAction.init(title: Character.shared.SchoolNames[14], style: .default) { (action) in
+//			self.detail2Button.setTitle(Character.shared.SchoolNames[14], for: UIControlState())
+//			Fire.shared.updateUserWithKeyAndValue("school", value: 14 as AnyObject, completionHandler: nil)
+//		}
+//		alert.addAction(action14)
 
 		let cancel = UIAlertAction.init(title: "Cancel", style: .cancel) { (action) in }
 		alert.addAction(cancel)

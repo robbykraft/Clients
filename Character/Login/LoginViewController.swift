@@ -79,9 +79,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 				// Success, logging in with email
 				self.present(MasterController(), animated: true, completion: nil);
 			} else{
-				print(error)
 				print("ERROR:")
-				print(error?.localizedDescription)
+//				print(error?.localizedDescription)
 				print("MORE:")
 				print(error.debugDescription)
 				// 2 POSSIBILITIES: (1) Account doesn't exist  (2) Account exists, password was incorrect

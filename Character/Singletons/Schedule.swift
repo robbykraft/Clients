@@ -1,24 +1,4 @@
 import Firebase
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-	switch (lhs, rhs) {
-	case let (l?, r?):
-		return l < r
-	case (nil, _?):
-		return true
-	default:
-		return false
-	}
-}
-
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-	switch (lhs, rhs) {
-	case let (l?, r?):
-		return l > r
-	default:
-		return rhs < lhs
-	}
-}
-
 
 extension Dictionary where Value: Equatable {
 	func allKeys(forValue val: Value) -> [Key] {
@@ -55,7 +35,7 @@ class Schedule{
 	func findCurrentPillar(){
 		// find current pillar
 		var thisPillar:Int? = nil
-		let nowDate:Date = Date()
+		let nowDate:Date = NSCalendar.current.startOfDay(for: Date())
 		for i in 0..<pillarStartTimeStamps.count{
 			if(nowDate.timeIntervalSince1970 > pillarStartTimeStamps[i]){
 				thisPillar = i
@@ -131,6 +111,7 @@ class Schedule{
 								lessonCalendar[dateIterate] = gradeLessons;
 							}
 						}
+						self.schoolYear = lessonCalendar
 						completionHandler(true, lessonCalendar)
 					}
 				}
@@ -147,119 +128,38 @@ class Schedule{
 //		var upcomingLessons:[Date:[Lesson]]?
 //		var pastLessons:[Date:[Lesson]]?
 		
+		self.upcomingLessons = [:]
 		let nextDates = self.getNextWeekdays(numberOfDays: 5, includeToday: false)
-		
-		print("getting lessons")
-		var count = 069;
 		for day:Date in nextDates{
-			let lessonID = String(count)
-			count += 1
-			print("lessons/" + lessonID)
-			FIRDatabase.database().reference().child("lessons/0" + lessonID).observeSingleEvent(of: .value, with: { (snapshot) in
-//				let lessonJSON = snapshot.value as! [String:Any]
+			if let thisDaysLessonData = self.schoolYear![day]{
+				let thisDaysLesson:Lesson = Lesson()
+				thisDaysLesson.setFromDatabase(lessonKey: thisDaysLessonData[0]["lesson"] as! String, quoteKey: thisDaysLessonData[0]["quote"] as! String, date: day, { (success, theLesson) in
+					self.upcomingLessons![day] = [theLesson]
+				})
+			}
+		}
 
-				let lesson:Lesson = Lesson.init(key: lessonID, dictionary: snapshot.value as! Dictionary<String, Any>)
-				
-				
-//				let lessonDictionary = self.sortLessonByPillarAndGrade(lessonArray)
-//				
-//				let lessonSchedule = self.makeLessonSchedule(lessonDictionary, scheduleArray: scheduleArray)
-//				
-//				self.todaysLesson = self.getTodaysLesson(lessonSchedule)
-//				self.upcomingLessons = self.getNext5Lessons(lessonSchedule)
-//				self.pastLessons = self.getLast15Lessons(lessonSchedule)
-//				
-//				self.findCurrentPillar()
-//				
-				
-				print(lesson)
+		self.pastLessons = [:]
+		let prevDates = self.getPreviousWeekdays(numberOfDays: 15, includeToday: false)
+		for day:Date in prevDates{
+			if let thisDaysLessonData = self.schoolYear![day]{
+				let thisDaysLesson:Lesson = Lesson()
+				thisDaysLesson.setFromDatabase(lessonKey: thisDaysLessonData[0]["lesson"] as! String, quoteKey: thisDaysLessonData[0]["quote"] as! String, date: day, { (success, theLesson) in
+					self.pastLessons![day] = [theLesson]
+				})
+			}
+		}
+		
+		let todaysDate = NSCalendar.current.startOfDay(for: Date())
+		if let todayLessonData = self.schoolYear![todaysDate]{
+			let thisDaysLesson:Lesson = Lesson()
+			thisDaysLesson.setFromDatabase(lessonKey: todayLessonData[0]["lesson"] as! String, quoteKey: todayLessonData[0]["quote"] as! String, date: todaysDate, { (success, theLesson) in
+				self.todaysLesson = [theLesson]
 				completionHandler(true)
-
 			})
 		}
+
 	}
-	
-	
-//	func allLoadedDateLessonPairs() -> [ Date:[String] ] {  // [String]: is array of lesson keys in database
-//		var dates:[ Date:[String] ] = [:]
-//		if(self.upcomingLessons != nil){
-//			let upcomingDates:[Date] = Array( (upcomingLessons?.keys)! )
-//			for date in upcomingDates{
-//				let lessons:[Lesson]? = upcomingLessons![date]
-//				if(lessons != nil){
-//					var keyArray:[String] = []
-//					for lesson in lessons!{
-//						keyArray.append(lesson.key!)
-//					}
-//					dates[date] = keyArray
-//				}
-//			}
-//		}
-//		if(self.pastLessons != nil){
-//			let pastDates:[Date] = Array( (pastLessons?.keys)! )
-//			for date in pastDates{
-//				let lessons:[Lesson]? = pastLessons![date]
-//				if(lessons != nil){
-//					var keyArray:[String] = []
-//					for lesson in lessons!{
-//						keyArray.append(lesson.key!)
-//					}
-//					dates[date] = keyArray
-//				}
-//			}
-//		}
-//		return dates
-//	}
-	
-	
-	// MASSIVE AMOUNT OF CODE FOR GETTING LESSONS
-	
-//	func lessonsWithFilter(_ gradeLevels:[Int]) -> (Lesson?, [Lesson]){
-//		var today:Lesson? = nil
-//		if(todaysLesson != nil){
-//			for lesson in todaysLesson!{
-//				if (gradeLevels.contains(lesson.grade!)){
-//					today = lesson
-//				}
-//			}
-//		}
-//		var pastLessonKeys:[Date] = [] // this is to check for duplicates in upcoming lessons
-//		var allLessons:[Lesson] = []
-//		if(pastLessons != nil){
-//			let past:[Date:[Lesson]] = pastLessons!
-//			var keys:[Date] = Array(past.keys)
-//			keys.sort(by: { $0.compare($1) == ComparisonResult.orderedAscending })
-//			pastLessonKeys = keys
-//			for key in keys{
-//				let daysLessons = pastLessons![key]
-//				if(daysLessons != nil){
-//					for lesson in daysLessons!{
-//						if(gradeLevels.contains(lesson.grade!)){
-//							allLessons.append(lesson)
-//						}
-//					}
-//				}
-//			}
-//		}
-//		if(upcomingLessons != nil){
-//			let upcoming:[Date:[Lesson]] = upcomingLessons!
-//			var keys:[Date] = Array(upcoming.keys)
-//			keys.sort(by: { $0.compare($1) == ComparisonResult.orderedAscending })
-//			for key in keys{
-//				let daysLessons = upcomingLessons![key]
-//				if(daysLessons != nil){
-//					for lesson in daysLessons!{
-//						if(gradeLevels.contains(lesson.grade!)){
-//							if(!dateExistsInArray(date: key, dateArray: pastLessonKeys)){
-//								allLessons.append(lesson)
-//							}
-//						}
-//					}
-//				}
-//			}
-//		}
-//		return (today,allLessons)
-//	}
 	
 	func dateExistsInArray(date:Date, dateArray:[Date]) -> Bool{
 		for d in dateArray{
@@ -286,40 +186,6 @@ class Schedule{
 		}
 	}
 
-	
-	func downloadAndPrepareLessons(_ completionHandler: @escaping (_ success:Bool) -> () ) {
-		if(self.VERBOSE){ print("download and prepare lessons") }
-		
-		FIRDatabase.database().reference().child("lessons").observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in
-			if snapshot.value is NSNull {
-				completionHandler(false)
-			} else {
-				// SUCCESS connecting to the database
-//				let lessonsJSON = snapshot.value as? [String:AnyObject]
-//				self.getScheduleForClient(clientName: "0000", { (success) in
-//					
-//				})
-
-//				self.getScheduleArray({ (scheduleArray) in
-//
-//					let lessonArray:[Lesson] = self.lessonsFromJSON(lessonsJSON!)
-//					
-//					let lessonDictionary = self.sortLessonByPillarAndGrade(lessonArray)
-//
-//					let lessonSchedule = self.makeLessonSchedule(lessonDictionary, scheduleArray: scheduleArray)
-//
-//					self.todaysLesson = self.getTodaysLesson(lessonSchedule)
-//					self.upcomingLessons = self.getNext5Lessons(lessonSchedule)
-//					self.pastLessons = self.getLast15Lessons(lessonSchedule)
-//					
-//					self.findCurrentPillar()
-//					
-//					completionHandler(true)
-//				})
-			}
-		}
-	}
-	
 	
 	// array:
 	//  0: (date, pillar, pillar count index)
@@ -384,8 +250,6 @@ class Schedule{
 		return lessonArray
 	}
 	
-	
-	
 	// 0: {    // pillar 0
 	//      0: [Lesson, Lesson, Lesson]   // grade 0
 	//      1: [Lesson, Lesson, Lesson]   // grade 1
@@ -409,19 +273,9 @@ class Schedule{
 		return dictionary
 	}
 
-	func getTodaysLesson(_ lessonSchedule:[Date:[Lesson]])->[Lesson]?{
-		let keys = lessonSchedule.keys
-		
-		let date:Date = Date()
-		
-		for key in keys{
-			if(Calendar.current.isDate(date, inSameDayAs: key)){
-				return lessonSchedule[key]
-			}
-		}
-		return nil
-	}
-	
+	// consider using:
+	//			if(Calendar.current.isDate(date, inSameDayAs: key)){
+
 	
 	// TODO: This is GMT timezone, it will get day after today if it's late enough in the day
 	func getNextWeekdays(numberOfDays:Int, includeToday:Bool)->[Date]{
@@ -429,7 +283,8 @@ class Schedule{
 
 		// includes today only includes today if it is a weekday!!
 		var dateArray:[Date] = []
-		let todaysDate:Date = Date()
+		let todaysDate:Date = NSCalendar.current.startOfDay(for: Date())
+		
 		var dayIncrement:Int = 0
 		if !includeToday { dayIncrement = 1 }
 		
@@ -456,7 +311,7 @@ class Schedule{
 		
 		// includes today only includes today if it is a weekday!!
 		var dateArray:[Date] = []
-		let todaysDate:Date = Date()
+		let todaysDate:Date = NSCalendar.current.startOfDay(for: Date())
 		var dayIncrement:Int = 0
 		if !includeToday { dayIncrement = -1 }
 		
@@ -483,7 +338,7 @@ class Schedule{
 		
 		// includes today only includes today if it is a weekday!!
 		var dateArray:[Date] = []
-		let todaysDate:Date = Date()
+		let todaysDate:Date = NSCalendar.current.startOfDay(for: Date())
 		var dayIncrement:Int = 0
 		if !includeToday { dayIncrement = -1 }
 		

@@ -135,17 +135,15 @@ class ScoreViewController: UITableViewController {
 			if(completed != nil){
 				var emojiString:String = ""
 				for boolArray in completed!{
-					if(boolArray != nil){
-						for entry in boolArray{
-							if(entry){
-								emojiString.append("✔︎")
-								yesCount += 1
-							} else{
-								emojiString.append("✘")
-								noCount += 1
-							}
-							totalCount += 1
+					for entry in boolArray{
+						if(entry){
+							emojiString.append("✔︎")
+							yesCount += 1
+						} else{
+							emojiString.append("✘")
+							noCount += 1
 						}
+						totalCount += 1
 					}
 				}
 
