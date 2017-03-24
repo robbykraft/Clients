@@ -25,6 +25,12 @@ class MasterController: UITabBarController {
 		initCustom()
 	}
 	
+	
+	func setLoadingScreen(visible:Bool, message:String){
+		if(visible){ self.todayLessonVC.isLoadingLessons = true   }
+		else{        self.todayLessonVC.isLoadingLessons = false  }
+	}
+	
 	func initCustom(){
 		
 		let tab1NavController = UINavigationController()
@@ -57,6 +63,7 @@ class MasterController: UITabBarController {
 		Character.shared.boot { (success, errorMessage) in
 			if(success){
 				// load first lesson
+				self.reloadLessons()
 			} else{
 				if let error = errorMessage{
 					print(error)
@@ -67,36 +74,35 @@ class MasterController: UITabBarController {
 		}
 	}
 	
-	
-	func setLoadingScreen(visible:Bool){
-		if(visible){
-			self.todayLessonVC.isLoadingLessons = true
-		} else{
-			self.todayLessonVC.isLoadingLessons = false
-		}
-	}
 
-	func reloadLessons(_ gradeLevels:[Int]){
-		
-/*
-		let (todaysLesson, lessonArray) = Character.shared.lessonsWithFilter(gradeLevels)
-		
-		if(lessonArray.count > 0){
-			self.allLessonsVC.data = lessonArray
-			if(gradeLevels == [0,1,2,3]){
-				self.allLessonsVC.showFilter = true
-			} else{
-				self.allLessonsVC.showFilter = false
-			}
-		}
-		if(todaysLesson != nil){
-			self.todayLessonVC.data = todaysLesson
-			let todaysPillar:Int = todaysLesson!.pillar!
-			self.todayLessonVC.navigationItem.title = Character.shared.pillarNames[todaysPillar].uppercased()
-		}
-*/
-		self.setLoadingScreen(visible: false)
+	func reloadLessons(){		
+		self.todayLessonVC.data = Schedule.shared.todaysLesson![0]
+		let todaysPillar:Int = 4//todaysLesson!.pillar!
+		self.todayLessonVC.navigationItem.title = Character.shared.pillarNames[todaysPillar].uppercased()
+		self.setLoadingScreen(visible: false, message: "")
 	}
+	
+//	func reloadLessons(_ gradeLevels:[Int]){
+//
+//
+//		let (todaysLesson, lessonArray) = Character.shared.lessonsWithFilter(gradeLevels)
+//		
+//		if(lessonArray.count > 0){
+//			self.allLessonsVC.data = lessonArray
+//			if(gradeLevels == [0,1,2,3]){
+//				self.allLessonsVC.showFilter = true
+//			} else{
+//				self.allLessonsVC.showFilter = false
+//			}
+//		}
+//		if(todaysLesson != nil){
+//			self.todayLessonVC.data = todaysLesson
+//			let todaysPillar:Int = todaysLesson!.pillar!
+//			self.todayLessonVC.navigationItem.title = Character.shared.pillarNames[todaysPillar].uppercased()
+//		}
+//
+//		self.setLoadingScreen(visible: false)
+//	}
 
 	
 	func dateImageCircle() -> UIImage{

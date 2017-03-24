@@ -28,7 +28,7 @@ class Character{
 	fileprivate init() { }
 
 //	var lessons:[String:AnyObject]?  // lessons data
-	let pillarNames = ["trustworthiness", "respect", "responsibility", "fairness", "caring", "citizenship"]
+	let pillarNames = ["trustworthiness", "respect", "responsibility", "fairness", "caring", "citizenship", "introduction"]
 	let gradeNames = ["K-2nd", "3rd-5th", "6th-8th", "9th-12th"]
 	
 	var cachedLessons:[String:Lesson] = [:]
@@ -48,7 +48,8 @@ class Character{
 					} else{
 //						print(schoolYear!)
 						Schedule.shared.preDownloadAllLessons({ (successLesson) in
-							print("got lessons")
+							print("got lessons, today's lesson:")
+							print(Schedule.shared.todaysLesson!)
 							completionHandler(true, nil)
 //							self.reloadLessons(gradeLevels)
 //							Character.shared.downloadAndPrepareLessons({ (success) in
@@ -91,7 +92,7 @@ class Character{
 					completionHandler(true, userClient)
 				} else{
 					// user has not been assigned a grade yet
-					let userClient = "0000"
+					let userClient = "default"
 					Fire.shared.updateUserWithKeyAndValue("client", value: userClient as AnyObject, completionHandler: { (success) in
 						// NOW client okay
 						completionHandler(true, userClient)

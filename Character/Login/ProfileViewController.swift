@@ -141,7 +141,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 	}
 	
 	func detail1ButtonHandler(_ sender:UIButton){
-		let alert = UIAlertController.init(title: "", message: nil, preferredStyle: .actionSheet)
+/*		let alert = UIAlertController.init(title: "", message: nil, preferredStyle: .actionSheet)
 		let action1 = UIAlertAction.init(title: Character.shared.gradeNames[0], style: .default) { (action) in
 			self.detail1Button.setTitle(Character.shared.gradeNames[0], for: UIControlState())
 			Fire.shared.updateUserWithKeyAndValue("grade", value: [0] as AnyObject, completionHandler: nil)
@@ -172,6 +172,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 			let master:MasterController = self.tabBarController as! MasterController
 			master.reloadLessons([0,1,2,3])
 		}
+		
 		let cancel = UIAlertAction.init(title: "Cancel", style: .cancel) { (action) in }
 		alert.addAction(action1)
 		alert.addAction(action2)
@@ -185,6 +186,8 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 			popoverController.sourceRect = sender.bounds
 		}
 		self.present(alert, animated: true, completion: nil)
+
+*/
 	}
 	
 	func profilePictureButtonHandler(_ sender:UIButton){

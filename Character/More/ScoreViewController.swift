@@ -100,10 +100,12 @@ class ScoreViewController: UITableViewController {
 	
 
 		if(keyArray != nil){
+			var GMTCalendar = Calendar.current
+			GMTCalendar.timeZone = TimeZone.init(secondsFromGMT: 0)!
 
 			// date
 			let date = keyArray![(indexPath as NSIndexPath).row]
-			let dateComponents:DateComponents = (Calendar.current as NSCalendar).components([.month, .day], from: date)
+			let dateComponents:DateComponents = (GMTCalendar as NSCalendar).components([.month, .day], from: date)
 
 			cell.textLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P24)
 

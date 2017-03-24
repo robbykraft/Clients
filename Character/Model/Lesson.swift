@@ -72,8 +72,8 @@ class Lesson {
 
 			FIRDatabase.database().reference().child("quotes/" + quoteKey).observeSingleEvent(of: .value, with: { (quoteSnapshot) in
 				let quoteJSON = quoteSnapshot.value as! [String:Any]
-				self.quote = quoteJSON["quote"] as? String
-				self.quoteAuthor = quoteJSON["quote_author"] as? String
+				self.quote = quoteJSON["body"] as? String
+				self.quoteAuthor = quoteJSON["author"] as? String
 				completionHandler(true, self)
 			})
 		})

@@ -221,19 +221,25 @@ class LessonTableViewController: UITableViewController {
 	func lessonCellWithData(_ data:Lesson?) -> LessonTableViewCell {
 		let cell = LessonTableViewCell()
 		cell.title = data?.title?.uppercased()
-		let imageFilename:String = (data?.image!)!
-		Cache.shared.imageFromStorageBucket(imageFilename, completionHandler: { (image, didRequireDownload) in
-			cell.imageView?.image = image
-			if(didRequireDownload){
-				self.tableView.reloadData()
-			}
-		})
+		print("needing image")
+		if let imageFilename = data?.image{
+			print(imageFilename)
+			Cache.shared.imageFromStorageBucket(imageFilename, completionHandler: { (image, didRequireDownload) in
+				print("cache return")
+				cell.imageView?.image = image
+				if(didRequireDownload){
+					self.tableView.reloadData()
+				}
+			})
+		}
 		return cell
 	}
 	
 	func quoteCellWithData(_ data:Lesson?) -> QuoteTableViewCell {
 		let cell = QuoteTableViewCell()
-		cell.textLabel?.text = data?.quote!
+		if let quoteText = data?.quote{
+			cell.textLabel?.text = quoteText
+		}
 		return cell
 	}
 

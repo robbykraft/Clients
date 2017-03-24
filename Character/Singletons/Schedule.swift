@@ -35,7 +35,9 @@ class Schedule{
 	func findCurrentPillar(){
 		// find current pillar
 		var thisPillar:Int? = nil
-		let nowDate:Date = NSCalendar.current.startOfDay(for: Date())
+		var GMTCalendar = Calendar.current
+		GMTCalendar.timeZone = TimeZone.init(secondsFromGMT: 0)!
+		let nowDate:Date = GMTCalendar.startOfDay(for: Date())
 		for i in 0..<pillarStartTimeStamps.count{
 			if(nowDate.timeIntervalSince1970 > pillarStartTimeStamps[i]){
 				thisPillar = i
@@ -71,21 +73,30 @@ class Schedule{
 			if let scheduleData = snapshot.value as? [String:Any]{
 				if let startTimes = scheduleData["pillars"] as? [Int]{
 					let sortedStartDates:[[Int:Date]] = self.sortedPillarStartDates(pillarTimeStamps: startTimes)
+					print("Pillar start dates sorted chronologically:")
 					print(sortedStartDates)
 					
 					var calendarDays:[ [String:Any] ] = []
 					
 					let TWO_MONTHS:TimeInterval = 2678400 * 2
 					for i in 0..<sortedStartDates.count{
-						let firstDate:Date = sortedStartDates[i].values.first!
+						var firstDate:Date = sortedStartDates[i].values.first!
 						var endDate:Date = firstDate.addingTimeInterval(TWO_MONTHS)
 						if(i+1 < sortedStartDates.count){ endDate = sortedStartDates[i+1].values.first! }
+						
+						// truncate out time, in regards to GMT time
+						var GMTCalendar = Calendar.current
+						GMTCalendar.timeZone = TimeZone.init(secondsFromGMT: 0)!
+						firstDate = GMTCalendar.date(bySettingHour: 0, minute: 0, second: 0, of: firstDate)!
+						endDate = GMTCalendar.date(bySettingHour: 0, minute: 0, second: 0, of: endDate)!
 						
 						var dateIterate:Date = firstDate
 						var iterator:Int = 0
 						var lessonCounter = 0;
 						repeat{
-							if( !Calendar.current.isDateInWeekend(dateIterate) ){
+							var GMTCalendar = Calendar.current
+							GMTCalendar.timeZone = TimeZone.init(secondsFromGMT: 0)!
+							if( !GMTCalendar.isDateInWeekend(dateIterate) ){
 								let thisPillar = sortedStartDates[i].keys.first!
 								calendarDays.append(["date":dateIterate, "pillar":thisPillar, "count":lessonCounter])
 								lessonCounter += 1
@@ -93,10 +104,11 @@ class Schedule{
 							iterator += 1
 							var deltaDate = DateComponents()
 							deltaDate.day = iterator
-							dateIterate = (Calendar.current as NSCalendar).date(byAdding: deltaDate, to: firstDate, options: NSCalendar.Options.matchFirst)!
-
+							dateIterate = (GMTCalendar as NSCalendar).date(byAdding: deltaDate, to: firstDate, options: NSCalendar.Options.matchFirst)!
 						}while(dateIterate < endDate)
 					}
+//					print("calendar days:")
+//					print(calendarDays)
 
 					if let pillarDayGradeLessons = scheduleData["lessons"] as? [Any]{
 						var lessonCalendar:[Date:[[String:Any]]] = [:]
@@ -128,6 +140,8 @@ class Schedule{
 //		var upcomingLessons:[Date:[Lesson]]?
 //		var pastLessons:[Date:[Lesson]]?
 		
+		print("pre downloading all lessons")
+		
 		self.upcomingLessons = [:]
 		let nextDates = self.getNextWeekdays(numberOfDays: 5, includeToday: false)
 		for day:Date in nextDates{
@@ -149,9 +163,11 @@ class Schedule{
 				})
 			}
 		}
-		
-		let todaysDate = NSCalendar.current.startOfDay(for: Date())
+		var GMTCalendar = Calendar.current
+		GMTCalendar.timeZone = TimeZone.init(secondsFromGMT: 0)!
+		let todaysDate = GMTCalendar.startOfDay(for: Date())
 		if let todayLessonData = self.schoolYear![todaysDate]{
+			print(todayLessonData)
 			let thisDaysLesson:Lesson = Lesson()
 			thisDaysLesson.setFromDatabase(lessonKey: todayLessonData[0]["lesson"] as! String, quoteKey: todayLessonData[0]["quote"] as! String, date: todaysDate, { (success, theLesson) in
 				self.todaysLesson = [theLesson]
@@ -222,7 +238,9 @@ class Schedule{
 
 		// includes today only includes today if it is a weekday!!
 		var dateArray:[Date] = []
-		let todaysDate:Date = NSCalendar.current.startOfDay(for: Date())
+		var GMTCalendar = Calendar.current
+		GMTCalendar.timeZone = TimeZone.init(secondsFromGMT: 0)!
+		let todaysDate:Date = GMTCalendar.startOfDay(for: Date())
 		
 		var dayIncrement:Int = 0
 		if !includeToday { dayIncrement = 1 }
@@ -231,8 +249,8 @@ class Schedule{
 			var deltaDate = DateComponents()
 			deltaDate.day = dayIncrement
 			
-			let date = (Calendar.current as NSCalendar).date(byAdding: deltaDate, to: todaysDate, options: NSCalendar.Options.matchFirst)!
-			let weekday = Calendar.current.component(.weekday, from: date)
+			let date = (GMTCalendar as NSCalendar).date(byAdding: deltaDate, to: todaysDate, options: NSCalendar.Options.matchFirst)!
+			let weekday = GMTCalendar.component(.weekday, from: date)
 			
 			switch (weekday) {
 			case 2, 3, 4, 5, 6:
@@ -250,7 +268,9 @@ class Schedule{
 		
 		// includes today only includes today if it is a weekday!!
 		var dateArray:[Date] = []
-		let todaysDate:Date = NSCalendar.current.startOfDay(for: Date())
+		var GMTCalendar = Calendar.current
+		GMTCalendar.timeZone = TimeZone.init(secondsFromGMT: 0)!
+		let todaysDate:Date = GMTCalendar.startOfDay(for: Date())
 		var dayIncrement:Int = 0
 		if !includeToday { dayIncrement = -1 }
 		
@@ -258,8 +278,8 @@ class Schedule{
 			var deltaDate = DateComponents()
 			deltaDate.day = dayIncrement
 			
-			let date = (Calendar.current as NSCalendar).date(byAdding: deltaDate, to: todaysDate, options: NSCalendar.Options.matchFirst)!
-			let weekday = Calendar.current.component(.weekday, from: date)
+			let date = (GMTCalendar as NSCalendar).date(byAdding: deltaDate, to: todaysDate, options: NSCalendar.Options.matchFirst)!
+			let weekday = GMTCalendar.component(.weekday, from: date)
 			
 			switch (weekday) {
 			case 2, 3, 4, 5, 6:
@@ -277,7 +297,9 @@ class Schedule{
 		
 		// includes today only includes today if it is a weekday!!
 		var dateArray:[Date] = []
-		let todaysDate:Date = NSCalendar.current.startOfDay(for: Date())
+		var GMTCalendar = Calendar.current
+		GMTCalendar.timeZone = TimeZone.init(secondsFromGMT: 0)!
+		let todaysDate:Date = GMTCalendar.startOfDay(for: Date())
 		var dayIncrement:Int = 0
 		if !includeToday { dayIncrement = -1 }
 		
@@ -285,8 +307,8 @@ class Schedule{
 			var deltaDate = DateComponents()
 			deltaDate.day = dayIncrement
 			
-			let date = (Calendar.current as NSCalendar).date(byAdding: deltaDate, to: todaysDate, options: NSCalendar.Options.matchFirst)!
-			let weekday = Calendar.current.component(.weekday, from: date)
+			let date = (GMTCalendar as NSCalendar).date(byAdding: deltaDate, to: todaysDate, options: NSCalendar.Options.matchFirst)!
+			let weekday = GMTCalendar.component(.weekday, from: date)
 			
 			switch (weekday) {
 			case 2, 3, 4, 5, 6:
