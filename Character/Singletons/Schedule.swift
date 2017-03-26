@@ -149,6 +149,7 @@ class Schedule{
 				let thisDaysLesson:Lesson = Lesson()
 				thisDaysLesson.setFromDatabase(lessonKey: thisDaysLessonData[0]["lesson"] as! String, quoteKey: thisDaysLessonData[0]["quote"] as! String, date: day, { (success, theLesson) in
 					self.upcomingLessons![day] = [theLesson]
+					print("downloading an upcoming lesson")
 				})
 			}
 		}
@@ -160,6 +161,7 @@ class Schedule{
 				let thisDaysLesson:Lesson = Lesson()
 				thisDaysLesson.setFromDatabase(lessonKey: thisDaysLessonData[0]["lesson"] as! String, quoteKey: thisDaysLessonData[0]["quote"] as! String, date: day, { (success, theLesson) in
 					self.pastLessons![day] = [theLesson]
+					print("downloading a past lesson")
 				})
 			}
 		}
@@ -173,6 +175,10 @@ class Schedule{
 				self.todaysLesson = [theLesson]
 				completionHandler(true)
 			})
+		} else{
+			print("there is no lesson for today")
+			self.todaysLesson = nil;
+			completionHandler(true)
 		}
 
 	}

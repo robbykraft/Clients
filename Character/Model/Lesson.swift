@@ -69,6 +69,8 @@ class Lesson {
 			self.author = lessonJSON["lesson_author"] as? String
 			self.pillar = lessonJSON["pillar"] as? Int
 			self.title = lessonJSON["title"] as? String
+			
+			self.date = date
 
 			FIRDatabase.database().reference().child("quotes/" + quoteKey).observeSingleEvent(of: .value, with: { (quoteSnapshot) in
 				let quoteJSON = quoteSnapshot.value as! [String:Any]

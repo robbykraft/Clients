@@ -49,8 +49,13 @@ class Character{
 //						print(schoolYear!)
 						Schedule.shared.preDownloadAllLessons({ (successLesson) in
 							print("got lessons, today's lesson:")
-							print(Schedule.shared.todaysLesson!)
-							completionHandler(true, nil)
+							if(Schedule.shared.todaysLesson == nil){
+								// no lesson today
+								completionHandler(true, nil)
+							} else{
+								print(Schedule.shared.todaysLesson!)
+								completionHandler(true, nil)
+							}
 //							self.reloadLessons(gradeLevels)
 //							Character.shared.downloadAndPrepareLessons({ (success) in
 //								self.setLoadingScreen(visible: true)

@@ -39,6 +39,7 @@
 		D59B04601D6CB04600E6624B /* LessonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59B04501D6CB04600E6624B /* LessonViewController.swift */; };
 		D59B04611D6CB04600E6624B /* QuoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59B04511D6CB04600E6624B /* QuoteViewController.swift */; };
 		D59B04681D6CBF7000E6624B /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59B04671D6CBF7000E6624B /* Style.swift */; };
+		D5F219461E88449000362B5A /* CompletedQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F219451E88449000362B5A /* CompletedQuestionView.swift */; };
 		D5F3CE421D735393003FABEF /* CatholicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F3CE3C1D735393003FABEF /* CatholicViewController.swift */; };
 		D5F3CE471D735393003FABEF /* SixPillarsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F3CE411D735393003FABEF /* SixPillarsViewController.swift */; };
 		D5F3CE491D7353EA003FABEF /* CharacterToolsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F3CE481D7353EA003FABEF /* CharacterToolsViewController.swift */; };
@@ -82,6 +83,7 @@
 		D59B04501D6CB04600E6624B /* LessonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LessonViewController.swift; sourceTree = "<group>"; };
 		D59B04511D6CB04600E6624B /* QuoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuoteViewController.swift; sourceTree = "<group>"; };
 		D59B04671D6CBF7000E6624B /* Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
+		D5F219451E88449000362B5A /* CompletedQuestionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompletedQuestionView.swift; sourceTree = "<group>"; };
 		D5F3CE3C1D735393003FABEF /* CatholicViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CatholicViewController.swift; sourceTree = "<group>"; };
 		D5F3CE411D735393003FABEF /* SixPillarsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SixPillarsViewController.swift; sourceTree = "<group>"; };
 		D5F3CE481D7353EA003FABEF /* CharacterToolsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CharacterToolsViewController.swift; path = Character/More/CharacterToolsViewController.swift; sourceTree = SOURCE_ROOT; };
@@ -205,6 +207,7 @@
 				D59B044A1D6CB04600E6624B /* LessonsTableViewController.swift */,
 				D59B04461D6CB04600E6624B /* LessonsTableViewCell.swift */,
 				D59B044B1D6CB04600E6624B /* LessonTableViewController.swift */,
+				D5F219441E88444E00362B5A /* Views */,
 				D59B04441D6CB04600E6624B /* Lesson Cells */,
 				D59B044D1D6CB04600E6624B /* Pages */,
 			);
@@ -234,6 +237,14 @@
 				D59B044F1D6CB04600E6624B /* ChallengeTableViewCell.swift */,
 			);
 			path = Pages;
+			sourceTree = "<group>";
+		};
+		D5F219441E88444E00362B5A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D5F219451E88449000362B5A /* CompletedQuestionView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		D5F3CE3B1D735393003FABEF /* Additional */ = {
@@ -410,6 +421,7 @@
 				D53F1D221D7625AF00B1A194 /* PrayerViewController.swift in Sources */,
 				D572F4A61D6E2729000391F2 /* Extensions.swift in Sources */,
 				D5F3CE4B1D7356F0003FABEF /* DatabasePageViewController.swift in Sources */,
+				D5F219461E88449000362B5A /* CompletedQuestionView.swift in Sources */,
 				D59B045F1D6CB04600E6624B /* ChallengeTableViewCell.swift in Sources */,
 				D59B04161D6C96D500E6624B /* AppDelegate.swift in Sources */,
 				D59B04571D6CB04600E6624B /* LessonsTableViewCell.swift in Sources */,

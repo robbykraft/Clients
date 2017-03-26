@@ -105,7 +105,15 @@ class LessonViewController: UIViewController {
 		authorHR1.frame = CGRect(x: sidePad, y: authorLabel.frame.origin.y - 10, width: self.view.frame.size.width - sidePad*2, height: 1)
 		authorHR2.frame = CGRect(x: sidePad, y: authorLabel.frame.origin.y + authorHeight + 10, width: self.view.frame.size.width - sidePad*2, height: 1)
 		
-		scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: bodyText.frame.origin.y + bodyHeight + 20)
+//		scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: bodyText.frame.origin.y + bodyHeight + 20)
+		
+		var questionFooter:CompletedQuestionView
+		questionFooter = CompletedQuestionView.init(frame: CGRect.init(x: 0, y: bodyText.frame.origin.y + bodyHeight + 20, width: self.view.frame.size.width, height: 120))
+		questionFooter.noun = "lesson"
+		self.view.addSubview(questionFooter)
+
+		scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: bodyText.frame.origin.y + bodyHeight + 20 + questionFooter.frame.size.height + 20)
+
 	}
 }
 

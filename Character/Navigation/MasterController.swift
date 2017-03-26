@@ -75,11 +75,42 @@ class MasterController: UITabBarController {
 	}
 	
 
-	func reloadLessons(){		
-		self.todayLessonVC.data = Schedule.shared.todaysLesson![0]
+	func reloadLessons(){
+		if(Schedule.shared.todaysLesson == nil){
+			self.todayLessonVC.data = nil
+		}else{
+			self.todayLessonVC.data = Schedule.shared.todaysLesson![0]
+		}
+		// TODO:
 		let todaysPillar:Int = 4//todaysLesson!.pillar!
 		self.todayLessonVC.navigationItem.title = Character.shared.pillarNames[todaysPillar].uppercased()
 		self.setLoadingScreen(visible: false, message: "")
+		DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
+			self.loadTheRest()
+		})
+	}
+	
+	func loadTheRest(){
+		var allLessons:[Lesson] = []
+
+		if(Schedule.shared.pastLessons != nil){
+			var pastKeys:[Date] = Array(Schedule.shared.pastLessons!.keys)
+			pastKeys = pastKeys.sorted(by: { $0.timeIntervalSince1970 < $1.timeIntervalSince1970 })
+			for date in pastKeys{
+				// todo: current grade level
+				allLessons.append(Schedule.shared.pastLessons![date]![0])
+			}
+		}
+		
+		if(Schedule.shared.upcomingLessons != nil){
+			var upcomingKeys:[Date] = Array(Schedule.shared.upcomingLessons!.keys)
+			upcomingKeys = upcomingKeys.sorted(by: { $0.timeIntervalSince1970 < $1.timeIntervalSince1970 })
+			for date in upcomingKeys{
+				// todo: current grade level
+				allLessons.append(Schedule.shared.upcomingLessons![date]![0])
+			}
+		}
+		self.allLessonsVC.data = allLessons
 	}
 	
 //	func reloadLessons(_ gradeLevels:[Int]){

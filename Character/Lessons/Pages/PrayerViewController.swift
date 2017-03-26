@@ -44,7 +44,16 @@ class PrayerViewController: UIViewController {
 		prayerBodyView.frame = CGRect(x: sidePad, y: topPad,
 		                                 width: self.view.frame.size.width - sidePad*2, height: prayerBodyHeight)
 		
-		scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: prayerBodyHeight + topPad)
+//		scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: prayerBodyHeight + topPad)
+
+		// CHALLENGE QUESTION FOOTER
+		var questionFooter:CompletedQuestionView
+		questionFooter = CompletedQuestionView.init(frame: CGRect.init(x: 0, y: prayerBodyHeight + topPad + 20, width: self.view.frame.size.width, height: 120))
+		questionFooter.noun = "daily behavior"
+		self.view.addSubview(questionFooter)
+		
+		scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: prayerBodyHeight + topPad + 20 + questionFooter.frame.size.height + 20)
+
 	}
 	
 	override func didReceiveMemoryWarning() {

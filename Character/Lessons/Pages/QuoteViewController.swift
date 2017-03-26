@@ -68,7 +68,16 @@ class QuoteViewController: UIViewController {
 		let authorHeight = quoteAuthorLabel.frame.size.height
 		quoteAuthorLabel.frame = CGRect(x: sidePad, y: quoteBodyView.frame.origin.y + quoteBodyHeight + 20, width: self.view.frame.size.width - sidePad*2, height: authorHeight)
 		
-		scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: quoteAuthorLabel.frame.origin.y + authorHeight + 20)
+//		scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: quoteAuthorLabel.frame.origin.y + authorHeight + 20)
+		
+		// CHALLENGE QUESTION FOOTER
+		var questionFooter:CompletedQuestionView
+		questionFooter = CompletedQuestionView.init(frame: CGRect.init(x: 0, y: quoteAuthorLabel.frame.origin.y + authorHeight + 20, width: self.view.frame.size.width, height: 120))
+		questionFooter.noun = "quote"
+		self.view.addSubview(questionFooter)
+		
+		scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: quoteAuthorLabel.frame.origin.y + authorHeight + 20 + questionFooter.frame.size.height + 20)
+
     }
 	
 	override func didReceiveMemoryWarning() {
