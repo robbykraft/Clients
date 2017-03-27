@@ -8,15 +8,17 @@
 
 import UIKit
 
-class PrayerTableViewCell: SuperLessonTableViewCell {
+class PledgeTableViewCell: SuperLessonTableViewCell {
 	
 	override func initUI() {
 		super.initUI()
-		cornerTitleLabel.text = "Daily Prayer"
+//		cornerTitleLabel.text = "Daily Prayer"
+		cornerTitleLabel.text = "Daily Pledge"
 		self.textLabel?.font = UIFont(name: SYSTEM_FONT_I, size: Style.shared.P30)
 		self.textLabel?.numberOfLines = 1
 		self.textLabel?.textColor = Style.shared.darkGray
-		self.textLabel?.text = "Dear God,..."
+//		self.textLabel?.text = "Dear God,..."
+		self.textLabel?.text = "I am grateful..."
 	}
 	override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)

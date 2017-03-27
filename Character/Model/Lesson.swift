@@ -21,8 +21,9 @@ import Firebase
 
 class Lesson {
 
-	// ID
-	var key:String?
+	// database entries which comprise this object
+	var lessonKey:String?
+	var quoteKey:String?
 	
 	// tags
 	var grade:Int?
@@ -47,22 +48,23 @@ class Lesson {
 	}
 
 	
-	init(key:String, dictionary:Dictionary<String,Any>) {
-		self.key = key
-		self.body = dictionary["body"] as? String
-		self.grade = dictionary["grade"] as? Int
-		self.image = dictionary["image"] as? String
-		self.author = dictionary["lesson_author"] as? String
-		self.pillar = dictionary["pillar"] as? Int
-		self.quote = dictionary["quote"] as? String
-		self.quoteAuthor = dictionary["quote_author"] as? String
-		self.title = dictionary["title"] as? String
-		self.order = dictionary["order"] as? Int
-	}
+//	init(key:String, dictionary:Dictionary<String,Any>) {
+//		self.lessonKey = key
+//		self.body = dictionary["body"] as? String
+//		self.grade = dictionary["grade"] as? Int
+//		self.image = dictionary["image"] as? String
+//		self.author = dictionary["lesson_author"] as? String
+//		self.pillar = dictionary["pillar"] as? Int
+//		self.quote = dictionary["quote"] as? String
+//		self.quoteAuthor = dictionary["quote_author"] as? String
+//		self.title = dictionary["title"] as? String
+//		self.order = dictionary["order"] as? Int
+//	}
 	
 	func setFromDatabase(lessonKey:String, quoteKey:String, date:Date, _ completionHandler: @escaping (_ success:Bool,  Lesson ) -> () ){
 		FIRDatabase.database().reference().child("lessons/" + lessonKey).observeSingleEvent(of: .value, with: { (lessonSnapshot) in
 			let lessonJSON = lessonSnapshot.value as! [String:Any]
+			self.lessonKey = lessonKey
 			self.body = lessonJSON["body"] as? String
 			self.grade = lessonJSON["grade"] as? Int
 			self.image = lessonJSON["image"] as? String
@@ -74,6 +76,7 @@ class Lesson {
 
 			FIRDatabase.database().reference().child("quotes/" + quoteKey).observeSingleEvent(of: .value, with: { (quoteSnapshot) in
 				let quoteJSON = quoteSnapshot.value as! [String:Any]
+				self.quoteKey = quoteKey
 				self.quote = quoteJSON["body"] as? String
 				self.quoteAuthor = quoteJSON["author"] as? String
 				completionHandler(true, self)

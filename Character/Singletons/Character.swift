@@ -110,6 +110,15 @@ class Character{
 		}
 	}
 	
+	func updateChallengeCompletion(_ databaseObject:String, didComplete:Bool, completionHandler: ( ( Bool ) -> () )! ){
+		Fire.shared.updateUserWithKeyAndValue("challenges/" + databaseObject, value: didComplete as AnyObject, completionHandler: { (success) in
+			if completionHandler != nil{
+				completionHandler(true)
+			}
+		})
+	}
+
+	
 	// each entry for a Date has an array of array of Bool
 	// inner array is always the [Bool Bool Bool], 1 2 3 challenge completion
 	// outer array is if they are teachers of multiple grades, multiple challenges per day
@@ -117,7 +126,7 @@ class Character{
 		Fire.shared.getUser { (uid, userData) in
 			if(userData != nil){
 				
-				var challengeDictionary:[Date:[[Bool]]] = [:]
+				let challengeDictionary:[Date:[[Bool]]] = [:]
 
 				// gather all challenges user has visited
 				var challenges:[String:[Bool]]? = userData!["challenges"] as! [String:[Bool]]?

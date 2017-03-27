@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LessonViewController: UIViewController {
+class LessonViewController: UIViewController, CompletedQuestionDelegate {
 	
 	var data:Lesson?{
 		didSet{
@@ -28,13 +28,14 @@ class LessonViewController: UIViewController {
 			aText.addAttributes(Style.shared.heading1Attributes(), range: NSMakeRange(0, aText.length))
 			self.titleLabel.numberOfLines = 0
 			self.titleLabel.attributedText = aText
-
 			
 			bodyText.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15)
 			bodyText.text = body
 			
 			authorLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15)
 			authorLabel.text = author
+
+			getCompletionState()
 		}
 	}
 	
@@ -47,6 +48,8 @@ class LessonViewController: UIViewController {
 	let authorHR2 = UIView()
 	
 	let scrollView = UIScrollView()
+	
+	let questionFooter = CompletedQuestionView()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -107,13 +110,44 @@ class LessonViewController: UIViewController {
 		
 //		scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: bodyText.frame.origin.y + bodyHeight + 20)
 		
-		var questionFooter:CompletedQuestionView
-		questionFooter = CompletedQuestionView.init(frame: CGRect.init(x: 0, y: bodyText.frame.origin.y + bodyHeight + 20, width: self.view.frame.size.width, height: 120))
+		
+		questionFooter.frame = CGRect.init(x: 0, y: bodyText.frame.origin.y + bodyHeight + 20, width: self.view.frame.size.width, height: 120)
 		questionFooter.noun = "lesson"
+		questionFooter.delegate = self
 		self.view.addSubview(questionFooter)
 
 		scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: bodyText.frame.origin.y + bodyHeight + 20 + questionFooter.frame.size.height + 20)
 
 	}
+	
+	func getCompletionState(){
+		Fire.shared.getUser { (uid, userData) in
+			if let userDatabase = userData{
+				if let challenges = userDatabase["challenges"]{
+					if let urlString = self.challengeURLString(){
+						if let completedState:Bool = challenges[urlString] as? Bool{
+							self.questionFooter.completed = completedState
+						}
+					}
+				}
+			}
+		}
+	}
+
+	func challengeURLString() -> String?{
+		if let lessonData = self.data{
+			if let lessonKey = lessonData.lessonKey{
+				return lessonKey
+			}
+		}
+		return nil
+	}
+
+	func didChangeCompleted(sender: CompletedQuestionView) {
+		if let urlString = challengeURLString(){
+			Character.shared.updateChallengeCompletion(urlString, didComplete: sender.completed, completionHandler: nil)
+		}
+	}
+
 }
 

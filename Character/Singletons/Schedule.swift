@@ -198,18 +198,6 @@ class Schedule{
 			}
 		}
 	}
-
-
-	func lessonsFromJSON(_ lessonsJSON:[String:Any]) -> [Lesson]{
-		var lessonArray:Array<Lesson> = []
-		let keyArray:[String] = Array(lessonsJSON.keys)
-		for key in keyArray {
-			let object:[String:Any] = lessonsJSON[key] as! [String:Any]
-			let lesson:Lesson = Lesson.init(key: key, dictionary: object)
-			lessonArray.append(lesson)
-		}
-		return lessonArray
-	}
 	
 	// 0: {    // pillar 0
 	//      0: [Lesson, Lesson, Lesson]   // grade 0

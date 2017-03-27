@@ -8,12 +8,13 @@
 
 import UIKit
 
-class QuoteViewController: UIViewController {
+class QuoteViewController: UIViewController, CompletedQuestionDelegate {
 
 	var data: Lesson?{
 		didSet{
 			quoteBodyView.text = data?.quote
 			quoteAuthorLabel.text = data?.quoteAuthor
+			getCompletionState()
 		}
 	}
 	
@@ -23,7 +24,9 @@ class QuoteViewController: UIViewController {
 	let quoteAuthorLabel = UILabel()
 	
 	let scrollView = UIScrollView()
-	
+
+	let questionFooter = CompletedQuestionView()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 		
@@ -71,14 +74,43 @@ class QuoteViewController: UIViewController {
 //		scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: quoteAuthorLabel.frame.origin.y + authorHeight + 20)
 		
 		// CHALLENGE QUESTION FOOTER
-		var questionFooter:CompletedQuestionView
-		questionFooter = CompletedQuestionView.init(frame: CGRect.init(x: 0, y: quoteAuthorLabel.frame.origin.y + authorHeight + 20, width: self.view.frame.size.width, height: 120))
+		questionFooter.frame = CGRect.init(x: 0, y: quoteAuthorLabel.frame.origin.y + authorHeight + 20, width: self.view.frame.size.width, height: 120)
 		questionFooter.noun = "quote"
+		questionFooter.delegate = self
 		self.view.addSubview(questionFooter)
 		
 		scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: quoteAuthorLabel.frame.origin.y + authorHeight + 20 + questionFooter.frame.size.height + 20)
 
     }
+	
+	func getCompletionState(){
+		Fire.shared.getUser { (uid, userData) in
+			if let userDatabase = userData{
+				if let challenges = userDatabase["challenges"]{
+					if let urlString = self.challengeURLString(){
+						if let completedState:Bool = challenges[urlString] as? Bool{
+							self.questionFooter.completed = completedState
+						}
+					}
+				}
+			}
+		}
+	}
+
+	func challengeURLString() -> String?{
+		if let lessonData = self.data{
+			if let quoteKey = lessonData.quoteKey{
+				return quoteKey
+			}
+		}
+		return nil
+	}
+	
+	func didChangeCompleted(sender: CompletedQuestionView) {
+		if let urlString = challengeURLString(){
+			Character.shared.updateChallengeCompletion(urlString, didComplete: sender.completed, completionHandler: nil)
+		}
+	}
 	
 	override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

@@ -29,9 +29,9 @@ class LessonTableViewController: UITableViewController {
 	var data: Lesson?{
 		didSet{
 			self.tableView.reloadData()
-			if(data?.key != nil){
-				getCompletedChallenges((data?.key)!)
-			}
+//			if(data?.key != nil){
+//				getCompletedChallenges((data?.key)!)
+//			}
 			
 			if(data == nil){
 				self.view.addSubview(noLessonCoverView)
@@ -79,9 +79,9 @@ class LessonTableViewController: UITableViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 
-		if(data != nil && data?.key != nil){
-			getCompletedChallenges((data?.key)!)
-		}
+//		if(data != nil && data?.key != nil){
+//			getCompletedChallenges((data?.key)!)
+//		}
 	}
 	
 	func buildChildViews(){
@@ -187,15 +187,22 @@ class LessonTableViewController: UITableViewController {
 			self.navigationController?.pushViewController(vc, animated: true)
 			break
 		case 2:
-			let vc: ChallengesViewController = ChallengesViewController()
+			let vc: BehaviorViewController = BehaviorViewController()
 			vc.data = self.data
-			vc.completedArray = self.completedChallengeArray
+			vc.behaviorBodyView.text = ""
 			vc.title = "DAILY BEHAVIOR"
 			self.navigationController?.pushViewController(vc, animated: true)
+//			let vc: ChallengesViewController = ChallengesViewController()
+//			vc.data = self.data
+//			vc.completedArray = self.completedChallengeArray
+//			vc.title = "DAILY BEHAVIOR"
+//			self.navigationController?.pushViewController(vc, animated: true)
 			break
 		case 3:
-			let vc: PrayerViewController = PrayerViewController()
-			vc.title = "DAILY PRAYER"
+			let vc: PledgeViewController = PledgeViewController()
+//			vc.title = "DAILY PRAYER"
+			vc.data = self.data
+			vc.title = "DAILY PLEDGE"
 			self.navigationController?.pushViewController(vc, animated: true)
 			break
 		default:
@@ -210,9 +217,10 @@ class LessonTableViewController: UITableViewController {
 		case 1:
 			return quoteCellWithData(data)
 		case 2:
-			return challengesCellWithData(data)
+			return behaviorCellWithData(data)
+//			return challengesCellWithData(data)
 		case 3:
-			return prayerCellWithData(data)
+			return pledgeCellWithData(data)
 		default:
 			return UITableViewCell()
 		}
@@ -249,8 +257,14 @@ class LessonTableViewController: UITableViewController {
 		return cell
 	}
 	
-	func prayerCellWithData(_ data:Lesson?) -> PrayerTableViewCell {
-		let cell = PrayerTableViewCell()
+	func behaviorCellWithData(_ data:Lesson?) -> BehaviorTableViewCell {
+		let cell = BehaviorTableViewCell()
+//		cell.numberCompleted = numChallengesCompleted
+		return cell
+	}
+
+	func pledgeCellWithData(_ data:Lesson?) -> PledgeTableViewCell {
+		let cell = PledgeTableViewCell()
 		return cell
 	}
 

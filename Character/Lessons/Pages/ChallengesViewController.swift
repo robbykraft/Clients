@@ -41,10 +41,10 @@ class ChallengesViewController: UIViewController, UITableViewDelegate, UITableVi
 			percentLabel.text = "0%"
 		}
 		
-		if(data?.key != nil){
-			let lessonKey:String = (data?.key!)!
-			Fire.shared.updateUserWithKeyAndValue("challenges/\(lessonKey)", value: completedArray as AnyObject, completionHandler: nil)
-		}
+//		if(data?.key != nil){
+//			let lessonKey:String = (data?.key!)!
+//			Fire.shared.updateUserWithKeyAndValue("challenges/\(lessonKey)", value: completedArray as AnyObject, completionHandler: nil)
+//		}
 		
 	}
 	
