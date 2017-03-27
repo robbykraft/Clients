@@ -69,7 +69,6 @@ class CompletedQuestionView: UIView {
 		if let d = delegate{
 			d.didChangeCompleted(sender: self)
 		}
-		// todo: report to the database
 	}
 	
 	override func layoutSubviews() {

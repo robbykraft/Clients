@@ -13,12 +13,14 @@ class FeedbackViewController: UIViewController, UITextViewDelegate {
 	let textView = UITextView()
 	let submitButton = UIButton()
 	
+	var feedbackTarget:String?
+	
     override func viewDidLoad() {
         super.viewDidLoad()
 		
 		self.view.backgroundColor = Style.shared.whiteSmoke
 		
-		self.title = "APP FEEDBACK"
+		self.title = "FEEDBACK"
 		
 		submitButton.backgroundColor = Style.shared.lightBlue
 		submitButton.setTitle("SUBMIT", for: UIControlState())

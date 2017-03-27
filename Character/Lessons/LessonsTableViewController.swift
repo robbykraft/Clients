@@ -85,7 +85,10 @@ class LessonsTableViewController: UITableViewController {
 		if(showFilter && filter != nil){
 			return (self.filteredData?.count)!
 		}
-		return (self.data?.count)!
+		if let d = self.data{
+			return d.count
+		}
+		return 0;
 	}
 	
 	func daySuffix(_ dayOfMonth: Int) -> String {

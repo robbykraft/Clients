@@ -25,6 +25,11 @@ class PledgeViewController: UIViewController, CompletedQuestionDelegate{
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+		// NAVIGATION RIGHT BUTTON
+		let rightButton:UIBarButtonItem = UIBarButtonItem.init(title: "•••", style: .plain, target: self, action: #selector(rightButtonPressed))
+		self.navigationItem.rightBarButtonItem = rightButton;
+
+		
 		scrollView.frame = self.view.frame
 		self.view = scrollView
 		self.view.backgroundColor = UIColor.white
@@ -96,6 +101,19 @@ class PledgeViewController: UIViewController, CompletedQuestionDelegate{
 		if let urlString = challengeURLString(){
 			Character.shared.updateChallengeCompletion(urlString, didComplete: sender.completed, completionHandler: nil)
 		}
+	}
+
+	func rightButtonPressed(){
+		let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+		alert.addAction(UIAlertAction(title: "Leave Feedback", style: .default , handler:{ (UIAlertAction)in
+			let vc = FeedbackViewController()
+			vc.feedbackTarget = self.challengeURLString()
+			self.navigationController?.pushViewController(vc, animated: true)
+		}))
+		alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel , handler:{ (UIAlertAction)in
+			
+		}))
+		self.present(alert, animated: true) { }
 	}
 
 	

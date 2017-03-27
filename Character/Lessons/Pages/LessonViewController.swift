@@ -54,6 +54,10 @@ class LessonViewController: UIViewController, CompletedQuestionDelegate {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+		// NAVIGATION RIGHT BUTTON
+		let rightButton:UIBarButtonItem = UIBarButtonItem.init(title: "•••", style: .plain, target: self, action: #selector(rightButtonPressed))
+		self.navigationItem.rightBarButtonItem = rightButton;
+		
 		let navPad:CGFloat = 0//self.navigationController!.navigationBar.frame.size.height
 		
 		let sidePad:CGFloat = self.view.frame.size.width * 0.1
@@ -110,13 +114,16 @@ class LessonViewController: UIViewController, CompletedQuestionDelegate {
 		
 //		scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: bodyText.frame.origin.y + bodyHeight + 20)
 		
-		
-		questionFooter.frame = CGRect.init(x: 0, y: bodyText.frame.origin.y + bodyHeight + 20, width: self.view.frame.size.width, height: 120)
+		let notesFooter = MyNotesFooterView()
+		notesFooter.frame = CGRect.init(x: 0, y: bodyText.frame.origin.y + bodyHeight + 20, width: self.view.frame.size.width, height: 40)
+		self.view.addSubview(notesFooter)
+
+		questionFooter.frame = CGRect.init(x: 0, y: bodyText.frame.origin.y + bodyHeight + 20 + notesFooter.frame.size.height + 20, width: self.view.frame.size.width, height: 120)
 		questionFooter.noun = "lesson"
 		questionFooter.delegate = self
 		self.view.addSubview(questionFooter)
 
-		scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: bodyText.frame.origin.y + bodyHeight + 20 + questionFooter.frame.size.height + 20)
+		scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: bodyText.frame.origin.y + bodyHeight + 20 + questionFooter.frame.size.height + 20 + notesFooter.frame.size.height + 20)
 
 	}
 	
@@ -147,6 +154,23 @@ class LessonViewController: UIViewController, CompletedQuestionDelegate {
 		if let urlString = challengeURLString(){
 			Character.shared.updateChallengeCompletion(urlString, didComplete: sender.completed, completionHandler: nil)
 		}
+	}
+	
+	func rightButtonPressed(){
+		let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+		alert.addAction(UIAlertAction(title: "Leave Feedback", style: .default , handler:{ (UIAlertAction)in
+			let vc = FeedbackViewController()
+			vc.feedbackTarget = self.challengeURLString()
+			self.navigationController?.pushViewController(vc, animated: true)
+		}))
+		alert.addAction(UIAlertAction(title: "Submit a Lesson", style: .default , handler:{ (UIAlertAction)in
+			
+		}))
+		alert.addAction(UIAlertAction(title: "Print", style: .default , handler:{ (UIAlertAction)in
+			
+		}))
+		alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel , handler:nil))
+		self.present(alert, animated: true) { }
 	}
 
 }

@@ -15,6 +15,8 @@
 		D53F1D221D7625AF00B1A194 /* PledgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53F1D211D7625AF00B1A194 /* PledgeViewController.swift */; };
 		D54C39751E896F87002D8AC8 /* BehaviorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54C39741E896F87002D8AC8 /* BehaviorViewController.swift */; };
 		D54C39771E8973D4002D8AC8 /* BehaviorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54C39761E8973D4002D8AC8 /* BehaviorTableViewCell.swift */; };
+		D54C39791E89C3DC002D8AC8 /* MyNotesFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54C39781E89C3DC002D8AC8 /* MyNotesFooterView.swift */; };
+		D54C397B1E89CA7F002D8AC8 /* MyFeedbackTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54C397A1E89CA7F002D8AC8 /* MyFeedbackTableViewController.swift */; };
 		D56ED1DC1D77532E009D61E6 /* ScoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56ED1DB1D77532E009D61E6 /* ScoreViewController.swift */; };
 		D572F49B1D6DF219000391F2 /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572F49A1D6DF219000391F2 /* MoreViewController.swift */; };
 		D572F4A41D6E0C21000391F2 /* Lesson.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572F4A31D6E0C21000391F2 /* Lesson.swift */; };
@@ -59,6 +61,8 @@
 		D53F1D211D7625AF00B1A194 /* PledgeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PledgeViewController.swift; sourceTree = "<group>"; };
 		D54C39741E896F87002D8AC8 /* BehaviorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BehaviorViewController.swift; sourceTree = "<group>"; };
 		D54C39761E8973D4002D8AC8 /* BehaviorTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BehaviorTableViewCell.swift; sourceTree = "<group>"; };
+		D54C39781E89C3DC002D8AC8 /* MyNotesFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyNotesFooterView.swift; sourceTree = "<group>"; };
+		D54C397A1E89CA7F002D8AC8 /* MyFeedbackTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyFeedbackTableViewController.swift; sourceTree = "<group>"; };
 		D56ED1DB1D77532E009D61E6 /* ScoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScoreViewController.swift; sourceTree = "<group>"; };
 		D572F49A1D6DF219000391F2 /* MoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
 		D572F4A31D6E0C21000391F2 /* Lesson.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lesson.swift; sourceTree = "<group>"; };
@@ -122,6 +126,7 @@
 			children = (
 				D572F49A1D6DF219000391F2 /* MoreViewController.swift */,
 				D56ED1DB1D77532E009D61E6 /* ScoreViewController.swift */,
+				D54C397A1E89CA7F002D8AC8 /* MyFeedbackTableViewController.swift */,
 				D52C40B21D7240BB004A4724 /* FeedbackViewController.swift */,
 				D5F3CE481D7353EA003FABEF /* CharacterToolsViewController.swift */,
 				D5F3CE3B1D735393003FABEF /* Additional */,
@@ -248,6 +253,7 @@
 		D5F219441E88444E00362B5A /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				D54C39781E89C3DC002D8AC8 /* MyNotesFooterView.swift */,
 				D5F219451E88449000362B5A /* CompletedQuestionView.swift */,
 			);
 			path = Views;
@@ -405,6 +411,7 @@
 				D59B043D1D6CA4B700E6624B /* Fire.swift in Sources */,
 				D53F1D201D76256A00B1A194 /* PledgeTableViewCell.swift in Sources */,
 				D59B045E1D6CB04600E6624B /* ChallengesViewController.swift in Sources */,
+				D54C397B1E89CA7F002D8AC8 /* MyFeedbackTableViewController.swift in Sources */,
 				D5F3CE471D735393003FABEF /* SixPillarsViewController.swift in Sources */,
 				D59B045A1D6CB04600E6624B /* SuperLessonTableViewCell.swift in Sources */,
 				D59B04611D6CB04600E6624B /* QuoteViewController.swift in Sources */,
@@ -423,6 +430,7 @@
 				D572F4A81D6E273D000391F2 /* Character.swift in Sources */,
 				D56ED1DC1D77532E009D61E6 /* ScoreViewController.swift in Sources */,
 				D59B043B1D6CA4B700E6624B /* ProfileViewController.swift in Sources */,
+				D54C39791E89C3DC002D8AC8 /* MyNotesFooterView.swift in Sources */,
 				D59B045C1D6CB04600E6624B /* LessonTableViewController.swift in Sources */,
 				D521BCD81E5DF182004A7756 /* Schedule.swift in Sources */,
 				D53F1D221D7625AF00B1A194 /* PledgeViewController.swift in Sources */,
