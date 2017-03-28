@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LessonViewController: UIViewController, CompletedQuestionDelegate {
+class LessonViewController: UIViewController, CompletedQuestionDelegate, MyNotesFooterDelegate {
 	
 	var data:Lesson?{
 		didSet{
@@ -36,6 +36,8 @@ class LessonViewController: UIViewController, CompletedQuestionDelegate {
 			authorLabel.text = author
 
 			getCompletionState()
+			
+			getHasNotes()
 		}
 	}
 	
@@ -50,6 +52,9 @@ class LessonViewController: UIViewController, CompletedQuestionDelegate {
 	let scrollView = UIScrollView()
 	
 	let questionFooter = CompletedQuestionView()
+	let notesFooter = MyNotesFooterView()
+	
+	var myLessonNotesString:String? // hang onto my notes for this lesson
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -114,8 +119,8 @@ class LessonViewController: UIViewController, CompletedQuestionDelegate {
 		
 //		scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: bodyText.frame.origin.y + bodyHeight + 20)
 		
-		let notesFooter = MyNotesFooterView()
 		notesFooter.frame = CGRect.init(x: 0, y: bodyText.frame.origin.y + bodyHeight + 20, width: self.view.frame.size.width, height: 40)
+		notesFooter.delegate = self
 		self.view.addSubview(notesFooter)
 
 		questionFooter.frame = CGRect.init(x: 0, y: bodyText.frame.origin.y + bodyHeight + 20 + notesFooter.frame.size.height + 20, width: self.view.frame.size.width, height: 120)
@@ -125,6 +130,28 @@ class LessonViewController: UIViewController, CompletedQuestionDelegate {
 
 		scrollView.contentSize = CGSize(width: self.view.frame.size.width, height: bodyText.frame.origin.y + bodyHeight + 20 + questionFooter.frame.size.height + 20 + notesFooter.frame.size.height + 20)
 
+	}
+	
+	override func viewDidAppear(_ animated: Bool) {
+		getHasNotes()
+	}
+	
+	func getHasNotes(){
+		Fire.shared.getUser { (uid, userData) in
+			if let userDatabase = userData{
+				if let notes = userDatabase["notes"]{
+					if let urlString = self.challengeURLString(){
+						if let notesString:String = notes[urlString] as? String{
+							if(!notesString.isEmpty){
+								self.myLessonNotesString = notesString
+								self.notesFooter.hasNotes = true
+							}
+						}
+					}
+				}
+			}
+		}
+		
 	}
 	
 	func getCompletionState(){
@@ -148,6 +175,13 @@ class LessonViewController: UIViewController, CompletedQuestionDelegate {
 			}
 		}
 		return nil
+	}
+	
+	func didPressNotesButton(sender: MyNotesFooterView) {
+		let vc = NotesViewController()
+		vc.lessonTarget = self.challengeURLString()
+		vc.textView.text = myLessonNotesString
+		self.navigationController?.pushViewController(vc, animated: true)
 	}
 
 	func didChangeCompleted(sender: CompletedQuestionView) {

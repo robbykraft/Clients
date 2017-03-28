@@ -19,27 +19,10 @@ class MyNotesFooterView: UIView {
 	
 	let paperclipImage = UIImageView()
 	let textLabel:UILabel = UILabel()
-	
 	let topHR = UIView()
 	let bottomHR = UIView()
 	
 	let button:UIButton = UIButton()
-	var noun:String?{
-		didSet{
-//			if let nounString = noun{
-//				textLabel.text = "I've shared this " + nounString + " with the class"
-//			}
-		}
-	}
-	
-	override init(frame: CGRect) {
-		super.init(frame: frame)
-		self.initUI()
-	}
-	required init?(coder aDecoder: NSCoder) {
-		super.init(coder: aDecoder)
-		self.initUI()
-	}
 
 	var hasNotes:Bool = false{
 		didSet{
@@ -52,6 +35,16 @@ class MyNotesFooterView: UIView {
 		}
 	}
 	
+	
+	override init(frame: CGRect) {
+		super.init(frame: frame)
+		self.initUI()
+	}
+	required init?(coder aDecoder: NSCoder) {
+		super.init(coder: aDecoder)
+		self.initUI()
+	}
+
 	func initUI() {
 		topHR.backgroundColor = Style.shared.darkGray
 		bottomHR.backgroundColor = Style.shared.darkGray
@@ -72,11 +65,9 @@ class MyNotesFooterView: UIView {
 	}
 	
 	func didPressButton() {
-		hasNotes = !hasNotes
 		if let d = delegate{
 			d.didPressNotesButton(sender: self)
 		}
-		// todo: report to the database
 	}
 	
 	override func layoutSubviews() {

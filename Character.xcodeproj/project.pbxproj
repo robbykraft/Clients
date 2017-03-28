@@ -43,6 +43,7 @@
 		D59B04601D6CB04600E6624B /* LessonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59B04501D6CB04600E6624B /* LessonViewController.swift */; };
 		D59B04611D6CB04600E6624B /* QuoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59B04511D6CB04600E6624B /* QuoteViewController.swift */; };
 		D59B04681D6CBF7000E6624B /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59B04671D6CBF7000E6624B /* Style.swift */; };
+		D5DDD4CD1E8ABDD80051E4FC /* NotesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DDD4CC1E8ABDD80051E4FC /* NotesViewController.swift */; };
 		D5F219461E88449000362B5A /* CompletedQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F219451E88449000362B5A /* CompletedQuestionView.swift */; };
 		D5F3CE421D735393003FABEF /* CatholicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F3CE3C1D735393003FABEF /* CatholicViewController.swift */; };
 		D5F3CE471D735393003FABEF /* SixPillarsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F3CE411D735393003FABEF /* SixPillarsViewController.swift */; };
@@ -91,6 +92,7 @@
 		D59B04501D6CB04600E6624B /* LessonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LessonViewController.swift; sourceTree = "<group>"; };
 		D59B04511D6CB04600E6624B /* QuoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuoteViewController.swift; sourceTree = "<group>"; };
 		D59B04671D6CBF7000E6624B /* Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
+		D5DDD4CC1E8ABDD80051E4FC /* NotesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotesViewController.swift; sourceTree = "<group>"; };
 		D5F219451E88449000362B5A /* CompletedQuestionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompletedQuestionView.swift; sourceTree = "<group>"; };
 		D5F3CE3C1D735393003FABEF /* CatholicViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CatholicViewController.swift; sourceTree = "<group>"; };
 		D5F3CE411D735393003FABEF /* SixPillarsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SixPillarsViewController.swift; sourceTree = "<group>"; };
@@ -244,6 +246,7 @@
 				D54C39741E896F87002D8AC8 /* BehaviorViewController.swift */,
 				D59B04511D6CB04600E6624B /* QuoteViewController.swift */,
 				D53F1D211D7625AF00B1A194 /* PledgeViewController.swift */,
+				D5DDD4CC1E8ABDD80051E4FC /* NotesViewController.swift */,
 				D59B044E1D6CB04600E6624B /* ChallengesViewController.swift */,
 				D59B044F1D6CB04600E6624B /* ChallengeTableViewCell.swift */,
 			);
@@ -415,6 +418,7 @@
 				D5F3CE471D735393003FABEF /* SixPillarsViewController.swift in Sources */,
 				D59B045A1D6CB04600E6624B /* SuperLessonTableViewCell.swift in Sources */,
 				D59B04611D6CB04600E6624B /* QuoteViewController.swift in Sources */,
+				D5DDD4CD1E8ABDD80051E4FC /* NotesViewController.swift in Sources */,
 				D54C39771E8973D4002D8AC8 /* BehaviorTableViewCell.swift in Sources */,
 				D5F3CE421D735393003FABEF /* CatholicViewController.swift in Sources */,
 				D59B043C1D6CA4B700E6624B /* Cache.swift in Sources */,
