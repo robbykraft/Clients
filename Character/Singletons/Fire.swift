@@ -196,35 +196,47 @@ class Fire {
 	//  STORAGE
 	
 	// specify a UUIDFilename, or it will generate one for you
-	func uploadFileAndMakeRecord(_ data:Data, fileType:StorageFileType, description:String?, completionHandler: @escaping (_ downloadURL:URL?) -> ()) {
+	func uploadFileAndMakeRecord(_ data:Data, folder:String?, fileType:StorageFileType, description:String?, completionHandler: @escaping (_ downloadURL:URL?) -> ()) {
 		
 		// prep file info
 		var filename:String = UUID.init().uuidString
 		var storagePath:String
 		var databaseDirectory:String
+		var dir:String = ""
 		switch fileType {
 		case .image_JPG:
 			filename = filename + ".jpg"
-			storagePath = IMAGE_DIRECTORY + filename
-			databaseDirectory = "files/" + IMAGE_DIRECTORY
+			dir = IMAGE_DIRECTORY
 			break
 		case .image_PNG:
 			filename = filename + ".png"
-			storagePath = IMAGE_DIRECTORY + filename
-			databaseDirectory = "files/" + IMAGE_DIRECTORY
+			dir = IMAGE_DIRECTORY
 			break
 		case .document_PDF:
 			filename = filename + ".pdf"
-			storagePath = DOCUMENT_DIRECTORY + filename
-			databaseDirectory = "files/" + DOCUMENT_DIRECTORY
+			dir = DOCUMENT_DIRECTORY
 			break
 		}
+		// WAIT: if they specify a directory folder, use that instead
+		// if user-specified directory, make sure it ends with /
+		if let f:String = folder{
+			// make sure string isn't empty, OR, string is "/" -- cannot save at root, will save at "files/" instead
+			if(!f.isEmpty && !(f.characters.count == 1 && f.characters.first == "/") ){
+				dir = f
+				if(dir.characters.last != "/"){
+					dir.append("/")
+				}
+			}
+		}
+		
+		storagePath = dir + filename
+		databaseDirectory = "files/" + dir
 		
 		// STEP 1 - upload file to storage
 		currentUpload = storage.child(storagePath).put(data, metadata: nil) { metadata, error in
 			// TODO: make currentUpload an array, if upload in progress add this to array
 			if (error != nil) {
-				print(error)
+				print(error?.localizedDescription ?? "")
 				completionHandler(nil)
 			} else {
 				// STEP 2 - record new file in database

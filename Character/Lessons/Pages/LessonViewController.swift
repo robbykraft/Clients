@@ -197,8 +197,12 @@ class LessonViewController: UIViewController, CompletedQuestionDelegate, MyNotes
 			vc.feedbackTarget = self.challengeURLString()
 			self.navigationController?.pushViewController(vc, animated: true)
 		}))
-		alert.addAction(UIAlertAction(title: "Submit a Lesson", style: .default , handler:{ (UIAlertAction)in
-			
+		alert.addAction(UIAlertAction(title: "Create my own a Lesson", style: .default , handler:{ (UIAlertAction)in
+			let vc = CreateLessonViewController()
+//			self.navigationController?.pushViewController(vc, animated: true)
+			self.navigationController?.present(vc, animated: true, completion: {
+				print("present view controller done")
+			})
 		}))
 		alert.addAction(UIAlertAction(title: "Print", style: .default , handler:{ (UIAlertAction)in
 			

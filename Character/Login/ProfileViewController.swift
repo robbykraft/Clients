@@ -264,7 +264,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 		let image = info[UIImagePickerControllerOriginalImage] as! UIImage
 		let data = UIImageJPEGRepresentation(image, 0.5)
 		if(data != nil){
-			Fire.shared.uploadFileAndMakeRecord(data!, fileType: .image_JPG, description: nil, completionHandler: { (downloadURL) in
+			Fire.shared.uploadFileAndMakeRecord(data!, folder:nil, fileType: .image_JPG, description: nil, completionHandler: { (downloadURL) in
 				if(downloadURL != nil){
 					Fire.shared.updateUserWithKeyAndValue("image", value: downloadURL!.absoluteString as AnyObject, completionHandler: { (success) in
 						if(success){

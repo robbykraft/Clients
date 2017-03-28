@@ -44,7 +44,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		} else {
 			// No user is signed in.
 			launchApp(true)
-		}		
+		}
+		UIApplication.shared.statusBarStyle = .lightContent
 		return true
 	}
 
