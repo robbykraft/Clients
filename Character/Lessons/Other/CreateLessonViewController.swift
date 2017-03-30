@@ -73,7 +73,7 @@ class CreateLessonViewController: UIViewController, UITextViewDelegate, UIImageP
 		scrollView.backgroundColor = UIColor.white
 		fakeNavBar.backgroundColor = Style.shared.darkGray
 		navTitle.textAlignment = .center
-		navTitle.text = "CREATE A LESSON"
+		navTitle.text = "SUBMIT A LESSON"
 		navTitle.textColor = UIColor.white
 		closeButton.setTitle("×", for: .normal)
 		closeButton.setTitleColor(UIColor.white, for: .normal)
@@ -239,7 +239,7 @@ class CreateLessonViewController: UIViewController, UITextViewDelegate, UIImageP
 		]
 
 		Fire.shared.newUniqueObjectAtPath("lesson", object: lessonObject as AnyObject) {
-			let alertController = UIAlertController.init(title: "Feedback Sent", message: "Thank you for taking time to help!", preferredStyle: .alert)
+			let alertController = UIAlertController.init(title: "Lesson Submitted", message: "Thank you for contributing!", preferredStyle: .alert)
 			let okayButton = UIAlertAction.init(title: "Okay", style: .default, handler: { (action) in
 				self.dismiss(animated: true, completion: nil)
 			})

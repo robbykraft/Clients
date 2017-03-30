@@ -125,6 +125,8 @@ class QuoteViewController: UIViewController, CompletedQuestionDelegate {
 			self.navigationController?.pushViewController(vc, animated: true)
 		}))
 		alert.addAction(UIAlertAction(title: "Submit a Quote", style: .default , handler:{ (UIAlertAction)in
+			let vc = CreateQuoteViewController()
+			self.navigationController?.present(vc, animated: true, completion: nil)
 
 		}))
 		alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel , handler:{ (UIAlertAction)in

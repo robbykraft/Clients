@@ -10,6 +10,7 @@
 		3B48A92C7D217435CF908E04 /* Pods_Character.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37345BBC5059B616A69B6EB1 /* Pods_Character.framework */; };
 		D513BB6E1D6F3FE000BA20A6 /* SetupProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D513BB6D1D6F3FE000BA20A6 /* SetupProfileViewController.swift */; };
 		D521BCD81E5DF182004A7756 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D521BCD71E5DF182004A7756 /* Schedule.swift */; };
+		D52BAAF91E8D92AA002309C7 /* CreateQuoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52BAAF81E8D92AA002309C7 /* CreateQuoteViewController.swift */; };
 		D52C40B31D7240BB004A4724 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52C40B21D7240BB004A4724 /* FeedbackViewController.swift */; };
 		D53F1D201D76256A00B1A194 /* PledgeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53F1D1F1D76256A00B1A194 /* PledgeTableViewCell.swift */; };
 		D53F1D221D7625AF00B1A194 /* PledgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53F1D211D7625AF00B1A194 /* PledgeViewController.swift */; };
@@ -58,6 +59,7 @@
 		D513BB6D1D6F3FE000BA20A6 /* SetupProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetupProfileViewController.swift; sourceTree = "<group>"; };
 		D521BCD71E5DF182004A7756 /* Schedule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
 		D523C32C1DA58A7900490E71 /* Character.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Character.entitlements; sourceTree = "<group>"; };
+		D52BAAF81E8D92AA002309C7 /* CreateQuoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CreateQuoteViewController.swift; path = Other/CreateQuoteViewController.swift; sourceTree = "<group>"; };
 		D52C40B21D7240BB004A4724 /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
 		D53F1D1F1D76256A00B1A194 /* PledgeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PledgeTableViewCell.swift; sourceTree = "<group>"; };
 		D53F1D211D7625AF00B1A194 /* PledgeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PledgeViewController.swift; sourceTree = "<group>"; };
@@ -259,6 +261,7 @@
 			isa = PBXGroup;
 			children = (
 				D5DDD4CF1E8ACE1D0051E4FC /* CreateLessonViewController.swift */,
+				D52BAAF81E8D92AA002309C7 /* CreateQuoteViewController.swift */,
 				D5DDD4D01E8ACE1D0051E4FC /* NotesViewController.swift */,
 			);
 			name = "Other Pages";
@@ -456,6 +459,7 @@
 				D59B045F1D6CB04600E6624B /* ChallengeTableViewCell.swift in Sources */,
 				D54C39751E896F87002D8AC8 /* BehaviorViewController.swift in Sources */,
 				D59B04161D6C96D500E6624B /* AppDelegate.swift in Sources */,
+				D52BAAF91E8D92AA002309C7 /* CreateQuoteViewController.swift in Sources */,
 				D59B04571D6CB04600E6624B /* LessonsTableViewCell.swift in Sources */,
 				D59B04681D6CBF7000E6624B /* Style.swift in Sources */,
 				D5F3CE491D7353EA003FABEF /* CharacterToolsViewController.swift in Sources */,
