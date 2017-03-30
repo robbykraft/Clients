@@ -138,8 +138,12 @@ class CreateQuoteViewController: UIViewController, UITextViewDelegate {
 			"createdAt": Date.init().timeIntervalSince1970,
 			"user": userString
 		]
-
-		Fire.shared.newUniqueObjectAtPath("quote", object: quoteObject as AnyObject) {
+		
+		Fire.shared.newUniqueObjectAtPath("quotes", object: quoteObject as AnyObject) { (error, ref) in
+			if(error != nil){
+				print("error")
+				print(error?.localizedDescription ?? "")
+			}
 			let alertController = UIAlertController.init(title: "Quote Submitted", message: "Thank you for contributing!", preferredStyle: .alert)
 			let okayButton = UIAlertAction.init(title: "Okay", style: .default, handler: { (action) in
 				self.dismiss(animated: true, completion: nil)

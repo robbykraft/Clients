@@ -68,7 +68,7 @@ class FeedbackViewController: UIViewController, UITextViewDelegate {
 //					let user = FIRAuth.auth()?.currentUser
 		]
 
-		Fire.shared.newUniqueObjectAtPath("feedback", object: feedbackObject as AnyObject) {
+		Fire.shared.newUniqueObjectAtPath("feedback", object: feedbackObject as AnyObject) { (error, ref)  in
 			let alertController = UIAlertController.init(title: "Feedback Sent", message: "Thank you for taking time to help!", preferredStyle: .alert)
 			let okayButton = UIAlertAction.init(title: "Okay", style: .default, handler: { (action) in
 				self.navigationController?.popViewController(animated: true)

@@ -238,7 +238,7 @@ class CreateLessonViewController: UIViewController, UITextViewDelegate, UIImageP
 			"user": userString
 		]
 
-		Fire.shared.newUniqueObjectAtPath("lesson", object: lessonObject as AnyObject) {
+		Fire.shared.newUniqueObjectAtPath("lesson", object: lessonObject as AnyObject) { (error, ref) in
 			let alertController = UIAlertController.init(title: "Lesson Submitted", message: "Thank you for contributing!", preferredStyle: .alert)
 			let okayButton = UIAlertAction.init(title: "Okay", style: .default, handler: { (action) in
 				self.dismiss(animated: true, completion: nil)
