@@ -168,29 +168,42 @@ class Schedule{
 		let nextDates = self.getNextWeekdays(numberOfDays: 5, includeToday: false)
 		for day:Date in nextDates{
 			if let thisDaysLessonData = self.schoolYear![day]{
-				let thisDaysLesson:Lesson = Lesson()
-				thisDaysLesson.setFromDatabase(lessonKey: thisDaysLessonData[0]["lesson"] as! String,
-				                               quoteKey: thisDaysLessonData[0]["quote"] as! String,
-				                               behaviorKey: thisDaysLessonData[0]["behavior"] as! String,
-				                               date: day, { (success, theLesson) in
-					self.upcomingLessons![day] = [theLesson]
-					print("downloading an upcoming lesson")
-				})
+				self.upcomingLessons![day] = []
+				// create a fixed length array of size # of grade levels (usually 4)
+				for _ in 0..<thisDaysLessonData.count {
+					self.upcomingLessons![day]?.append(Lesson())
+				}
+				for i in 0..<thisDaysLessonData.count {
+					let thisDaysLesson:Lesson = Lesson()
+					thisDaysLesson.setFromDatabase(lessonKey: thisDaysLessonData[i]["lesson"] as! String,
+					                               quoteKey: thisDaysLessonData[i]["quote"] as! String,
+					                               behaviorKey: thisDaysLessonData[i]["behavior"] as! String,
+					                               date: day, { (success, theLesson) in
+						self.upcomingLessons![day]?[theLesson.grade!] = theLesson
+						print("downloading an upcoming lesson")
+					})
+				}
 			}
 		}
-
 		self.pastLessons = [:]
 		let prevDates = self.getPreviousWeekdays(numberOfDays: 15, includeToday: false)
 		for day:Date in prevDates{
 			if let thisDaysLessonData = self.schoolYear![day]{
-				let thisDaysLesson:Lesson = Lesson()
-				thisDaysLesson.setFromDatabase(lessonKey: thisDaysLessonData[0]["lesson"] as! String,
-				                               quoteKey: thisDaysLessonData[0]["quote"] as! String,
-				                               behaviorKey: thisDaysLessonData[0]["behavior"] as! String,
-				                               date: day, { (success, theLesson) in
-					self.pastLessons![day] = [theLesson]
-					print("downloading a past lesson")
-				})
+				self.pastLessons![day] = []
+				// create a fixed length array of size # of grade levels (usually 4)
+				for _ in 0..<thisDaysLessonData.count {
+					self.pastLessons![day]?.append(Lesson())
+				}
+				for i in 0..<thisDaysLessonData.count {
+					let thisDaysLesson:Lesson = Lesson()
+					thisDaysLesson.setFromDatabase(lessonKey: thisDaysLessonData[i]["lesson"] as! String,
+					                               quoteKey: thisDaysLessonData[i]["quote"] as! String,
+					                               behaviorKey: thisDaysLessonData[i]["behavior"] as! String,
+					                               date: day, { (success, theLesson) in
+						self.pastLessons![day]?[theLesson.grade!] = theLesson
+						print("downloading a past lesson")
+					})
+				}
 			}
 		}
 		var GMTCalendar = Calendar.current
@@ -198,14 +211,22 @@ class Schedule{
 		let todaysDate = GMTCalendar.startOfDay(for: Date())
 		if let todayLessonData = self.schoolYear![todaysDate]{
 			print(todayLessonData)
-			let thisDaysLesson:Lesson = Lesson()
-			thisDaysLesson.setFromDatabase(lessonKey: todayLessonData[0]["lesson"] as! String,
-			                               quoteKey: todayLessonData[0]["quote"] as! String,
-			                               behaviorKey: todayLessonData[0]["behavior"] as! String,
-			                               date: todaysDate, { (success, theLesson) in
-				self.todaysLesson = [theLesson]
-				completionHandler(true)
-			})
+			self.todaysLesson = []
+			for _ in 0..<todayLessonData.count {
+				self.todaysLesson?.append(Lesson())
+			}
+			for i in 0..<todayLessonData.count {
+				let thisDaysLesson:Lesson = Lesson()
+				thisDaysLesson.setFromDatabase(lessonKey: todayLessonData[i]["lesson"] as! String,
+				                               quoteKey: todayLessonData[i]["quote"] as! String,
+				                               behaviorKey: todayLessonData[i]["behavior"] as! String,
+				                               date: todaysDate, { (success, theLesson) in
+					self.todaysLesson?[theLesson.grade!] = theLesson
+					print("downloading today's lesson")
+					// TODO: this is needing to wait until all 4 grades download before triggering
+					completionHandler(true)
+				})
+			}
 		} else{
 			print("there is no lesson for today")
 			self.todaysLesson = nil;
