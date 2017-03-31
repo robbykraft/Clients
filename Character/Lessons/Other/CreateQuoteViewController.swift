@@ -93,7 +93,7 @@ class CreateQuoteViewController: UIViewController, UITextViewDelegate {
 		quoteBodyView.frame = CGRect(x: sidePad, y: imgHeight + 20,
 		                             width: self.view.frame.size.width - sidePad*2, height: self.view.frame.size.height)
 //		quoteBodyView.sizeToFit()
-		let quoteBodyHeight = self.view.frame.size.height * 0.5;//quoteBodyView.frame.size.height
+		let quoteBodyHeight = self.view.frame.size.height * 0.33;//quoteBodyView.frame.size.height
 		quoteBodyView.frame = CGRect(x: sidePad, y: imgHeight + 20,
 		                             width: self.view.frame.size.width - sidePad*2, height: quoteBodyHeight)
 		

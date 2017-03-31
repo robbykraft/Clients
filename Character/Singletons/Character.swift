@@ -31,8 +31,6 @@ class Character{
 	let pillarNames = ["trustworthiness", "respect", "responsibility", "fairness", "caring", "citizenship", "introduction"]
 	let gradeNames = ["K-2nd", "3rd-5th", "6th-8th", "9th-12th"]
 	
-	var cachedLessons:[String:Lesson] = [:]
-	
 	func boot(_ completionHandler: @escaping (Bool, String?) -> ()){ // success, clientID, gradeLevels
 		self.getMyGradeLevels { (successGrades, gradeLevels) in
 			self.getMyClientID({ (successClient, client) in

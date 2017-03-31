@@ -16,11 +16,11 @@ class ScoreViewController: UITableViewController {
 	
 	var data: [ Date:[[Bool]] ]? {
 		didSet{
-			if(data != nil){
-				let unsorted = Array( (data?.keys)! )
-				self.keyArray = unsorted.sorted(by: { $0.compare($1) == ComparisonResult.orderedAscending })
-//				self.keyArray = unsorted.sort({ $0.order < $1.order })
-			}
+//			if(data != nil){
+//				let unsorted = Array( (data?.keys)! )
+//				self.keyArray = unsorted.sorted(by: { $0.compare($1) == ComparisonResult.orderedAscending })
+////				self.keyArray = unsorted.sort({ $0.order < $1.order })
+//			}
 			self.tableView.reloadData()
 		}
 	}

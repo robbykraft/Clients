@@ -189,14 +189,8 @@ class LessonTableViewController: UITableViewController {
 		case 2:
 			let vc: BehaviorViewController = BehaviorViewController()
 			vc.data = self.data
-			vc.behaviorBodyView.text = ""
 			vc.title = "DAILY BEHAVIOR"
 			self.navigationController?.pushViewController(vc, animated: true)
-//			let vc: ChallengesViewController = ChallengesViewController()
-//			vc.data = self.data
-//			vc.completedArray = self.completedChallengeArray
-//			vc.title = "DAILY BEHAVIOR"
-//			self.navigationController?.pushViewController(vc, animated: true)
 			break
 		case 3:
 			let vc: PledgeViewController = PledgeViewController()

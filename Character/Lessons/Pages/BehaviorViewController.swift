@@ -12,6 +12,9 @@ class BehaviorViewController: UIViewController, CompletedQuestionDelegate {
 	
 	var data: Lesson?{
 		didSet{
+			if let behaviorText = data?.behavior{
+				behaviorBodyView.text = behaviorText
+			}
 			getCompletionState()
 		}
 	}
@@ -36,8 +39,7 @@ class BehaviorViewController: UIViewController, CompletedQuestionDelegate {
 		
 		behaviorBodyView.isScrollEnabled = false;
 		behaviorBodyView.isEditable = false
-		behaviorBodyView.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
-//		behaviorBodyView.text = ""
+		behaviorBodyView.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P24)
 		
 		self.view.addSubview(behaviorBodyView)
 		

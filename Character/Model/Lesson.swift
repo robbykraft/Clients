@@ -34,6 +34,7 @@ class Lesson {
 	var order:Int?
 
 	// lesson
+	var image:String?
 	var title:String?
 	var body:String?
 	var author:String?
@@ -41,8 +42,9 @@ class Lesson {
 	// quote
 	var quote:String?
 	var quoteAuthor:String?
-
-	var image:String?
+	
+	// behavior
+	var behavior:String?
 	
 	init() {
 	}
@@ -61,7 +63,10 @@ class Lesson {
 //		self.order = dictionary["order"] as? Int
 //	}
 	
-	func setFromDatabase(lessonKey:String, quoteKey:String, date:Date, _ completionHandler: @escaping (_ success:Bool,  Lesson ) -> () ){
+	func setFromDatabase(lessonKey:String,
+	                     quoteKey:String,
+	                     behaviorKey:String,
+	                     date:Date, _ completionHandler: @escaping (_ success:Bool,  Lesson ) -> () ){
 		FIRDatabase.database().reference().child("lessons/" + lessonKey).observeSingleEvent(of: .value, with: { (lessonSnapshot) in
 			let lessonJSON = lessonSnapshot.value as! [String:Any]
 			self.lessonKey = lessonKey
@@ -79,7 +84,11 @@ class Lesson {
 				self.quoteKey = quoteKey
 				self.quote = quoteJSON["body"] as? String
 				self.quoteAuthor = quoteJSON["author"] as? String
-				completionHandler(true, self)
+				
+				FIRDatabase.database().reference().child("behaviors/" + behaviorKey).observeSingleEvent(of: .value, with: { (behaviorSnapshot) in
+					self.behavior = behaviorSnapshot.value as! String
+					completionHandler(true, self)
+				})
 			})
 		})
 	}

@@ -98,7 +98,12 @@ class Schedule{
 							GMTCalendar.timeZone = TimeZone.init(secondsFromGMT: 0)!
 							if( !GMTCalendar.isDateInWeekend(dateIterate) ){
 								let thisPillar = sortedStartDates[i].keys.first!
-								calendarDays.append(["date":dateIterate, "pillar":thisPillar, "count":lessonCounter])
+								// get the week # of the month, for Lesson Behavior
+								var weekNumber:Int = GMTCalendar.component(.weekOfMonth, from: dateIterate)
+								// todo: for Character Daily specific purposes, this will sometimes begin at week #2 (if 1st is Friday or Saturday), skipping first entry in database. fix: mod % 5
+								weekNumber -= 1
+								weekNumber = weekNumber % 5
+								calendarDays.append(["date":dateIterate, "pillar":thisPillar, "count":lessonCounter, "week":weekNumber])
 								lessonCounter += 1
 							}
 							iterator += 1
@@ -116,13 +121,30 @@ class Schedule{
 							let dateIterate:Date = calendarDays[i]["date"] as! Date
 							let pillarNumber = calendarDays[i]["pillar"] as! Int
 							let orderNumber = calendarDays[i]["count"] as! Int
+							let weekCount = calendarDays[i]["week"] as! Int
+							var behaviorDatabaseKey:String = ""
+							if let allBehaviors = scheduleData["behaviors"] as? [Any]{
+								if(pillarNumber < allBehaviors.count){
+									if let pillarBehaviors = allBehaviors[pillarNumber] as? [Any]{
+										if let behaviorKey = pillarBehaviors[weekCount] as? String{
+											behaviorDatabaseKey = behaviorKey
+										}
+									}
+								}
+							}
 
 							let dayGradeLessons = pillarDayGradeLessons[pillarNumber] as! [Any]
 							if(dayGradeLessons.count > orderNumber){
-								let gradeLessons = dayGradeLessons[orderNumber] as! [[String:Any]]
-								lessonCalendar[dateIterate] = gradeLessons;
+								var gradeLessons = dayGradeLessons[orderNumber] as! [[String:Any]]
+								// append the Behavior to the entry
+								for i in 0..<gradeLessons.count{
+									gradeLessons[i]["behavior"] = behaviorDatabaseKey
+								}
+								lessonCalendar[dateIterate] = gradeLessons
 							}
 						}
+//						print("lesson calendar")
+//						print(lessonCalendar)
 						self.schoolYear = lessonCalendar
 						completionHandler(true, lessonCalendar)
 					}
@@ -147,7 +169,10 @@ class Schedule{
 		for day:Date in nextDates{
 			if let thisDaysLessonData = self.schoolYear![day]{
 				let thisDaysLesson:Lesson = Lesson()
-				thisDaysLesson.setFromDatabase(lessonKey: thisDaysLessonData[0]["lesson"] as! String, quoteKey: thisDaysLessonData[0]["quote"] as! String, date: day, { (success, theLesson) in
+				thisDaysLesson.setFromDatabase(lessonKey: thisDaysLessonData[0]["lesson"] as! String,
+				                               quoteKey: thisDaysLessonData[0]["quote"] as! String,
+				                               behaviorKey: thisDaysLessonData[0]["behavior"] as! String,
+				                               date: day, { (success, theLesson) in
 					self.upcomingLessons![day] = [theLesson]
 					print("downloading an upcoming lesson")
 				})
@@ -159,7 +184,10 @@ class Schedule{
 		for day:Date in prevDates{
 			if let thisDaysLessonData = self.schoolYear![day]{
 				let thisDaysLesson:Lesson = Lesson()
-				thisDaysLesson.setFromDatabase(lessonKey: thisDaysLessonData[0]["lesson"] as! String, quoteKey: thisDaysLessonData[0]["quote"] as! String, date: day, { (success, theLesson) in
+				thisDaysLesson.setFromDatabase(lessonKey: thisDaysLessonData[0]["lesson"] as! String,
+				                               quoteKey: thisDaysLessonData[0]["quote"] as! String,
+				                               behaviorKey: thisDaysLessonData[0]["behavior"] as! String,
+				                               date: day, { (success, theLesson) in
 					self.pastLessons![day] = [theLesson]
 					print("downloading a past lesson")
 				})
@@ -171,7 +199,10 @@ class Schedule{
 		if let todayLessonData = self.schoolYear![todaysDate]{
 			print(todayLessonData)
 			let thisDaysLesson:Lesson = Lesson()
-			thisDaysLesson.setFromDatabase(lessonKey: todayLessonData[0]["lesson"] as! String, quoteKey: todayLessonData[0]["quote"] as! String, date: todaysDate, { (success, theLesson) in
+			thisDaysLesson.setFromDatabase(lessonKey: todayLessonData[0]["lesson"] as! String,
+			                               quoteKey: todayLessonData[0]["quote"] as! String,
+			                               behaviorKey: todayLessonData[0]["behavior"] as! String,
+			                               date: todaysDate, { (success, theLesson) in
 				self.todaysLesson = [theLesson]
 				completionHandler(true)
 			})
