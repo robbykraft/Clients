@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3B48A92C7D217435CF908E04 /* Pods_Character.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37345BBC5059B616A69B6EB1 /* Pods_Character.framework */; };
 		D513BB6E1D6F3FE000BA20A6 /* SetupProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D513BB6D1D6F3FE000BA20A6 /* SetupProfileViewController.swift */; };
+		D51C22981E92C89000887F42 /* DateTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51C22971E92C89000887F42 /* DateTableViewCell.swift */; };
 		D521BCD81E5DF182004A7756 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D521BCD71E5DF182004A7756 /* Schedule.swift */; };
 		D52BAAF91E8D92AA002309C7 /* CreateQuoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52BAAF81E8D92AA002309C7 /* CreateQuoteViewController.swift */; };
 		D52C40B31D7240BB004A4724 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52C40B21D7240BB004A4724 /* FeedbackViewController.swift */; };
@@ -17,7 +18,7 @@
 		D54C39751E896F87002D8AC8 /* BehaviorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54C39741E896F87002D8AC8 /* BehaviorViewController.swift */; };
 		D54C39771E8973D4002D8AC8 /* BehaviorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54C39761E8973D4002D8AC8 /* BehaviorTableViewCell.swift */; };
 		D54C39791E89C3DC002D8AC8 /* MyNotesFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54C39781E89C3DC002D8AC8 /* MyNotesFooterView.swift */; };
-		D54C397B1E89CA7F002D8AC8 /* MyFeedbackTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54C397A1E89CA7F002D8AC8 /* MyFeedbackTableViewController.swift */; };
+		D54C397B1E89CA7F002D8AC8 /* MySubmissionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54C397A1E89CA7F002D8AC8 /* MySubmissionsTableViewController.swift */; };
 		D56ED1DC1D77532E009D61E6 /* ScoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56ED1DB1D77532E009D61E6 /* ScoreViewController.swift */; };
 		D572F49B1D6DF219000391F2 /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572F49A1D6DF219000391F2 /* MoreViewController.swift */; };
 		D572F4A41D6E0C21000391F2 /* Lesson.swift in Sources */ = {isa = PBXBuildFile; fileRef = D572F4A31D6E0C21000391F2 /* Lesson.swift */; };
@@ -57,6 +58,7 @@
 		37345BBC5059B616A69B6EB1 /* Pods_Character.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Character.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D815774EF862690FFA80C6F /* Pods-Character.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Character.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Character/Pods-Character.debug.xcconfig"; sourceTree = "<group>"; };
 		D513BB6D1D6F3FE000BA20A6 /* SetupProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetupProfileViewController.swift; sourceTree = "<group>"; };
+		D51C22971E92C89000887F42 /* DateTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DateTableViewCell.swift; path = ../Lessons/Cells/DateTableViewCell.swift; sourceTree = "<group>"; };
 		D521BCD71E5DF182004A7756 /* Schedule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
 		D523C32C1DA58A7900490E71 /* Character.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Character.entitlements; sourceTree = "<group>"; };
 		D52BAAF81E8D92AA002309C7 /* CreateQuoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CreateQuoteViewController.swift; path = Other/CreateQuoteViewController.swift; sourceTree = "<group>"; };
@@ -66,7 +68,7 @@
 		D54C39741E896F87002D8AC8 /* BehaviorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BehaviorViewController.swift; sourceTree = "<group>"; };
 		D54C39761E8973D4002D8AC8 /* BehaviorTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BehaviorTableViewCell.swift; sourceTree = "<group>"; };
 		D54C39781E89C3DC002D8AC8 /* MyNotesFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyNotesFooterView.swift; sourceTree = "<group>"; };
-		D54C397A1E89CA7F002D8AC8 /* MyFeedbackTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyFeedbackTableViewController.swift; sourceTree = "<group>"; };
+		D54C397A1E89CA7F002D8AC8 /* MySubmissionsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MySubmissionsTableViewController.swift; sourceTree = "<group>"; };
 		D56ED1DB1D77532E009D61E6 /* ScoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScoreViewController.swift; sourceTree = "<group>"; };
 		D572F49A1D6DF219000391F2 /* MoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
 		D572F4A31D6E0C21000391F2 /* Lesson.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lesson.swift; sourceTree = "<group>"; };
@@ -127,14 +129,23 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		D51C22991E92E40900887F42 /* Submissions */ = {
+			isa = PBXGroup;
+			children = (
+				D54C397A1E89CA7F002D8AC8 /* MySubmissionsTableViewController.swift */,
+				D51C22971E92C89000887F42 /* DateTableViewCell.swift */,
+			);
+			name = Submissions;
+			sourceTree = "<group>";
+		};
 		D572F4971D6DF1EE000391F2 /* More */ = {
 			isa = PBXGroup;
 			children = (
 				D572F49A1D6DF219000391F2 /* MoreViewController.swift */,
 				D56ED1DB1D77532E009D61E6 /* ScoreViewController.swift */,
-				D54C397A1E89CA7F002D8AC8 /* MyFeedbackTableViewController.swift */,
 				D52C40B21D7240BB004A4724 /* FeedbackViewController.swift */,
 				D5F3CE481D7353EA003FABEF /* CharacterToolsViewController.swift */,
+				D51C22991E92E40900887F42 /* Submissions */,
 				D5F3CE3B1D735393003FABEF /* Additional */,
 			);
 			path = More;
@@ -428,7 +439,7 @@
 				D59B043D1D6CA4B700E6624B /* Fire.swift in Sources */,
 				D53F1D201D76256A00B1A194 /* PledgeTableViewCell.swift in Sources */,
 				D59B045E1D6CB04600E6624B /* ChallengesViewController.swift in Sources */,
-				D54C397B1E89CA7F002D8AC8 /* MyFeedbackTableViewController.swift in Sources */,
+				D54C397B1E89CA7F002D8AC8 /* MySubmissionsTableViewController.swift in Sources */,
 				D5F3CE471D735393003FABEF /* SixPillarsViewController.swift in Sources */,
 				D59B045A1D6CB04600E6624B /* SuperLessonTableViewCell.swift in Sources */,
 				D59B04611D6CB04600E6624B /* QuoteViewController.swift in Sources */,
@@ -441,6 +452,7 @@
 				D572F4A41D6E0C21000391F2 /* Lesson.swift in Sources */,
 				D59B04591D6CB04600E6624B /* QuoteTableViewCell.swift in Sources */,
 				D52C40B31D7240BB004A4724 /* FeedbackViewController.swift in Sources */,
+				D51C22981E92C89000887F42 /* DateTableViewCell.swift in Sources */,
 				D59B045B1D6CB04600E6624B /* LessonsTableViewController.swift in Sources */,
 				D59B04421D6CA75600E6624B /* MasterController.swift in Sources */,
 				D59B04581D6CB04600E6624B /* LessonTableViewCell.swift in Sources */,

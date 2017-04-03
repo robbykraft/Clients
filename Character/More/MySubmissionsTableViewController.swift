@@ -8,13 +8,18 @@
 
 import UIKit
 
-class MyFeedbackTableViewController: UITableViewController {
+// data is an array of objects, each object with keys and values:
+//   createdAt  (unix time stamp)  creation date
+//   user       (string)           user database id
+//   text       (string)           feedback body text
+
+
+class MySubmissionsTableViewController: UITableViewController {
 	
 	var data: [[String:Any]]? {
-		// data is an array of objects, each object with keys and values:
-		//   createdAt  (unix time stamp)  creation date
-		//   user       (string)           user database id
-		//   text       (string)           feedback body text
+		// each entry should have a key and value of 
+		// "type":"feedback" / "lesson" / "quote"
+		// "key" : the pointer to the object in the database
 		didSet{
 			self.tableView.reloadData()
 		}
@@ -26,15 +31,39 @@ class MyFeedbackTableViewController: UITableViewController {
 		self.tableView.tableFooterView = UIView()
 		
 		self.view.backgroundColor = Style.shared.whiteSmoke
-		self.title = "MY FEEDBACK"
+		self.title = "MY SUBMISSIONS"
 		
 		self.navigationItem.backBarButtonItem = UIBarButtonItem.init(title: "", style: .plain, target: nil, action: nil);
+		
+		getMySubmittedContent()
 	}
 	
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		self.tableView.reloadData()
+	}
+	
+	func getMySubmittedContent(){
+		var myFeedback:[[String:Any]] = []
+		let myUsernameKey:String = Fire.shared.myUID!
+		Fire.shared.loadData("feedback") { (data) in
+			if let feedbackList = data as? [String:Any]{
+				let keys = Array(feedbackList.keys)
+				for k in keys{
+					if let feedbackEntry = feedbackList[k] as? [String:Any]{
+						if let feedbackUser = feedbackEntry["user"] as? String{
+							if feedbackUser == myUsernameKey{
+								var newEntry = feedbackEntry
+								newEntry["type"] = "feedback"
+								myFeedback.append(newEntry)
+							}
+						}
+					}
+				}
+			}
+			self.data = myFeedback
+		}
 	}
 	
 	override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -80,14 +109,25 @@ class MyFeedbackTableViewController: UITableViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = LessonsTableViewCell.init(style: .value1, reuseIdentifier: "tableCell")
+		let cell = DateTableViewCell.init(style: .value1, reuseIdentifier: "tableCell")
 		
 		if let d = self.data{
 			let rowData:[String:Any] = d[indexPath.row]
 			
-			if let feedbackBody = rowData["text"] as? String{
-				cell.textLabel?.text = feedbackBody
+			if let body = rowData["text"] as? String{
+				cell.textLabel?.text = body
 			}
+			
+			if let type = rowData["type"] as? String{
+				cell.detailLabel.text = type.uppercased()
+
+			}
+			
+//			if let feedbackTarget = rowData["target"] as? [String:Any]{
+//				if let feedbackType = feedbackTarget["type"] as? String{
+//					cell.detailLabel.text = feedbackType
+//				}
+//			}
 			
 			// date
 			if let unixTime = rowData["createdAt"] as? Double{
@@ -108,15 +148,15 @@ class MyFeedbackTableViewController: UITableViewController {
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-		if let d = self.data{
-			let rowData:[String:Any] = d[indexPath.row]
+//		if let d = self.data{
+//			let rowData:[String:Any] = d[indexPath.row]
 
 //			let vc: LessonTableViewController = LessonTableViewController()
 //			vc.data = nextObject
 //			vc.isLoadingLessons = false
 //			vc.title = ""
 //			self.navigationController?.pushViewController(vc, animated: true)
-		}
+//		}
 	}
 	
 }

@@ -121,7 +121,8 @@ class QuoteViewController: UIViewController, CompletedQuestionDelegate {
 		let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 		alert.addAction(UIAlertAction(title: "Leave Feedback", style: .default , handler:{ (UIAlertAction)in
 			let vc = FeedbackViewController()
-			vc.feedbackTarget = self.challengeURLString()
+			vc.feedbackTargetKey = self.challengeURLString()
+			vc.feedbackTargetType = "quotes"
 			self.navigationController?.pushViewController(vc, animated: true)
 		}))
 		alert.addAction(UIAlertAction(title: "Submit a Quote", style: .default , handler:{ (UIAlertAction)in

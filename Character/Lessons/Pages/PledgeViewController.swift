@@ -107,7 +107,8 @@ class PledgeViewController: UIViewController, CompletedQuestionDelegate{
 		let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 		alert.addAction(UIAlertAction(title: "Leave Feedback", style: .default , handler:{ (UIAlertAction)in
 			let vc = FeedbackViewController()
-			vc.feedbackTarget = self.challengeURLString()
+			vc.feedbackTargetKey = self.challengeURLString()
+			vc.feedbackTargetType = "pledges"
 			self.navigationController?.pushViewController(vc, animated: true)
 		}))
 		alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel , handler:{ (UIAlertAction)in

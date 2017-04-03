@@ -13,7 +13,8 @@ class FeedbackViewController: UIViewController, UITextViewDelegate {
 	let textView = UITextView()
 	let submitButton = UIButton()
 	
-	var feedbackTarget:String?
+	var feedbackTargetKey:String?
+	var feedbackTargetType:String? // please say "lesson", "quote", ... (the first level of the database)
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,12 +62,20 @@ class FeedbackViewController: UIViewController, UITextViewDelegate {
 		if let uid = Fire.shared.myUID {
 			userString = uid
 		}
-		let feedbackObject:[String:AnyObject] = [
+		var feedbackObject:[String:AnyObject] = [
 			"text": textView.text as AnyObject,
 			"createdAt": Date.init().timeIntervalSince1970 as AnyObject,
 			"user": userString as AnyObject
 //					let user = FIRAuth.auth()?.currentUser
 		]
+
+		if let fKey = feedbackTargetKey{
+			if let fType = feedbackTargetType{
+				let target = [ "key": fKey,
+				               "type": fType ]
+				feedbackObject["target"] = target as AnyObject
+			}
+		}
 
 		Fire.shared.newUniqueObjectAtPath("feedback", object: feedbackObject as AnyObject) { (error, ref)  in
 			let alertController = UIAlertController.init(title: "Feedback Sent", message: "Thank you for taking time to help!", preferredStyle: .alert)

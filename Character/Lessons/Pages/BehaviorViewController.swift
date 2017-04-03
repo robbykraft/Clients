@@ -110,7 +110,8 @@ class BehaviorViewController: UIViewController, CompletedQuestionDelegate {
 		alert.addAction(UIAlertAction(title: "Leave Feedback", style: .default , handler:{ (UIAlertAction)in
 			let vc = FeedbackViewController()
 			// todo: this needs a more proper pointer to the datbase object
-			vc.feedbackTarget = self.challengeURLString()
+			vc.feedbackTargetKey = self.challengeURLString()
+			vc.feedbackTargetType = "behaviors"
 			self.navigationController?.pushViewController(vc, animated: true)
 		}))
 		alert.addAction(UIAlertAction(title: "Submit a Behavior", style: .default , handler:{ (UIAlertAction)in
