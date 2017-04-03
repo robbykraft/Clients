@@ -8,15 +8,15 @@
 
 import UIKit
 
-class SetupProfileViewController: UIViewController {
+class SetupProfileViewController: UIViewController, UITextFieldDelegate {
 	
 	let welcomeLabel = UILabel()
-	let questionLabel = UILabel()
+	let question1Label = UILabel()
+	let question2Label = UILabel()
 	let detailLabel = UILabel()
 	
 	let detail1Button: UIButton = UIButton()
-
-	let detail2Button: UIButton = UIButton()
+	let detail2Field: UITextField = UITextField()
 
 	let continueButton: UIButton = UIButton()
 		
@@ -24,41 +24,51 @@ class SetupProfileViewController: UIViewController {
 		super.viewDidLoad()
 		self.view.backgroundColor = Style.shared.whiteSmoke
 		
-		questionLabel.numberOfLines = 0
+		question1Label.numberOfLines = 0
+		question2Label.numberOfLines = 0
 		detailLabel.numberOfLines = 0
 		welcomeLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P40)
-		questionLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P24)
+		question1Label.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
+		question2Label.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
 		detailLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15)
 		welcomeLabel.text = "Welcome!"
-		questionLabel.text = "What grade do you teach?"
+		question1Label.text = "What grade do you teach?"
+		question2Label.text = "If you have a paid account, enter your code here:"
 		detailLabel.text = "These can be changed under \"My Profile\""
 		
-		// buttons
+		// input
 		detail1Button.addTarget(self, action: #selector(detail1ButtonHandler), for: UIControlEvents.touchUpInside)
-		detail2Button.addTarget(self, action: #selector(detail2ButtonHandler), for: UIControlEvents.touchUpInside)
+		detail2Field.placeholder = "optional"
+		detail2Field.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
 		continueButton.addTarget(self, action: #selector(continueButtonHandler), for: UIControlEvents.touchUpInside)
 		
 		// ui custom
 		detail1Button.backgroundColor = UIColor.white
 		detail1Button.setTitleColor(UIColor.black, for: UIControlState())
 		detail1Button.titleLabel?.textAlignment = .center
-		detail2Button.backgroundColor = UIColor.white
-		detail2Button.setTitleColor(UIColor.black, for: UIControlState())
-		detail2Button.titleLabel?.textAlignment = .center
+		detail2Field.backgroundColor = UIColor.white
+		detail2Field.textColor = UIColor.black
+		detail2Field.textAlignment = .center
 		continueButton.backgroundColor = Style.shared.lightBlue
 		continueButton.setTitle("Continue", for: UIControlState())
 		detail1Button.setTitle("All Grades", for: UIControlState())
-//		detail2Button.setTitle(Character.shared.SchoolNames[0], for: UIControlState())
+		detail2Field.delegate = self
 		
 		self.view.addSubview(welcomeLabel)
-		self.view.addSubview(questionLabel)
+		self.view.addSubview(question1Label)
+		self.view.addSubview(question2Label)
 		self.view.addSubview(detailLabel)
 		self.view.addSubview(detail1Button)
-		self.view.addSubview(detail2Button)
+		self.view.addSubview(detail2Field)
 		self.view.addSubview(continueButton)
 		
-		Fire.shared.updateUserWithKeyAndValue("grade", value: [0,1,2,3] as AnyObject, completionHandler: nil)
-		Fire.shared.updateUserWithKeyAndValue("school", value: 0 as AnyObject, completionHandler: nil)
+//		Fire.shared.updateUserWithKeyAndValue("grade", value: [0,1,2,3] as AnyObject, completionHandler: nil)
+//		Fire.shared.updateUserWithKeyAndValue("school", value: 0 as AnyObject, completionHandler: nil)
+	}
+	
+	func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+		self.view.endEditing(true)
+		return false
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -66,21 +76,27 @@ class SetupProfileViewController: UIViewController {
 		
 		// frames
 		welcomeLabel.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width * 0.8, height: self.view.frame.size.height)
-		questionLabel.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width * 0.8, height: self.view.frame.size.height)
+		question1Label.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width * 0.9, height: self.view.frame.size.height)
+		question2Label.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width * 0.9, height: self.view.frame.size.height)
 		detail1Button.frame = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: 44)
-		detail2Button.frame = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: 44)
+		detail2Field.frame = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: 44)
 		continueButton.frame = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: 44)
 		detailLabel.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width * 0.8, height: self.view.frame.size.height)
 
 		welcomeLabel.sizeToFit()
-		welcomeLabel.center = CGPoint(x: self.view.center.x, y: self.view.frame.size.height * 0.25)
+		welcomeLabel.center = CGPoint(x: self.view.center.x, y: self.view.frame.size.height * 0.15)
 
-		questionLabel.sizeToFit()
-		questionLabel.center = CGPoint(x: self.view.center.x, y: self.view.center.y - questionLabel.frame.size.height - 40)
+		detail1Button.center = CGPoint(x: self.view.center.x, y: self.view.center.y - 80)
 
-		detail1Button.center = self.view.center
-		detail2Button.center = CGPoint(x: self.view.center.x, y: self.view.center.y + 80)
+		question1Label.sizeToFit()
+		question1Label.center = CGPoint(x: self.view.center.x, y: detail1Button.frame.origin.y - question1Label.frame.size.height*0.5 - 10)
 		
+		question2Label.sizeToFit()
+		question2Label.center = CGPoint(x: self.view.center.x, y: detail1Button.frame.origin.y + 44 + 10 + 44 + question2Label.frame.size.height*0.5)
+
+		detail2Field.center = CGPoint(x: self.view.center.x, y: question2Label.frame.origin.y + question2Label.frame.size.height + 10 + 22)
+		
+
 		detailLabel.sizeToFit()
 		detailLabel.center = CGPoint(x: self.view.center.x, y: self.view.frame.size.height - detailLabel.frame.size.height - 20 - 22)
 
@@ -111,9 +127,49 @@ class SetupProfileViewController: UIViewController {
 	}
 	
 	func continueButtonHandler(){
+		if let paidPassword:String = detail2Field.text{
+			if(!paidPassword.isEmpty){
+				Fire.shared.loadData("clients", completionHandler: { (data) in
+					var didMatchClient:String?
+					var matchedClientNameString = ""
+					if let clientList:[String:Any] = data as? [String:Any]{
+						let keys = Array(clientList.keys)
+						for k in keys{
+							if let thisClient = clientList[k] as? [String:Any]{
+								if let clientPassword:String = thisClient["password"] as? String{
+									if clientPassword == paidPassword{
+										didMatchClient = k
+										matchedClientNameString = thisClient["name"] as! String
+									}
+								}
+							}
+						}
+					}
+					if let clientMatch:String = didMatchClient{
+						Fire.shared.updateUserWithKeyAndValue("client", value: clientMatch as AnyObject, completionHandler: { (success) in
+							
+							let alert = UIAlertController.init(title: "Welcome!", message: "You are now a member of " + matchedClientNameString, preferredStyle: .alert)
+							let dismiss = UIAlertAction.init(title: "Continue", style: .default, handler: { (action) in
+								self.proceed()
+							})
+							alert.addAction(dismiss)
+							self.present(alert, animated: true, completion: nil)
+						})
+					}
+				})
+			} else{
+				proceed()
+			}
+		} else{
+			proceed()
+		}
+	}
+	
+	func proceed(){
 		self.dismiss(animated: true) {
 			UIApplication.shared.keyWindow?.rootViewController?.present(MasterController(), animated: true, completion: nil)
 		}
+		
 	}
 	
 	func detail1ButtonHandler(_ sender:UIButton){
@@ -153,124 +209,4 @@ class SetupProfileViewController: UIViewController {
 		self.present(alert, animated: true, completion: nil)
 	}
 	
-//	func detail2ButtonHandler(sender:UIButton){
-//		let alert = UIAlertController.init(title: "", message: nil, preferredStyle: .ActionSheet)
-//		var index = 0
-//		for schoolname in Character.shared.SchoolNames{
-//			let action = UIAlertAction.init(title: schoolname, style: .Default) { (action) in
-//				self.detail2Button.setTitle(schoolname, forState: .Normal)
-//				let thisIndex = Int(index)
-//				Fire.shared.updateUserWithKeyAndValue("school", value: thisIndex, completionHandler: nil)
-//			}
-//			alert.addAction(action)
-//			index += 1
-//		}
-//		let cancel = UIAlertAction.init(title: "Cancel", style: .Cancel) { (action) in }
-//		alert.addAction(cancel)
-//		self.presentViewController(alert, animated: true, completion: nil)
-//	}
-	func detail2ButtonHandler(_ sender:UIButton){
-		let alert = UIAlertController.init(title: "", message: nil, preferredStyle: .actionSheet)
-
-//		let action0 = UIAlertAction.init(title: Character.shared.SchoolNames[0], style: .default) { (action) in
-//			self.detail2Button.setTitle(Character.shared.SchoolNames[0], for: UIControlState())
-//			Fire.shared.updateUserWithKeyAndValue("school", value: 0 as AnyObject, completionHandler: nil)
-//		}
-//		alert.addAction(action0)
-//
-//		let action1 = UIAlertAction.init(title: Character.shared.SchoolNames[1], style: .default) { (action) in
-//			self.detail2Button.setTitle(Character.shared.SchoolNames[1], for: UIControlState())
-//			Fire.shared.updateUserWithKeyAndValue("school", value: 1 as AnyObject, completionHandler: nil)
-//		}
-//		alert.addAction(action1)
-//
-//		let action2 = UIAlertAction.init(title: Character.shared.SchoolNames[2], style: .default) { (action) in
-//			self.detail2Button.setTitle(Character.shared.SchoolNames[2], for: UIControlState())
-//			Fire.shared.updateUserWithKeyAndValue("school", value: 2 as AnyObject, completionHandler: nil)
-//		}
-//		alert.addAction(action2)
-//
-//		let action3 = UIAlertAction.init(title: Character.shared.SchoolNames[3], style: .default) { (action) in
-//			self.detail2Button.setTitle(Character.shared.SchoolNames[3], for: UIControlState())
-//			Fire.shared.updateUserWithKeyAndValue("school", value: 3 as AnyObject, completionHandler: nil)
-//		}
-//		alert.addAction(action3)
-//
-//		let action4 = UIAlertAction.init(title: Character.shared.SchoolNames[4], style: .default) { (action) in
-//			self.detail2Button.setTitle(Character.shared.SchoolNames[4], for: UIControlState())
-//			Fire.shared.updateUserWithKeyAndValue("school", value: 4 as AnyObject, completionHandler: nil)
-//		}
-//		alert.addAction(action4)
-//
-//		let action5 = UIAlertAction.init(title: Character.shared.SchoolNames[5], style: .default) { (action) in
-//			self.detail2Button.setTitle(Character.shared.SchoolNames[5], for: UIControlState())
-//			Fire.shared.updateUserWithKeyAndValue("school", value: 5 as AnyObject, completionHandler: nil)
-//		}
-//		alert.addAction(action5)
-//		
-//		let action6 = UIAlertAction.init(title: Character.shared.SchoolNames[6], style: .default) { (action) in
-//			self.detail2Button.setTitle(Character.shared.SchoolNames[6], for: UIControlState())
-//			Fire.shared.updateUserWithKeyAndValue("school", value: 6 as AnyObject, completionHandler: nil)
-//		}
-//		alert.addAction(action6)
-//		
-//		let action7 = UIAlertAction.init(title: Character.shared.SchoolNames[7], style: .default) { (action) in
-//			self.detail2Button.setTitle(Character.shared.SchoolNames[7], for: UIControlState())
-//			Fire.shared.updateUserWithKeyAndValue("school", value: 7 as AnyObject, completionHandler: nil)
-//		}
-//		alert.addAction(action7)
-//
-//		let action8 = UIAlertAction.init(title: Character.shared.SchoolNames[8], style: .default) { (action) in
-//			self.detail2Button.setTitle(Character.shared.SchoolNames[8], for: UIControlState())
-//			Fire.shared.updateUserWithKeyAndValue("school", value: 8 as AnyObject, completionHandler: nil)
-//		}
-//		alert.addAction(action8)
-//
-//		let action9 = UIAlertAction.init(title: Character.shared.SchoolNames[9], style: .default) { (action) in
-//			self.detail2Button.setTitle(Character.shared.SchoolNames[9], for: UIControlState())
-//			Fire.shared.updateUserWithKeyAndValue("school", value: 9 as AnyObject, completionHandler: nil)
-//		}
-//		alert.addAction(action9)
-//
-//		let action10 = UIAlertAction.init(title: Character.shared.SchoolNames[10], style: .default) { (action) in
-//			self.detail2Button.setTitle(Character.shared.SchoolNames[10], for: UIControlState())
-//			Fire.shared.updateUserWithKeyAndValue("school", value: 10 as AnyObject, completionHandler: nil)
-//		}
-//		alert.addAction(action10)
-//
-//		let action11 = UIAlertAction.init(title: Character.shared.SchoolNames[11], style: .default) { (action) in
-//			self.detail2Button.setTitle(Character.shared.SchoolNames[11], for: UIControlState())
-//			Fire.shared.updateUserWithKeyAndValue("school", value: 11 as AnyObject, completionHandler: nil)
-//		}
-//		alert.addAction(action11)
-//
-//		let action12 = UIAlertAction.init(title: Character.shared.SchoolNames[12], style: .default) { (action) in
-//			self.detail2Button.setTitle(Character.shared.SchoolNames[12], for: UIControlState())
-//			Fire.shared.updateUserWithKeyAndValue("school", value: 12 as AnyObject, completionHandler: nil)
-//		}
-//		alert.addAction(action12)
-//
-//		let action13 = UIAlertAction.init(title: Character.shared.SchoolNames[13], style: .default) { (action) in
-//			self.detail2Button.setTitle(Character.shared.SchoolNames[13], for: UIControlState())
-//			Fire.shared.updateUserWithKeyAndValue("school", value: 13 as AnyObject, completionHandler: nil)
-//		}
-//		alert.addAction(action13)
-//
-//		let action14 = UIAlertAction.init(title: Character.shared.SchoolNames[14], style: .default) { (action) in
-//			self.detail2Button.setTitle(Character.shared.SchoolNames[14], for: UIControlState())
-//			Fire.shared.updateUserWithKeyAndValue("school", value: 14 as AnyObject, completionHandler: nil)
-//		}
-//		alert.addAction(action14)
-
-		let cancel = UIAlertAction.init(title: "Cancel", style: .cancel) { (action) in }
-		alert.addAction(cancel)
-
-		
-		if let popoverController = alert.popoverPresentationController {
-			popoverController.sourceView = sender
-			popoverController.sourceRect = sender.bounds
-		}
-		self.present(alert, animated: true, completion: nil)
-	}
-
 }

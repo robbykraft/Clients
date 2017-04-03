@@ -56,7 +56,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 	}
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		
+				
 		emailField.frame = CGRect(x: 0, y: self.view.bounds.size.height * 0.5 - 52 - 20, width: self.view.bounds.size.width, height: 52)
 		passwordField.frame = CGRect(x: 0, y: self.view.bounds.size.height * 0.5, width: self.view.bounds.size.width, height: 52)
 		loginButton.frame = CGRect(x: 0, y: self.view.bounds.size.height * 0.5 + 52 + 20, width: self.view.bounds.size.width, height: 44)
