@@ -80,7 +80,7 @@ class QuoteViewController: UIViewController, CompletedQuestionDelegate {
 		
 		// CHALLENGE QUESTION FOOTER
 		questionFooter.frame = CGRect.init(x: 0, y: quoteAuthorLabel.frame.origin.y + authorHeight + 20, width: self.view.frame.size.width, height: 120)
-		questionFooter.noun = "quote"
+		questionFooter.textLabel.text = "I completed this challenge by sharing this quote"
 		questionFooter.delegate = self
 		self.view.addSubview(questionFooter)
 		

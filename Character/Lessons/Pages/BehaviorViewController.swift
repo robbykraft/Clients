@@ -58,7 +58,7 @@ class BehaviorViewController: UIViewController, CompletedQuestionDelegate {
 		
 		// CHALLENGE QUESTION FOOTER
 		questionFooter.frame = CGRect.init(x: 0, y: behaviorBodyHeight + topPad + 20, width: self.view.frame.size.width, height: 120)
-		questionFooter.noun = "behavior"
+		questionFooter.textLabel.text = "I completed this challenge by acknowledging this behavior"
 		questionFooter.delegate = self
 		self.view.addSubview(questionFooter)
 		

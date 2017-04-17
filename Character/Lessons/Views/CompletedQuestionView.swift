@@ -19,16 +19,8 @@ class CompletedQuestionView: UIView {
 	
 	let blueCircle = UIImageView()
 	let textLabel:UILabel = UILabel()
-	
 	let button:UIButton = UIButton()
-	var noun:String?{
-		didSet{
-			if let nounString = noun{
-				textLabel.text = "I've shared this " + nounString + " with the class"
-			}
-		}
-	}
-	
+
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		self.initUI()
@@ -53,7 +45,7 @@ class CompletedQuestionView: UIView {
 		self.textLabel.textColor = Style.shared.darkGray
 		self.textLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
 		self.textLabel.numberOfLines = 4
-		self.textLabel.text = "I've shared this with the class"
+		self.textLabel.text = "I completed this challenge by sharing this"
 		self.addSubview(textLabel)
 
 		blueCircle.image = UIImage(named: "circle-empty")?.imageWithTint(Style.shared.lightBlue)

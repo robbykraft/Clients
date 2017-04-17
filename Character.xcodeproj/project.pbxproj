@@ -28,7 +28,6 @@
 		D59B041D1D6C96D500E6624B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D59B041C1D6C96D500E6624B /* Assets.xcassets */; };
 		D59B04201D6C96D500E6624B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D59B041E1D6C96D500E6624B /* LaunchScreen.storyboard */; };
 		D59B04391D6CA4B700E6624B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59B04331D6CA4B700E6624B /* LoginViewController.swift */; };
-		D59B043B1D6CA4B700E6624B /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59B04351D6CA4B700E6624B /* ProfileViewController.swift */; };
 		D59B043C1D6CA4B700E6624B /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59B04371D6CA4B700E6624B /* Cache.swift */; };
 		D59B043D1D6CA4B700E6624B /* Fire.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59B04381D6CA4B700E6624B /* Fire.swift */; };
 		D59B043F1D6CA51500E6624B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D59B043E1D6CA51500E6624B /* GoogleService-Info.plist */; };
@@ -45,6 +44,9 @@
 		D59B04601D6CB04600E6624B /* LessonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59B04501D6CB04600E6624B /* LessonViewController.swift */; };
 		D59B04611D6CB04600E6624B /* QuoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59B04511D6CB04600E6624B /* QuoteViewController.swift */; };
 		D59B04681D6CBF7000E6624B /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59B04671D6CBF7000E6624B /* Style.swift */; };
+		D5AA5F831E93EF6200B6EDA4 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AA5F821E93EF6200B6EDA4 /* ProfileViewController.swift */; };
+		D5AA5F851E93EF7900B6EDA4 /* PillarOrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AA5F841E93EF7900B6EDA4 /* PillarOrderViewController.swift */; };
+		D5AA5F871E93F48800B6EDA4 /* PillarSwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AA5F861E93F48800B6EDA4 /* PillarSwitchTableViewCell.swift */; };
 		D5DDD4D11E8ACE1D0051E4FC /* CreateLessonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DDD4CF1E8ACE1D0051E4FC /* CreateLessonViewController.swift */; };
 		D5DDD4D21E8ACE1D0051E4FC /* NotesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DDD4D01E8ACE1D0051E4FC /* NotesViewController.swift */; };
 		D5F219461E88449000362B5A /* CompletedQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F219451E88449000362B5A /* CompletedQuestionView.swift */; };
@@ -80,7 +82,6 @@
 		D59B041F1D6C96D500E6624B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D59B04211D6C96D500E6624B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D59B04331D6CA4B700E6624B /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		D59B04351D6CA4B700E6624B /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		D59B04371D6CA4B700E6624B /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		D59B04381D6CA4B700E6624B /* Fire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fire.swift; sourceTree = "<group>"; };
 		D59B043E1D6CA51500E6624B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -97,6 +98,9 @@
 		D59B04501D6CB04600E6624B /* LessonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LessonViewController.swift; sourceTree = "<group>"; };
 		D59B04511D6CB04600E6624B /* QuoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuoteViewController.swift; sourceTree = "<group>"; };
 		D59B04671D6CBF7000E6624B /* Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
+		D5AA5F821E93EF6200B6EDA4 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		D5AA5F841E93EF7900B6EDA4 /* PillarOrderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PillarOrderViewController.swift; sourceTree = "<group>"; };
+		D5AA5F861E93F48800B6EDA4 /* PillarSwitchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PillarSwitchTableViewCell.swift; path = Character/Settings/PillarSwitchTableViewCell.swift; sourceTree = SOURCE_ROOT; };
 		D5DDD4CF1E8ACE1D0051E4FC /* CreateLessonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CreateLessonViewController.swift; path = Other/CreateLessonViewController.swift; sourceTree = "<group>"; };
 		D5DDD4D01E8ACE1D0051E4FC /* NotesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NotesViewController.swift; path = Other/NotesViewController.swift; sourceTree = "<group>"; };
 		D5F219451E88449000362B5A /* CompletedQuestionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompletedQuestionView.swift; sourceTree = "<group>"; };
@@ -186,6 +190,7 @@
 				D572F4A21D6E0C21000391F2 /* Model */,
 				D59B04361D6CA4B700E6624B /* Singletons */,
 				D59B04321D6CA4B700E6624B /* Login */,
+				D5AA5F811E93EF3C00B6EDA4 /* Settings */,
 				D59B04401D6CA75600E6624B /* Navigation */,
 				D59B04431D6CB04600E6624B /* Lessons */,
 				D572F4971D6DF1EE000391F2 /* More */,
@@ -202,7 +207,6 @@
 			children = (
 				D59B04331D6CA4B700E6624B /* LoginViewController.swift */,
 				D513BB6D1D6F3FE000BA20A6 /* SetupProfileViewController.swift */,
-				D59B04351D6CA4B700E6624B /* ProfileViewController.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -266,6 +270,17 @@
 				D59B044F1D6CB04600E6624B /* ChallengeTableViewCell.swift */,
 			);
 			path = Pages;
+			sourceTree = "<group>";
+		};
+		D5AA5F811E93EF3C00B6EDA4 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				D5AA5F821E93EF6200B6EDA4 /* ProfileViewController.swift */,
+				D5AA5F841E93EF7900B6EDA4 /* PillarOrderViewController.swift */,
+				D5AA5F861E93F48800B6EDA4 /* PillarSwitchTableViewCell.swift */,
+			);
+			name = Settings;
+			path = Login;
 			sourceTree = "<group>";
 		};
 		D5DDD4CE1E8ACDF90051E4FC /* Other Pages */ = {
@@ -444,6 +459,7 @@
 				D59B045A1D6CB04600E6624B /* SuperLessonTableViewCell.swift in Sources */,
 				D59B04611D6CB04600E6624B /* QuoteViewController.swift in Sources */,
 				D54C39771E8973D4002D8AC8 /* BehaviorTableViewCell.swift in Sources */,
+				D5AA5F871E93F48800B6EDA4 /* PillarSwitchTableViewCell.swift in Sources */,
 				D5F3CE421D735393003FABEF /* CatholicViewController.swift in Sources */,
 				D59B043C1D6CA4B700E6624B /* Cache.swift in Sources */,
 				D59B04561D6CB04600E6624B /* ChallengesTableViewCell.swift in Sources */,
@@ -453,13 +469,14 @@
 				D59B04591D6CB04600E6624B /* QuoteTableViewCell.swift in Sources */,
 				D52C40B31D7240BB004A4724 /* FeedbackViewController.swift in Sources */,
 				D51C22981E92C89000887F42 /* DateTableViewCell.swift in Sources */,
+				D5AA5F831E93EF6200B6EDA4 /* ProfileViewController.swift in Sources */,
 				D59B045B1D6CB04600E6624B /* LessonsTableViewController.swift in Sources */,
 				D59B04421D6CA75600E6624B /* MasterController.swift in Sources */,
+				D5AA5F851E93EF7900B6EDA4 /* PillarOrderViewController.swift in Sources */,
 				D59B04581D6CB04600E6624B /* LessonTableViewCell.swift in Sources */,
 				D5DDD4D21E8ACE1D0051E4FC /* NotesViewController.swift in Sources */,
 				D572F4A81D6E273D000391F2 /* Character.swift in Sources */,
 				D56ED1DC1D77532E009D61E6 /* ScoreViewController.swift in Sources */,
-				D59B043B1D6CA4B700E6624B /* ProfileViewController.swift in Sources */,
 				D54C39791E89C3DC002D8AC8 /* MyNotesFooterView.swift in Sources */,
 				D5DDD4D11E8ACE1D0051E4FC /* CreateLessonViewController.swift in Sources */,
 				D59B045C1D6CB04600E6624B /* LessonTableViewController.swift in Sources */,

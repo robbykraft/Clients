@@ -16,6 +16,18 @@ class FeedbackViewController: UIViewController, UITextViewDelegate {
 	var feedbackTargetKey:String?
 	var feedbackTargetType:String? // please say "lesson", "quote", ... (the first level of the database)
 	
+	// if this feedback has already been submitted, fill this and "submit" will update instead of create new
+	var data:[String:Any]?{
+		// key
+		//
+		didSet{
+			if let d = self.data{
+				let text:String = d["text"] as! String
+				textView.text = text
+			}
+		}
+	}
+	
     override func viewDidLoad() {
         super.viewDidLoad()
 		
@@ -76,15 +88,35 @@ class FeedbackViewController: UIViewController, UITextViewDelegate {
 				feedbackObject["target"] = target as AnyObject
 			}
 		}
-
-		Fire.shared.newUniqueObjectAtPath("feedback", object: feedbackObject as AnyObject) { (error, ref)  in
-			let alertController = UIAlertController.init(title: "Feedback Sent", message: "Thank you for taking time to help!", preferredStyle: .alert)
-			let okayButton = UIAlertAction.init(title: "Okay", style: .default, handler: { (action) in
-				self.navigationController?.popViewController(animated: true)
+		
+		if let d = self.data{
+			let key:String = d["key"] as! String
+		
+			let childRef = Fire.shared.database.child("feedback/"+key)
+			
+			childRef.setValue(feedbackObject, withCompletionBlock: { (error, ref) in
+				let alertController = UIAlertController.init(title: "Feedback Updated", message: "Thank you for taking time to help!", preferredStyle: .alert)
+				let okayButton = UIAlertAction.init(title: "Okay", style: .default, handler: { (action) in
+					self.navigationController?.popViewController(animated: true)
+				})
+				alertController.addAction(okayButton)
+				self.present(alertController, animated: true, completion: nil)
 			})
-			alertController.addAction(okayButton)
+			
+			
 
-			self.present(alertController, animated: true, completion: nil)
+		} else{
+			
+			Fire.shared.newUniqueObjectAtPath("feedback", object: feedbackObject as AnyObject) { (error, ref)  in
+				let alertController = UIAlertController.init(title: "Feedback Sent", message: "Thank you for taking time to help!", preferredStyle: .alert)
+				let okayButton = UIAlertAction.init(title: "Okay", style: .default, handler: { (action) in
+					self.navigationController?.popViewController(animated: true)
+				})
+				alertController.addAction(okayButton)
+				
+				self.present(alertController, animated: true, completion: nil)
+			}
+			
 		}
 	}
 	

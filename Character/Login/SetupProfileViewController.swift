@@ -33,7 +33,7 @@ class SetupProfileViewController: UIViewController, UITextFieldDelegate {
 		detailLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15)
 		welcomeLabel.text = "Welcome!"
 		question1Label.text = "What grade do you teach?"
-		question2Label.text = "If you have a paid account, enter your code here:"
+		question2Label.text = "If you have a password, enter it here:"
 		detailLabel.text = "These can be changed under \"My Profile\""
 		
 		// input

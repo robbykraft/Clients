@@ -21,6 +21,8 @@ class Schedule{
 	var upcomingLessons:[Date:[Lesson]]?
 	var pastLessons:[Date:[Lesson]]?
 	
+	//these get set in buildSchoolYearCalendar
+	var pillarStartTimeStamps:[Int] = [] // store all the pillar's start dates
 	var schoolYear:[Date:[[String:Any]]]?
 	// Date : [ 0...4 (grade):
 	//              { Lesson: ______(database pointer)
@@ -29,22 +31,24 @@ class Schedule{
 	//                Behavior: ____(database pointer)
 	//              }
 	//        ]
-	var pillarStartTimeStamps:[Double] = [] // store all the pillar's start dates
+	
+	
+	// unclear if this is getting set:
 	var currentPillar:Int? = nil // store current pillar index in pillar array
 	
-	func findCurrentPillar(){
-		// find current pillar
-		var thisPillar:Int? = nil
-		var GMTCalendar = Calendar.current
-		GMTCalendar.timeZone = TimeZone.init(secondsFromGMT: 0)!
-		let nowDate:Date = GMTCalendar.startOfDay(for: Date())
-		for i in 0..<pillarStartTimeStamps.count{
-			if(nowDate.timeIntervalSince1970 > pillarStartTimeStamps[i]){
-				thisPillar = i
-			}
-		}
-		self.currentPillar = thisPillar;
-	}
+//	func findCurrentPillar(){
+//		// find current pillar
+//		var thisPillar:Int? = nil
+//		var GMTCalendar = Calendar.current
+//		GMTCalendar.timeZone = TimeZone.init(secondsFromGMT: 0)!
+//		let nowDate:Date = GMTCalendar.startOfDay(for: Date())
+//		for i in 0..<pillarStartTimeStamps.count{
+//			if(nowDate.timeIntervalSince1970 > pillarStartTimeStamps[i]){
+//				thisPillar = i
+//			}
+//		}
+//		self.currentPillar = thisPillar;
+//	}
 
 	func sortedPillarStartDates(pillarTimeStamps:[Int]) -> [[Int:Date]]{
 		// input: array of unix time stamps:index=pillar number ([355354, 253563, 352333])
@@ -72,6 +76,7 @@ class Schedule{
 
 			if let scheduleData = snapshot.value as? [String:Any]{
 				if let startTimes = scheduleData["pillars"] as? [Int]{
+					self.pillarStartTimeStamps = startTimes
 					let sortedStartDates:[[Int:Date]] = self.sortedPillarStartDates(pillarTimeStamps: startTimes)
 					print("Pillar start dates sorted chronologically:")
 					print(sortedStartDates)

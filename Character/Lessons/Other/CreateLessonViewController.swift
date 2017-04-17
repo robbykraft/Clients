@@ -34,6 +34,8 @@ class CreateLessonViewController: UIViewController, UITextViewDelegate, UIImageP
 		}
 	}
 	
+	var updatingLessonKey:String?
+	
 	let imageView = UIImageView()
 	let imageButton = UIButton()
 	let authorField = UITextField()
@@ -53,21 +55,33 @@ class CreateLessonViewController: UIViewController, UITextViewDelegate, UIImageP
 	let paperclip = UIImageView()
 	
 	var uploadedImageURL:String?
+	
+	var showFakeNavBar:Bool = true
 
 //	let imagePicker = UIImagePickerController() // hold onto the controller so we can dismiss it
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		let navPad:CGFloat = 44 + 20//self.navigationController!.navigationBar.frame.size.height
+		self.title = "SUBMIT A LESSON"
+		
+		var navPad:CGFloat = 44 + 20//self.navigationController!.navigationBar.frame.size.height
+		if(!showFakeNavBar){
+			navPad = 0
+		}
 		
 		let sidePad:CGFloat = self.view.frame.size.width * 0.1
 		
 		scrollView.frame = self.view.frame
+		if(!showFakeNavBar){
+			scrollView.frame = CGRect.init(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height - 44 - 20 - 44)
+		}
 		self.view.addSubview( scrollView )
 
 		// NAV BAR
-		self.view.addSubview(fakeNavBar)
+		if(showFakeNavBar){
+			self.view.addSubview(fakeNavBar)
+		}
 		fakeNavBar.addSubview(navTitle)
 		fakeNavBar.addSubview(closeButton)
 		scrollView.backgroundColor = UIColor.white
@@ -227,26 +241,50 @@ class CreateLessonViewController: UIViewController, UITextViewDelegate, UIImageP
 		if let uid = Fire.shared.myUID {
 			userString = uid
 		}
+		var imageURL:String = ""
+		if let d = data{
+			if let url = d.image{
+				imageURL = url
+			}
+		}
+		if(uploadedImageURL != nil){
+			imageURL = uploadedImageURL!
+		}
 		let lessonObject:[String:Any] = [
 			"title": titleField.text ?? "",
-			"text": bodyText.text,
+			"body": bodyText.text,
 			"lesson_author": authorField.text ?? "",
-			"image": uploadedImageURL ?? "",
+			"image": imageURL,
 			"pillar": pillarNumber,
 			"grade": gradeNumber,
 			"createdAt": Date.init().timeIntervalSince1970,
-			"user": userString
+			"submitted": userString
 		]
 
-		Fire.shared.newUniqueObjectAtPath("lesson", object: lessonObject as AnyObject) { (error, ref) in
-			let alertController = UIAlertController.init(title: "Lesson Submitted", message: "Thank you for contributing!", preferredStyle: .alert)
-			let okayButton = UIAlertAction.init(title: "Okay", style: .default, handler: { (action) in
-				self.dismiss(animated: true, completion: nil)
-			})
-			alertController.addAction(okayButton)
-			self.present(alertController, animated: true, completion: nil)
-		}
 		
+		if let key:String = updatingLessonKey{
+			let childRef = Fire.shared.database.child("lessons/"+key)
+			
+			childRef.setValue(lessonObject, withCompletionBlock: { (error, ref) in
+				let alertController = UIAlertController.init(title: "Lesson Updated", message: "Thank you for your submission!", preferredStyle: .alert)
+				let okayButton = UIAlertAction.init(title: "Okay", style: .default, handler: { (action) in
+					self.navigationController?.popViewController(animated: true)
+				})
+				alertController.addAction(okayButton)
+				self.present(alertController, animated: true, completion: nil)
+			})
+			
+		} else{
+			
+			Fire.shared.newUniqueObjectAtPath("lessons", object: lessonObject as AnyObject) { (error, ref) in
+				let alertController = UIAlertController.init(title: "Lesson Submitted", message: "Thank you for contributing!", preferredStyle: .alert)
+				let okayButton = UIAlertAction.init(title: "Okay", style: .default, handler: { (action) in
+					self.dismiss(animated: true, completion: nil)
+				})
+				alertController.addAction(okayButton)
+				self.present(alertController, animated: true, completion: nil)
+			}
+		}
 	}
 	
 	

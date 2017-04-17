@@ -16,7 +16,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 	let nameField: UITextField = UITextField()
 	let emailField: UITextField = UITextField()
 	let detail1Button: UIButton = UIButton()
-	let detailPillarButton: UIButton = UIButton()
+//	let detail2Field: UITextField = UITextField()
 	let signoutButton: UIButton = UIButton()
 	
 	var updateTimer:Timer?
@@ -31,7 +31,6 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 		signoutButton.setTitle("Sign Out", for: UIControlState())
 		profileImageButton.addTarget(self, action: #selector(profilePictureButtonHandler), for: .touchUpInside)
 		detail1Button.addTarget(self, action: #selector(detail1ButtonHandler), for: UIControlEvents.touchUpInside)
-		detailPillarButton.addTarget(self, action: #selector(pillarOrderPressed), for: UIControlEvents.touchUpInside)
 		signoutButton.addTarget(self, action: #selector(logOut), for: UIControlEvents.touchUpInside)
 
 		// ui custom
@@ -46,14 +45,10 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 		detail1Button.backgroundColor = UIColor.white
 		detail1Button.setTitleColor(UIColor.black, for: UIControlState())
 		detail1Button.titleLabel?.textAlignment = .center
-		detailPillarButton.backgroundColor = UIColor.white
-		detailPillarButton.setTitleColor(UIColor.black, for: UIControlState())
-		detailPillarButton.titleLabel?.textAlignment = .center
 //		detail2Field.backgroundColor = UIColor.whiteColor()
 		signoutButton.backgroundColor = Style.shared.lightBlue
 		nameField.placeholder = "Name"
 		emailField.placeholder = "Email Address"
-		detailPillarButton.setTitle("Pillar Order", for: UIControlState())
 //		detail2Field.placeholder = "Detail Text"
 		
 		emailField.isEnabled = false
@@ -71,7 +66,6 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 		self.view.addSubview(nameField)
 		self.view.addSubview(emailField)
 		self.view.addSubview(detail1Button)
-		self.view.addSubview(detailPillarButton)
 		self.view.addSubview(signoutButton)
     }
 	
@@ -88,8 +82,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 		nameField.frame = CGRect(x: 0, y: imgArea + 10, width: self.view.bounds.size.width, height: 44)
 		emailField.frame = CGRect(x: 0, y: imgArea + 10*2 + 44*1, width: self.view.bounds.size.width, height: 44)
 		detail1Button.frame = CGRect(x: 0, y: imgArea + 10*3 + 44*2, width: self.view.bounds.size.width, height: 44)
-		detailPillarButton.frame = CGRect(x: 0, y: imgArea + 10*4 + 44*3, width: self.view.bounds.size.width, height: 44)
-		signoutButton.frame = CGRect(x: 0, y: imgArea + 10*5 + 44*4, width: self.view.bounds.size.width, height: 44)
+		signoutButton.frame = CGRect(x: 0, y: imgArea + 10*5 + 44*3, width: self.view.bounds.size.width, height: 44)
 
 		
 		// populate screen
@@ -136,10 +129,6 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 		else if(gradeLevels!.contains(3)){
 			detail1Button.setTitle(Character.shared.gradeNames[3], for: UIControlState())
 		}
-	}
-	
-	func pillarOrderPressed(_ sender:UIButton){
-		self.navigationController?.pushViewController(PillarOrderTableViewController(), animated: true)
 	}
 	
 	func logOut(){

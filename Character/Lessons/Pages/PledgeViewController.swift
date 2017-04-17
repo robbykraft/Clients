@@ -58,7 +58,7 @@ class PledgeViewController: UIViewController, CompletedQuestionDelegate{
 
 		// CHALLENGE QUESTION FOOTER
 		questionFooter.frame = CGRect.init(x: 0, y: pledgeBodyHeight + topPad + 20, width: self.view.frame.size.width, height: 120)
-		questionFooter.noun = "pledge"
+		questionFooter.textLabel.text = "I completed this challenge by sharing this pledge"
 		questionFooter.delegate = self
 		self.view.addSubview(questionFooter)
 		

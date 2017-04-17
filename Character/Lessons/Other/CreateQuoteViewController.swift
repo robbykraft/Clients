@@ -10,6 +10,17 @@ import UIKit
 
 class CreateQuoteViewController: UIViewController, UITextViewDelegate {
 	
+	var data:[String:Any]?{
+		didSet{
+			if let d = data{
+				let body:String = d["text"] as! String
+				let author:String = d["author"] as! String
+				quoteBodyView.text = body
+				quoteAuthorField.text = author
+			}
+		}
+	}
+
 	let scrollView = UIScrollView()
 	
 	let quoteMarkImageView = UIImageView()
@@ -22,18 +33,30 @@ class CreateQuoteViewController: UIViewController, UITextViewDelegate {
 	let navTitle = UILabel()
 	let closeButton = UIButton()
 	
+	var showFakeNavBar:Bool = true
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		let navPad:CGFloat = 44 + 20//self.navigationController!.navigationBar.frame.size.height
+		self.title = "SUBMIT A QUOTE"
+		
+		var navPad:CGFloat = 44 + 20//self.navigationController!.navigationBar.frame.size.height
+		if(!showFakeNavBar){
+			navPad = 0
+		}
 		
 		let sidePad:CGFloat = self.view.frame.size.width * 0.1
 		
 		scrollView.frame = self.view.frame
+		if(!showFakeNavBar){
+			scrollView.frame = CGRect.init(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height - 44 - 20 - 44)
+		}
 		self.view.addSubview( scrollView )
 
 		// NAV BAR
-		self.view.addSubview(fakeNavBar)
+		if(showFakeNavBar){
+			self.view.addSubview(fakeNavBar)
+		}
 		fakeNavBar.addSubview(navTitle)
 		fakeNavBar.addSubview(closeButton)
 		scrollView.backgroundColor = UIColor.white
@@ -139,19 +162,35 @@ class CreateQuoteViewController: UIViewController, UITextViewDelegate {
 			"user": userString
 		]
 		
-		Fire.shared.newUniqueObjectAtPath("quotes", object: quoteObject as AnyObject) { (error, ref) in
-			if(error != nil){
-				print("error")
-				print(error?.localizedDescription ?? "")
-			}
-			let alertController = UIAlertController.init(title: "Quote Submitted", message: "Thank you for contributing!", preferredStyle: .alert)
-			let okayButton = UIAlertAction.init(title: "Okay", style: .default, handler: { (action) in
-				self.dismiss(animated: true, completion: nil)
+		if let d = self.data{
+			let key:String = d["key"] as! String
+			
+			let childRef = Fire.shared.database.child("quotes/"+key)
+			
+			childRef.setValue(quoteObject, withCompletionBlock: { (error, ref) in
+				let alertController = UIAlertController.init(title: "Quote Updated", message: "Thank you for your submission!", preferredStyle: .alert)
+				let okayButton = UIAlertAction.init(title: "Okay", style: .default, handler: { (action) in
+					self.navigationController?.popViewController(animated: true)
+				})
+				alertController.addAction(okayButton)
+				self.present(alertController, animated: true, completion: nil)
 			})
-			alertController.addAction(okayButton)
-			self.present(alertController, animated: true, completion: nil)
+			
+		} else{
+			
+			Fire.shared.newUniqueObjectAtPath("quotes", object: quoteObject as AnyObject) { (error, ref) in
+				if(error != nil){
+					print("error")
+					print(error?.localizedDescription ?? "")
+				}
+				let alertController = UIAlertController.init(title: "Quote Submitted", message: "Thank you for contributing!", preferredStyle: .alert)
+				let okayButton = UIAlertAction.init(title: "Okay", style: .default, handler: { (action) in
+					self.dismiss(animated: true, completion: nil)
+				})
+				alertController.addAction(okayButton)
+				self.present(alertController, animated: true, completion: nil)
+			}
 		}
-		
 	}
 	
 }

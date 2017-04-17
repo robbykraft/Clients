@@ -47,6 +47,7 @@ class MySubmissionsTableViewController: UITableViewController {
 	func getMySubmittedContent(){
 		var myFeedback:[[String:Any]] = []
 		let myUsernameKey:String = Fire.shared.myUID!
+		self.data = []
 		Fire.shared.loadData("feedback") { (data) in
 			if let feedbackList = data as? [String:Any]{
 				let keys = Array(feedbackList.keys)
@@ -56,13 +57,34 @@ class MySubmissionsTableViewController: UITableViewController {
 							if feedbackUser == myUsernameKey{
 								var newEntry = feedbackEntry
 								newEntry["type"] = "feedback"
+								newEntry["key"] = k
 								myFeedback.append(newEntry)
 							}
 						}
 					}
 				}
 			}
-			self.data = myFeedback
+			self.data?.append(contentsOf: myFeedback)
+		}
+		var myLessons:[[String:Any]] = []
+		Fire.shared.loadData("lessons") { (data) in
+			if let lessonList = data as? [String:Any]{
+				let keys = Array(lessonList.keys)
+				for k in keys{
+					if let lessonEntry = lessonList[k] as? [String:Any]{
+						if let lessonCreatedBy = lessonEntry["submitted"] as? String{
+							if lessonCreatedBy == myUsernameKey{
+								var newEntry = lessonEntry
+								newEntry["type"] = "lesson"
+								newEntry["key"] = k
+								myLessons.append(newEntry)
+								print(newEntry)
+							}
+						}
+					}
+				}
+			}
+			self.data?.append(contentsOf: myLessons)
 		}
 	}
 	
@@ -118,6 +140,11 @@ class MySubmissionsTableViewController: UITableViewController {
 				cell.textLabel?.text = body
 			}
 			
+			if let title = rowData["title"] as? String{
+				cell.textLabel?.text = title
+			}
+
+			
 			if let type = rowData["type"] as? String{
 				cell.detailLabel.text = type.uppercased()
 
@@ -138,6 +165,12 @@ class MySubmissionsTableViewController: UITableViewController {
 					let dateText: String = monthAbbrevs[dateComponents.month! - 1] + " " + dayString
 					cell.dateText = dateText.uppercased()
 				}
+			} else{
+				if let pillar = rowData["pillar"] as? Int{
+					if(pillar < Character.shared.pillarNames.count){
+						cell.dateText = Character.shared.pillarNames[pillar].uppercased()
+					}
+				}
 			}
 			
 //				cell.titleText = text.uppercased()
@@ -148,6 +181,36 @@ class MySubmissionsTableViewController: UITableViewController {
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
+		if let d = self.data{
+			let rowData:[String:Any] = d[indexPath.row]
+			let type = rowData["type"] as? String
+			if type == "feedback"{
+				let key = rowData["key"] as? String
+				var createdAt = rowData["createdAt"] as? Double
+				if(createdAt == nil) { createdAt = 0.0; }
+				let vc = FeedbackViewController()
+				vc.data = rowData
+				self.navigationController?.pushViewController(vc, animated: true)
+				
+			}
+			if type == "lesson"{
+				let key = rowData["key"] as? String
+				var createdAt = rowData["createdAt"] as? Double
+				if(createdAt == nil) { createdAt = 0.0; }
+				if let lessonKey = key{
+					let lesson = Lesson()
+					lesson.setFromDatabase(lessonKey: lessonKey, quoteKey: "", behaviorKey: "", date: Date.init(timeIntervalSince1970: createdAt!), { (success, lesson) in
+						let vc = CreateLessonViewController()
+						vc.showFakeNavBar = false
+						vc.data = lesson
+						vc.updatingLessonKey = lessonKey
+						self.navigationController?.pushViewController(vc, animated: true)
+					})
+				}
+			}
+			
+		}
+		
 //		if let d = self.data{
 //			let rowData:[String:Any] = d[indexPath.row]
 

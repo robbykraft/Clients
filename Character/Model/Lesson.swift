@@ -80,13 +80,16 @@ class Lesson {
 			self.date = date
 
 			FIRDatabase.database().reference().child("quotes/" + quoteKey).observeSingleEvent(of: .value, with: { (quoteSnapshot) in
-				let quoteJSON = quoteSnapshot.value as! [String:Any]
-				self.quoteKey = quoteKey
-				self.quote = quoteJSON["body"] as? String
-				self.quoteAuthor = quoteJSON["author"] as? String
+				if let quoteJSON = quoteSnapshot.value as? [String:Any]{
+					self.quoteKey = quoteKey
+					self.quote = quoteJSON["body"] as? String
+					self.quoteAuthor = quoteJSON["author"] as? String
+				}
 				
 				FIRDatabase.database().reference().child("behaviors/" + behaviorKey).observeSingleEvent(of: .value, with: { (behaviorSnapshot) in
-					self.behavior = behaviorSnapshot.value as! String
+					if let behaviorString = behaviorSnapshot.value as? String{
+						self.behavior = behaviorString
+					}
 					completionHandler(true, self)
 				})
 			})

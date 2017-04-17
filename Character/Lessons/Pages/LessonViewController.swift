@@ -124,7 +124,7 @@ class LessonViewController: UIViewController, CompletedQuestionDelegate, MyNotes
 		self.view.addSubview(notesFooter)
 
 		questionFooter.frame = CGRect.init(x: 0, y: bodyText.frame.origin.y + bodyHeight + 20 + notesFooter.frame.size.height + 20, width: self.view.frame.size.width, height: 120)
-		questionFooter.noun = "lesson"
+		questionFooter.textLabel.text = "I completed this challenge by sharing this lesson"
 		questionFooter.delegate = self
 		self.view.addSubview(questionFooter)
 
@@ -198,7 +198,7 @@ class LessonViewController: UIViewController, CompletedQuestionDelegate, MyNotes
 			vc.feedbackTargetType = "lessons"
 			self.navigationController?.pushViewController(vc, animated: true)
 		}))
-		alert.addAction(UIAlertAction(title: "Create my own a Lesson", style: .default , handler:{ (UIAlertAction)in
+		alert.addAction(UIAlertAction(title: "Submit my own Lesson", style: .default , handler:{ (UIAlertAction)in
 			let vc = CreateLessonViewController()
 			self.navigationController?.present(vc, animated: true, completion:nil)
 		}))
