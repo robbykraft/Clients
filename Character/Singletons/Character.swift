@@ -26,6 +26,8 @@ class Character{
 	static let shared = Character()
 	
 	fileprivate init() { }
+	
+	var myGradeLevel:[Int] = [0]
 
 //	var lessons:[String:AnyObject]?  // lessons data
 	let pillarNames = ["trustworthiness", "respect", "responsibility", "fairness", "caring", "citizenship", "introduction"]
@@ -71,12 +73,14 @@ class Character{
 			if let userData = data{
 				if let userGrades = userData["grade"] as? [Int]{
 					// grades okay
+					self.myGradeLevel = userGrades
 					completionHandler(true, userGrades)
 				} else{
 					// user has not been assigned a grade yet
 					let userGrades = [0,1,2,3]
 					Fire.shared.updateUserWithKeyAndValue("grade", value: userGrades as AnyObject, completionHandler: { (success) in
 						// NOW grades okay
+						self.myGradeLevel = userGrades
 						completionHandler(true, userGrades)
 					})
 				}

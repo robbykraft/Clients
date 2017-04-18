@@ -14,6 +14,8 @@ class ScoreViewController: UITableViewController {
 	
 	var keyArray:[Date]?
 	
+	var score:[Date:[[String:Any]]]?
+	
 	var data: [ Date:[[Bool]] ]? {
 		didSet{
 //			if(data != nil){
@@ -41,9 +43,65 @@ class ScoreViewController: UITableViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		Character.shared.getMyScore({ (dateDictionary) in
-			self.data = dateDictionary
-		})
+//		Character.shared.getMyScore({ (dateDictionary) in
+//			self.data = dateDictionary
+//		})
+		if let schedule = Schedule.shared.schoolYear{
+			self.keyArray = Array(schedule.keys)
+			self.keyArray?.sort()
+			self.keyArray?.reverse()
+			
+			// get my challenges
+			Fire.shared.getUser { (uid, data) in
+				if let userData = data{
+					var challenges = userData["challenges"] as? [String:Any]
+					print("challenges")
+					if(challenges == nil){
+						challenges = [:]
+					}
+					print(challenges!)
+					self.score = [:]
+					for date in self.keyArray!{
+						self.score?[date] = []
+						if let thisDay:[[String:Any]] = schedule[date]{
+							for i in 0..<thisDay.count{
+								var lesson = false
+								var quote = false
+								var behavior = false
+								var pledge = false
+								if let lKey:String = thisDay[i]["lesson"] as? String{
+									if(challenges?[lKey] != nil){
+										lesson = (challenges?[lKey] as? Bool)!
+									}
+								}
+								if let qKey:String = thisDay[i]["quote"] as? String{
+									if(challenges?[qKey] != nil){
+										quote = (challenges?[qKey] as? Bool)!
+									}
+								}
+								let dateInt:String = String(Int(date.timeIntervalSince1970))
+								if(challenges?[dateInt] != nil){
+									let more:[String:Bool] = challenges?[dateInt] as! [String:Bool]
+									if(more["behavior"] != nil){
+										behavior = more["behavior"]!
+									}
+									if(more["pledge"] != nil){
+										pledge = more["pledge"]!
+									}
+								}
+								self.score?[date]?.append( ["lesson":lesson,
+								                            "quote":quote,
+								                            "behavior":behavior,
+								                            "pledge":pledge] )
+							}
+						}
+					}
+					print(self.score!)
+					self.tableView.reloadData()
+				}
+			}
+		}
+
 		self.tableView.reloadData()
 	}
 	
@@ -60,7 +118,7 @@ class ScoreViewController: UITableViewController {
 	}
 	
 	override func numberOfSections(in tableView: UITableView) -> Int {
-		if(self.data != nil){
+		if(self.keyArray != nil){
 			return 1
 		}
 		return 0
@@ -68,13 +126,14 @@ class ScoreViewController: UITableViewController {
 	
 	override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 		if(IS_IPAD){
-			return 80
+			return 110
 		}
-		return 60;
+		return 80;
 	}
 	
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return (self.data?.count)!
+//		return (self.data?.count)!
+		return (self.keyArray?.count)!
 	}
 	
 	func daySuffix(_ dayOfMonth: Int) -> String {
@@ -85,35 +144,63 @@ class ScoreViewController: UITableViewController {
 		default: return "th"
 		}
 	}
-	
+
 	override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
 		return 44
 	}
 	
 	override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-		return "Daily Challenges:"
+		return "Lesson - Quote - Behavior - Pledge"
 	}
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = UITableViewCell.init(style: .value1, reuseIdentifier: "scoreTableViewCell")
+		let cell = ScoreTableViewCell.init(style: .default, reuseIdentifier: "scoreTableViewcell")
 		
-	
-
 		if(keyArray != nil){
 			var GMTCalendar = Calendar.current
 			GMTCalendar.timeZone = TimeZone.init(secondsFromGMT: 0)!
 
 			// date
 			let date = keyArray![(indexPath as NSIndexPath).row]
-			let dateComponents:DateComponents = (GMTCalendar as NSCalendar).components([.month, .day], from: date)
-
-			cell.textLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P24)
-
+			let dateComponents:DateComponents = (Calendar.current as NSCalendar).components([.month, .day], from: date as Date)
 			if let dateInt = dateComponents.day {
 				let dayString = "\(dateInt)" + daySuffix(dateInt)
 				let dateText: String = monthAbbrevs[dateComponents.month! - 1] + " " + dayString
-				cell.textLabel?.text = dateText
+				cell.dateText = dateText.uppercased()
 			}
+			
+			var scoreString = ""
+			let todayScore = self.score?[date]
+			if(todayScore != nil){
+				if Character.shared.myGradeLevel.count == 1{
+					let myGradeScore:[String:Bool] = todayScore![Character.shared.myGradeLevel.first!] as! [String:Bool]
+					if(myGradeScore["lesson"] == true){   cell.scores[0].text = "✔︎" }
+					if(myGradeScore["quote"] == true){    cell.scores[1].text = "✔︎" }
+					if(myGradeScore["behavior"] == true){ cell.scores[2].text = "✔︎" }
+					if(myGradeScore["pledge"] == true){   cell.scores[3].text = "✔︎" }
+					
+				} else{
+					var lCount = 0
+					var qCount = 0
+					var bCount = 0
+					var pCount = 0
+					for grade in Character.shared.myGradeLevel {
+						let myGradeScore:[String:Bool] = todayScore![grade] as! [String:Bool]
+						
+						if(myGradeScore["lesson"] == true){ lCount += 1 }
+						if(myGradeScore["quote"] == true){ qCount += 1 }
+						if(myGradeScore["behavior"] == true){ bCount += 1 }
+						if(myGradeScore["pledge"] == true){ pCount += 1 }
+						
+					}
+					cell.scores[0].text = "✔︎:" + String(lCount)
+					cell.scores[1].text = "✔︎:" + String(qCount)
+					cell.scores[2].text = "✔︎:" + String(bCount)
+					cell.scores[3].text = "✔︎:" + String(pCount)
+				}
+			}
+			
+			return cell
 
 			// percent
 //			let completedArray:[Bool]? = self.data![date]
@@ -157,17 +244,7 @@ class ScoreViewController: UITableViewController {
 			}
 		}
 		
-		
 		cell.selectionStyle = .none
-		
-//		let text:String = objectForRow.title!
-//		
-//		// date
-//
-//		cell.gradeLevel = objectForRow.grade!
-//		
-//		cell.titleText = text.uppercaseString
-//		cell.dateText = dateText.uppercaseString
 		
 		return cell
 	}

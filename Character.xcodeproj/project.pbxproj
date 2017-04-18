@@ -47,6 +47,7 @@
 		D5AA5F831E93EF6200B6EDA4 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AA5F821E93EF6200B6EDA4 /* ProfileViewController.swift */; };
 		D5AA5F851E93EF7900B6EDA4 /* PillarOrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AA5F841E93EF7900B6EDA4 /* PillarOrderViewController.swift */; };
 		D5AA5F871E93F48800B6EDA4 /* PillarSwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AA5F861E93F48800B6EDA4 /* PillarSwitchTableViewCell.swift */; };
+		D5B2123B1EA670FB00E3BA46 /* ScoreTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B2123A1EA670FB00E3BA46 /* ScoreTableViewCell.swift */; };
 		D5DDD4D11E8ACE1D0051E4FC /* CreateLessonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DDD4CF1E8ACE1D0051E4FC /* CreateLessonViewController.swift */; };
 		D5DDD4D21E8ACE1D0051E4FC /* NotesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DDD4D01E8ACE1D0051E4FC /* NotesViewController.swift */; };
 		D5F219461E88449000362B5A /* CompletedQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F219451E88449000362B5A /* CompletedQuestionView.swift */; };
@@ -101,6 +102,7 @@
 		D5AA5F821E93EF6200B6EDA4 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		D5AA5F841E93EF7900B6EDA4 /* PillarOrderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PillarOrderViewController.swift; sourceTree = "<group>"; };
 		D5AA5F861E93F48800B6EDA4 /* PillarSwitchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PillarSwitchTableViewCell.swift; path = Character/Settings/PillarSwitchTableViewCell.swift; sourceTree = SOURCE_ROOT; };
+		D5B2123A1EA670FB00E3BA46 /* ScoreTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScoreTableViewCell.swift; sourceTree = "<group>"; };
 		D5DDD4CF1E8ACE1D0051E4FC /* CreateLessonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CreateLessonViewController.swift; path = Other/CreateLessonViewController.swift; sourceTree = "<group>"; };
 		D5DDD4D01E8ACE1D0051E4FC /* NotesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NotesViewController.swift; path = Other/NotesViewController.swift; sourceTree = "<group>"; };
 		D5F219451E88449000362B5A /* CompletedQuestionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompletedQuestionView.swift; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 			children = (
 				D572F49A1D6DF219000391F2 /* MoreViewController.swift */,
 				D56ED1DB1D77532E009D61E6 /* ScoreViewController.swift */,
+				D5B2123A1EA670FB00E3BA46 /* ScoreTableViewCell.swift */,
 				D52C40B21D7240BB004A4724 /* FeedbackViewController.swift */,
 				D5F3CE481D7353EA003FABEF /* CharacterToolsViewController.swift */,
 				D51C22991E92E40900887F42 /* Submissions */,
@@ -488,6 +491,7 @@
 				D59B045F1D6CB04600E6624B /* ChallengeTableViewCell.swift in Sources */,
 				D54C39751E896F87002D8AC8 /* BehaviorViewController.swift in Sources */,
 				D59B04161D6C96D500E6624B /* AppDelegate.swift in Sources */,
+				D5B2123B1EA670FB00E3BA46 /* ScoreTableViewCell.swift in Sources */,
 				D52BAAF91E8D92AA002309C7 /* CreateQuoteViewController.swift in Sources */,
 				D59B04571D6CB04600E6624B /* LessonsTableViewCell.swift in Sources */,
 				D59B04681D6CBF7000E6624B /* Style.swift in Sources */,

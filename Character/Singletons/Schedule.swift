@@ -25,10 +25,10 @@ class Schedule{
 	var pillarStartTimeStamps:[Int] = [] // store all the pillar's start dates
 	var schoolYear:[Date:[[String:Any]]]?
 	// Date : [ 0...4 (grade):
-	//              { Lesson: ______(database pointer)
-	//                Quote: ______(database pointer)
-	//                Pillar: _____(pillar number)
-	//                Behavior: ____(database pointer)
+	//              { lesson: ______(database pointer)
+	//                quote: ______(database pointer)
+	//                pillar: _____(pillar number)
+	//                behavior: ____(database pointer)
 	//              }
 	//        ]
 	

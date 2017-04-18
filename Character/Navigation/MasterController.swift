@@ -79,7 +79,8 @@ class MasterController: UITabBarController {
 		if(Schedule.shared.todaysLesson == nil){
 			self.todayLessonVC.data = nil
 		}else{
-			self.todayLessonVC.data = Schedule.shared.todaysLesson![0]
+			let grade:Int = Character.shared.myGradeLevel.first!
+			self.todayLessonVC.data = Schedule.shared.todaysLesson![grade]
 		}
 		// TODO:
 		let todaysPillar:Int = 4//todaysLesson!.pillar!
@@ -97,8 +98,9 @@ class MasterController: UITabBarController {
 			var pastKeys:[Date] = Array(Schedule.shared.pastLessons!.keys)
 			pastKeys = pastKeys.sorted(by: { $0.timeIntervalSince1970 < $1.timeIntervalSince1970 })
 			for date in pastKeys{
-				// todo: current grade level
-				allLessons.append(Schedule.shared.pastLessons![date]![0])
+				for grade:Int in Character.shared.myGradeLevel{
+					allLessons.append(Schedule.shared.pastLessons![date]![grade])
+				}
 			}
 		}
 		
@@ -106,8 +108,9 @@ class MasterController: UITabBarController {
 			var upcomingKeys:[Date] = Array(Schedule.shared.upcomingLessons!.keys)
 			upcomingKeys = upcomingKeys.sorted(by: { $0.timeIntervalSince1970 < $1.timeIntervalSince1970 })
 			for date in upcomingKeys{
-				// todo: current grade level
-				allLessons.append(Schedule.shared.upcomingLessons![date]![0])
+				for grade:Int in Character.shared.myGradeLevel{
+					allLessons.append(Schedule.shared.upcomingLessons![date]![grade])
+				}
 			}
 		}
 		self.allLessonsVC.data = allLessons
