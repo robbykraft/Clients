@@ -50,12 +50,14 @@ class Schedule{
 //		self.currentPillar = thisPillar;
 //	}
 
-	func sortedPillarStartDates(pillarTimeStamps:[Int]) -> [[Int:Date]]{
+	func sortedFilteredPillarStartDates(pillarTimeStamps:[Int], personalizedOrder:[Int]) -> [[Int:Date]]{
 		// input: array of unix time stamps:index=pillar number ([355354, 253563, 352333])
 		// output: array of dictionaries [pillar:date], sorted by dates [ [2:Jan 1], [1:Feb 1], ...]
+		
+		// new!! now also takes into account
 		var dates:[Int:Date] = [:]
 		for i in 0..<pillarTimeStamps.count{
-			let startDate = Date.init(timeIntervalSince1970: Double(pillarTimeStamps[i]))
+			let startDate = Date.init(timeIntervalSince1970: Double(pillarTimeStamps[ personalizedOrder[i] ]))
 			dates[i] = startDate
 		}
 		let sortedDates = dates.values.sorted(by: {$0.compare($1) == .orderedAscending})
@@ -77,82 +79,88 @@ class Schedule{
 			if let scheduleData = snapshot.value as? [String:Any]{
 				if let startTimes = scheduleData["pillars"] as? [Int]{
 					self.pillarStartTimeStamps = startTimes
-					let sortedStartDates:[[Int:Date]] = self.sortedPillarStartDates(pillarTimeStamps: startTimes)
-					print("Pillar start dates sorted chronologically:")
-					print(sortedStartDates)
-					
-					var calendarDays:[ [String:Any] ] = []
-					
-					let TWO_MONTHS:TimeInterval = 2678400 * 2
-					for i in 0..<sortedStartDates.count{
-						var firstDate:Date = sortedStartDates[i].values.first!
-						var endDate:Date = firstDate.addingTimeInterval(TWO_MONTHS)
-						if(i+1 < sortedStartDates.count){ endDate = sortedStartDates[i+1].values.first! }
+					Fire.shared.loadData("users/" + Fire.shared.myUID! + "/pillars", completionHandler: { (pillarArray) in
+						var personalOrder = [0, 1, 2, 3, 4, 5, 6]
+						if let a = pillarArray as? [Int]{
+							personalOrder = a
+						}
+						let sortedStartDates:[[Int:Date]] = self.sortedFilteredPillarStartDates(pillarTimeStamps: startTimes, personalizedOrder: personalOrder)
+						print("Pillar start dates sorted chronologically:")
+						print(sortedStartDates)
 						
-						// truncate out time, in regards to GMT time
-						var GMTCalendar = Calendar.current
-						GMTCalendar.timeZone = TimeZone.init(secondsFromGMT: 0)!
-						firstDate = GMTCalendar.date(bySettingHour: 0, minute: 0, second: 0, of: firstDate)!
-						endDate = GMTCalendar.date(bySettingHour: 0, minute: 0, second: 0, of: endDate)!
+						var calendarDays:[ [String:Any] ] = []
 						
-						var dateIterate:Date = firstDate
-						var iterator:Int = 0
-						var lessonCounter = 0;
-						repeat{
+						let TWO_MONTHS:TimeInterval = 2678400 * 2
+						for i in 0..<sortedStartDates.count{
+							var firstDate:Date = sortedStartDates[i].values.first!
+							var endDate:Date = firstDate.addingTimeInterval(TWO_MONTHS)
+							if(i+1 < sortedStartDates.count){ endDate = sortedStartDates[i+1].values.first! }
+							
+							// truncate out time, in regards to GMT time
 							var GMTCalendar = Calendar.current
 							GMTCalendar.timeZone = TimeZone.init(secondsFromGMT: 0)!
-							if( !GMTCalendar.isDateInWeekend(dateIterate) ){
-								let thisPillar = sortedStartDates[i].keys.first!
-								// get the week # of the month, for Lesson Behavior
-								var weekNumber:Int = GMTCalendar.component(.weekOfMonth, from: dateIterate)
-								// todo: for Character Daily specific purposes, this will sometimes begin at week #2 (if 1st is Friday or Saturday), skipping first entry in database. fix: mod % 5
-								weekNumber -= 1
-								weekNumber = weekNumber % 5
-								calendarDays.append(["date":dateIterate, "pillar":thisPillar, "count":lessonCounter, "week":weekNumber])
-								lessonCounter += 1
-							}
-							iterator += 1
-							var deltaDate = DateComponents()
-							deltaDate.day = iterator
-							dateIterate = (GMTCalendar as NSCalendar).date(byAdding: deltaDate, to: firstDate, options: NSCalendar.Options.matchFirst)!
-						}while(dateIterate < endDate)
-					}
-//					print("calendar days:")
-//					print(calendarDays)
-
-					if let pillarDayGradeLessons = scheduleData["lessons"] as? [Any]{
-						var lessonCalendar:[Date:[[String:Any]]] = [:]
-						for i in 0..<calendarDays.count{
-							let dateIterate:Date = calendarDays[i]["date"] as! Date
-							let pillarNumber = calendarDays[i]["pillar"] as! Int
-							let orderNumber = calendarDays[i]["count"] as! Int
-							let weekCount = calendarDays[i]["week"] as! Int
-							var behaviorDatabaseKey:String = ""
-							if let allBehaviors = scheduleData["behaviors"] as? [Any]{
-								if(pillarNumber < allBehaviors.count){
-									if let pillarBehaviors = allBehaviors[pillarNumber] as? [Any]{
-										if let behaviorKey = pillarBehaviors[weekCount] as? String{
-											behaviorDatabaseKey = behaviorKey
+							firstDate = GMTCalendar.date(bySettingHour: 0, minute: 0, second: 0, of: firstDate)!
+							endDate = GMTCalendar.date(bySettingHour: 0, minute: 0, second: 0, of: endDate)!
+							
+							var dateIterate:Date = firstDate
+							var iterator:Int = 0
+							var lessonCounter = 0;
+							repeat{
+								var GMTCalendar = Calendar.current
+								GMTCalendar.timeZone = TimeZone.init(secondsFromGMT: 0)!
+								if( !GMTCalendar.isDateInWeekend(dateIterate) ){
+									let thisPillar = sortedStartDates[i].keys.first!
+									// get the week # of the month, for Lesson Behavior
+									var weekNumber:Int = GMTCalendar.component(.weekOfMonth, from: dateIterate)
+									// todo: for Character Daily specific purposes, this will sometimes begin at week #2 (if 1st is Friday or Saturday), skipping first entry in database. fix: mod % 5
+									weekNumber -= 1
+									weekNumber = weekNumber % 5
+									calendarDays.append(["date":dateIterate, "pillar":thisPillar, "count":lessonCounter, "week":weekNumber])
+									lessonCounter += 1
+								}
+								iterator += 1
+								var deltaDate = DateComponents()
+								deltaDate.day = iterator
+								dateIterate = (GMTCalendar as NSCalendar).date(byAdding: deltaDate, to: firstDate, options: NSCalendar.Options.matchFirst)!
+							}while(dateIterate < endDate)
+						}
+						//					print("calendar days:")
+						//					print(calendarDays)
+						
+						if let pillarDayGradeLessons = scheduleData["lessons"] as? [Any]{
+							var lessonCalendar:[Date:[[String:Any]]] = [:]
+							for i in 0..<calendarDays.count{
+								let dateIterate:Date = calendarDays[i]["date"] as! Date
+								let pillarNumber = calendarDays[i]["pillar"] as! Int
+								let orderNumber = calendarDays[i]["count"] as! Int
+								let weekCount = calendarDays[i]["week"] as! Int
+								var behaviorDatabaseKey:String = ""
+								if let allBehaviors = scheduleData["behaviors"] as? [Any]{
+									if(pillarNumber < allBehaviors.count){
+										if let pillarBehaviors = allBehaviors[pillarNumber] as? [Any]{
+											if let behaviorKey = pillarBehaviors[weekCount] as? String{
+												behaviorDatabaseKey = behaviorKey
+											}
 										}
 									}
 								}
-							}
-
-							let dayGradeLessons = pillarDayGradeLessons[pillarNumber] as! [Any]
-							if(dayGradeLessons.count > orderNumber){
-								var gradeLessons = dayGradeLessons[orderNumber] as! [[String:Any]]
-								// append the Behavior to the entry
-								for i in 0..<gradeLessons.count{
-									gradeLessons[i]["behavior"] = behaviorDatabaseKey
+								
+								let dayGradeLessons = pillarDayGradeLessons[pillarNumber] as! [Any]
+								if(dayGradeLessons.count > orderNumber){
+									var gradeLessons = dayGradeLessons[orderNumber] as! [[String:Any]]
+									// append the Behavior to the entry
+									for i in 0..<gradeLessons.count{
+										gradeLessons[i]["behavior"] = behaviorDatabaseKey
+									}
+									lessonCalendar[dateIterate] = gradeLessons
 								}
-								lessonCalendar[dateIterate] = gradeLessons
 							}
+							//						print("lesson calendar")
+							//						print(lessonCalendar)
+							self.schoolYear = lessonCalendar
+							completionHandler(true, lessonCalendar)
 						}
-//						print("lesson calendar")
-//						print(lessonCalendar)
-						self.schoolYear = lessonCalendar
-						completionHandler(true, lessonCalendar)
-					}
+					})
 				}
 			} else{
 				// ALERT:

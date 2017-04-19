@@ -14,16 +14,9 @@ class PillarOrderTableViewController: UITableViewController, PillarSwitchDelegat
 
 	let ps = PillarSwitchTableViewCell()
 	
-	var pillarStartTimes:[Int] = []{
-		didSet{
-			self.tableView.reloadData()
-		}
-	}
-	var pillarOrder:[Int] = []{
-		didSet{
-			self.tableView.reloadData()
-		}
-	}
+	var myPillarOrder:[Int] = [0, 1, 2, 3, 4, 5, 6]
+	
+	var didChange = false
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -37,7 +30,7 @@ class PillarOrderTableViewController: UITableViewController, PillarSwitchDelegat
 		
 		self.navigationItem.backBarButtonItem = UIBarButtonItem.init(title: "", style: .plain, target: nil, action: nil);
 		
-		getPillarSchedule()
+		self.loadData()
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -45,10 +38,24 @@ class PillarOrderTableViewController: UITableViewController, PillarSwitchDelegat
 		self.tableView.reloadData()
 	}
 	
-	func getPillarSchedule(){
-		self.pillarStartTimes = Schedule.shared.pillarStartTimeStamps
-		print("self.pillarStartTimes")
-		print(self.pillarStartTimes)
+	override func viewWillDisappear(_ animated: Bool) {
+		if(didChange){
+			let master:MasterController = self.tabBarController as! MasterController
+			master.reloadLessons()
+		}
+	}
+	
+	func loadData(){
+		if let myUID = Fire.shared.myUID{
+			Fire.shared.loadData("users/" + myUID + "/pillars") { (object) in
+				if let o = object as? [Int]{
+					self.myPillarOrder = o
+					self.customizeOrder = true;
+					self.ps.sw.setOn(true, animated: false)
+					self.tableView.reloadData()
+				}
+			}
+		}
 	}
 	
 	override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -69,17 +76,34 @@ class PillarOrderTableViewController: UITableViewController, PillarSwitchDelegat
 		// customize apperaance
 		label.backgroundColor = Style.shared.whiteSmoke
 		label.font = UIFont(name:SYSTEM_FONT, size: Style.shared.P15)
+		var dateString = ""
+		if (section > 0 && section - 1 < Schedule.shared.pillarStartTimeStamps.count){
+			var GMTCalendar = Calendar.current
+			GMTCalendar.timeZone = TimeZone.init(secondsFromGMT: 0)!
+			let pillarDate:Date = Date.init(timeIntervalSince1970: Double(Schedule.shared.pillarStartTimeStamps[section - 1]))
+			let dateFormatter = DateFormatter.init()
+			dateFormatter.dateStyle = .medium
+			dateFormatter.timeStyle = .none
+			dateFormatter.locale = Locale.init(identifier: "en_US")
+			dateString = dateFormatter.string(from: pillarDate)
+		}
 		switch section{
 		case 0:
 			label.text = "Customizing pillar order will separate your schedule from your school"
 		default:
-			label.text = " "
+			label.text = dateString
 		}
 		label.numberOfLines = 0
-		label.frame = CGRect.init(x: pad, y: 0, width: self.tableView.frame.size.width - pad*2, height: self.tableView.frame.size.height)
+		label.frame = CGRect.init(x: pad, y: pad*0.75, width: self.tableView.frame.size.width - pad*2, height: self.tableView.frame.size.height)
 		label.sizeToFit()
-		label.frame = CGRect.init(x: label.frame.origin.x, y: label.frame.origin.y, width: label.frame.size.width, height: label.frame.size.height + 20)
-		return label
+		label.backgroundColor = UIColor.clear
+		label.textColor = UIColor.gray
+		label.frame = CGRect.init(x: label.frame.origin.x, y: label.frame.origin.y, width: label.frame.size.width, height: label.frame.size.height)
+		let view = UIView()
+		view.backgroundColor = UIColor.clear
+		view.addSubview(label)
+		view.frame = label.bounds
+		return view
 	}
 	
 	override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -103,7 +127,7 @@ class PillarOrderTableViewController: UITableViewController, PillarSwitchDelegat
 	
 	override func numberOfSections(in tableView: UITableView) -> Int {
 		if(customizeOrder){
-			return 2
+			return 8
 		}
 		return 1
 	}
@@ -119,10 +143,8 @@ class PillarOrderTableViewController: UITableViewController, PillarSwitchDelegat
 		switch section {
 		case 0:
 			return 1
-		case 1:
-			return 7
 		default:
-			return 0
+			return 1
 		}
 	}
 	
@@ -137,6 +159,14 @@ class PillarOrderTableViewController: UITableViewController, PillarSwitchDelegat
 	
 	func didPressSwitch(sender: UISwitch) {
 		customizeOrder = sender.isOn
+		if(customizeOrder){
+			Fire.shared.updateUserWithKeyAndValue("pillars", value: [0, 1, 2, 3, 4, 5, 6] as AnyObject, completionHandler: nil)
+		} else{
+			if let myUID = Fire.shared.myUID{
+				Fire.shared.database.child("users/" + myUID + "/pillars").removeValue()
+			}
+		}
+		didChange = true
 		self.tableView.reloadData()
 	}
 	
@@ -148,35 +178,39 @@ class PillarOrderTableViewController: UITableViewController, PillarSwitchDelegat
 		}
 		
 		let cell = UITableViewCell.init(style: .default, reuseIdentifier: "tableCell")
-//		cell.textLabel?.text = "\(indexPath.row)"
 
 		// date
-		if(self.pillarStartTimes.count > indexPath.row){
-			var GMTCalendar = Calendar.current
-			GMTCalendar.timeZone = TimeZone.init(secondsFromGMT: 0)!
-			let pillarDate:Date = Date.init(timeIntervalSince1970: Double(self.pillarStartTimes[indexPath.row]))
-			let day = GMTCalendar.component(.day, from: pillarDate)
-			let month = GMTCalendar.component(.month, from: pillarDate)
-			let year = GMTCalendar.component(.year, from: pillarDate)
-			cell.textLabel?.text = "\(month) \(day), \(year)"
+		if(indexPath.section - 1 < Schedule.shared.pillarStartTimeStamps.count){
+			cell.textLabel?.text = Character.shared.pillarNames[ myPillarOrder[indexPath.section - 1] ]
+			cell.textLabel?.text = cell.textLabel?.text?.capitalized
 		}
-
-		
 		return cell
 	}
 
 	override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-		if(pillarOrder.count > destinationIndexPath.row && pillarOrder.count > sourceIndexPath.row ){
-			let movedObject = self.pillarOrder[sourceIndexPath.row]
-			self.pillarOrder.remove(at: sourceIndexPath.row)
-			self.pillarOrder.insert(movedObject, at: destinationIndexPath.row)
-			NSLog("%@", "\(sourceIndexPath.row) => \(destinationIndexPath.row) ")
+		if(destinationIndexPath.section == sourceIndexPath.section){
+			
+		} else{
+			let movedObject = self.myPillarOrder[sourceIndexPath.section - 1]
+			self.myPillarOrder.remove(at: sourceIndexPath.section - 1)
+			self.myPillarOrder.insert(movedObject, at: destinationIndexPath.section - 1)
+			Fire.shared.updateUserWithKeyAndValue("pillars", value: self.myPillarOrder as AnyObject, completionHandler: nil)
 			self.tableView.reloadData()
 		}
+		
+		didChange = true
+		
+//		if(pillarOrder.count > destinationIndexPath.row && pillarOrder.count > sourceIndexPath.row ){
+//			let movedObject = self.pillarOrder[sourceIndexPath.row]
+//			self.pillarOrder.remove(at: sourceIndexPath.row)
+//			self.pillarOrder.insert(movedObject, at: destinationIndexPath.row)
+//			NSLog("%@", "\(sourceIndexPath.row) => \(destinationIndexPath.row) ")
+//			self.tableView.reloadData()
+//		}
 	}
 
 	override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-		if indexPath.section == 1{
+		if indexPath.section > 0{
 			return true
 		}
 		return false

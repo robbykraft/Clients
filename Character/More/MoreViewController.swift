@@ -28,6 +28,8 @@ class MoreViewController: UIViewController {
 
 //		preferredStatusBarStyle
 		
+		self.title = "MORE"
+		
 		self.navigationController?.navigationBar.barStyle = UIBarStyle.blackTranslucent
 		self.navigationItem.backBarButtonItem = UIBarButtonItem.init(title: "", style: .plain, target: nil, action: nil);
 
