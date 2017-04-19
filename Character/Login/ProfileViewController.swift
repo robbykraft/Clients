@@ -152,36 +152,41 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 	}
 	
 	func detail1ButtonHandler(_ sender:UIButton){
-/*		let alert = UIAlertController.init(title: "", message: nil, preferredStyle: .actionSheet)
+		let alert = UIAlertController.init(title: "", message: nil, preferredStyle: .actionSheet)
 		let action1 = UIAlertAction.init(title: Character.shared.gradeNames[0], style: .default) { (action) in
 			self.detail1Button.setTitle(Character.shared.gradeNames[0], for: UIControlState())
 			Fire.shared.updateUserWithKeyAndValue("grade", value: [0] as AnyObject, completionHandler: nil)
 			let master:MasterController = self.tabBarController as! MasterController
-			master.reloadLessons([0])
+			Character.shared.myGradeLevel = [0]
+			master.reloadLessons()
 		}
 		let action2 = UIAlertAction.init(title: Character.shared.gradeNames[1], style: .default) { (action) in
 			self.detail1Button.setTitle(Character.shared.gradeNames[1], for: UIControlState())
 			Fire.shared.updateUserWithKeyAndValue("grade", value: [1] as AnyObject, completionHandler: nil)
 			let master:MasterController = self.tabBarController as! MasterController
-			master.reloadLessons([1])
+			Character.shared.myGradeLevel = [1]
+			master.reloadLessons()
 		}
 		let action3 = UIAlertAction.init(title: Character.shared.gradeNames[2], style: .default) { (action) in
 			self.detail1Button.setTitle(Character.shared.gradeNames[2], for: UIControlState())
 			Fire.shared.updateUserWithKeyAndValue("grade", value: [2] as AnyObject, completionHandler: nil)
 			let master:MasterController = self.tabBarController as! MasterController
-			master.reloadLessons([2])
+			Character.shared.myGradeLevel = [2]
+			master.reloadLessons()
 		}
 		let action4 = UIAlertAction.init(title: Character.shared.gradeNames[3], style: .default) { (action) in
 			self.detail1Button.setTitle(Character.shared.gradeNames[3], for: UIControlState())
 			Fire.shared.updateUserWithKeyAndValue("grade", value: [3] as AnyObject, completionHandler: nil)
 			let master:MasterController = self.tabBarController as! MasterController
-			master.reloadLessons([3])
+			Character.shared.myGradeLevel = [3]
+			master.reloadLessons()
 		}
 		let action5 = UIAlertAction.init(title: "All Grades", style: .default) { (action) in
 			self.detail1Button.setTitle("All Grades", for: UIControlState())
 			Fire.shared.updateUserWithKeyAndValue("grade", value: [0,1,2,3] as AnyObject, completionHandler: nil)
 			let master:MasterController = self.tabBarController as! MasterController
-			master.reloadLessons([0,1,2,3])
+			Character.shared.myGradeLevel = [0,1,2,3]
+			master.reloadLessons()
 		}
 		
 		let cancel = UIAlertAction.init(title: "Cancel", style: .cancel) { (action) in }
@@ -198,7 +203,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 		}
 		self.present(alert, animated: true, completion: nil)
 
-*/
+
 	}
 	
 	func profilePictureButtonHandler(_ sender:UIButton){

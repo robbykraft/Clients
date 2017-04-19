@@ -20,6 +20,7 @@ class ScoreTableViewCell: DateTableViewCell {
 		for label in scores {
 			label.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P24)
 			label.textColor = Style.shared.green
+			label.textAlignment = .center
 			label.backgroundColor = UIColor.clear
 			self.addSubview(label)
 		}
@@ -40,8 +41,8 @@ class ScoreTableViewCell: DateTableViewCell {
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		for i in 0..<scores.count {
-			scores[i].frame = CGRect.init(x: 0, y: 0, width: 30, height: 30)
-			scores[i].center = CGPoint.init(x: self.frame.size.width/5.0*CGFloat(i) + self.frame.size.width/5.0, y: self.frame.size.height * 0.5)
+			scores[i].frame = CGRect.init(x: 0, y: 0, width: 80, height: 50)
+			scores[i].center = CGPoint.init(x: self.frame.size.width/4.0*CGFloat(i) + self.frame.size.width/8.0, y: self.frame.size.height * 0.5)
 		}
 	}
 	

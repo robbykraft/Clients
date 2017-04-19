@@ -193,10 +193,10 @@ class ScoreViewController: UITableViewController {
 						if(myGradeScore["pledge"] == true){ pCount += 1 }
 						
 					}
-					cell.scores[0].text = "✔︎:" + String(lCount)
-					cell.scores[1].text = "✔︎:" + String(qCount)
-					cell.scores[2].text = "✔︎:" + String(bCount)
-					cell.scores[3].text = "✔︎:" + String(pCount)
+					if(lCount > 0){ cell.scores[0].text = "✔︎:" + String(lCount)}
+					if(qCount > 0){ cell.scores[1].text = "✔︎:" + String(qCount)}
+					if(bCount > 0){ cell.scores[2].text = "✔︎:" + String(bCount)}
+					if(pCount > 0){ cell.scores[3].text = "✔︎:" + String(pCount)}
 				}
 			}
 			
