@@ -76,6 +76,7 @@ class MasterController: UITabBarController {
 	
 
 	func reloadLessons(){
+		print("reloading lessons")
 		if(Schedule.shared.todaysLesson == nil){
 			self.todayLessonVC.data = nil
 		}else{
@@ -113,6 +114,7 @@ class MasterController: UITabBarController {
 				}
 			}
 		}
+		print("setting all lessons with new array: \(allLessons.count)")
 		self.allLessonsVC.data = allLessons
 	}
 	

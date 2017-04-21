@@ -32,24 +32,6 @@ class Schedule{
 	//              }
 	//        ]
 	
-	
-	// unclear if this is getting set:
-	var currentPillar:Int? = nil // store current pillar index in pillar array
-	
-//	func findCurrentPillar(){
-//		// find current pillar
-//		var thisPillar:Int? = nil
-//		var GMTCalendar = Calendar.current
-//		GMTCalendar.timeZone = TimeZone.init(secondsFromGMT: 0)!
-//		let nowDate:Date = GMTCalendar.startOfDay(for: Date())
-//		for i in 0..<pillarStartTimeStamps.count{
-//			if(nowDate.timeIntervalSince1970 > pillarStartTimeStamps[i]){
-//				thisPillar = i
-//			}
-//		}
-//		self.currentPillar = thisPillar;
-//	}
-
 	func sortedFilteredPillarStartDates(pillarTimeStamps:[Int], personalizedOrder:[Int]) -> [[Int:Date]]{
 		// input: array of unix time stamps:index=pillar number ([355354, 253563, 352333])
 		// output: array of dictionaries [pillar:date], sorted by dates [ [2:Jan 1], [1:Feb 1], ...]
@@ -57,7 +39,7 @@ class Schedule{
 		// new!! now also takes into account
 		var dates:[Int:Date] = [:]
 		for i in 0..<pillarTimeStamps.count{
-			let startDate = Date.init(timeIntervalSince1970: Double(pillarTimeStamps[ personalizedOrder[i] ]))
+			let startDate = Date.init(timeIntervalSince1970: Double(pillarTimeStamps[ i ]))
 			dates[i] = startDate
 		}
 		let sortedDates = dates.values.sorted(by: {$0.compare($1) == .orderedAscending})
@@ -65,7 +47,7 @@ class Schedule{
 		
 		for i in 0..<sortedDates.count{
 			let pillarNumber = dates.allKeys(forValue: sortedDates[i]).first
-			sortedPillars.append([pillarNumber!:sortedDates[i]])
+			sortedPillars.append([ personalizedOrder[pillarNumber!] : sortedDates[i]])
 		}
 		return sortedPillars
 	}
@@ -124,8 +106,8 @@ class Schedule{
 								dateIterate = (GMTCalendar as NSCalendar).date(byAdding: deltaDate, to: firstDate, options: NSCalendar.Options.matchFirst)!
 							}while(dateIterate < endDate)
 						}
-						//					print("calendar days:")
-						//					print(calendarDays)
+//						print("calendar days:")
+//						print(calendarDays)
 						
 						if let pillarDayGradeLessons = scheduleData["lessons"] as? [Any]{
 							var lessonCalendar:[Date:[[String:Any]]] = [:]
@@ -379,46 +361,5 @@ class Schedule{
 		}
 		return dateArray
 	}
-
-	
-	
-//	func findCurrentPillar() {
-//		var date:Date = firstDate
-//		while(date.isLessThanDate(endDate)){
-//			
-//			// find current pillar
-//			var thisPillar:Int? = nil
-//			for i in 0..<self.pillarStartTimeStamps.count{
-//				if(date.timeIntervalSince1970 > self.pillarStartTimeStamps[i]){
-//					thisPillar = i
-//				}
-//			}
-//			
-//			if( !Calendar.current.isDateInWeekend(date) ){
-//				if(thisPillar != nil){
-//					let entry = ["date":date, "pillar":thisPillar!, "count":pillarCounts[thisPillar!] ] as [String : Any]
-//					array.append(entry as [String : AnyObject])
-//					// increment pillar count
-//					pillarCounts[thisPillar!] += 1
-//				}
-//			}
-//			// increment day
-//			var deltaDate = DateComponents()
-//			deltaDate.day = 1
-//			date = (Calendar.current as NSCalendar).date(byAdding: deltaDate, to: date, options: NSCalendar.Options.matchFirst)!
-//		}
-//		
-//	}
-	
-	
-//	func dateExistsInArray(date:Date, dateArray:[Date]) -> Bool{
-//		for d in dateArray{
-//			if(Int(d.timeIntervalSince1970) == Int(date.timeIntervalSince1970)){
-//				return true
-//			}
-//		}
-//		return false
-//	}
-//	
 
 }

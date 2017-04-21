@@ -41,7 +41,8 @@ class PillarOrderTableViewController: UITableViewController, PillarSwitchDelegat
 	override func viewWillDisappear(_ animated: Bool) {
 		if(didChange){
 			let master:MasterController = self.tabBarController as! MasterController
-			master.reloadLessons()
+			master.loadDataAppWide()
+			didChange = false
 		}
 	}
 	

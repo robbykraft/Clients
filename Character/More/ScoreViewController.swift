@@ -81,13 +81,25 @@ class ScoreViewController: UITableViewController {
 								}
 								let dateInt:String = String(Int(date.timeIntervalSince1970))
 								if(challenges?[dateInt] != nil){
-									let more:[String:Bool] = challenges?[dateInt] as! [String:Bool]
-									if(more["behavior"] != nil){
-										behavior = more["behavior"]!
+									if let grades:[Any] = challenges?[dateInt] as? [Any]{
+										if(i < grades.count){
+											if let more:[String:Bool] = grades[i] as? [String:Bool]{
+												if(more["behavior"] != nil){
+													behavior = more["behavior"]!
+												}
+												if(more["pledge"] != nil){
+													pledge = more["pledge"]!
+												}
+											}
+										}
 									}
-									if(more["pledge"] != nil){
-										pledge = more["pledge"]!
-									}
+//									let more:[String:Bool] = challenges?[dateInt] as! [String:Bool]
+//									if(more["behavior"] != nil){
+//										behavior = more["behavior"]!
+//									}
+//									if(more["pledge"] != nil){
+//										pledge = more["pledge"]!
+//									}
 								}
 								self.score?[date]?.append( ["lesson":lesson,
 								                            "quote":quote,
@@ -169,7 +181,6 @@ class ScoreViewController: UITableViewController {
 				cell.dateText = dateText.uppercased()
 			}
 			
-			var scoreString = ""
 			let todayScore = self.score?[date]
 			if(todayScore != nil){
 				if Character.shared.myGradeLevel.count == 1{

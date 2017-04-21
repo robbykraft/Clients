@@ -74,9 +74,17 @@ class PledgeViewController: UIViewController, CompletedQuestionDelegate{
 					if let lessonData = self.data{
 						if let date = lessonData.date{
 							let dateStamp = Int(date.timeIntervalSince1970)
-							if let first = challenges["\(dateStamp)"] as? [String:Any]{
-								if let completedState:Bool = first["pledge"] as? Bool{
-									self.questionFooter.completed = completedState
+							if let grades = challenges["\(dateStamp)"] as? [Any]{
+								var grade:Int = 0
+								if let g = lessonData.grade{
+									grade = g
+								}
+								if grades.count > grade{
+									if let first = grades[grade] as? [String:Any]{
+										if let completedState:Bool = first["pledge"] as? Bool{
+											self.questionFooter.completed = completedState
+										}
+									}
 								}
 							}
 						}
@@ -89,8 +97,12 @@ class PledgeViewController: UIViewController, CompletedQuestionDelegate{
 	func challengeURLString() -> String?{
 		if let lessonData = self.data{
 			if let date = lessonData.date{
+				var grade:Int = 0
+				if let g = lessonData.grade{
+					grade = g
+				}
 				let dateStamp = Int(date.timeIntervalSince1970)
-				let urlString:String = "\(dateStamp)" + "/pledge"
+				let urlString:String = "\(dateStamp)/" + String(grade) + "/pledge"
 				return urlString
 			}
 		}
