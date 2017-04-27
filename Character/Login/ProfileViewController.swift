@@ -13,9 +13,10 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 	
 	let profileImageView:UIImageView = UIImageView()
 	let profileImageButton:UIButton = UIButton()
-	let nameField: UITextField = UITextField()
+//	let nameField: UITextField = UITextField()
 	let emailField: UITextField = UITextField()
 	let detail1Button: UIButton = UIButton()
+	let clientButton: UIButton = UIButton()
 	let detailPillarButton: UIButton = UIButton()
 	let signoutButton: UIButton = UIButton()
 	
@@ -32,16 +33,16 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 		profileImageButton.addTarget(self, action: #selector(profilePictureButtonHandler), for: .touchUpInside)
 		detail1Button.addTarget(self, action: #selector(detail1ButtonHandler), for: UIControlEvents.touchUpInside)
 		detailPillarButton.addTarget(self, action: #selector(pillarOrderPressed), for: UIControlEvents.touchUpInside)
+		clientButton.addTarget(self, action: #selector(clientButtonHandler), for: UIControlEvents.touchUpInside)
 		signoutButton.addTarget(self, action: #selector(logOut), for: UIControlEvents.touchUpInside)
 
 		// ui custom
-		nameField.delegate = self
+//		nameField.delegate = self
 		emailField.delegate = self
-//		detail2Field.delegate = self
 		profileImageView.contentMode = .scaleAspectFill
 		profileImageView.backgroundColor = UIColor.white
 		profileImageView.clipsToBounds = true
-		nameField.backgroundColor = UIColor.white
+//		nameField.backgroundColor = UIColor.white
 		emailField.backgroundColor = UIColor.white
 		detail1Button.backgroundColor = UIColor.white
 		detail1Button.setTitleColor(UIColor.black, for: UIControlState())
@@ -49,29 +50,31 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 		detailPillarButton.backgroundColor = UIColor.white
 		detailPillarButton.setTitleColor(UIColor.black, for: UIControlState())
 		detailPillarButton.titleLabel?.textAlignment = .center
-//		detail2Field.backgroundColor = UIColor.whiteColor()
+		clientButton.backgroundColor = UIColor.white
+		clientButton.setTitleColor(UIColor.black, for: UIControlState())
+		clientButton.titleLabel?.textAlignment = .center
 		signoutButton.backgroundColor = Style.shared.lightBlue
-		nameField.placeholder = "Name"
+//		nameField.placeholder = "Name"
 		emailField.placeholder = "Email Address"
 		detailPillarButton.setTitle("Pillar Order", for: UIControlState())
-//		detail2Field.placeholder = "Detail Text"
 		
 		emailField.isEnabled = false
 		
 		// text field padding
-		let paddingName = UIView.init(frame: CGRect(x: 0, y: 0, width: 5, height: 40))
+//		let paddingName = UIView.init(frame: CGRect(x: 0, y: 0, width: 5, height: 40))
 		let paddingEmail = UIView.init(frame: CGRect(x: 0, y: 0, width: 5, height: 40))
-		nameField.leftView = paddingName
+//		nameField.leftView = paddingName
 		emailField.leftView = paddingEmail
-		nameField.leftViewMode = .always
+//		nameField.leftViewMode = .always
 		emailField.leftViewMode = .always
 
 		self.view.addSubview(profileImageView)
 		self.view.addSubview(profileImageButton)
-		self.view.addSubview(nameField)
+//		self.view.addSubview(nameField)
 		self.view.addSubview(emailField)
 		self.view.addSubview(detail1Button)
 		self.view.addSubview(detailPillarButton)
+		self.view.addSubview(clientButton)
 		self.view.addSubview(signoutButton)
     }
 	
@@ -85,10 +88,11 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 		profileImageView.center = CGPoint(x: self.view.center.x, y: imgArea*0.5)
 		profileImageView.layer.cornerRadius = imgSize*0.5
 		profileImageButton.frame = profileImageView.frame
-		nameField.frame = CGRect(x: 0, y: imgArea + 10, width: self.view.bounds.size.width, height: 44)
-		emailField.frame = CGRect(x: 0, y: imgArea + 10*2 + 44*1, width: self.view.bounds.size.width, height: 44)
-		detail1Button.frame = CGRect(x: 0, y: imgArea + 10*3 + 44*2, width: self.view.bounds.size.width, height: 44)
-		detailPillarButton.frame = CGRect(x: 0, y: imgArea + 10*4 + 44*3, width: self.view.bounds.size.width, height: 44)
+//		nameField.frame = CGRect(x: 0, y: imgArea + 10, width: self.view.bounds.size.width, height: 44)
+		emailField.frame = CGRect(x: 0, y: imgArea + 10*1 + 44*0, width: self.view.bounds.size.width, height: 44)
+		detail1Button.frame = CGRect(x: 0, y: imgArea + 10*2 + 44*1, width: self.view.bounds.size.width, height: 44)
+		detailPillarButton.frame = CGRect(x: 0, y: imgArea + 10*3 + 44*2, width: self.view.bounds.size.width, height: 44)
+		clientButton.frame = CGRect(x: 0, y: imgArea + 10*4 + 44*3, width: self.view.bounds.size.width, height: 44)
 		signoutButton.frame = CGRect(x: 0, y: imgArea + 10*5 + 44*4, width: self.view.bounds.size.width, height: 44)
 
 		
@@ -114,8 +118,15 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 			profileImageView.image = UIImage(named: "person")?.imageWithTint(Style.shared.lightBlue)
 		}
 		emailField.text = userData["email"] as? String
-		nameField.text = userData["displayName"] as? String
+//		nameField.text = userData["displayName"] as? String
 //		detail2Field.text = userData["detail2"] as? String
+		
+		let clientString:String = userData["client"] as? String ?? ""
+		if(clientString == "default"){
+			clientButton.setTitle("Join a District", for: .normal)
+		} else{
+			clientButton.setTitle(clientString, for: .normal)
+		}
 
 		var gradeLevels:[Int]? = userData["grade"] as? [Int]
 		if(gradeLevels == nil){
@@ -240,7 +251,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 	
 	func updateWithDelay() {
 		// hanging text fields
-		Fire.shared.updateUserWithKeyAndValue("displayName", value: nameField.text! as AnyObject, completionHandler: nil)
+//		Fire.shared.updateUserWithKeyAndValue("displayName", value: nameField.text! as AnyObject, completionHandler: nil)
 
 		if(updateTimer != nil){
 			updateTimer?.invalidate()
@@ -256,9 +267,10 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 	
 	
 	func textFieldDidEndEditing(_ textField: UITextField) {
-		if(textField.isEqual(nameField)){
-			Fire.shared.updateUserWithKeyAndValue("displayName", value: textField.text! as AnyObject, completionHandler: nil)
-		}
+//		if(textField.isEqual(nameField)){
+//			Fire.shared.updateUserWithKeyAndValue("displayName", value: textField.text! as AnyObject, completionHandler: nil)
+//		}
+		
 //		if(textField.isEqual(detail2Field)){
 //			Fire.shared.updateUserWithKeyAndValue("detail2", value: textField.text!, completionHandler: nil)
 //		}
@@ -266,6 +278,70 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 //	override func textFieldDidBeginEditing(textField: UITextField) {
 //		
 //	}
+	
+	func clientButtonHandler(){
+		//1. Create the alert controller.
+		let alert = UIAlertController(title: "Join a district", message: "Enter your paid account's password", preferredStyle: .alert)
+		
+		//2. Add the text field. You can configure it however you need.
+		alert.addTextField { (textField) in
+			textField.text = ""
+		}
+		
+		// 3. Grab the value from the text field, and print it when the user clicks OK.
+		alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
+			let textField = alert!.textFields![0] // Force unwrapping because we know it exists.
+			self.tryToJoinClient(clientPassword: textField.text)
+		}))
+		alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+		
+		// 4. Present the alert.
+		self.present(alert, animated: true, completion: nil)
+	}
+	
+	
+	func tryToJoinClient(clientPassword:String?){
+		if let paidPassword:String = clientPassword{
+			Fire.shared.loadData("clients", completionHandler: { (data) in
+				var didMatchClient:String?
+				var matchedClientNameString = ""
+				if let clientList:[String:Any] = data as? [String:Any]{
+					let keys = Array(clientList.keys)
+					for k in keys{
+						if let thisClient = clientList[k] as? [String:Any]{
+							if let clientPassword:String = thisClient["password"] as? String{
+								if clientPassword == paidPassword{
+									didMatchClient = k
+									matchedClientNameString = thisClient["name"] as! String
+								}
+							}
+						}
+					}
+				}
+				if let clientMatch:String = didMatchClient{
+					Fire.shared.updateUserWithKeyAndValue("client", value: clientMatch as AnyObject, completionHandler: { (success) in
+						
+						self.clientButton.setTitle(matchedClientNameString, for: .normal)
+						let alert = UIAlertController.init(title: "Welcome!", message: "You are now a member of " + matchedClientNameString, preferredStyle: .alert)
+						let dismiss = UIAlertAction.init(title: "Continue", style: .default, handler: { (action) in
+//							self.proceed()
+							// reload data app-wide
+							let master:MasterController = self.tabBarController as! MasterController
+							master.loadDataAppWide()
+
+						})
+						alert.addAction(dismiss)
+						self.present(alert, animated: true, completion: nil)
+					})
+				} else{
+					let alert = UIAlertController.init(title: "Error", message: "Cannot find a match for that password", preferredStyle: .alert)
+					let dismiss = UIAlertAction.init(title: "Okay", style: .default, handler: nil)
+					alert.addAction(dismiss)
+					self.present(alert, animated: true, completion: nil)
+				}
+			})
+		}
+	}
 	
 	
 	func openImagePicker(_ sourceType:UIImagePickerControllerSourceType) {
