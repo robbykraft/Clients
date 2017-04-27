@@ -10,6 +10,8 @@ import UIKit
 
 class SetupProfileViewController: UIViewController, UITextFieldDelegate {
 	
+	let imageView = UIImageView()
+	
 	let welcomeLabel = UILabel()
 	let question1Label = UILabel()
 	let question2Label = UILabel()
@@ -35,6 +37,10 @@ class SetupProfileViewController: UIViewController, UITextFieldDelegate {
 		question1Label.text = "What grade do you teach?"
 		question2Label.text = "If you have a password, enter it here:"
 		detailLabel.text = "These can be changed under \"My Profile\""
+		
+		imageView.image = UIImage(named: "icon")
+		imageView.alpha = 0.3
+		self.view.addSubview(imageView)
 		
 		// input
 		detail1Button.addTarget(self, action: #selector(detail1ButtonHandler), for: UIControlEvents.touchUpInside)
@@ -74,6 +80,9 @@ class SetupProfileViewController: UIViewController, UITextFieldDelegate {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
+		imageView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width*0.5, height: self.view.frame.size.width*0.5)
+		imageView.center = CGPoint(x: self.view.frame.size.width*0.5, y: self.view.frame.size.width*0.3)
+
 		// frames
 		welcomeLabel.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width * 0.8, height: self.view.frame.size.height)
 		question1Label.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width * 0.9, height: self.view.frame.size.height)
@@ -84,12 +93,13 @@ class SetupProfileViewController: UIViewController, UITextFieldDelegate {
 		detailLabel.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width * 0.8, height: self.view.frame.size.height)
 
 		welcomeLabel.sizeToFit()
-		welcomeLabel.center = CGPoint(x: self.view.center.x, y: self.view.frame.size.height * 0.15)
-
-		detail1Button.center = CGPoint(x: self.view.center.x, y: self.view.center.y - 80)
+		welcomeLabel.center = CGPoint(x: self.view.center.x, y: imageView.center.y + imageView.frame.size.height*0.5)
 
 		question1Label.sizeToFit()
-		question1Label.center = CGPoint(x: self.view.center.x, y: detail1Button.frame.origin.y - question1Label.frame.size.height*0.5 - 10)
+		question1Label.center = CGPoint(x: self.view.center.x, y: welcomeLabel.frame.origin.y + welcomeLabel.frame.size.height*0.5 + question1Label.frame.size.height*0.5 + 30)
+
+		detail1Button.center = CGPoint(x: self.view.center.x, y: question1Label.center.y  + question1Label.frame.size.height*0.5 + 30)
+		
 		
 		question2Label.sizeToFit()
 		question2Label.center = CGPoint(x: self.view.center.x, y: detail1Button.frame.origin.y + 44 + 10 + 44 + question2Label.frame.size.height*0.5)
@@ -98,9 +108,9 @@ class SetupProfileViewController: UIViewController, UITextFieldDelegate {
 		
 
 		detailLabel.sizeToFit()
-		detailLabel.center = CGPoint(x: self.view.center.x, y: self.view.frame.size.height - detailLabel.frame.size.height - 20 - 22)
+		detailLabel.center = CGPoint(x: self.view.center.x, y: self.view.frame.size.height - detailLabel.frame.size.height*0.5 - 20 )
 
-		continueButton.center = CGPoint(x: self.view.center.x, y: detailLabel.center.y - continueButton.frame.size.height - 20)
+		continueButton.center = CGPoint(x: self.view.center.x, y: detailLabel.center.y - detailLabel.frame.size.height*0.5 - continueButton.frame.size.height*0.5 - 15)
 	}
 	
 	
