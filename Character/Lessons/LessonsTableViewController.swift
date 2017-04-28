@@ -200,7 +200,7 @@ class LessonsTableViewController: UITableViewController {
 //		let pillarName = nextObject["pillar"]!!
 //		vc.title = String(pillarName).uppercaseString
 //		vc.title = "TRUSTWORTHINESS"
-		vc.title = ""
+//		vc.title = ""
 //		if Character.shared.currentPillar != nil{
 //			let currentPillar:Int = Character.shared.currentPillar!
 //			if(currentPillar < Character.shared.pillarNames.count){

@@ -84,8 +84,8 @@ class MasterController: UITabBarController {
 			self.todayLessonVC.data = Schedule.shared.todaysLesson![grade]
 		}
 		// TODO:
-		let todaysPillar:Int = 4//todaysLesson!.pillar!
-		self.todayLessonVC.navigationItem.title = Character.shared.pillarNames[todaysPillar].uppercased()
+//		let todaysPillar:Int = 4//todaysLesson!.pillar!
+//		self.todayLessonVC.navigationItem.title = Character.shared.pillarNames[todaysPillar].uppercased()
 		self.setLoadingScreen(visible: false, message: "")
 		DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
 			self.loadTheRest()

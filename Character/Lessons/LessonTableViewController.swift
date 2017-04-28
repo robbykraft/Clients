@@ -33,8 +33,15 @@ class LessonTableViewController: UITableViewController {
 //				getCompletedChallenges((data?.key)!)
 //			}
 			
+			if(data != nil){
+				if let pillarNumber = data?.pillar{
+					self.title = Character.shared.pillarNames[pillarNumber].uppercased()
+				}
+			}
+			
 			if(data == nil){
 				self.view.addSubview(noLessonCoverView)
+				self.title = ""
 			}
 			else{
 				noLessonCoverView.removeFromSuperview()
