@@ -50,6 +50,7 @@
 		D5B2123B1EA670FB00E3BA46 /* ScoreTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B2123A1EA670FB00E3BA46 /* ScoreTableViewCell.swift */; };
 		D5DDD4D11E8ACE1D0051E4FC /* CreateLessonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DDD4CF1E8ACE1D0051E4FC /* CreateLessonViewController.swift */; };
 		D5DDD4D21E8ACE1D0051E4FC /* NotesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DDD4D01E8ACE1D0051E4FC /* NotesViewController.swift */; };
+		D5F16B481EB372640055E5F3 /* PDFCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F16B471EB372640055E5F3 /* PDFCreator.swift */; };
 		D5F219461E88449000362B5A /* CompletedQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F219451E88449000362B5A /* CompletedQuestionView.swift */; };
 		D5F3CE421D735393003FABEF /* CatholicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F3CE3C1D735393003FABEF /* CatholicViewController.swift */; };
 		D5F3CE471D735393003FABEF /* SixPillarsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F3CE411D735393003FABEF /* SixPillarsViewController.swift */; };
@@ -105,6 +106,7 @@
 		D5B2123A1EA670FB00E3BA46 /* ScoreTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScoreTableViewCell.swift; sourceTree = "<group>"; };
 		D5DDD4CF1E8ACE1D0051E4FC /* CreateLessonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CreateLessonViewController.swift; path = Other/CreateLessonViewController.swift; sourceTree = "<group>"; };
 		D5DDD4D01E8ACE1D0051E4FC /* NotesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NotesViewController.swift; path = Other/NotesViewController.swift; sourceTree = "<group>"; };
+		D5F16B471EB372640055E5F3 /* PDFCreator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PDFCreator.swift; sourceTree = "<group>"; };
 		D5F219451E88449000362B5A /* CompletedQuestionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompletedQuestionView.swift; sourceTree = "<group>"; };
 		D5F3CE3C1D735393003FABEF /* CatholicViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CatholicViewController.swift; sourceTree = "<group>"; };
 		D5F3CE411D735393003FABEF /* SixPillarsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SixPillarsViewController.swift; sourceTree = "<group>"; };
@@ -222,6 +224,7 @@
 				D521BCD71E5DF182004A7756 /* Schedule.swift */,
 				D59B04671D6CBF7000E6624B /* Style.swift */,
 				D59B04371D6CA4B700E6624B /* Cache.swift */,
+				D5F16B471EB372640055E5F3 /* PDFCreator.swift */,
 			);
 			path = Singletons;
 			sourceTree = "<group>";
@@ -497,6 +500,7 @@
 				D59B04681D6CBF7000E6624B /* Style.swift in Sources */,
 				D5F3CE491D7353EA003FABEF /* CharacterToolsViewController.swift in Sources */,
 				D513BB6E1D6F3FE000BA20A6 /* SetupProfileViewController.swift in Sources */,
+				D5F16B481EB372640055E5F3 /* PDFCreator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
