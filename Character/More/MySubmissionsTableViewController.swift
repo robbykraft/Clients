@@ -86,6 +86,28 @@ class MySubmissionsTableViewController: UITableViewController {
 			}
 			self.data?.append(contentsOf: myLessons)
 		}
+		
+		var myQuotes:[[String:Any]] = []
+		Fire.shared.loadData("quotes") { (data) in
+			if let lessonList = data as? [String:Any]{
+				let keys = Array(lessonList.keys)
+				for k in keys{
+					if let lessonEntry = lessonList[k] as? [String:Any]{
+						if let lessonCreatedBy = lessonEntry["submitted"] as? String{
+							if lessonCreatedBy == myUsernameKey{
+								var newEntry = lessonEntry
+								newEntry["type"] = "quote"
+								newEntry["key"] = k
+								myQuotes.append(newEntry)
+								print(newEntry)
+							}
+						}
+					}
+				}
+			}
+			self.data?.append(contentsOf: myQuotes)
+		}
+
 	}
 	
 	override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -136,6 +158,16 @@ class MySubmissionsTableViewController: UITableViewController {
 		if let d = self.data{
 			let rowData:[String:Any] = d[indexPath.row]
 			
+			// IF QUOTE
+			if let quoteText = rowData["body"] as? String{
+				if let quoteAuthor = rowData["author"] as? String{
+					cell.dateText = quoteAuthor.uppercased()
+				}
+				cell.textLabel?.text = quoteText
+			}
+			
+			
+			
 			if let body = rowData["text"] as? String{
 				cell.textLabel?.text = body
 			}
@@ -147,8 +179,9 @@ class MySubmissionsTableViewController: UITableViewController {
 			
 			if let type = rowData["type"] as? String{
 				cell.detailLabel.text = type.uppercased()
-
 			}
+	
+
 			
 //			if let feedbackTarget = rowData["target"] as? [String:Any]{
 //				if let feedbackType = feedbackTarget["type"] as? String{
@@ -185,7 +218,7 @@ class MySubmissionsTableViewController: UITableViewController {
 			let rowData:[String:Any] = d[indexPath.row]
 			let type = rowData["type"] as? String
 			if type == "feedback"{
-				let key = rowData["key"] as? String
+				let _ = rowData["key"] as? String
 				var createdAt = rowData["createdAt"] as? Double
 				if(createdAt == nil) { createdAt = 0.0; }
 				let vc = FeedbackViewController()
@@ -208,6 +241,21 @@ class MySubmissionsTableViewController: UITableViewController {
 					})
 				}
 			}
+			if type == "quote"{
+				let key = rowData["key"] as? String
+				var createdAt = rowData["createdAt"] as? Double
+				if(createdAt == nil) { createdAt = 0.0; }
+				if let quoteKey = key{
+					let lesson = Lesson()
+					lesson.setFromDatabase(lessonKey: "", quoteKey: quoteKey, behaviorKey: "", date: Date.init(timeIntervalSince1970: createdAt!), { (success, quote) in
+						let vc = CreateQuoteViewController()
+						vc.showFakeNavBar = false
+						vc.data = ["author":lesson.quoteAuthor!, "text":lesson.quote!]
+						self.navigationController?.pushViewController(vc, animated: true)
+					})
+				}
+			}
+
 			
 		}
 		

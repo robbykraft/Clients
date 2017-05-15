@@ -281,7 +281,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 	
 	func clientButtonHandler(){
 		//1. Create the alert controller.
-		let alert = UIAlertController(title: "Join a district", message: "Enter your paid account's password", preferredStyle: .alert)
+		let alert = UIAlertController(title: "Join a group", message: "Enter your passcode if you have one", preferredStyle: .alert)
 		
 		//2. Add the text field. You can configure it however you need.
 		alert.addTextField { (textField) in

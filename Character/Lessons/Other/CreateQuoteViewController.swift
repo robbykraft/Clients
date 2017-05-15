@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CreateQuoteViewController: UIViewController, UITextViewDelegate {
+class CreateQuoteViewController: UIViewController, UITextViewDelegate, UITextFieldDelegate {
 	
 	var data:[String:Any]?{
 		didSet{
@@ -85,6 +85,12 @@ class CreateQuoteViewController: UIViewController, UITextViewDelegate {
 		
 		quoteAuthorField.placeholder = "Quote Author"
 		
+		quoteAuthorField.returnKeyType = .done
+		quoteBodyView.returnKeyType = .done
+		
+		quoteAuthorField.delegate = self
+		quoteBodyView.delegate = self
+		
 		scrollView.addSubview(quoteMarkImageView)
 		scrollView.addSubview(quoteBodyView)
 		scrollView.addSubview(quoteAuthorField)
@@ -137,6 +143,15 @@ class CreateQuoteViewController: UIViewController, UITextViewDelegate {
 //		textView.becomeFirstResponder()
 	}
 	
+
+	func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+		if(string == "\n"){
+			textField.resignFirstResponder()
+			return false
+		}
+		return true
+	}
+
 	func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
 		if(text == "\n"){
 			textView.resignFirstResponder()

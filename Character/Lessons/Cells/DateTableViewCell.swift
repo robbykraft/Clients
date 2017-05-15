@@ -59,10 +59,11 @@ class DateTableViewCell: UITableViewCell {
 		super.layoutSubviews()
 		let pad: CGFloat = 10.0
 		let textPad: CGFloat = 20.0
-		self.textLabel?.frame = CGRect(x: 0, y: 0, width: self.frame.size.width - 4 - pad, height: self.frame.size.height*0.5)
+		let extraRightPad: CGFloat = 80.0
+		self.textLabel?.frame = CGRect(x: 0, y: 0, width: self.frame.size.width - 4 - pad - extraRightPad, height: self.frame.size.height*0.5)
 		self.textLabel?.sizeToFit()
 		self.textLabel?.frame = CGRect(x: 4 + textPad, y: self.frame.size.height*0.5 - 15,
-		                               width: self.frame.size.width - 4 - textPad,
+		                               width: self.frame.size.width - 4 - textPad - extraRightPad,
 		                               height: self.textLabel!.frame.size.height)
 		self.dateLabel.frame = CGRect(x: 4 + textPad, y: self.frame.size.height*0.5 - 40,
 		                              width: self.frame.size.width - 4 - textPad,

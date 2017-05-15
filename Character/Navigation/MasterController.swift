@@ -45,7 +45,7 @@ class MasterController: UITabBarController {
 
 		tab1NavController.tabBarItem = UITabBarItem.init(title: "ALL LESSONS", image: nil, selectedImage: nil)
 		tab2NavController.tabBarItem = UITabBarItem.init(title: nil, image: dateImageCircle(), selectedImage: nil)
-		tab3NavController.tabBarItem = UITabBarItem.init(title: "MORE...", image: nil, selectedImage: nil)
+		tab3NavController.tabBarItem = UITabBarItem.init(title: "MORE", image: nil, selectedImage: nil)
 		
 		tab1NavController.tabBarItem.titlePositionAdjustment = UIOffsetMake(0, -14)
 		tab2NavController.tabBarItem.titlePositionAdjustment = UIOffsetMake(0, -14)

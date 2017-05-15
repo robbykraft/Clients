@@ -35,7 +35,9 @@ class LessonTableViewController: UITableViewController {
 			
 			if(data != nil){
 				if let pillarNumber = data?.pillar{
-					self.title = Character.shared.pillarNames[pillarNumber].uppercased()
+					self.navigationItem.title = Character.shared.pillarNames[pillarNumber].uppercased()
+//					self.title = Character.shared.pillarNames[pillarNumber].uppercased()
+//					self.tabBarItem.title = nil;
 				}
 			}
 			
@@ -240,6 +242,18 @@ class LessonTableViewController: UITableViewController {
 					self.tableView.reloadData()
 				}
 			})
+			// QUICK FIX for JPG / JPEG file name differences
+			let filename: NSString = imageFilename as NSString
+			let pathPrefix = filename.deletingPathExtension
+			let alternateFileName = pathPrefix + ".jpeg"
+			Cache.shared.imageFromStorageBucket(alternateFileName, completionHandler: { (image, didRequireDownload) in
+				print("cache return")
+				cell.imageView?.image = image
+				if(didRequireDownload){
+					self.tableView.reloadData()
+				}
+			})
+
 		}
 		return cell
 	}

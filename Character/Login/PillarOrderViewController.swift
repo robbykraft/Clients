@@ -90,7 +90,7 @@ class PillarOrderTableViewController: UITableViewController, PillarSwitchDelegat
 		}
 		switch section{
 		case 0:
-			label.text = "Customizing pillar order will separate your schedule from your school"
+			label.text = "customizing your pillar order will separate your schedule from your school"
 		default:
 			label.text = dateString
 		}

@@ -38,7 +38,7 @@ class PillarSwitchTableViewCell: UITableViewCell {
 	
 	override func layoutSubviews() {
 		super.layoutSubviews()
-		sw.center = CGPoint(x: self.bounds.size.width - 100, y: self.bounds.size.height*0.5)
+		sw.center = CGPoint(x: self.bounds.size.width - 40, y: self.bounds.size.height*0.5)
 	}
 	
 	override func setSelected(_ selected: Bool, animated: Bool) {

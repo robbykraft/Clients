@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CreateLessonViewController: UIViewController, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class CreateLessonViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 	
 	var data:Lesson?{
 		didSet{
@@ -122,6 +122,14 @@ class CreateLessonViewController: UIViewController, UITextViewDelegate, UIImageP
 		authorHR1.backgroundColor = UIColor.black
 		authorHR2.backgroundColor = UIColor.black
 		
+		authorField.returnKeyType = .done
+		bodyText.returnKeyType = .done
+		titleField.returnKeyType = .done
+		
+		authorField.delegate = self
+		bodyText.delegate = self
+		titleField.delegate = self
+		
 		titleField.placeholder = "Lesson Title"
 		authorField.placeholder = "Attribution Source"
 
@@ -197,6 +205,14 @@ class CreateLessonViewController: UIViewController, UITextViewDelegate, UIImageP
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 //		textView.becomeFirstResponder()
+	}
+	
+	func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+		if(string == "\n"){
+			textField.resignFirstResponder()
+			return false
+		}
+		return true
 	}
 	
 	func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
@@ -298,11 +314,15 @@ class CreateLessonViewController: UIViewController, UITextViewDelegate, UIImageP
 	}
 	
 	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+		print("picker did finish")
 		let image = info[UIImagePickerControllerOriginalImage] as! UIImage
 		let data = UIImageJPEGRepresentation(image, 0.5)
 		if(data != nil){
-			Fire.shared.uploadFileAndMakeRecord(data!, folder:"userSubmitted", fileType: .image_JPG, description: nil, completionHandler: { (downloadURL) in
+			print("data is not nil")
+			Fire.shared.uploadFileAndMakeRecord(data!, folder:"images", fileType: .image_JPG, description: nil, completionHandler: { (downloadURL) in
+				print("almost there")
 				if(downloadURL != nil){
+					print("final step")
 					self.uploadedImageURL = downloadURL!.absoluteString
 					Cache.shared.profileImage[Fire.shared.myUID!] = image
 					self.imageView.image = image

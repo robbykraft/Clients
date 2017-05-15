@@ -15,9 +15,11 @@ class LessonTableViewCell: SuperLessonTableViewCell {
 //			let attributes = [NSFontAttributeName : UIFont(name: SYSTEM_FONT, size: 21)!,
 //			                  NSKernAttributeName : CGFloat(4.0),
 //			                  NSForegroundColorAttributeName : Style.shared.darkGray];
-			let aText:NSMutableAttributedString = NSMutableAttributedString(string: title!.uppercased())
-			aText.addAttributes(Style.shared.heading1Attributes(), range: NSMakeRange(0, aText.length))
-			self.textLabel?.attributedText = aText
+			if let titleString = title{
+				let aText:NSMutableAttributedString = NSMutableAttributedString(string: titleString.uppercased())
+				aText.addAttributes(Style.shared.heading1Attributes(), range: NSMakeRange(0, aText.length))
+				self.textLabel?.attributedText = aText				
+			}
 		}
 	}
 	

@@ -20,6 +20,14 @@ class LessonViewController: UIViewController, CompletedQuestionDelegate, MyNotes
 			Cache.shared.imageFromStorageBucket(imageFilename) { (image, requiredDownload) in
 				self.imageView.image = image
 			}
+			// QUICK FIX for JPG / JPEG file name differences
+			let filename: NSString = imageFilename as NSString
+			let pathPrefix = filename.deletingPathExtension
+			let alternateFileName = pathPrefix + ".jpeg"
+			Cache.shared.imageFromStorageBucket(alternateFileName, completionHandler: { (image, didRequireDownload) in
+				print("cache return")
+				self.imageView.image = image
+			})
 			
 //			let attributes = [NSFontAttributeName : UIFont(name: SYSTEM_FONT, size: 21)!,
 //			                  NSKernAttributeName : CGFloat(4.0),
@@ -205,6 +213,7 @@ class LessonViewController: UIViewController, CompletedQuestionDelegate, MyNotes
 		alert.addAction(UIAlertAction(title: "Print", style: .default , handler:{ (UIAlertAction)in
 			self.createPDF()
 			self.sharePDFFile()
+//			self.showPDFFile()
 		}))
 		alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel , handler:nil))
 		self.present(alert, animated: true) { }
@@ -215,7 +224,8 @@ class LessonViewController: UIViewController, CompletedQuestionDelegate, MyNotes
 	func createPDF(){
 		let fileName = "lesson.pdf"
 		let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
-		let pdfFileName = path.appending(fileName)
+		let pdfFileNameStep1 = path.appending("/")
+		let pdfFileName = pdfFileNameStep1.appending(fileName)
 		
 		do {
 			try FileManager.default.removeItem(atPath: pdfFileName)
@@ -267,8 +277,11 @@ class LessonViewController: UIViewController, CompletedQuestionDelegate, MyNotes
 	func sharePDFFile(){
 		let fileName = "lesson.pdf"
 		let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
-		let pdfFileName = path.appending(fileName)
-		let objectsToShare = [pdfFileName];
+		let pdfFileNameStep1 = path.appending("/")
+		let pdfFileName = pdfFileNameStep1.appending(fileName)
+		
+		let documento = NSData(contentsOfFile: pdfFileName)
+		let objectsToShare = [documento];
 		
 //		let types:[UIActivityType] = [.print, .airDrop, .mail, .message, .openInIBooks, .addToReadingList]
 		let controller:UIActivityViewController = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
@@ -291,7 +304,8 @@ class LessonViewController: UIViewController, CompletedQuestionDelegate, MyNotes
 	func showPDFFile(){
 		let fileName = "lesson.pdf"
 		let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
-		let pdfFileName = path.appending(fileName)
+		let pdfFileNameStep1 = path.appending("/")
+		let pdfFileName = pdfFileNameStep1.appending(fileName)
 	
 		let webView = UIWebView.init(frame: CGRect(x: 0, y: 0, width: 320, height: 480))
 		let url:URL = URL(fileURLWithPath: pdfFileName)
