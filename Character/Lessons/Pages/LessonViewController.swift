@@ -16,18 +16,19 @@ class LessonViewController: UIViewController, CompletedQuestionDelegate, MyNotes
 			let body:String = (data?.body)!
 			let author:String = (data?.author)!
 
-			let imageFilename = (data?.image)!
-			Cache.shared.imageFromStorageBucket(imageFilename) { (image, requiredDownload) in
-				self.imageView.image = image
+			if let imageFilename = data?.image{
+				Cache.shared.imageFromStorageBucket(imageFilename) { (image, requiredDownload) in
+					self.imageView.image = image
+				}
+				// QUICK FIX for JPG / JPEG file name differences
+				let filename: NSString = imageFilename as NSString
+				let pathPrefix = filename.deletingPathExtension
+				let alternateFileName = pathPrefix + ".jpeg"
+				Cache.shared.imageFromStorageBucket(alternateFileName, completionHandler: { (image, didRequireDownload) in
+					print("cache return")
+					self.imageView.image = image
+				})
 			}
-			// QUICK FIX for JPG / JPEG file name differences
-			let filename: NSString = imageFilename as NSString
-			let pathPrefix = filename.deletingPathExtension
-			let alternateFileName = pathPrefix + ".jpeg"
-			Cache.shared.imageFromStorageBucket(alternateFileName, completionHandler: { (image, didRequireDownload) in
-				print("cache return")
-				self.imageView.image = image
-			})
 			
 //			let attributes = [NSFontAttributeName : UIFont(name: SYSTEM_FONT, size: 21)!,
 //			                  NSKernAttributeName : CGFloat(4.0),

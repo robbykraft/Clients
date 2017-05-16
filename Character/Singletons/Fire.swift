@@ -109,6 +109,7 @@ class Fire {
 	func newUniqueObjectAtPath(_ childURL:String, object:AnyObject, completionHandler: ((Error?, FIRDatabaseReference) -> ())?) {
 		database.child(childURL).childByAutoId().setValue(object) { (error, ref) in
 			if(completionHandler != nil){
+//				print(ref)
 				completionHandler!(error, ref)
 			}
 		}

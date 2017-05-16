@@ -249,7 +249,19 @@ class LessonsTableViewController: UITableViewController, UISearchBarDelegate, UI
 					self.tableView.reloadData()
 				}
 			})
+			// QUICK FIX for JPG / JPEG file name differences
+			let filename: NSString = imageFilename as NSString
+			let pathPrefix = filename.deletingPathExtension
+			let alternateFileName = pathPrefix + ".jpeg"
+			Cache.shared.imageFromStorageBucket(alternateFileName, completionHandler: { (image, didRequireDownload) in
+				cell.imageView?.image = image
+				if(didRequireDownload){
+					self.tableView.reloadData()
+				}
+			})
+
 		}
+
 		
 		cell.gradeLevel = objectForRow.grade!
 		cell.titleText = text.uppercased()

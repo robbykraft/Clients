@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		}
 		self.window?.rootViewController = loginVC
 		self.window?.makeKeyAndVisible()
-
+				
 		if(!requireLogin){
 			loginVC.present(MasterController(), animated: false, completion: nil)
 		}

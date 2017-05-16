@@ -126,9 +126,9 @@ class BehaviorViewController: UIViewController, CompletedQuestionDelegate {
 			vc.feedbackTargetType = "behaviors"
 			self.navigationController?.pushViewController(vc, animated: true)
 		}))
-		alert.addAction(UIAlertAction(title: "Submit a Behavior", style: .default , handler:{ (UIAlertAction)in
-			
-		}))
+//		alert.addAction(UIAlertAction(title: "Submit a Behavior", style: .default , handler:{ (UIAlertAction)in
+//			
+//		}))
 		alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel , handler:{ (UIAlertAction)in
 			
 		}))
