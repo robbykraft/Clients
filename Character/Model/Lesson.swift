@@ -46,6 +46,9 @@ class Lesson {
 	// behavior
 	var behavior:String?
 	
+	// comma-separated list
+	var tags:String?
+	
 	init() {
 	}
 

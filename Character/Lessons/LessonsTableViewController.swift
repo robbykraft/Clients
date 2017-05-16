@@ -10,12 +10,53 @@ import UIKit
 
 let monthAbbrevs = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "July", "Aug", "Sept", "Oct", "Nov", "Dec"]
 
-class LessonsTableViewController: UITableViewController {
+class LessonsTableViewController: UITableViewController, UISearchBarDelegate, UISearchResultsUpdating {
 	
 	var data: [Lesson]? {
 		didSet{
 			self.tableView.reloadData()
 		}
+	}
+	var filteredLessons: [Lesson]? {
+		didSet{
+			self.tableView.reloadData()
+		}
+	}
+	
+	// SEARCH FUNCTION
+	let searchController = UISearchController(searchResultsController: nil)
+	
+	func filterContentForSearchText(searchText: String, scope: String = "All") {
+		filteredLessons = data?.filter { lesson in
+			var didTitle = false
+			var didBody = false
+			var didTags = false
+			if let title = lesson.title?.lowercased().contains(searchText.lowercased()){
+				didTitle = title
+			}
+			if let body = lesson.body?.lowercased().contains(searchText.lowercased()){
+				didBody = body
+			}
+			if let tags = lesson.tags?.lowercased().contains(searchText.lowercased()){
+				didTags = tags
+			}
+			return didTitle || didBody || didTags
+		}
+		
+		tableView.reloadData()
+	}
+	func updateSearchResultsForSearchController(searchController: UISearchController) {
+//		let searchBar = searchController.searchBar
+//		let scope = searchBar.scopeButtonTitles![searchBar.selectedScopeButtonIndex]
+//		filterContentForSearchText(searchText: searchController.searchBar.text!, scope: scope)
+		filterContentForSearchText(searchText: searchController.searchBar.text!)
+	}
+	@available(iOS 8.0, *)
+	func updateSearchResults(for searchController: UISearchController) {
+//		let searchBar = searchController.searchBar
+//		let scope = searchBar.scopeButtonTitles![searchBar.selectedScopeButtonIndex]
+//		filterContentForSearchText(searchText: searchController.searchBar.text!, scope: scope)
+		filterContentForSearchText(searchText: searchController.searchBar.text!)
 	}
 	
 	// FILTER GRADE LEVELS
@@ -46,6 +87,18 @@ class LessonsTableViewController: UITableViewController {
 		self.tableView.tableFooterView = UIView()
 		
 		self.title = "ALL LESSONS"
+		
+		// SEARCH
+		searchController.searchResultsUpdater = self
+		searchController.dimsBackgroundDuringPresentation = false
+		definesPresentationContext = true
+		tableView.tableHeaderView = searchController.searchBar
+		searchController.searchBar.tintColor = UIColor.white;
+
+		self.extendedLayoutIncludesOpaqueBars = true
+		
+//		searchController.searchBar.scopeButtonTitles = ["All", "Chocolate", "Hard", "Other"]
+//		searchController.searchBar.delegate = self
 
 		self.navigationItem.backBarButtonItem = UIBarButtonItem.init(title: "", style: .plain, target: nil, action: nil);
 	}
@@ -81,15 +134,27 @@ class LessonsTableViewController: UITableViewController {
 		return 120;
 	}
 	
+//	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//		if(showFilter && filter != nil){
+//			return (self.filteredData?.count)!
+//		}
+//		if let d = self.data{
+//			return d.count
+//		}
+//		return 0;
+//	}
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		if(showFilter && filter != nil){
-			return (self.filteredData?.count)!
+		if searchController.isActive && searchController.searchBar.text != "" {
+			if let d = filteredLessons{
+				return d.count
+			}
 		}
 		if let d = self.data{
 			return d.count
 		}
-		return 0;
+		return 0
 	}
+	
 	
 	func daySuffix(_ dayOfMonth: Int) -> String {
 		switch dayOfMonth {
@@ -100,80 +165,91 @@ class LessonsTableViewController: UITableViewController {
 		}
 	}
 	
-	override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-		if(showFilter == false){
-			return nil
-		}
-		var viewH:CGFloat = 34
-		if(IS_IPAD){
-			viewH = 60
-		}
-		
-		let view = UIView()
-		view.backgroundColor = Style.shared.darkGray
-		
-		let buttonW = self.view.frame.size.width * 0.8
-		let button = UIButton()
-		button.backgroundColor = UIColor.clear
-		button.frame = CGRect(x: (self.view.frame.size.width - buttonW) * 0.5, y: 0, width: buttonW, height: viewH)
-		button.addTarget(self, action: #selector(filterButtonHandler), for: .touchUpInside)
-
-		let filterLabel = UILabel()
-		filterLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15)
-		filterLabel.textColor = Style.shared.whiteSmoke
-		filterLabel.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width*0.5 - 10, height: viewH)
-		filterLabel.textAlignment = .right
-		filterLabel.text = "Filter:"
-
-		let gradeLabel = UILabel()
-		gradeLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15)
-		gradeLabel.textColor = UIColor.white
-		gradeLabel.frame = CGRect(x: self.view.frame.size.width*0.5, y: 0, width: self.view.frame.size.width*0.5, height: viewH)
-		gradeLabel.textAlignment = .left
-		if(filter == nil){
-			gradeLabel.text = "All Grades"
-		} else{
-			gradeLabel.text = Character.shared.gradeNames[filter!]
-		}
-		
-		view.addSubview(filterLabel)
-		view.addSubview(gradeLabel)
-		view.addSubview(button)
-		return view
-	}
-	override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-		if(showFilter == true){
-			if(IS_IPAD){
-				return 60
-			}
-			return 34
-		}
-		return 0
-	}
+//	override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//		
+//		if(showFilter == false){
+//			return nil
+//		}
+//		var viewH:CGFloat = 34
+//		if(IS_IPAD){
+//			viewH = 60
+//		}
+//		
+//		let view = UIView()
+//		view.backgroundColor = Style.shared.darkGray
+//		
+//		let buttonW = self.view.frame.size.width * 0.8
+//		let button = UIButton()
+//		button.backgroundColor = UIColor.clear
+//		button.frame = CGRect(x: (self.view.frame.size.width - buttonW) * 0.5, y: 0, width: buttonW, height: viewH)
+//		button.addTarget(self, action: #selector(filterButtonHandler), for: .touchUpInside)
+//
+//		let filterLabel = UILabel()
+//		filterLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15)
+//		filterLabel.textColor = Style.shared.whiteSmoke
+//		filterLabel.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width*0.5 - 10, height: viewH)
+//		filterLabel.textAlignment = .right
+//		filterLabel.text = "Filter:"
+//
+//		let gradeLabel = UILabel()
+//		gradeLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15)
+//		gradeLabel.textColor = UIColor.white
+//		gradeLabel.frame = CGRect(x: self.view.frame.size.width*0.5, y: 0, width: self.view.frame.size.width*0.5, height: viewH)
+//		gradeLabel.textAlignment = .left
+//		if(filter == nil){
+//			gradeLabel.text = "All Grades"
+//		} else{
+//			gradeLabel.text = Character.shared.gradeNames[filter!]
+//		}
+//		
+//		view.addSubview(filterLabel)
+//		view.addSubview(gradeLabel)
+//		view.addSubview(button)
+//		return view
+//	}
+//	override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+//		if(showFilter == true){
+//			if(IS_IPAD){
+//				return 60
+//			}
+//			return 34
+//		}
+//		return 0
+//	}
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = LessonsTableViewCell.init(style: .value1, reuseIdentifier: "tableCell")
 		
 		var objectForRow:Lesson
-		if(showFilter && filter != nil){
-			objectForRow = self.filteredData![(indexPath as NSIndexPath).row]
-		} else{
-			objectForRow = self.data![(indexPath as NSIndexPath).row]
+		// OLD FILTER
+//		if(showFilter && filter != nil){
+//			objectForRow = self.filteredData![(indexPath as NSIndexPath).row]
+//		} else{
+//			objectForRow = self.data![(indexPath as NSIndexPath).row]
+//		}
+
+		// NEW SEARCH FILTER
+		objectForRow = self.data![(indexPath as NSIndexPath).row]
+		if searchController.isActive && searchController.searchBar.text != "" {
+			if let d = filteredLessons{
+				objectForRow = d[(indexPath as NSIndexPath).row]
+			}
 		}
-		
+
 		let text:String = objectForRow.title!
 		
 		// date
 		let dateComponents:DateComponents = (Calendar.current as NSCalendar).components([.month, .day], from: objectForRow.date! as Date)
 
 		// image
-		let imageFilename:String = objectForRow.image!
-		Cache.shared.imageFromStorageBucket(imageFilename, completionHandler: { (image, requiredDownload) in
-			cell.imageView?.image = image
-			if(requiredDownload){
-				self.tableView.reloadData()
-			}
-		})
+		if let imageFilename:String = objectForRow.image{
+			Cache.shared.imageFromStorageBucket(imageFilename, completionHandler: { (image, requiredDownload) in
+				cell.imageView?.image = image
+				if(requiredDownload){
+					self.tableView.reloadData()
+				}
+			})
+		}
 		
 		cell.gradeLevel = objectForRow.grade!
 		cell.titleText = text.uppercased()
