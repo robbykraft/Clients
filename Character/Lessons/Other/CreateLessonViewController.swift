@@ -323,7 +323,7 @@ class CreateLessonViewController: UIViewController, UITextFieldDelegate, UITextV
 				print("almost there")
 				if(downloadURL != nil){
 					print("final step")
-					self.uploadedImageURL = downloadURL!.absoluteString
+					self.uploadedImageURL = downloadURL!.lastPathComponent
 					Cache.shared.profileImage[Fire.shared.myUID!] = image
 					self.imageView.image = image
 				}

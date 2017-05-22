@@ -236,10 +236,17 @@ class LessonsTableViewController: UITableViewController, UISearchBarDelegate, UI
 			}
 		}
 
-		let text:String = objectForRow.title!
+		var text:String = ""
+		if let titleText = objectForRow.title{
+			text = titleText
+		}
 		
 		// date
-		let dateComponents:DateComponents = (Calendar.current as NSCalendar).components([.month, .day], from: objectForRow.date! as Date)
+		var date = Date()
+		if let objectDate = objectForRow.date{
+			date = objectDate
+		}
+		let dateComponents:DateComponents = (Calendar.current as NSCalendar).components([.month, .day], from: date as Date)
 
 		// image
 		if let imageFilename:String = objectForRow.image{
@@ -262,8 +269,10 @@ class LessonsTableViewController: UITableViewController, UISearchBarDelegate, UI
 
 		}
 
+		if let gradeLevel = objectForRow.grade{
+			cell.gradeLevel = gradeLevel
+		}
 		
-		cell.gradeLevel = objectForRow.grade!
 		cell.titleText = text.uppercased()
 		if let dateInt = dateComponents.day {
 			let dayString = "\(dateInt)" + daySuffix(dateInt)

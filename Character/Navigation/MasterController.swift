@@ -81,6 +81,8 @@ class MasterController: UITabBarController {
 			self.todayLessonVC.data = nil
 		}else{
 			let grade:Int = Character.shared.myGradeLevel.first!
+//			print("selecting today's lesson from 4 grades")
+//			print(grade)
 			self.todayLessonVC.data = Schedule.shared.todaysLesson![grade]
 		}
 		// TODO:

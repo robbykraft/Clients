@@ -137,9 +137,10 @@ class Schedule{
 									lessonCalendar[dateIterate] = gradeLessons
 								}
 							}
-							//						print("lesson calendar")
+							print("finished building lesson calendar")
 							//						print(lessonCalendar)
 							self.schoolYear = lessonCalendar
+						
 							completionHandler(true, lessonCalendar)
 						}
 					})
@@ -152,7 +153,7 @@ class Schedule{
 	}
 	
 	func preDownloadAllLessons(_ completionHandler: @escaping (_ success:Bool) -> () ){
-
+		print("calling pre-download all lessons")
 //		var todaysLesson:[Lesson]?
 //		var upcomingLessons:[Date:[Lesson]]?
 //		var pastLessons:[Date:[Lesson]]?
@@ -175,7 +176,7 @@ class Schedule{
 					                               behaviorKey: thisDaysLessonData[i]["behavior"] as! String,
 					                               date: day, { (success, theLesson) in
 						self.upcomingLessons![day]?[theLesson.grade!] = theLesson
-						print("downloading an upcoming lesson")
+//						print("downloading an upcoming lesson")
 					})
 				}
 			}
@@ -195,8 +196,12 @@ class Schedule{
 					                               quoteKey: thisDaysLessonData[i]["quote"] as! String,
 					                               behaviorKey: thisDaysLessonData[i]["behavior"] as! String,
 					                               date: day, { (success, theLesson) in
-						self.pastLessons![day]?[theLesson.grade!] = theLesson
-						print("downloading a past lesson")
+						var thisGrade = 0
+						if let lessGrade = theLesson.grade{
+							thisGrade = lessGrade
+						}
+						self.pastLessons![day]?[thisGrade] = theLesson
+//						print("downloading a past lesson")
 					})
 				}
 			}
@@ -204,6 +209,9 @@ class Schedule{
 		var GMTCalendar = Calendar.current
 		GMTCalendar.timeZone = TimeZone.init(secondsFromGMT: 0)!
 		let todaysDate = GMTCalendar.startOfDay(for: Date())
+		print("today's date:")
+		print(todaysDate)
+		var downloadCount = 0
 		if let todayLessonData = self.schoolYear![todaysDate]{
 			print(todayLessonData)
 			self.todaysLesson = []
@@ -216,10 +224,15 @@ class Schedule{
 				                               quoteKey: todayLessonData[i]["quote"] as! String,
 				                               behaviorKey: todayLessonData[i]["behavior"] as! String,
 				                               date: todaysDate, { (success, theLesson) in
+					downloadCount += 1
 					self.todaysLesson?[theLesson.grade!] = theLesson
 					print("downloading today's lesson")
+												print(i)
+					print(theLesson.title)
 					// TODO: this is needing to wait until all 4 grades download before triggering
-					completionHandler(true)
+					if(downloadCount == 4){
+						completionHandler(true)
+					}
 				})
 			}
 		} else{

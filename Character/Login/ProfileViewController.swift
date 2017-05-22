@@ -123,7 +123,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 		
 		let clientString:String = userData["client"] as? String ?? ""
 		if(clientString == "default"){
-			clientButton.setTitle("Join a District", for: .normal)
+			clientButton.setTitle("Join a Group", for: .normal)
 		} else{
 			clientButton.setTitle(clientString, for: .normal)
 		}

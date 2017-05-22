@@ -55,7 +55,6 @@ class Character{
 								// no lesson today
 								completionHandler(true, nil)
 							} else{
-								print(Schedule.shared.todaysLesson!)
 								completionHandler(true, nil)
 							}
 //							self.reloadLessons(gradeLevels)
