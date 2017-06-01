@@ -125,7 +125,12 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 		if(clientString == "default"){
 			clientButton.setTitle("Join a Group", for: .normal)
 		} else{
-			clientButton.setTitle(clientString, for: .normal)
+			Fire.shared.loadData("clients/" + clientString, completionHandler: { (data) in
+				if let d = data{
+					let clientNameString:String = d["name"] as! String
+					self.clientButton.setTitle(clientNameString, for: .normal)
+				}
+			})
 		}
 
 		var gradeLevels:[Int]? = userData["grade"] as? [Int]

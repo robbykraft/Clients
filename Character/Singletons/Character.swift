@@ -35,6 +35,10 @@ class Character{
 	
 	var clientID = "default"
 	
+	var pledgeTypeName = "pledge"
+	var pledgeBodyShort = "I am grateful..."
+	var pledgeBody = "I am grateful for this day.\nI pledge to be a person of character in every way.\nI will be worthy of trust.\nI will be respectful and responsible doing what I must.\nI will always act with fairness.\nI will show that I care.\nI will be a good citizen and always do my share."
+	
 	func boot(_ completionHandler: @escaping (Bool, String?) -> ()){ // success, clientID, gradeLevels
 		self.getMyGradeLevels { (successGrades, gradeLevels) in
 			self.getMyClientID({ (successClient, client) in
@@ -44,6 +48,23 @@ class Character{
 					completionHandler(false, "problem loading this user's client id")
 				}
 				// SUCCESS: we have grade levels and client
+				Fire.shared.loadData("clients/" + client, completionHandler: { (data) in
+					
+					if let d = data as? [String:Any]{
+						if let pledgeData = d["pledge"] as? [String:String]{
+							if let body = pledgeData["body"]{
+								self.pledgeBody = body
+							}
+							if let short = pledgeData["short"]{
+								self.pledgeBodyShort = short
+							}
+							if let name = pledgeData["name"]{
+								self.pledgeTypeName = name
+							}
+						}
+					}
+					
+
 				Schedule.shared.buildSchoolYearCalendar(client: client) { (successBuildYear, schoolYear) in
 					if(!successBuildYear){
 						completionHandler(false, "problem assembling school year calendar")
@@ -64,7 +85,10 @@ class Character{
 //							})
 						})
 					}
-				}
+				}  // Schedule.shared.buildSchoolYearCalendar
+				
+				}) // load Client Data
+				
 			})
 		}
 	}

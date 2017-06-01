@@ -205,7 +205,7 @@ class LessonTableViewController: UITableViewController {
 			let vc: PledgeViewController = PledgeViewController()
 //			vc.title = "DAILY PRAYER"
 			vc.data = self.data
-			vc.title = "DAILY PLEDGE"
+			vc.title = "DAILY " + Character.shared.pledgeTypeName.uppercased()
 			self.navigationController?.pushViewController(vc, animated: true)
 			break
 		default:

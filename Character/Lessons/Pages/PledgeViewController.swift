@@ -37,9 +37,9 @@ class PledgeViewController: UIViewController, CompletedQuestionDelegate{
 		pledgeBodyView.isScrollEnabled = false;
 		pledgeBodyView.isEditable = false
 		pledgeBodyView.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P24)
-		pledgeBodyView.text = "I am grateful for this day.\nI pledge to be a person of character in every way.\nI will be worthy of trust.\nI will be respectful and responsible doing what I must.\nI will always act with fairness.\nI will show that I care.\nI will be a good citizen and always do my share."
-		
 //		pledgeBodyView.text = "Dear God,\n \nThank you for this new day.\nHelp me to be a person of character and follow Your way,\n \nto be worthy of trust,\nto be respectful and responsible, doing what I must.\n \nHelp me to act with fairness, show that I care,\nbe a good citizen, and always live this prayer.\n \nAmen."
+//		pledgeBodyView.text = "I am grateful for this day.\nI pledge to be a person of character in every way.\nI will be worthy of trust.\nI will be respectful and responsible doing what I must.\nI will always act with fairness.\nI will show that I care.\nI will be a good citizen and always do my share."
+		pledgeBodyView.text = Character.shared.pledgeBody
 		
 		self.view.addSubview(pledgeBodyView)
 		
@@ -58,7 +58,7 @@ class PledgeViewController: UIViewController, CompletedQuestionDelegate{
 
 		// CHALLENGE QUESTION FOOTER
 		questionFooter.frame = CGRect.init(x: 0, y: pledgeBodyHeight + topPad + 20, width: self.view.frame.size.width, height: 120)
-		questionFooter.textLabel.text = "I completed this challenge by sharing this pledge"
+		questionFooter.textLabel.text = "I completed this challenge by sharing this " + Character.shared.pledgeTypeName
 		questionFooter.delegate = self
 		self.view.addSubview(questionFooter)
 		
@@ -123,6 +123,11 @@ class PledgeViewController: UIViewController, CompletedQuestionDelegate{
 			vc.feedbackTargetType = "pledges"
 			self.navigationController?.pushViewController(vc, animated: true)
 		}))
+		alert.addAction(UIAlertAction(title: "Print", style: .default , handler:{ (UIAlertAction)in
+			self.createPDF()
+			self.sharePDFFile()
+//			self.showPDFFile()
+		}))
 		alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel , handler:{ (UIAlertAction)in
 			
 		}))
@@ -134,4 +139,104 @@ class PledgeViewController: UIViewController, CompletedQuestionDelegate{
 		super.didReceiveMemoryWarning()
 	}
 	
+	
+	
+	
+	
+	func createPDF(){
+		let fileName = "pledge.pdf"
+		let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
+		let pdfFileNameStep1 = path.appending("/")
+		let pdfFileName = pdfFileNameStep1.appending(fileName)
+		
+		do {
+			try FileManager.default.removeItem(atPath: pdfFileName)
+		} catch let error as NSError {
+			print(error.debugDescription)
+		}
+		
+//		let cfTitleText = titleLabel.text! as CFString
+		let cfBodyText = pledgeBodyView.text! as CFString
+		// Prepare the text using a Core Text Framesetter.
+		
+		// create a dictionary of attributes to be applied to the string
+//		let titleOptions:CFDictionary = [NSFontAttributeName:UIFont(name: SYSTEM_FONT, size: 30)!] as CFDictionary
+		let bodyOptions:CFDictionary = [NSFontAttributeName:UIFont(name: SYSTEM_FONT, size: 30)!] as CFDictionary
+		
+		let bodyString = CFAttributedStringCreate(nil, cfBodyText, bodyOptions)!
+//		let titleString = CFAttributedStringCreate(nil, cfTitleText, titleOptions)!
+		
+		let framesetterBody = CTFramesetterCreateWithAttributedString(bodyString)
+//		let framesetterTitle = CTFramesetterCreateWithAttributedString(titleString)
+		let bodyFrameRect = CGRect(x: 30, y: 0, width: 612-60, height: 792-60)
+		let bodyFramePath = CGPath.init(rect: bodyFrameRect, transform: nil)
+//		let titleFrameRect = CGRect(x: 30, y: 0, width: 612-60, height: 792-60)
+//		let titleFramePath = CGPath.init(rect: titleFrameRect, transform: nil)
+		// Get the frame that will do the rendering.
+		let currentRange = CFRange(location: 0, length: 0)
+		let bodyFrameRef = CTFramesetterCreateFrame(framesetterBody, currentRange, bodyFramePath, nil)
+//		let titleFrameRef = CTFramesetterCreateFrame(framesetterTitle, currentRange, titleFramePath, nil)
+		
+		// Create the PDF context using the default page size of 612 x 792.
+		UIGraphicsBeginPDFContextToFile(pdfFileName, CGRect.zero, nil)
+		// Mark the beginning of a new page.
+		UIGraphicsBeginPDFPageWithInfo(CGRect(x:0, y:0, width:612, height:792), nil)
+		// Get the graphics context.
+		let currentContext = UIGraphicsGetCurrentContext()
+		currentContext!.textMatrix = CGAffineTransform.identity
+		// Core Text draws from the bottom-left corner up, so flip
+		// the current transform prior to drawing.
+		currentContext!.scaleBy(x: 1.0, y: -1.0)
+		currentContext!.translateBy(x: 0, y: -792)
+//		CTFrameDraw(titleFrameRef, currentContext!)
+//		currentContext!.translateBy(x: 0, y: -60)
+//		 Draw the frame.
+		CTFrameDraw(bodyFrameRef, currentContext!)
+//		Close the PDF context and write the contents out.
+		UIGraphicsEndPDFContext();
+	}
+	
+	func sharePDFFile(){
+		let fileName = "pledge.pdf"
+		let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
+		let pdfFileNameStep1 = path.appending("/")
+		let pdfFileName = pdfFileNameStep1.appending(fileName)
+		
+		let documento = NSData(contentsOfFile: pdfFileName)
+		let objectsToShare = [documento];
+		
+		//		let types:[UIActivityType] = [.print, .airDrop, .mail, .message, .openInIBooks, .addToReadingList]
+		let controller:UIActivityViewController = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+		controller.excludedActivityTypes = [.postToFacebook, .postToVimeo, .postToWeibo, .postToFlickr, .postToTwitter]
+		
+		// Exclude activities
+		//		NSArray *excludedActivities = @[UIActivityTypePostToTwitter, UIActivityTypePostToFacebook,
+		//		UIActivityTypePostToWeibo,
+		//		UIActivityTypeMessage, UIActivityTypeMail,
+		//		UIActivityTypePrint, UIActivityTypeCopyToPasteboard,
+		//		UIActivityTypeAssignToContact, UIActivityTypeSaveToCameraRoll,
+		//		UIActivityTypeAddToReadingList, UIActivityTypePostToFlickr,
+		//		UIActivityTypePostToVimeo, UIActivityTypePostToTencentWeibo];
+		//		controller.excludedActivityTypes = excludedActivities;
+		
+		self.present(controller, animated: true, completion: nil)
+	}
+	
+	
+	func showPDFFile(){
+		let fileName = "pledge.pdf"
+		let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
+		let pdfFileNameStep1 = path.appending("/")
+		let pdfFileName = pdfFileNameStep1.appending(fileName)
+		
+		let webView = UIWebView.init(frame: CGRect(x: 0, y: 0, width: 320, height: 480))
+		let url:URL = URL(fileURLWithPath: pdfFileName)
+		let request:URLRequest = URLRequest(url: url)
+		webView.scalesPageToFit = true
+		webView.loadRequest(request)
+		
+		self.view.addSubview(webView)
+	}
+	
+
 }

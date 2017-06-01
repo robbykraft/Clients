@@ -13,12 +13,15 @@ class PledgeTableViewCell: SuperLessonTableViewCell {
 	override func initUI() {
 		super.initUI()
 //		cornerTitleLabel.text = "Daily Prayer"
-		cornerTitleLabel.text = "Daily Pledge"
+//		cornerTitleLabel.text = "Daily Pledge"
+		cornerTitleLabel.text = "Daily " + Character.shared.pledgeTypeName.capitalized
 		self.textLabel?.font = UIFont(name: SYSTEM_FONT_I, size: Style.shared.P30)
 		self.textLabel?.numberOfLines = 1
 		self.textLabel?.textColor = Style.shared.darkGray
 //		self.textLabel?.text = "Dear God,..."
-		self.textLabel?.text = "I am grateful..."
+//		self.textLabel?.text = "I am grateful..."
+		self.textLabel?.text = Character.shared.pledgeBodyShort
+
 	}
 	override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)

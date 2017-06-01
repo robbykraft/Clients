@@ -137,7 +137,7 @@ class SetupProfileViewController: UIViewController, UITextFieldDelegate {
 	}
 	
 	func continueButtonHandler(){
-		if let paidPassword:String = detail2Field.text{
+		if let paidPassword:String = (detail2Field.text)?.uppercased(){
 			if(!paidPassword.isEmpty){
 				Fire.shared.loadData("clients", completionHandler: { (data) in
 					var didMatchClient:String?
@@ -146,7 +146,7 @@ class SetupProfileViewController: UIViewController, UITextFieldDelegate {
 						let keys = Array(clientList.keys)
 						for k in keys{
 							if let thisClient = clientList[k] as? [String:Any]{
-								if let clientPassword:String = thisClient["password"] as? String{
+								if let clientPassword:String = (thisClient["password"] as? String)?.uppercased(){
 									if clientPassword == paidPassword{
 										didMatchClient = k
 										matchedClientNameString = thisClient["name"] as! String
@@ -165,12 +165,24 @@ class SetupProfileViewController: UIViewController, UITextFieldDelegate {
 							alert.addAction(dismiss)
 							self.present(alert, animated: true, completion: nil)
 						})
+					} else{
+						// person typed in a password that didn't match
+						let alert = UIAlertController.init(title: "Client Login", message: "We couldn't find a match for the password" + matchedClientNameString, preferredStyle: .alert)
+						let tryAgain = UIAlertAction.init(title: "Try Again", style: .default, handler: { (action) in
+
+						})
+						let dismiss = UIAlertAction.init(title: "Skip", style: .destructive, handler: { (action) in
+							self.proceed()
+						})
+						alert.addAction(tryAgain)
+						alert.addAction(dismiss)
+						self.present(alert, animated: true, completion: nil)
 					}
 				})
-			} else{
+			} else{  // if detailField has text but passcode is empty
 				proceed()
 			}
-		} else{
+		} else{  // if detailField doesn't exist
 			proceed()
 		}
 	}

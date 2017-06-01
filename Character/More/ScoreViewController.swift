@@ -162,7 +162,7 @@ class ScoreViewController: UITableViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-		return "Lesson - Quote - Behavior - Pledge"
+		return "Lesson - Quote - Behavior - " + Character.shared.pledgeTypeName.capitalized
 	}
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
