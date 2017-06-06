@@ -243,10 +243,12 @@ class LessonsTableViewController: UITableViewController, UISearchBarDelegate, UI
 		
 		// date
 		var date = Date()
+		var GMTCalendar = Calendar.current
+		GMTCalendar.timeZone = TimeZone.init(secondsFromGMT: 0)!
 		if let objectDate = objectForRow.date{
 			date = objectDate
 		}
-		let dateComponents:DateComponents = (Calendar.current as NSCalendar).components([.month, .day], from: date as Date)
+		let dateComponents:DateComponents = (GMTCalendar as NSCalendar).components([.month, .day], from: date as Date)
 
 		// image
 		if let imageFilename:String = objectForRow.image{

@@ -314,15 +314,11 @@ class CreateLessonViewController: UIViewController, UITextFieldDelegate, UITextV
 	}
 	
 	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-		print("picker did finish")
 		let image = info[UIImagePickerControllerOriginalImage] as! UIImage
 		let data = UIImageJPEGRepresentation(image, 0.5)
 		if(data != nil){
-			print("data is not nil")
 			Fire.shared.uploadFileAndMakeRecord(data!, folder:"images", fileType: .image_JPG, description: nil, completionHandler: { (downloadURL) in
-				print("almost there")
 				if(downloadURL != nil){
-					print("final step")
 					self.uploadedImageURL = downloadURL!.lastPathComponent
 					Cache.shared.profileImage[Fire.shared.myUID!] = image
 					self.imageView.image = image

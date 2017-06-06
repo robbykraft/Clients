@@ -107,6 +107,12 @@ class MasterController: UITabBarController {
 			}
 		}
 		
+		if(Schedule.shared.todaysLesson != nil){
+			for grade:Int in Character.shared.myGradeLevel{
+				allLessons.append(Schedule.shared.todaysLesson![grade])
+			}
+		}
+		
 		if(Schedule.shared.upcomingLessons != nil){
 			var upcomingKeys:[Date] = Array(Schedule.shared.upcomingLessons!.keys)
 			upcomingKeys = upcomingKeys.sorted(by: { $0.timeIntervalSince1970 < $1.timeIntervalSince1970 })
@@ -116,7 +122,7 @@ class MasterController: UITabBarController {
 				}
 			}
 		}
-		print("setting all lessons with new array: \(allLessons.count)")
+//		print("setting all lessons with new array: \(allLessons.count)")
 		self.allLessonsVC.data = allLessons
 	}
 	

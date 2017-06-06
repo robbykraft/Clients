@@ -55,11 +55,11 @@ class ScoreViewController: UITableViewController {
 			Fire.shared.getUser { (uid, data) in
 				if let userData = data{
 					var challenges = userData["challenges"] as? [String:Any]
-					print("challenges")
+//					print("challenges")
 					if(challenges == nil){
 						challenges = [:]
 					}
-					print(challenges!)
+//					print(challenges!)
 					self.score = [:]
 					for date in self.keyArray!{
 						self.score?[date] = []
@@ -108,7 +108,7 @@ class ScoreViewController: UITableViewController {
 							}
 						}
 					}
-					print(self.score!)
+//					print(self.score!)
 					self.tableView.reloadData()
 				}
 			}

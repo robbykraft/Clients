@@ -67,8 +67,8 @@ class Schedule{
 							personalOrder = a
 						}
 						let sortedStartDates:[[Int:Date]] = self.sortedFilteredPillarStartDates(pillarTimeStamps: startTimes, personalizedOrder: personalOrder)
-						print("Pillar start dates sorted chronologically:")
-						print(sortedStartDates)
+//						print("Pillar start dates sorted chronologically:")
+//						print(sortedStartDates)
 						
 						var calendarDays:[ [String:Any] ] = []
 						
@@ -137,8 +137,8 @@ class Schedule{
 									lessonCalendar[dateIterate] = gradeLessons
 								}
 							}
-							print("finished building lesson calendar")
-							//						print(lessonCalendar)
+//							print("finished building lesson calendar")
+//							print(lessonCalendar)
 							self.schoolYear = lessonCalendar
 						
 							completionHandler(true, lessonCalendar)
@@ -153,12 +153,12 @@ class Schedule{
 	}
 	
 	func preDownloadAllLessons(_ completionHandler: @escaping (_ success:Bool) -> () ){
-		print("calling pre-download all lessons")
+//		print("calling pre-download all lessons")
 //		var todaysLesson:[Lesson]?
 //		var upcomingLessons:[Date:[Lesson]]?
 //		var pastLessons:[Date:[Lesson]]?
 		
-		print("pre downloading all lessons")
+//		print("pre downloading all lessons")
 		
 		self.upcomingLessons = [:]
 		let nextDates = self.getNextWeekdays(numberOfDays: 5, includeToday: false)
@@ -209,8 +209,6 @@ class Schedule{
 		var GMTCalendar = Calendar.current
 		GMTCalendar.timeZone = TimeZone.init(secondsFromGMT: 0)!
 		let todaysDate = GMTCalendar.startOfDay(for: Date())
-		print("today's date:")
-		print(todaysDate)
 		var downloadCount = 0
 		if let todayLessonData = self.schoolYear![todaysDate]{
 			print(todayLessonData)
@@ -226,10 +224,10 @@ class Schedule{
 				                               date: todaysDate, { (success, theLesson) in
 					downloadCount += 1
 					self.todaysLesson?[theLesson.grade!] = theLesson
-					print("downloading today's lesson")
-												print(i)
-					print(theLesson.title)
-					// TODO: this is needing to wait until all 4 grades download before triggering
+//					print("downloading today's lesson")
+//												print(i)
+//					print(theLesson.title)
+
 					if(downloadCount == 4){
 						completionHandler(true)
 					}
@@ -245,7 +243,7 @@ class Schedule{
 	
 	func getScheduleForClient(clientName:String, _ completionHandler: @escaping (_ success:Bool,  [String:AnyObject] ) -> () ){
 		FIRDatabase.database().reference().child("schedules").observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in
-			print("client schedule")
+//			print("client schedule")
 			if snapshot.value is NSNull {
 				completionHandler(false, [:])
 			} else {

@@ -78,7 +78,7 @@ class MySubmissionsTableViewController: UITableViewController {
 								newEntry["type"] = "lesson"
 								newEntry["key"] = k
 								myLessons.append(newEntry)
-								print(newEntry)
+//								print(newEntry)
 							}
 						}
 					}
@@ -99,7 +99,7 @@ class MySubmissionsTableViewController: UITableViewController {
 								newEntry["type"] = "quote"
 								newEntry["key"] = k
 								myQuotes.append(newEntry)
-								print(newEntry)
+//								print(newEntry)
 							}
 						}
 					}

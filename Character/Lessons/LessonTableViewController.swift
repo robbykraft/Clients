@@ -232,11 +232,11 @@ class LessonTableViewController: UITableViewController {
 	func lessonCellWithData(_ data:Lesson?) -> LessonTableViewCell {
 		let cell = LessonTableViewCell()
 		cell.title = data?.title?.uppercased()
-		print("needing image")
+//		print("needing image")
 		if let imageFilename = data?.image{
 			print(imageFilename)
 			Cache.shared.imageFromStorageBucket(imageFilename, completionHandler: { (image, didRequireDownload) in
-				print("cache return")
+//				print("cache return")
 				cell.imageView?.image = image
 				if(didRequireDownload){
 					self.tableView.reloadData()
@@ -247,7 +247,7 @@ class LessonTableViewController: UITableViewController {
 			let pathPrefix = filename.deletingPathExtension
 			let alternateFileName = pathPrefix + ".jpeg"
 			Cache.shared.imageFromStorageBucket(alternateFileName, completionHandler: { (image, didRequireDownload) in
-				print("cache return")
+//				print("cache return")
 				cell.imageView?.image = image
 				if(didRequireDownload){
 					self.tableView.reloadData()

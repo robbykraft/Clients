@@ -25,7 +25,7 @@ class LessonViewController: UIViewController, CompletedQuestionDelegate, MyNotes
 				let pathPrefix = filename.deletingPathExtension
 				let alternateFileName = pathPrefix + ".jpeg"
 				Cache.shared.imageFromStorageBucket(alternateFileName, completionHandler: { (image, didRequireDownload) in
-					print("cache return")
+//					print("cache return")
 					self.imageView.image = image
 				})
 			}

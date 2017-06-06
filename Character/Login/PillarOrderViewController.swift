@@ -90,9 +90,9 @@ class PillarOrderTableViewController: UITableViewController, PillarSwitchDelegat
 		}
 		switch section{
 		case 0:
-			label.text = "Press and hold ≡ to rearrange your pillar schedule"
+			label.text = "Press and hold ≡ to rearrange your pillar schedule; each pillar is one month"
 		default:
-			label.text = dateString
+			label.text = ""//dateString
 		}
 		label.numberOfLines = 0
 		label.frame = CGRect.init(x: pad, y: pad*0.75, width: self.tableView.frame.size.width - pad*2, height: self.tableView.frame.size.height)
@@ -123,6 +123,10 @@ class PillarOrderTableViewController: UITableViewController, PillarSwitchDelegat
 		label.frame = CGRect.init(x: pad, y: 0, width: self.tableView.frame.size.width - pad*2, height: self.tableView.frame.size.height)
 		label.sizeToFit()
 		label.frame = CGRect.init(x: label.frame.origin.x, y: label.frame.origin.y, width: label.frame.size.width, height: label.frame.size.height + 20)
+		print("returning \(section): \(label.frame.size.height)")
+		if section > 0{
+			return 0
+		}
 		return label.frame.size.height
 	}
 	
@@ -182,7 +186,7 @@ class PillarOrderTableViewController: UITableViewController, PillarSwitchDelegat
 
 		// date
 		if(indexPath.section - 1 < Schedule.shared.pillarStartTimeStamps.count){
-			cell.textLabel?.text = Character.shared.pillarNames[ myPillarOrder[indexPath.section - 1] ]
+			cell.textLabel?.text = String(describing:indexPath.section) + ": " + Character.shared.pillarNames[ myPillarOrder[indexPath.section - 1] ]
 			cell.textLabel?.text = cell.textLabel?.text?.capitalized
 		}
 		return cell

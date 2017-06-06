@@ -71,7 +71,7 @@ class Character{
 					} else{
 //						print(schoolYear!)
 						Schedule.shared.preDownloadAllLessons({ (successLesson) in
-							print("got lessons, today's lesson:")
+//							print("got lessons, today's lesson:")
 							if(Schedule.shared.todaysLesson == nil){
 								// no lesson today
 								completionHandler(true, nil)

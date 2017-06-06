@@ -48,8 +48,6 @@ class CharacterToolsViewController: UIViewController {
 					button.addTarget(self, action: #selector(self.dynamicButtonPressed), for: .touchUpInside)
 					self.view.addSubview(button)
 					button.tag = self.buttons.count
-					print("first")
-					print(self.buttons.count)
 					self.buttons.append(button)
 					self.bodyTextURLs.append("evergreen/clients/default/" + String(describing:i) + "/body")
 				}
@@ -72,8 +70,6 @@ class CharacterToolsViewController: UIViewController {
 										button.addTarget(self, action: #selector(self.dynamicButtonPressed), for: .touchUpInside)
 										self.view.addSubview(button)
 										button.tag = self.buttons.count
-										print("inner")
-										print(self.buttons.count)
 										self.buttons.append(button)
 										self.bodyTextURLs.append("evergreen/clients/" + userClient + "/" + String(describing:i) + "/body")
 									}
