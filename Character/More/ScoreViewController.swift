@@ -81,15 +81,13 @@ class ScoreViewController: UITableViewController {
 								}
 								let dateInt:String = String(Int(date.timeIntervalSince1970))
 								if(challenges?[dateInt] != nil){
-									if let grades:[Any] = challenges?[dateInt] as? [Any]{
-										if(i < grades.count){
-											if let more:[String:Bool] = grades[i] as? [String:Bool]{
-												if(more["behavior"] != nil){
-													behavior = more["behavior"]!
-												}
-												if(more["pledge"] != nil){
-													pledge = more["pledge"]!
-												}
+									if let challengeGrades:[String:Any] = challenges?[dateInt] as? [String:Any]{
+										if let more:[String:Bool] = challengeGrades[String(describing:i)] as? [String:Bool]{
+											if(more["behavior"] != nil){
+												behavior = more["behavior"]!
+											}
+											if(more["pledge"] != nil){
+												pledge = more["pledge"]!
 											}
 										}
 									}
@@ -174,7 +172,7 @@ class ScoreViewController: UITableViewController {
 
 			// date
 			let date = keyArray![(indexPath as NSIndexPath).row]
-			let dateComponents:DateComponents = (Calendar.current as NSCalendar).components([.month, .day], from: date as Date)
+			let dateComponents:DateComponents = (GMTCalendar as NSCalendar).components([.month, .day], from: date as Date)
 			if let dateInt = dateComponents.day {
 				let dayString = "\(dateInt)" + daySuffix(dateInt)
 				let dateText: String = monthAbbrevs[dateComponents.month! - 1] + " " + dayString

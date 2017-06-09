@@ -123,7 +123,6 @@ class PillarOrderTableViewController: UITableViewController, PillarSwitchDelegat
 		label.frame = CGRect.init(x: pad, y: 0, width: self.tableView.frame.size.width - pad*2, height: self.tableView.frame.size.height)
 		label.sizeToFit()
 		label.frame = CGRect.init(x: label.frame.origin.x, y: label.frame.origin.y, width: label.frame.size.width, height: label.frame.size.height + 20)
-		print("returning \(section): \(label.frame.size.height)")
 		if section > 0{
 			return 0
 		}
