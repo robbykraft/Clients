@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Character Daily</title>
+
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+    <link href="../vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="../vendor/datatables-responsive/dataTables.responsive.css" rel="stylesheet">
+    <link href="../vendor/bootstrap-date-picker/css/bootstrap-datepicker.min.css" rel="stylesheet">
+    <link href="../vendor/bootstrap-dialog/css/bootstrap-dialog.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
+    <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <style>
+table.dataTable{width:100%;margin:0 auto;clear:both;border-collapse:separate;border-spacing:0}table.dataTable thead th,table.dataTable tfoot th{font-weight:bold}table.dataTable thead th,table.dataTable thead td{padding:10px 18px;border-bottom:1px solid #111}table.dataTable thead th:active,table.dataTable thead td:active{outline:none}table.dataTable tfoot th,table.dataTable tfoot td{padding:10px 18px 6px 18px;border-top:1px solid #111}table.dataTable thead .sorting,table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc{cursor:pointer;*cursor:hand}table.dataTable thead .sorting,table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dataTable thead .sorting_asc_disabled,table.dataTable thead .sorting_desc_disabled{background-repeat:no-repeat;background-position:center right}table.dataTable tbody tr{background-color:#ffffff}table.dataTable tbody tr.selected{background-color:#B0BED9}table.dataTable tbody th,table.dataTable tbody td{padding:8px 10px}table.dataTable.row-border tbody th,table.dataTable.row-border tbody td,table.dataTable.display tbody th,table.dataTable.display tbody td{border-top:1px solid #ddd}table.dataTable.row-border tbody tr:first-child th,table.dataTable.row-border tbody tr:first-child td,table.dataTable.display tbody tr:first-child th,table.dataTable.display tbody tr:first-child td{border-top:none}table.dataTable.cell-border tbody th,table.dataTable.cell-border tbody td{border-top:1px solid #ddd;border-right:1px solid #ddd}table.dataTable.cell-border tbody tr th:first-child,table.dataTable.cell-border tbody tr td:first-child{border-left:1px solid #ddd}table.dataTable.cell-border tbody tr:first-child th,table.dataTable.cell-border tbody tr:first-child td{border-top:none}table.dataTable.stripe tbody tr.odd,table.dataTable.display tbody tr.odd{background-color:#f9f9f9}table.dataTable.stripe tbody tr.odd.selected,table.dataTable.display tbody tr.odd.selected{background-color:#acbad4}table.dataTable.hover tbody tr:hover,table.dataTable.display tbody tr:hover{background-color:#f6f6f6}table.dataTable.hover tbody tr:hover.selected,table.dataTable.display tbody tr:hover.selected{background-color:#aab7d1}table.dataTable.order-column tbody tr>.sorting_1,table.dataTable.order-column tbody tr>.sorting_2,table.dataTable.order-column tbody tr>.sorting_3,table.dataTable.display tbody tr>.sorting_1,table.dataTable.display tbody tr>.sorting_2,table.dataTable.display tbody tr>.sorting_3{background-color:#fafafa}table.dataTable.order-column tbody tr.selected>.sorting_1,table.dataTable.order-column tbody tr.selected>.sorting_2,table.dataTable.order-column tbody tr.selected>.sorting_3,table.dataTable.display tbody tr.selected>.sorting_1,table.dataTable.display tbody tr.selected>.sorting_2,table.dataTable.display tbody tr.selected>.sorting_3{background-color:#acbad5}table.dataTable.display tbody tr.odd>.sorting_1,table.dataTable.order-column.stripe tbody tr.odd>.sorting_1{background-color:#f1f1f1}table.dataTable.display tbody tr.odd>.sorting_2,table.dataTable.order-column.stripe tbody tr.odd>.sorting_2{background-color:#f3f3f3}table.dataTable.display tbody tr.odd>.sorting_3,table.dataTable.order-column.stripe tbody tr.odd>.sorting_3{background-color:whitesmoke}table.dataTable.display tbody tr.odd.selected>.sorting_1,table.dataTable.order-column.stripe tbody tr.odd.selected>.sorting_1{background-color:#a6b4cd}table.dataTable.display tbody tr.odd.selected>.sorting_2,table.dataTable.order-column.stripe tbody tr.odd.selected>.sorting_2{background-color:#a8b5cf}table.dataTable.display tbody tr.odd.selected>.sorting_3,table.dataTable.order-column.stripe tbody tr.odd.selected>.sorting_3{background-color:#a9b7d1}table.dataTable.display tbody tr.even>.sorting_1,table.dataTable.order-column.stripe tbody tr.even>.sorting_1{background-color:#fafafa}table.dataTable.display tbody tr.even>.sorting_2,table.dataTable.order-column.stripe tbody tr.even>.sorting_2{background-color:#fcfcfc}table.dataTable.display tbody tr.even>.sorting_3,table.dataTable.order-column.stripe tbody tr.even>.sorting_3{background-color:#fefefe}table.dataTable.display tbody tr.even.selected>.sorting_1,table.dataTable.order-column.stripe tbody tr.even.selected>.sorting_1{background-color:#acbad5}table.dataTable.display tbody tr.even.selected>.sorting_2,table.dataTable.order-column.stripe tbody tr.even.selected>.sorting_2{background-color:#aebcd6}table.dataTable.display tbody tr.even.selected>.sorting_3,table.dataTable.order-column.stripe tbody tr.even.selected>.sorting_3{background-color:#afbdd8}table.dataTable.display tbody tr:hover>.sorting_1,table.dataTable.order-column.hover tbody tr:hover>.sorting_1{background-color:#eaeaea}table.dataTable.display tbody tr:hover>.sorting_2,table.dataTable.order-column.hover tbody tr:hover>.sorting_2{background-color:#ececec}table.dataTable.display tbody tr:hover>.sorting_3,table.dataTable.order-column.hover tbody tr:hover>.sorting_3{background-color:#efefef}table.dataTable.display tbody tr:hover.selected>.sorting_1,table.dataTable.order-column.hover tbody tr:hover.selected>.sorting_1{background-color:#a2aec7}table.dataTable.display tbody tr:hover.selected>.sorting_2,table.dataTable.order-column.hover tbody tr:hover.selected>.sorting_2{background-color:#a3b0c9}table.dataTable.display tbody tr:hover.selected>.sorting_3,table.dataTable.order-column.hover tbody tr:hover.selected>.sorting_3{background-color:#a5b2cb}table.dataTable.no-footer{border-bottom:1px solid #111}table.dataTable.nowrap th,table.dataTable.nowrap td{white-space:nowrap}table.dataTable.compact thead th,table.dataTable.compact thead td{padding:4px 17px 4px 4px}table.dataTable.compact tfoot th,table.dataTable.compact tfoot td{padding:4px}table.dataTable.compact tbody th,table.dataTable.compact tbody td{padding:4px}table.dataTable th.dt-left,table.dataTable td.dt-left{text-align:left}table.dataTable th.dt-center,table.dataTable td.dt-center,table.dataTable td.dataTables_empty{text-align:center}table.dataTable th.dt-right,table.dataTable td.dt-right{text-align:right}table.dataTable th.dt-justify,table.dataTable td.dt-justify{text-align:justify}table.dataTable th.dt-nowrap,table.dataTable td.dt-nowrap{white-space:nowrap}table.dataTable thead th.dt-head-left,table.dataTable thead td.dt-head-left,table.dataTable tfoot th.dt-head-left,table.dataTable tfoot td.dt-head-left{text-align:left}table.dataTable thead th.dt-head-center,table.dataTable thead td.dt-head-center,table.dataTable tfoot th.dt-head-center,table.dataTable tfoot td.dt-head-center{text-align:center}table.dataTable thead th.dt-head-right,table.dataTable thead td.dt-head-right,table.dataTable tfoot th.dt-head-right,table.dataTable tfoot td.dt-head-right{text-align:right}table.dataTable thead th.dt-head-justify,table.dataTable thead td.dt-head-justify,table.dataTable tfoot th.dt-head-justify,table.dataTable tfoot td.dt-head-justify{text-align:justify}table.dataTable thead th.dt-head-nowrap,table.dataTable thead td.dt-head-nowrap,table.dataTable tfoot th.dt-head-nowrap,table.dataTable tfoot td.dt-head-nowrap{white-space:nowrap}table.dataTable tbody th.dt-body-left,table.dataTable tbody td.dt-body-left{text-align:left}table.dataTable tbody th.dt-body-center,table.dataTable tbody td.dt-body-center{text-align:center}table.dataTable tbody th.dt-body-right,table.dataTable tbody td.dt-body-right{text-align:right}table.dataTable tbody th.dt-body-justify,table.dataTable tbody td.dt-body-justify{text-align:justify}table.dataTable tbody th.dt-body-nowrap,table.dataTable tbody td.dt-body-nowrap{white-space:nowrap}table.dataTable,table.dataTable th,table.dataTable td{-webkit-box-sizing:content-box;box-sizing:content-box}.dataTables_wrapper{position:relative;clear:both;*zoom:1;zoom:1}.dataTables_wrapper .dataTables_length{float:left}.dataTables_wrapper .dataTables_filter{float:right;text-align:right}.dataTables_wrapper .dataTables_filter input{margin-left:0.5em}.dataTables_wrapper .dataTables_info{clear:both;float:left;padding-top:0.755em}.dataTables_wrapper .dataTables_paginate{float:right;text-align:right;padding-top:0.25em}.dataTables_wrapper .dataTables_paginate .paginate_button{box-sizing:border-box;display:inline-block;min-width:1.5em;padding:0.5em 1em;margin-left:2px;text-align:center;text-decoration:none !important;cursor:pointer;*cursor:hand;color:#333 !important;border:1px solid transparent;border-radius:2px}.dataTables_wrapper .dataTables_paginate .paginate_button.current,.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover{color:#333 !important;border:1px solid #979797;background-color:white;background:-webkit-gradient(linear, left top, left bottom, color-stop(0%, #fff), color-stop(100%, #dcdcdc));background:-webkit-linear-gradient(top, #fff 0%, #dcdcdc 100%);background:-moz-linear-gradient(top, #fff 0%, #dcdcdc 100%);background:-ms-linear-gradient(top, #fff 0%, #dcdcdc 100%);background:-o-linear-gradient(top, #fff 0%, #dcdcdc 100%);background:linear-gradient(to bottom, #fff 0%, #dcdcdc 100%)}.dataTables_wrapper .dataTables_paginate .paginate_button.disabled,.dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover,.dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active{cursor:default;color:#666 !important;border:1px solid transparent;background:transparent;box-shadow:none}.dataTables_wrapper .dataTables_paginate .paginate_button:hover{color:white !important;border:1px solid #111;background-color:#585858;background:-webkit-gradient(linear, left top, left bottom, color-stop(0%, #585858), color-stop(100%, #111));background:-webkit-linear-gradient(top, #585858 0%, #111 100%);background:-moz-linear-gradient(top, #585858 0%, #111 100%);background:-ms-linear-gradient(top, #585858 0%, #111 100%);background:-o-linear-gradient(top, #585858 0%, #111 100%);background:linear-gradient(to bottom, #585858 0%, #111 100%)}.dataTables_wrapper .dataTables_paginate .paginate_button:active{outline:none;background-color:#2b2b2b;background:-webkit-gradient(linear, left top, left bottom, color-stop(0%, #2b2b2b), color-stop(100%, #0c0c0c));background:-webkit-linear-gradient(top, #2b2b2b 0%, #0c0c0c 100%);background:-moz-linear-gradient(top, #2b2b2b 0%, #0c0c0c 100%);background:-ms-linear-gradient(top, #2b2b2b 0%, #0c0c0c 100%);background:-o-linear-gradient(top, #2b2b2b 0%, #0c0c0c 100%);background:linear-gradient(to bottom, #2b2b2b 0%, #0c0c0c 100%);box-shadow:inset 0 0 3px #111}.dataTables_wrapper .dataTables_paginate .ellipsis{padding:0 1em}.dataTables_wrapper .dataTables_processing{position:absolute;top:50%;left:50%;width:100%;height:40px;margin-left:-50%;margin-top:-25px;padding-top:20px;text-align:center;font-size:1.2em;background-color:white;background:-webkit-gradient(linear, left top, right top, color-stop(0%, rgba(255,255,255,0)), color-stop(25%, rgba(255,255,255,0.9)), color-stop(75%, rgba(255,255,255,0.9)), color-stop(100%, rgba(255,255,255,0)));background:-webkit-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 25%, rgba(255,255,255,0.9) 75%, rgba(255,255,255,0) 100%);background:-moz-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 25%, rgba(255,255,255,0.9) 75%, rgba(255,255,255,0) 100%);background:-ms-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 25%, rgba(255,255,255,0.9) 75%, rgba(255,255,255,0) 100%);background:-o-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 25%, rgba(255,255,255,0.9) 75%, rgba(255,255,255,0) 100%);background:linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 25%, rgba(255,255,255,0.9) 75%, rgba(255,255,255,0) 100%)}.dataTables_wrapper .dataTables_length,.dataTables_wrapper .dataTables_filter,.dataTables_wrapper .dataTables_info,.dataTables_wrapper .dataTables_processing,.dataTables_wrapper .dataTables_paginate{color:#333}.dataTables_wrapper .dataTables_scroll{clear:both}.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody{*margin-top:-1px;-webkit-overflow-scrolling:touch}.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody th,.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody td{vertical-align:middle}.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody th>div.dataTables_sizing,.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody td>div.dataTables_sizing{height:0;overflow:hidden;margin:0 !important;padding:0 !important}.dataTables_wrapper.no-footer .dataTables_scrollBody{border-bottom:1px solid #111}.dataTables_wrapper.no-footer div.dataTables_scrollHead table,.dataTables_wrapper.no-footer div.dataTables_scrollBody table{border-bottom:none}.dataTables_wrapper:after{visibility:hidden;display:block;content:"";clear:both;height:0}@media screen and (max-width: 767px){.dataTables_wrapper .dataTables_info,.dataTables_wrapper .dataTables_paginate{float:none;text-align:center}.dataTables_wrapper .dataTables_paginate{margin-top:0.5em}}@media screen and (max-width: 640px){.dataTables_wrapper .dataTables_length,.dataTables_wrapper .dataTables_filter{float:none;text-align:center}.dataTables_wrapper .dataTables_filter{margin-top:0.5em}}
+
+h5.modal-title{
+    font-size: 2.25rem;    
+}
+
+    </style>
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Character Daily</a>
+            </div>
+            <!-- /.navbar-header -->
+
+            <ul class="nav navbar-top-links navbar-right">
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                        </li>
+                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+            <!-- /.navbar-top-links -->
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li class="sidebar-search">
+                            <div class="input-group custom-search-form">
+                                <input type="text" class="form-control" placeholder="Search...">
+                                <span class="input-group-btn">
+                                <button class="btn disabled btn-default" type="button">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                            </div>
+                            <!-- /input-group -->
+                        </li>
+                        <li>
+                            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-calendar fa-fw"></i> Schedule<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li><a href="calendar.html"><i class="fa fa-calendar-o fa-fw"></i> View</a></li>
+                                <li><a href="schedule.html"><i class="fa fa-calendar-plus-o fa-fw"></i> Edit</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-book fa-fw"></i> Lesson Material<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li><a href="addlesson.html"><i class="fa fa-plus fa-fw"></i> New Lesson</a></li>
+                                <li><a href="addquote.html"><i class="fa fa-plus fa-fw"></i> New Quote</a></li>
+                                <li><a href="lessons.html"><i class="fa fa-book fa-fw"></i> View Lessons</a></li>
+                                <li><a href="quotes.html"><i class="fa fa-quote-left fa-fw"></i> View Quotes</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Edit Schedule</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label>Select a District</label>
+                    <select id="select-district" class="form-control">
+                        <option>Loading...</option>
+                    </select>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <!-- /.row -->
+            <div class="row">
+                <!-- /.col-lg-8 -->
+                <div class="col-lg-12">
+                    <!-- /.panel -->
+                    <div class=" panel panel-default">
+                        <div class="panel-heading">Begin Dates</div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <ul class="chat">
+                                <li class="left clearfix">
+                                    <span class="chat-img pull-left">
+                                        <i class="fa fa-hand-peace-o fa-3x"></i>
+                                    </span>
+                                    <div class="chat-body clearfix">
+                                        <div class="header">
+                                            <strong class="primary-font">Introduction</strong>
+                                        </div>
+                                        <input type="text" class="form-control" id="date-picker-introduction">
+                                    </div>
+                                </li>
+                                <li class="left clearfix">
+                                    <span class="chat-img pull-left">
+                                        <i class="fa fa-chain fa-3x"></i>
+                                    </span>
+                                    <div class="chat-body clearfix">
+                                        <div class="header">
+                                            <strong class="primary-font">Trustworthiness</strong>
+                                        </div>
+                                        <input type="text" class="form-control" id="date-picker-trustworthiness">
+                                    </div>
+                                </li>
+                                <li class="left clearfix">
+                                    <span class="chat-img pull-left">
+                                        <i class="fa fa-recycle fa-3x"></i>
+                                    </span>
+                                    <div class="chat-body clearfix">
+                                        <div class="header">
+                                            <strong class="primary-font">Respect</strong>
+                                        </div>
+                                        <input type="text" class="form-control" id="date-picker-respect">
+                                    </div>
+                                </li>
+                                <li class="left clearfix">
+                                    <span class="chat-img pull-left">
+                                        <i class="fa fa-key fa-3x"></i>
+                                    </span>
+                                    <div class="chat-body clearfix">
+                                        <div class="header">
+                                            <strong class="primary-font">Responsibility</strong>
+                                        </div>
+                                        <input type="text" class="form-control" id="date-picker-responsibility">
+                                    </div>
+                                </li>
+                                <li class="left clearfix">
+                                    <span class="chat-img pull-left">
+                                        <i class="fa fa-balance-scale fa-3x"></i>
+                                    </span>
+                                    <div class="chat-body clearfix">
+                                        <div class="header">
+                                            <strong class="primary-font">Fairness</strong>
+                                        </div>
+                                        <input type="text" class="form-control" id="date-picker-fairness">
+                                    </div>
+                                </li>
+                                <li class="left clearfix">
+                                    <span class="chat-img pull-left">
+                                        <i class="fa fa-american-sign-language-interpreting fa-3x"></i>
+                                    </span>
+                                    <div class="chat-body clearfix">
+                                        <div class="header">
+                                            <strong class="primary-font">Caring</strong>
+                                        </div>
+                                        <input type="text" class="form-control" id="date-picker-caring">
+                                    </div>
+                                </li>
+                                <li class="left clearfix">
+                                    <span class="chat-img pull-left">
+                                        <i class="fa fa-flag fa-3x"></i>
+                                    </span>
+                                    <div class="chat-body clearfix">
+                                        <div class="header">
+                                            <strong class="primary-font">Citizenship</strong>
+                                        </div>
+                                        <input type="text" class="form-control" id="date-picker-citizenship">
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- /.panel-body -->
+                        <!-- .panel-footer
+                        <div class="panel-footer">
+                            <div class="alert alert-warning alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>When you're finished</strong> Update dates before you navigate away from this page.</div>
+                            <a href="#" class="btn btn-default btn-block">Update Start Dates</a>
+                        </div>
+                        /.panel-footer -->
+                    </div>
+                    <!-- /.panel .chat-panel -->
+                </div>
+                <!-- /.col-lg-4 -->
+            </div>
+            <!-- /.row -->
+
+
+
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" style="height:4em">
+                            <h4 style="float:left">Introduction</h4>
+                            <div style="float:right">
+                                <select class="filterGradeLevel" id="filterGrade6">
+                                    <option value="0">K-2nd</option>
+                                    <option value="1">3rd-5th</option>
+                                    <option value="2">6th-8th</option>
+                                    <option value="3">9th-12th</option>
+                                </select>                                                
+                            </div>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <table width="100%" class="table table-striped table-bordered table-hover" id="table-introduction">
+                                <thead>
+                                    <tr>
+                                        <th># Weekday of Month</th>
+                                        <th>Lesson</th>
+                                        <th>Quote</th>
+                                        <th>Move</th>
+                                        <th>Remove</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-introduction-body">
+                                    <tr class="odd gradeX">
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td class="center"></td>
+                                        <td class="center"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-add-lesson-modal-lg" onclick="openModalClick(6)">Add Introductory Lesson</button>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" style="height:4em">
+                            <h4 style="float:left">Trustworthiness</h4>
+                            <div style="float:right">
+                                <select class="filterGradeLevel" id="filterGrade0">
+                                    <option value="0">K-2nd</option>
+                                    <option value="1">3rd-5th</option>
+                                    <option value="2">6th-8th</option>
+                                    <option value="3">9th-12th</option>
+                                </select>                                                
+                            </div>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <table width="100%" class="table table-striped table-bordered table-hover" id="table-trustworthiness">
+                                <thead>
+                                    <tr>
+                                        <th># Weekday of Month</th>
+                                        <th>Lesson</th>
+                                        <th>Quote</th>
+                                        <th>Move</th>
+                                        <th>Remove</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-trustworthiness-body">
+                                    <tr class="odd gradeX">
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td class="center"></td>
+                                        <td class="center"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-add-lesson-modal-lg" onclick="openModalClick(0)">Add Trustworthiness Lesson</button>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" style="height:4em">
+                            <h4 style="float:left">Respect</h4>
+                            <div style="float:right">
+                                <select class="filterGradeLevel" id="filterGrade1">
+                                    <option value="0">K-2nd</option>
+                                    <option value="1">3rd-5th</option>
+                                    <option value="2">6th-8th</option>
+                                    <option value="3">9th-12th</option>
+                                </select>                                                
+                            </div>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <table width="100%" class="table table-striped table-bordered table-hover" id="table-respect">
+                                <thead>
+                                    <tr>
+                                        <th># Weekday of Month</th>
+                                        <th>Lesson</th>
+                                        <th>Quote</th>
+                                        <th>Move</th>
+                                        <th>Remove</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-respect-body">
+                                    <tr class="odd gradeX">
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td class="center"></td>
+                                        <td class="center"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-add-lesson-modal-lg" onclick="openModalClick(1)">Add Respect Lesson</button>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" style="height:4em">
+                            <h4 style="float:left">Responsibility</h4>
+                            <div style="float:right">
+                                <select class="filterGradeLevel" id="filterGrade2">
+                                    <option value="0">K-2nd</option>
+                                    <option value="1">3rd-5th</option>
+                                    <option value="2">6th-8th</option>
+                                    <option value="3">9th-12th</option>
+                                </select>                                                
+                            </div>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <table width="100%" class="table table-striped table-bordered table-hover" id="table-responsibility">
+                                <thead>
+                                    <tr>
+                                        <th># Weekday of Month</th>
+                                        <th>Lesson</th>
+                                        <th>Quote</th>
+                                        <th>Move</th>
+                                        <th>Remove</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-responsibility-body">
+                                    <tr class="odd gradeX">
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td class="center"></td>
+                                        <td class="center"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-add-lesson-modal-lg" onclick="openModalClick(2)">Add Responsibility Lesson</button>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" style="height:4em">
+                            <h4 style="float:left">Fairness</h4>
+                             <div style="float:right">
+                                <select class="filterGradeLevel" id="filterGrade3">
+                                    <option value="0">K-2nd</option>
+                                    <option value="1">3rd-5th</option>
+                                    <option value="2">6th-8th</option>
+                                    <option value="3">9th-12th</option>
+                                </select>                                                
+                            </div>
+                       </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <table width="100%" class="table table-striped table-bordered table-hover" id="table-fairness">
+                                <thead>
+                                    <tr>
+                                        <th># Weekday of Month</th>
+                                        <th>Lesson</th>
+                                        <th>Quote</th>
+                                        <th>Move</th>
+                                        <th>Remove</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-fairness-body">
+                                    <tr class="odd gradeX">
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td class="center"></td>
+                                        <td class="center"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-add-lesson-modal-lg" onclick="openModalClick(3)">Add Fairness Lesson</button>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" style="height:4em">
+                            <h4 style="float:left">Caring</h4>
+                            <div style="float:right">
+                                <select class="filterGradeLevel" id="filterGrade4">
+                                    <option value="0">K-2nd</option>
+                                    <option value="1">3rd-5th</option>
+                                    <option value="2">6th-8th</option>
+                                    <option value="3">9th-12th</option>
+                                </select>                                                
+                            </div>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <table width="100%" class="table table-striped table-bordered table-hover" id="table-caring">
+                                <thead>
+                                    <tr>
+                                        <th># Weekday of Month</th>
+                                        <th>Lesson</th>
+                                        <th>Quote</th>
+                                        <th>Move</th>
+                                        <th>Remove</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-caring-body">
+                                    <tr class="odd gradeX">
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td class="center"></td>
+                                        <td class="center"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-add-lesson-modal-lg" onclick="openModalClick(4)">Add Caring Lesson</button>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" style="height:4em">
+                            <h4 style="float:left">Citizenship</h4>
+                            <div class="form-group" style="float:right">
+                                <select class="filterGradeLevel" id="filterGrade5">
+                                    <option value="0">K-2nd</option>
+                                    <option value="1">3rd-5th</option>
+                                    <option value="2">6th-8th</option>
+                                    <option value="3">9th-12th</option>
+                                </select>                                                
+                            </div>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <table width="100%" class="table table-striped table-bordered table-hover" id="table-citizenship">
+                                <thead>
+                                    <tr>
+                                        <th># Weekday of Month</th>
+                                        <th>Lesson</th>
+                                        <th>Quote</th>
+                                        <th>Move</th>
+                                        <th>Remove</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-citizenship-body">
+                                    <tr class="odd gradeX">
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td class="center"></td>
+                                        <td class="center"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-add-lesson-modal-lg" onclick="openModalClick(5)">Add Citizenship Lesson</button>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- create a lesson modal -->
+    <div class="modal fade bd-add-lesson-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="add-lesson-modal-id">
+        <div class="modal-dialog modal-med">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Schedule a Lesson</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                  <div class="container-fluid">
+                    <div class="row">
+                        <h4>K-2nd</h4>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">Lesson: <button id="b-l-0" type="button" class="btn btn-default" data-toggle="modal" data-target=".select-lesson-modal" onclick="setModalClick('lesson', 0)">&nbsp;</button></div>
+                      <div class="col-md-6">Quote: <button id="b-q-0" type="button" class="btn btn-default" data-toggle="modal" data-target=".select-quote-modal" onclick="setModalClick('quote', 0)">&nbsp;</button></div>
+                            
+                    </div>
+                    <div class="row">
+                        <h4>3rd-5th</h4>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">Lesson: <button id="b-l-1" type="button" class="btn btn-default" data-toggle="modal" data-target=".select-lesson-modal" onclick="setModalClick('lesson', 1)">&nbsp;</button></div>
+                      <div class="col-md-6">Quote: <button id="b-q-1" type="button" class="btn btn-default" data-toggle="modal" data-target=".select-quote-modal" onclick="setModalClick('quote', 1)">&nbsp;</button></div>
+                    </div>
+                    <div class="row">
+                        <h4>6th-8th</h4>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">Lesson: <button id="b-l-2" type="button" class="btn btn-default" data-toggle="modal" data-target=".select-lesson-modal" onclick="setModalClick('lesson', 2)">&nbsp;</button></div>
+                      <div class="col-md-6">Quote: <button id="b-q-2" type="button" class="btn btn-default" data-toggle="modal" data-target=".select-quote-modal" onclick="setModalClick('quote', 2)">&nbsp;</button></div>
+                    </div>
+                    <div class="row">
+                        <h4>9th-12th</h4>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">Lesson: <button id="b-l-3" type="button" class="btn btn-default" data-toggle="modal" data-target=".select-lesson-modal" onclick="setModalClick('lesson', 3)">&nbsp;</button></div>
+                      <div class="col-md-6">Quote: <button id="b-q-3" type="button" class="btn btn-default" data-toggle="modal" data-target=".select-quote-modal" onclick="setModalClick('quote', 3)">&nbsp;</button></div>
+                    </div>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="trySubmitLesson()">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Lesson modal -->
+    <div class="modal fade select-lesson-modal" tabindex="-1" role="dialog" aria-labelledby="mySelectLessonModalLabel" aria-hidden="true" id="lesson-modal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Select a Lesson</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                            <table width="100%" class="table table-striped table-bordered table-hover" id="table-lessons">
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Author</th>
+                                        <th>Submitted By</th>
+                                        <th>Pillar</th>
+                                        <th>Grade</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-lessons-body">
+                                    <tr class="odd gradeX">
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td class="center"></td>
+                                        <td class="center"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Select Lesson</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quote modal -->
+    <div class="modal fade select-quote-modal" tabindex="-1" role="dialog" aria-labelledby="mySelectQuoteModalLabel" aria-hidden="true" id="quote-modal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Select a Quote</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                            <table width="100%" class="table table-striped table-bordered table-hover" id="table-quotes">
+                                <thead>
+                                    <tr>
+                                        <th>Author</th>
+                                        <th>Quote</th>
+                                        <th>Submitted By</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-quotes-body">
+                                    <tr class="odd">
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Select Quote</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../vendor/metisMenu/metisMenu.min.js"></script>
+    <script src="../vendor/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="../vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
+    <script src="../vendor/datatables-responsive/dataTables.responsive.js"></script>
+    <script src="../vendor/bootstrap-date-picker/js/bootstrap-datepicker.min.js"></script>
+    <script src="../vendor/momentjs/moment.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.6.5/firebase.js"></script>
+    <script src="../vendor/bootstrap-dialog/js/bootstrap-dialog.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="../dist/js/sb-admin-2.js"></script>
+    <script src="../dist/js/fireuser.js"></script>
+
+<script>
+
+///////////////////////////
+//  todo: this is now changes, get 'client' name and organize stuff here:
+var databaseDefaultEntryName = 'default';//'Default Calendar';
+///////////////////////////
+
+var pillarNames = ['Trustworthiness', 'Respect', 'Responsibility', 'Fairness', 'Caring', 'Citizenship', 'Introduction'];
+var gradeNames = ['K-2nd', '3rd-5th', '6th-8th', '9th-12th'];
+
+var scheduleData = {};
+
+var currentCalendar = undefined;
+var currentGrade = 0;
+
+var schedulesRef = firebase.database().ref("schedules");
+
+var firstRun = false;
+
+function finishedPreload(){
+    console.log("finished preload");
+    schedulesRef.on("value", function(snapshot) {
+        scheduleData = snapshot.val();
+        if(!firstRun){
+            fillDistrictSelector(snapshot.val());
+            firstRun = true;
+        }
+
+    }, function (errorObject) {
+        console.log("The read failed: " + errorObject.code);
+    });    
+}
+
+
+$(document).ready(function() {
+    // date picker
+    $('#date-picker-introduction').datepicker({});
+    $('#date-picker-trustworthiness').datepicker({});
+    $('#date-picker-respect').datepicker({});
+    $('#date-picker-responsibility').datepicker({});
+    $('#date-picker-fairness').datepicker({});
+    $('#date-picker-caring').datepicker({});
+    $('#date-picker-citizenship').datepicker({});
+
+    // data tables
+    var tableOptions = { responsive: true, bFilter:false, bPaginate:false, bInfo:false};
+    $('#table-introduction').DataTable(tableOptions);
+    $('#table-trustworthiness').DataTable(tableOptions);
+    $('#table-respect').DataTable(tableOptions);
+    $('#table-responsibility').DataTable(tableOptions);
+    $('#table-fairness').DataTable(tableOptions);
+    $('#table-caring').DataTable(tableOptions);
+    $('#table-citizenship').DataTable(tableOptions);
+
+    // $('.table tbody').on( 'click', 'tr', function () {
+    //     console.log('selected');
+    //     console.log( $(this) );
+    //     $(this).toggleClass('selected');
+    // } );
+ 
+    // alert( table.rows('.selected').data().length +' row(s) selected' );
+});
+
+$('#date-picker-introduction').change(function(){
+    var string = $('#date-picker-introduction').val();
+    var timestamp = moment(string,'MM/DD/YYYY').utc().unix();
+    updatePillarStartTime(6, timestamp);
+});
+
+$('#date-picker-trustworthiness').change(function(){
+    var string = $('#date-picker-trustworthiness').val();
+    var timestamp = moment(string,'MM/DD/YYYY').utc().unix();
+    updatePillarStartTime(0, timestamp);
+});
+
+$('#date-picker-respect').change(function(){
+    var string = $('#date-picker-respect').val();
+    var timestamp = moment(string,'MM/DD/YYYY').utc().unix();
+    updatePillarStartTime(1, timestamp);
+});
+
+$('#date-picker-responsibility').change(function(){
+    var string = $('#date-picker-responsibility').val();
+    var timestamp = moment(string,'MM/DD/YYYY').utc().unix();
+    updatePillarStartTime(2, timestamp);
+});
+
+$('#date-picker-fairness').change(function(){
+    var string = $('#date-picker-fairness').val();
+    var timestamp = moment(string,'MM/DD/YYYY').utc().unix();
+    updatePillarStartTime(3, timestamp);
+});
+
+$('#date-picker-caring').change(function(){
+    var string = $('#date-picker-caring').val();
+    var timestamp = moment(string,'MM/DD/YYYY').utc().unix();
+    updatePillarStartTime(4, timestamp);
+});
+
+$('#date-picker-citizenship').change(function(){
+    var string = $('#date-picker-citizenship').val();
+    var timestamp = moment(string,'MM/DD/YYYY').utc().unix();
+    updatePillarStartTime(5, timestamp);
+});
+
+function updatePillarStartTime(pillar, unixTime){
+    if(currentCalendar != undefined){
+        console.log('updating ' + currentCalendar + ' database pillar ' + pillar + ' to Unix Date: ' + unixTime);
+        var updates = {};
+        updates['/schedules/' + currentCalendar + '/pillars/' + pillar] = unixTime;
+        // updates['/user-posts/' + uid + '/' + newPostKey] = postData;
+        return firebase.database().ref().update(updates);
+    }
+}
+
+$('#select-district').change(function(){
+    var newDistrictSelection = this.value;
+    didSelectNewSchedule(newDistrictSelection);
+});
+
+
+$('.filterGradeLevel').change(function(){
+    var newGrade = $(this).val();
+    if(newGrade != undefined){
+        currentGrade = newGrade;
+        $('#filterGrade0').val(newGrade);
+        $('#filterGrade1').val(newGrade);
+        $('#filterGrade2').val(newGrade);
+        $('#filterGrade3').val(newGrade);
+        $('#filterGrade4').val(newGrade);
+        $('#filterGrade5').val(newGrade);
+        $('#filterGrade6').val(newGrade);
+        didSelectNewGrade(newGrade);
+    }
+});
+
+function getStartTimeFieldsArray(){
+    return [
+        $('#date-picker-trustworthiness'),
+        $('#date-picker-respect'),
+        $('#date-picker-responsibility'),
+        $('#date-picker-fairness'),
+        $('#date-picker-caring'),
+        $('#date-picker-citizenship'),
+        $('#date-picker-introduction')
+    ];
+}
+
+function getDataTablesArray(){
+    return [
+        $("#table-trustworthiness").DataTable(),
+        $("#table-respect").DataTable(),
+        $("#table-responsibility").DataTable(),
+        $("#table-fairness").DataTable(),
+        $("#table-caring").DataTable(),
+        $("#table-citizenship").DataTable(),
+        $("#table-introduction").DataTable()
+    ];
+}
+
+function updateLessonSchedulePillar(pillar, lessonScheduleArray){
+    if(currentCalendar != undefined){
+        var updates = {};
+        updates['/schedules/' + currentCalendar + '/lessons/' + pillar] = lessonScheduleArray;
+        return firebase.database().ref().update(updates);
+    }
+}
+
+
+function moveUp(cal, pil, day, grade){
+    var dayArray = scheduleData[currentCalendar]['lessons'][pil];
+
+    var prevEntry = dayArray[day-1];
+    dayArray[day-1] = dayArray[day];
+    dayArray[day] = prevEntry;
+
+    updateLessonSchedulePillar(pil, dayArray);
+    updateLessonDataTable(pil);
+}
+
+function moveDown(cal, pil, day, grade){
+    var dayArray = scheduleData[currentCalendar]['lessons'][pil];
+
+    var nextEntry = dayArray[day+1];
+    dayArray[day+1] = dayArray[day];
+    dayArray[day] = nextEntry;
+
+    updateLessonSchedulePillar(pil, dayArray);
+    updateLessonDataTable(pil);
+}
+
+function deleteRow(cal, pil, day, grade){
+    var dayArray = scheduleData[currentCalendar]['lessons'][pil];
+
+    dayArray.splice(day, 1);
+
+    updateLessonSchedulePillar(pil, dayArray);
+    updateLessonDataTable(pil);
+}
+
+function addEntry(cal, pil, day, grade){
+    var dayArray = scheduleData[currentCalendar]['lessons'][pil];
+
+    var newEntry = [
+        {'lesson':'', 'quote':''},
+        {'lesson':'', 'quote':''},
+        {'lesson':'', 'quote':''},
+        {'lesson':'', 'quote':''}
+    ];
+    dayArray.push(newEntry);
+
+    updateLessonSchedulePillar(pil, dayArray);
+    updateLessonDataTable(pil);
+}
+
+
+function didSelectNewGrade(newGrade){
+    if(newGrade != undefined){
+        currentGrade = parseInt(newGrade); // store globally
+        updateAllLessonDataTables(); // check lessons array
+    } else{
+        currentGrade = undefined;
+    }
+}
+
+function didSelectNewSchedule(newDistrict){
+    if(scheduleData[newDistrict] != undefined){
+        currentCalendar = newDistrict; // store globally
+        updatePagePillarSchedule();  // part 1: check pillar start times
+        updateAllLessonDataTables(); // part 2: check lessons array
+    } else{
+        currentCalendar = undefined;
+    }
+}
+
+function updatePagePillarSchedule(){
+    // clear HTML fields
+    var allStartTimes = getStartTimeFieldsArray();
+    for(var st = 0; st < allStartTimes.length; st++){
+        allStartTimes[st].datepicker().val('');
+    }
+    // fill HTML fields with new data
+    var pillarSchedule = scheduleData[currentCalendar]['pillars'];
+    if(pillarSchedule != undefined){
+        for(var key in pillarSchedule) {
+            var dateString = moment.unix(pillarSchedule[key]).utc().format('MM/DD/YYYY');
+            allStartTimes[key].datepicker("update", dateString);
+        }
+    }
+}
+
+function lessonTitleStringForID(lessonID){
+    if(lessonsData == undefined || lessonsData[lessonID] == undefined)
+        return lessonID;
+    if(lessonsData[ lessonID ].title != undefined)
+        return lessonsData[ lessonID ].title;
+    return lessonID;
+}
+
+function quoteAuthorStringForID(quoteID){
+    if(quotesData == undefined || quotesData[quoteID] == undefined)
+        return quoteID;
+    if(quotesData[ quoteID ].author != undefined)
+        return quotesData[ quoteID ].author;
+    return quoteID;
+}
+
+function updateLessonDataTable(p){  // p = pillar number (0-6), or (0-7) w/ intro Month
+    var table = getDataTablesArray()[p];
+    // clear HTML tables
+    table.clear().draw();
+    // fill HTML tables with new data
+    var dayArray = scheduleData[currentCalendar]['lessons'][p];  // p: pillar number
+    if(dayArray != undefined){
+        var count = 1;
+        for(var i = 0; i < dayArray.length; i++) {
+            var btnUpDisabled = "";
+            var btnDownDisabled = "";
+            if(i == 0) btnUpDisabled = "disabled";
+            if(i == dayArray.length-1) btnDownDisabled = "disabled";
+            var dayObject = dayArray[i][currentGrade];
+            if(dayObject == undefined) dayObject = {'lesson':'---','quote':'---'};
+            // todo: this adding quotes is not going to work for other items!!!
+            var locationString = '\'' + currentCalendar + '\',' + p + ',' + i + ',' + currentGrade;
+            table.row.add([
+                (i+1).toString(),
+                lessonTitleStringForID(dayObject['lesson']),
+                quoteAuthorStringForID(dayObject['quote']),
+                '<button class="btn btn-sm btn-default '+btnUpDisabled+'" onclick="moveUp(' + locationString + ')"><i class="fa fa-arrow-up" aria-hidden="true"></i></button><button class="btn btn-sm btn-default '+btnDownDisabled+'" onclick="moveDown(' + locationString + ')"><i class="fa fa-arrow-down" aria-hidden="true"></i></button>',
+                '<button class="btn btn-sm btn-default" onclick="deleteRow(' + locationString + ')">Delete</button>'
+                // '<a onclick="deleteRow(' + locationString + ');">delete</a>'
+            ]);
+            count += 1;
+        }
+        table.columns.adjust().draw();
+    }
+}
+
+function updateAllLessonDataTables(){
+    for(var p = 0; p < 7; p++){
+        updateLessonDataTable(p);
+    }
+}
+
+function fillDistrictSelector(dataObject){
+    if(dataObject == undefined){
+        console.log('error: schedule data is empty');
+        return;
+    }
+
+    var dropdownOptions = {};
+    var i = 0;
+    for(var key in dataObject) {
+        var optionKey = "Option " + i;
+        var districtName = dataObject[key];
+        dropdownOptions[key] = key;
+        i += 1;
+    }
+
+    var $el = $("#select-district");
+    $el.empty(); // remove old options
+    $.each(dropdownOptions, function(key,value) {
+        if(key == databaseDefaultEntryName){
+            $el.append($("<option></option>")
+                .attr("value", value).text(key).prop('selected', true));
+        } else{
+            $el.append($("<option></option>")
+                .attr("value", value).text(key));
+        }
+    });
+    var newDistrictSelection = $el[0].value;
+    didSelectNewSchedule(newDistrictSelection);
+
+}
+///////////////////////////////
+/// MODAL STUFF STUFF
+
+var loadedLessons = false;
+var loadedQuotes = false;
+var lessonsData = undefined;
+var quotesData = undefined;
+
+var lessonRef = firebase.database().ref("lessons");
+
+var modalLessonBuildData = { 'lesson':[], 'quote':[] };
+var modalLastClickedPillar = undefined;
+var modalLastClickedLesQuot = undefined;
+var modalLastClickedGrade = undefined;
+
+function openModalClick(pillar){
+    // happens when you select the blue "Add Trustworthiness Lesson" buttons
+    modalLastClickedPillar = pillar;
+    resetAllFields();
+}
+
+function resetAllFields(){
+    modalLessonBuildData = { 'lesson':[], 'quote':[] };
+    $("#b-l-0").html("&nbsp;");
+    $("#b-l-1").html("&nbsp;");
+    $("#b-l-2").html("&nbsp;");
+    $("#b-l-3").html("&nbsp;");
+    $("#b-q-0").html("&nbsp;");
+    $("#b-q-1").html("&nbsp;");
+    $("#b-q-2").html("&nbsp;");
+    $("#b-q-3").html("&nbsp;");
+}
+
+function setModalClick(lesQuot, grade){
+    modalLastClickedLesQuot = lesQuot;
+    modalLastClickedGrade = grade;
+}
+
+function isLessonBuildFinished(){
+    if(modalLessonBuildData['lesson'].length == 4 && modalLessonBuildData['quote'].length == 4){
+        for(var i = 0; i < 4; i++){
+            if(modalLessonBuildData['lesson'][i] == undefined) return false;
+            if(modalLessonBuildData['quote'][i] == undefined) return false;
+        }
+    } else{
+        return false;
+    }
+    return true;
+}
+
+function trySubmitLesson(){
+    if(isLessonBuildFinished()){
+
+        var postArray = [
+            {'lesson':modalLessonBuildData['lesson'][0], 'quote':modalLessonBuildData['quote'][0], },
+            {'lesson':modalLessonBuildData['lesson'][1], 'quote':modalLessonBuildData['quote'][1], },
+            {'lesson':modalLessonBuildData['lesson'][2], 'quote':modalLessonBuildData['quote'][2], },
+            {'lesson':modalLessonBuildData['lesson'][3], 'quote':modalLessonBuildData['quote'][3], },
+        ];
+        // Get a key for a new Post.
+        // var newPostKey = firebase.database().ref().child('schedules/' + databaseDefaultEntryName + '/lessons/' + modalLastClickedPillar).push().key;
+        var dayArray = scheduleData[currentCalendar]['lessons'][modalLastClickedPillar];
+        if(dayArray == undefined) dayArray = [];
+        var newPostKey = dayArray.length;
+        console.log('new post key: ' + newPostKey);
+        var updates = {};
+        updates['schedules/' + databaseDefaultEntryName + '/lessons/' + modalLastClickedPillar + '/' + newPostKey] = postArray;
+        // updates['/user-posts/' + uid + '/' + newPostKey] = postData;
+        firebase.database().ref().update(updates);
+
+        $('#add-lesson-modal-id').modal('hide');
+
+        if(modalLastClickedPillar != undefined){
+            updateLessonDataTable(modalLastClickedPillar);
+        }
+        confirmUpload();
+
+    }else{
+        alert("must fill in all sections");
+    }
+}
+
+function updateModalLessonDataEntry(key){
+    if(modalLastClickedLesQuot == "lesson" || modalLastClickedLesQuot == "quote"){
+        modalLessonBuildData[modalLastClickedLesQuot][modalLastClickedGrade] = key;
+        if(modalLastClickedLesQuot == "lesson"){
+            var string = "#b-l-" + modalLastClickedGrade;
+            $(string).html("✓");
+        }
+        if(modalLastClickedLesQuot == "quote"){
+            var string = "#b-q-" + modalLastClickedGrade;
+            $(string).html("✓");
+        }
+    }
+}
+
+lessonRef.on("value", function(snapshot) {
+    loadedLessons = true;
+    lessonsData = snapshot.val();
+    // fill modal popover for adding lessons
+    fillAllLessonsTable(lessonsData);
+    // finish preload
+    if(loadedQuotes){ finishedPreload(); }
+}, function (errorObject) {
+    console.log("The read failed: " + errorObject.code);
+});
+
+
+var quotesRef = firebase.database().ref("quotes");
+
+quotesRef.on("value", function(snapshot) {
+    loadedQuotes = true;
+    quotesData = snapshot.val();
+    // fill modal popover for adding lessons
+    fillAllQuotesTable(quotesData);
+    // finish preload
+    if(loadedLessons){ finishedPreload(); }
+}, function (errorObject) {
+    console.log("The read failed: " + errorObject.code);
+});
+
+
+function fillAllLessonsTable(lessonArray){
+    if(lessonArray == undefined){
+        console.log('error: lesson array is empty');
+        return;
+    }
+    
+    var dataArray = [];
+    var tableBody = "";
+    var i = 0;
+    for(var key in lessonArray) {
+        var lesson = lessonArray[key];
+        // gather variables
+        var lesson_title = lesson['title'];
+        var lesson_author = lesson['lesson_author'];
+        var user_email = '';
+        var pillar = lesson['pillar'];
+        var grade = lesson['grade'];
+        if(lesson_title == undefined) lesson_title = "";
+        if(lesson_author == undefined) lesson_author = "";
+        if(user_email == undefined) user_email = "";
+        if(pillar == undefined) pillar = "";
+        else pillar = pillarNames[pillar];
+        if(grade == undefined) grade = "";
+        else grade = gradeNames[grade];
+        dataArray.push([lesson_title, lesson_author, pillar, grade, user_email, key]);
+    }
+
+    var lessonTable = $('#table-lessons').DataTable( {
+        responsive: true,
+        data: dataArray,
+        columns: [
+            { title: "Title" },
+            { title: "Author" },
+            { title: "Pillar" },
+            { title: "Grade" },
+            { title: "Submitted by" }
+        ]
+    } );
+
+    $('#table-lessons tbody').on('click', 'tr', function () {
+        var data = lessonTable.row( this ).data();
+        var key = data[data.length-1];
+        console.log( key );
+        if(key != undefined){
+            updateModalLessonDataEntry(key);
+        }
+        $('#lesson-modal').modal('hide');
+    } );
+}
+
+function fillAllQuotesTable(quotesArray){
+    if(quotesArray == undefined){
+        console.log('error: quote array is empty');
+        return;
+    }
+    
+    var dataArray = [];
+    var tableBody = "";
+    var i = 0;
+    console.log(quotesArray);
+    for(var key in quotesArray) {
+        var quote = quotesArray[key];
+        // gather variables
+        var quote_body = quote['body'];
+        var quote_author = quote['author'];
+        var user_email = '';
+        if(quote_body == undefined) quote_body = "";
+        if(quote_author == undefined) quote_author = "";
+        if(user_email == undefined) user_email = "";
+        dataArray.push([quote_author, quote_body, user_email, key]);
+    }
+
+    var quoteTable = $('#table-quotes').DataTable( {
+        responsive: true,
+        data: dataArray,
+        columns: [
+            { title: "Author" },
+            { title: "Quote" },
+            { title: "Submitted by" }
+        ]
+    } );
+
+    $('#table-quotes tbody').on('click', 'tr', function () {
+        var data = quoteTable.row( this ).data();
+        var key = data[data.length-1];
+        console.log( key );
+        if(key != undefined){
+            updateModalLessonDataEntry(key);
+        }
+        $('#quote-modal').modal('hide');
+    } );
+
+}
+
+function confirmUpload(){
+    BootstrapDialog.show({
+        title: 'Upload Complete',
+        message: 'Schedule item has been added',
+        buttons: [{
+            label: 'Okay',
+            action: function(dialogItself){
+                resetAllFields();
+                dialogItself.close();
+            }
+        }]
+    });    
+}
+
+</script>
+
+</body>
+
+</html>

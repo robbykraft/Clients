@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Character Daily</title>
+
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../vendor/bootstrap-dialog/css/bootstrap-dialog.css" rel="stylesheet">
+    <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
+    <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <div id="wrapper">
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Character Daily</a>
+            </div>
+            <!-- /.navbar-header -->
+
+            <ul class="nav navbar-top-links navbar-right">
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                        </li>
+                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+            <!-- /.navbar-top-links -->
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li class="sidebar-search">
+                            <div class="input-group custom-search-form">
+                                <input type="text" class="form-control" placeholder="Search...">
+                                <span class="input-group-btn">
+                                <button class="btn disabled btn-default" type="button">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                            </div>
+                            <!-- /input-group -->
+                        </li>
+                        <li>
+                            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-calendar fa-fw"></i> Schedule<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li><a href="calendar.html"><i class="fa fa-calendar-o fa-fw"></i> View</a></li>
+                                <li><a href="schedule.html"><i class="fa fa-calendar-plus-o fa-fw"></i> Edit</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-book fa-fw"></i> Lesson Material<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li><a href="addlesson.html"><i class="fa fa-plus fa-fw"></i> New Lesson</a></li>
+                                <li><a href="addquote.html"><i class="fa fa-plus fa-fw"></i> New Quote</a></li>
+                                <li><a href="lessons.html"><i class="fa fa-book fa-fw"></i> View Lessons</a></li>
+                                <li><a href="quotes.html"><i class="fa fa-quote-left fa-fw"></i> View Quotes</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Add a Lesson</h1>
+                </div>
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <form role="form">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" id="form-group-lesson-title">
+                                <input class="form-control" id="form-lesson-title" placeholder="Lesson Title">
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group" id="form-group-lesson-body">
+                                            <textarea class="form-control" rows="3" id="form-lesson-body" placeholder="Lesson Body Text"></textarea>
+                                        </div>
+                                        <div class="form-group" id="form-group-lesson-author">
+                                            <input class="form-control" id="form-lesson-author" placeholder="Lesson Author / Source">
+                                        </div>
+                                        <div class="form-group" id="form-group-image-file">
+                                            <label class="control-label">Lesson Header Image</label>
+                                            <input type="file" id="form-image-file">
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.row (nested) -->
+                                <div class="form-group" id="form-radio-pillar">
+                                    <label class="control-label">Pillar:</label>
+                                    <div class="radio">
+                                        <label class="control-label">
+                                            <input type="radio" name="form-pillar-radio" value="6">Introduction
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label class="control-label">
+                                            <input type="radio" name="form-pillar-radio" value="0">Trustworthiness
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label class="control-label">
+                                            <input type="radio" name="form-pillar-radio" value="1">Respect
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label class="control-label">
+                                            <input type="radio" name="form-pillar-radio" value="2">Responsibility
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label class="control-label">
+                                            <input type="radio" name="form-pillar-radio" value="3">Fairness
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label class="control-label">
+                                            <input type="radio" name="form-pillar-radio" value="4">Caring
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label class="control-label">
+                                            <input type="radio" name="form-pillar-radio" value="5">Citizenship
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group" id="form-radio-grade">
+                                   <label class="control-label">Grade:</label>
+                                    <div class="radio">
+                                        <label class="control-label">
+                                            <input type="radio" name="form-grade-radio" value="0">K-2nd
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label class="control-label">
+                                            <input type="radio" name="form-grade-radio" value="1">3rd-5th
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label class="control-label">
+                                            <input type="radio" name="form-grade-radio" value="2">6th-8th
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label class="control-label">
+                                            <input type="radio" name="form-grade-radio" value="3">9th-12th
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group" id="form-group-tags">
+                                    <label class="control-label">Tags</label>
+                                    <input class="form-control" id="form-tags" placeholder="comma separated, words, or, phrases">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Submitted by User:</label>
+                            <p class="form-control-static" id="form-submitted-by-user"></p>
+                        </div>
+                        <div id="alert-container"></div>
+                        <button type="button" class="btn btn-default btn-submit" id="form_submit_button">Submit</button>
+                        <button type="reset" class="btn btn-default">Reset</button>
+
+                    </form>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>&nbsp;</h1>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../vendor/bootstrap-dialog/js/bootstrap-dialog.js"></script>
+    <script src="../vendor/metisMenu/metisMenu.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.6.5/firebase.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="../dist/js/sb-admin-2.js"></script>
+    <script src="../dist/js/fireuser.js"></script>
+    
+<script>
+
+var userUID = '';
+
+firebase.auth().onAuthStateChanged(function(user) {
+    if (user != null) {
+        email = user.email;
+        userUID = user.uid;
+        if(email != undefined){
+            $("#form-submitted-by-user").html(email);
+        } else{
+            $("#form-submitted-by-user").html('(' + userUID + ')');
+        }
+    }
+});
+
+function validateRequirements(lesson_title, lesson_body, lesson_author, pillar, grade, tags, image_file) {
+
+    var allGood = true;
+    if( fieldValidated(lesson_title) )  $("#form-group-lesson-title").removeClass('has-error');
+    else {  allGood = false;            $("#form-group-lesson-title").addClass('has-error'); }
+    if( fieldValidated(lesson_author) ) $("#form-group-lesson-author").removeClass('has-error');
+    else {  allGood = false;            $("#form-group-lesson-author").addClass('has-error'); }
+    if( fieldValidated(lesson_body) )   $("#form-group-lesson-body").removeClass('has-error');
+    else {  allGood = false;            $("#form-group-lesson-body").addClass('has-error'); }
+    if( fieldValidated(tags) )          $("#form-group-tags").removeClass('has-error');
+    else {  allGood = false;            $("#form-group-tags").addClass('has-error'); }
+    if( fieldValidated(image_file) )    $("#form-group-image-file").removeClass('has-error');
+    else {  allGood = false;            $("#form-group-image-file").addClass('has-error'); }
+    if( fieldValidated(pillar))         $('#form-radio-pillar').removeClass('has-error');
+    else {  allGood = false;            $("#form-radio-pillar").addClass('has-error'); }
+    if( fieldValidated(grade) )         $('#form-radio-grade').removeClass('has-error');        
+    else {  allGood = false;            $("#form-radio-grade").addClass('has-error'); }
+    return allGood;
+}
+
+
+function uploadNewLesson(lesson_title, lesson_body, lesson_author, pillar, grade, tags, image_file) {
+
+    if(lesson_title == undefined || lesson_body == undefined || lesson_author == undefined ||
+       pillar == undefined || grade == undefined || tags == undefined || image_file == undefined){
+        console.log('one of the fields is empty. halting submission');
+        return;
+    }
+    var postData = {
+        body: lesson_body,
+        grade: grade,
+        image: image_file,
+        pillar: pillar,
+        title: lesson_title,
+        lesson_author: lesson_author,
+        tags: tags,
+        submitted: userUID
+    };
+    // Get a key for a new Post.
+    var newPostKey = firebase.database().ref().child('lessons').push().key;
+    var updates = {};
+    updates['/lessons/' + newPostKey] = postData;
+    // updates['/user-posts/' + uid + '/' + newPostKey] = postData;
+    return firebase.database().ref().update(updates);
+}
+
+function submitButtonHandler(){
+    // DISABLE SUBMIT BUTTON
+    $('#form_submit_button').addClass('disabled');
+
+    var lesson_title = $("#form-lesson-title").val();
+    var lesson_author = $("#form-lesson-author").val();
+    var lesson_body = $("#form-lesson-body").val();
+    var tags = $("#form-tags").val();
+    var image_file = $("#form-image-file").val();
+    var selectedPillar = $('#form-radio-pillar input:radio:checked').val();
+    var selectedGrade = $('#form-radio-grade input:radio:checked').val();
+    if(selectedPillar != undefined) selectedPillar = parseInt(selectedPillar);
+    if(selectedGrade != undefined)  selectedGrade = parseInt(selectedGrade);
+
+    if(validateRequirements(lesson_title, lesson_body, lesson_author, selectedPillar, selectedGrade, tags, image_file) == true){
+        // hide alert if showing
+        alertWindow(false);
+        // STEP 1: Upload File
+        var file_dialog = document.getElementById('form-image-file');
+        if(file_dialog.files.length) {
+            var file = file_dialog.files[0];
+            var extension = image_file.split('.').pop();
+            var imageFilename = guid() + '.' + extension;
+            var imageRef = firebase.storage().ref().child('images/' + imageFilename);    
+            // imageRef.put(file).then(function(snapshot) {
+            var uploadTask = imageRef.put(file);
+            uploadTask.on('state_changed', null, null, function() {
+                // STEP 2:  Post Lesson
+                var returnValue = uploadNewLesson(lesson_title, lesson_body, lesson_author, selectedPillar, selectedGrade, tags, imageFilename);
+                confirmUpload();
+                // REENABLE SUBMIT BUTTON
+                $('#form_submit_button').removeClass('disabled');
+            });
+        }
+    } else{
+        alertWindow(true);
+        // REENABLE SUBMIT BUTTON
+        $('#form_submit_button').removeClass('disabled');
+    }   
+}
+
+function confirmUpload(){
+    BootstrapDialog.show({
+        title: 'Upload Complete',
+        message: 'Lesson has been added',
+        buttons: [{
+            label: 'Okay',
+            action: function(dialogItself){
+                resetAllFields();
+                dialogItself.close();
+            }
+        }]
+    });    
+}
+
+function resetAllFields(){
+    $("#form-lesson-title").val('');
+    $("#form-lesson-author").val('');
+    $("#form-lesson-body").val('');
+    $("#form-tags").val('');
+    $("#form-image-file").val('');
+    // $('#form-radio-pillar input:radio:checked').html("");
+    // $('#form-radio-grade input:radio:checked').html("");
+}
+
+$(".btn-submit").click(function(event) {
+    // thisInstead();
+    submitButtonHandler();
+    event.preventDefault();
+})
+
+function fieldValidated(field){
+    if(field == undefined) return false;
+    if (typeof field === 'string' || field instanceof String){
+        if (/\S/.test(field)) return true;
+        return false;
+    }
+    return true;
+}
+
+function alertWindow(show){  // T/F , show/hide
+    var alertHTML = '<div class="alert alert-danger alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>Lesson Incomplete</strong> Please fill missing information. Incomplete fields are in red.</div>';
+    if(show == true){
+        $("#alert-container").html(alertHTML);
+    } else{
+        $("#alert-container").html("");
+    }
+}
+
+function guid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    s4() + '-' + s4() + s4() + s4();
+}
+
+</script>
+
+</body>
+
+</html>
