@@ -1,0 +1,691 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		44D790C51C029AEDBEF9BD48 /* Pods_Voila.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6CF78C23B362FCE1B751FA3 /* Pods_Voila.framework */; };
+		D511F0361F0D5618005AB196 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D511F0351F0D5618005AB196 /* AppDelegate.swift */; };
+		D511F03D1F0D5618005AB196 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D511F03C1F0D5618005AB196 /* Assets.xcassets */; };
+		D511F0401F0D5618005AB196 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D511F03E1F0D5618005AB196 /* LaunchScreen.storyboard */; };
+		D511F04B1F0D5618005AB196 /* VoilaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D511F04A1F0D5618005AB196 /* VoilaTests.swift */; };
+		D511F0561F0D5618005AB196 /* VoilaUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D511F0551F0D5618005AB196 /* VoilaUITests.swift */; };
+		D511F0641F0D56F7005AB196 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D511F0631F0D56F7005AB196 /* GoogleService-Info.plist */; };
+		D511F06C1F0D574C005AB196 /* Fire.swift in Sources */ = {isa = PBXBuildFile; fileRef = D511F06A1F0D574C005AB196 /* Fire.swift */; };
+		D511F06E1F0D5870005AB196 /* MasterNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D511F06D1F0D5870005AB196 /* MasterNavigationController.swift */; };
+		D511F0701F0D5893005AB196 /* ProjectsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D511F06F1F0D5893005AB196 /* ProjectsViewController.swift */; };
+		D5BEB7291F13D1B4000C724A /* RoomTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BEB7281F13D1B4000C724A /* RoomTableViewController.swift */; };
+		D5BEB72B1F13D6B8000C724A /* AllRoomsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BEB72A1F13D6B8000C724A /* AllRoomsTableViewController.swift */; };
+		D5DE2D211F151ACD0071955D /* Voila.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DE2D201F151ACD0071955D /* Voila.swift */; };
+		D5DE2D241F151DCE0071955D /* Furniture.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DE2D231F151DCE0071955D /* Furniture.swift */; };
+		D5DE2D261F1528650071955D /* ProjectTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DE2D251F1528650071955D /* ProjectTableViewController.swift */; };
+		D5DE2D291F1529B60071955D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DE2D281F1529B60071955D /* LoginViewController.swift */; };
+		D5DE2D2B1F1529CE0071955D /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DE2D2A1F1529CE0071955D /* ProfileViewController.swift */; };
+		D5DE2D2D1F152B5E0071955D /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DE2D2C1F152B5E0071955D /* Project.swift */; };
+		D5DE2D2F1F15302E0071955D /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DE2D2E1F15302E0071955D /* Room.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D511F0471F0D5618005AB196 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D511F02A1F0D5618005AB196 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D511F0311F0D5618005AB196;
+			remoteInfo = Voila;
+		};
+		D511F0521F0D5618005AB196 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D511F02A1F0D5618005AB196 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D511F0311F0D5618005AB196;
+			remoteInfo = Voila;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		474802BA2AF0F3DA37A8F1C5 /* Pods-Voila.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Voila.release.xcconfig"; path = "Pods/Target Support Files/Pods-Voila/Pods-Voila.release.xcconfig"; sourceTree = "<group>"; };
+		A04C77F280D0F04E6F961BCB /* Pods-Voila.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Voila.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Voila/Pods-Voila.debug.xcconfig"; sourceTree = "<group>"; };
+		D511F0321F0D5618005AB196 /* Voila.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Voila.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D511F0351F0D5618005AB196 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		D511F03C1F0D5618005AB196 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D511F03F1F0D5618005AB196 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		D511F0411F0D5618005AB196 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D511F0461F0D5618005AB196 /* VoilaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VoilaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D511F04A1F0D5618005AB196 /* VoilaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoilaTests.swift; sourceTree = "<group>"; };
+		D511F04C1F0D5618005AB196 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D511F0511F0D5618005AB196 /* VoilaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VoilaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D511F0551F0D5618005AB196 /* VoilaUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoilaUITests.swift; sourceTree = "<group>"; };
+		D511F0571F0D5618005AB196 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D511F0631F0D56F7005AB196 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		D511F06A1F0D574C005AB196 /* Fire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fire.swift; sourceTree = "<group>"; };
+		D511F06D1F0D5870005AB196 /* MasterNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterNavigationController.swift; sourceTree = "<group>"; };
+		D511F06F1F0D5893005AB196 /* ProjectsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectsViewController.swift; sourceTree = "<group>"; };
+		D5BEB7281F13D1B4000C724A /* RoomTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomTableViewController.swift; sourceTree = "<group>"; };
+		D5BEB72A1F13D6B8000C724A /* AllRoomsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllRoomsTableViewController.swift; sourceTree = "<group>"; };
+		D5DE2D201F151ACD0071955D /* Voila.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Voila.swift; sourceTree = "<group>"; };
+		D5DE2D231F151DCE0071955D /* Furniture.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Furniture.swift; sourceTree = "<group>"; };
+		D5DE2D251F1528650071955D /* ProjectTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectTableViewController.swift; sourceTree = "<group>"; };
+		D5DE2D281F1529B60071955D /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		D5DE2D2A1F1529CE0071955D /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		D5DE2D2C1F152B5E0071955D /* Project.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
+		D5DE2D2E1F15302E0071955D /* Room.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
+		F6CF78C23B362FCE1B751FA3 /* Pods_Voila.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Voila.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D511F02F1F0D5618005AB196 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				44D790C51C029AEDBEF9BD48 /* Pods_Voila.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D511F0431F0D5618005AB196 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D511F04E1F0D5618005AB196 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		4EFB8661413A6CE79B0078E9 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				A04C77F280D0F04E6F961BCB /* Pods-Voila.debug.xcconfig */,
+				474802BA2AF0F3DA37A8F1C5 /* Pods-Voila.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		65026ABC06AA1C28BDA1FE4A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F6CF78C23B362FCE1B751FA3 /* Pods_Voila.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D511F0291F0D5618005AB196 = {
+			isa = PBXGroup;
+			children = (
+				D511F0341F0D5618005AB196 /* Voila */,
+				D511F0491F0D5618005AB196 /* VoilaTests */,
+				D511F0541F0D5618005AB196 /* VoilaUITests */,
+				D511F0331F0D5618005AB196 /* Products */,
+				4EFB8661413A6CE79B0078E9 /* Pods */,
+				65026ABC06AA1C28BDA1FE4A /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		D511F0331F0D5618005AB196 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D511F0321F0D5618005AB196 /* Voila.app */,
+				D511F0461F0D5618005AB196 /* VoilaTests.xctest */,
+				D511F0511F0D5618005AB196 /* VoilaUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D511F0341F0D5618005AB196 /* Voila */ = {
+			isa = PBXGroup;
+			children = (
+				D511F0351F0D5618005AB196 /* AppDelegate.swift */,
+				D511F0691F0D574C005AB196 /* Singletons */,
+				D5DE2D221F151DAF0071955D /* Model */,
+				D511F0671F0D574C005AB196 /* Controllers */,
+				D511F03C1F0D5618005AB196 /* Assets.xcassets */,
+				D511F03E1F0D5618005AB196 /* LaunchScreen.storyboard */,
+				D511F0411F0D5618005AB196 /* Info.plist */,
+				D511F0631F0D56F7005AB196 /* GoogleService-Info.plist */,
+			);
+			path = Voila;
+			sourceTree = "<group>";
+		};
+		D511F0491F0D5618005AB196 /* VoilaTests */ = {
+			isa = PBXGroup;
+			children = (
+				D511F04A1F0D5618005AB196 /* VoilaTests.swift */,
+				D511F04C1F0D5618005AB196 /* Info.plist */,
+			);
+			path = VoilaTests;
+			sourceTree = "<group>";
+		};
+		D511F0541F0D5618005AB196 /* VoilaUITests */ = {
+			isa = PBXGroup;
+			children = (
+				D511F0551F0D5618005AB196 /* VoilaUITests.swift */,
+				D511F0571F0D5618005AB196 /* Info.plist */,
+			);
+			path = VoilaUITests;
+			sourceTree = "<group>";
+		};
+		D511F0671F0D574C005AB196 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				D511F06D1F0D5870005AB196 /* MasterNavigationController.swift */,
+				D5DE2D271F1529920071955D /* Auth */,
+				D511F06F1F0D5893005AB196 /* ProjectsViewController.swift */,
+				D5DE2D251F1528650071955D /* ProjectTableViewController.swift */,
+				D5BEB7281F13D1B4000C724A /* RoomTableViewController.swift */,
+				D5BEB72A1F13D6B8000C724A /* AllRoomsTableViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		D511F0691F0D574C005AB196 /* Singletons */ = {
+			isa = PBXGroup;
+			children = (
+				D511F06A1F0D574C005AB196 /* Fire.swift */,
+				D5DE2D201F151ACD0071955D /* Voila.swift */,
+			);
+			path = Singletons;
+			sourceTree = "<group>";
+		};
+		D5DE2D221F151DAF0071955D /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D5DE2D231F151DCE0071955D /* Furniture.swift */,
+				D5DE2D2E1F15302E0071955D /* Room.swift */,
+				D5DE2D2C1F152B5E0071955D /* Project.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		D5DE2D271F1529920071955D /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				D5DE2D2A1F1529CE0071955D /* ProfileViewController.swift */,
+				D5DE2D281F1529B60071955D /* LoginViewController.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D511F0311F0D5618005AB196 /* Voila */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D511F05A1F0D5618005AB196 /* Build configuration list for PBXNativeTarget "Voila" */;
+			buildPhases = (
+				11617EC8BD3C111674FBABFA /* [CP] Check Pods Manifest.lock */,
+				D511F02E1F0D5618005AB196 /* Sources */,
+				D511F02F1F0D5618005AB196 /* Frameworks */,
+				D511F0301F0D5618005AB196 /* Resources */,
+				7297A690F5D8D7A15AC9932D /* [CP] Embed Pods Frameworks */,
+				BFACD699014AEC6912AD7953 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Voila;
+			productName = Voila;
+			productReference = D511F0321F0D5618005AB196 /* Voila.app */;
+			productType = "com.apple.product-type.application";
+		};
+		D511F0451F0D5618005AB196 /* VoilaTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D511F05D1F0D5618005AB196 /* Build configuration list for PBXNativeTarget "VoilaTests" */;
+			buildPhases = (
+				D511F0421F0D5618005AB196 /* Sources */,
+				D511F0431F0D5618005AB196 /* Frameworks */,
+				D511F0441F0D5618005AB196 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D511F0481F0D5618005AB196 /* PBXTargetDependency */,
+			);
+			name = VoilaTests;
+			productName = VoilaTests;
+			productReference = D511F0461F0D5618005AB196 /* VoilaTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		D511F0501F0D5618005AB196 /* VoilaUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D511F0601F0D5618005AB196 /* Build configuration list for PBXNativeTarget "VoilaUITests" */;
+			buildPhases = (
+				D511F04D1F0D5618005AB196 /* Sources */,
+				D511F04E1F0D5618005AB196 /* Frameworks */,
+				D511F04F1F0D5618005AB196 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D511F0531F0D5618005AB196 /* PBXTargetDependency */,
+			);
+			name = VoilaUITests;
+			productName = VoilaUITests;
+			productReference = D511F0511F0D5618005AB196 /* VoilaUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D511F02A1F0D5618005AB196 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0830;
+				LastUpgradeCheck = 0830;
+				ORGANIZATIONNAME = "Robby Kraft";
+				TargetAttributes = {
+					D511F0311F0D5618005AB196 = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = 78C98TD784;
+						ProvisioningStyle = Automatic;
+					};
+					D511F0451F0D5618005AB196 = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = 78C98TD784;
+						ProvisioningStyle = Automatic;
+						TestTargetID = D511F0311F0D5618005AB196;
+					};
+					D511F0501F0D5618005AB196 = {
+						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = 78C98TD784;
+						ProvisioningStyle = Automatic;
+						TestTargetID = D511F0311F0D5618005AB196;
+					};
+				};
+			};
+			buildConfigurationList = D511F02D1F0D5618005AB196 /* Build configuration list for PBXProject "Voila" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = D511F0291F0D5618005AB196;
+			productRefGroup = D511F0331F0D5618005AB196 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D511F0311F0D5618005AB196 /* Voila */,
+				D511F0451F0D5618005AB196 /* VoilaTests */,
+				D511F0501F0D5618005AB196 /* VoilaUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D511F0301F0D5618005AB196 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D511F0401F0D5618005AB196 /* LaunchScreen.storyboard in Resources */,
+				D511F0641F0D56F7005AB196 /* GoogleService-Info.plist in Resources */,
+				D511F03D1F0D5618005AB196 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D511F0441F0D5618005AB196 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D511F04F1F0D5618005AB196 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		11617EC8BD3C111674FBABFA /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		7297A690F5D8D7A15AC9932D /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Voila/Pods-Voila-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BFACD699014AEC6912AD7953 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Voila/Pods-Voila-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D511F02E1F0D5618005AB196 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D5DE2D211F151ACD0071955D /* Voila.swift in Sources */,
+				D5DE2D241F151DCE0071955D /* Furniture.swift in Sources */,
+				D5BEB7291F13D1B4000C724A /* RoomTableViewController.swift in Sources */,
+				D511F0701F0D5893005AB196 /* ProjectsViewController.swift in Sources */,
+				D5BEB72B1F13D6B8000C724A /* AllRoomsTableViewController.swift in Sources */,
+				D511F06C1F0D574C005AB196 /* Fire.swift in Sources */,
+				D5DE2D2F1F15302E0071955D /* Room.swift in Sources */,
+				D5DE2D2B1F1529CE0071955D /* ProfileViewController.swift in Sources */,
+				D511F06E1F0D5870005AB196 /* MasterNavigationController.swift in Sources */,
+				D511F0361F0D5618005AB196 /* AppDelegate.swift in Sources */,
+				D5DE2D261F1528650071955D /* ProjectTableViewController.swift in Sources */,
+				D5DE2D291F1529B60071955D /* LoginViewController.swift in Sources */,
+				D5DE2D2D1F152B5E0071955D /* Project.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D511F0421F0D5618005AB196 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D511F04B1F0D5618005AB196 /* VoilaTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D511F04D1F0D5618005AB196 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D511F0561F0D5618005AB196 /* VoilaUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D511F0481F0D5618005AB196 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D511F0311F0D5618005AB196 /* Voila */;
+			targetProxy = D511F0471F0D5618005AB196 /* PBXContainerItemProxy */;
+		};
+		D511F0531F0D5618005AB196 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D511F0311F0D5618005AB196 /* Voila */;
+			targetProxy = D511F0521F0D5618005AB196 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		D511F03E1F0D5618005AB196 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D511F03F1F0D5618005AB196 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		D511F0581F0D5618005AB196 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D511F0591F0D5618005AB196 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		D511F05B1F0D5618005AB196 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A04C77F280D0F04E6F961BCB /* Pods-Voila.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 78C98TD784;
+				INFOPLIST_FILE = Voila/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.robbykraft.Voila;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D511F05C1F0D5618005AB196 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 474802BA2AF0F3DA37A8F1C5 /* Pods-Voila.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 78C98TD784;
+				INFOPLIST_FILE = Voila/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.robbykraft.Voila;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		D511F05E1F0D5618005AB196 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 78C98TD784;
+				INFOPLIST_FILE = VoilaTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.robbykraft.VoilaTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Voila.app/Voila";
+			};
+			name = Debug;
+		};
+		D511F05F1F0D5618005AB196 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 78C98TD784;
+				INFOPLIST_FILE = VoilaTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.robbykraft.VoilaTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Voila.app/Voila";
+			};
+			name = Release;
+		};
+		D511F0611F0D5618005AB196 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				DEVELOPMENT_TEAM = 78C98TD784;
+				INFOPLIST_FILE = VoilaUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.robbykraft.VoilaUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = Voila;
+			};
+			name = Debug;
+		};
+		D511F0621F0D5618005AB196 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				DEVELOPMENT_TEAM = 78C98TD784;
+				INFOPLIST_FILE = VoilaUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.robbykraft.VoilaUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = Voila;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D511F02D1F0D5618005AB196 /* Build configuration list for PBXProject "Voila" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D511F0581F0D5618005AB196 /* Debug */,
+				D511F0591F0D5618005AB196 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D511F05A1F0D5618005AB196 /* Build configuration list for PBXNativeTarget "Voila" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D511F05B1F0D5618005AB196 /* Debug */,
+				D511F05C1F0D5618005AB196 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D511F05D1F0D5618005AB196 /* Build configuration list for PBXNativeTarget "VoilaTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D511F05E1F0D5618005AB196 /* Debug */,
+				D511F05F1F0D5618005AB196 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D511F0601F0D5618005AB196 /* Build configuration list for PBXNativeTarget "VoilaUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D511F0611F0D5618005AB196 /* Debug */,
+				D511F0621F0D5618005AB196 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D511F02A1F0D5618005AB196 /* Project object */;
+}
