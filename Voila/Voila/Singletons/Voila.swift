@@ -3,7 +3,7 @@ class Voila{
 	static let shared = Voila()
 
 	// both of these are arrays/dictionaries of room names
-	var rooms:[String] = []
+	var rooms:[Room] = []
 	// this one has furniture objects 
 	var furniture:[String:[Furniture]] = [:]
 	
@@ -23,6 +23,7 @@ class Voila{
 			if let d = data as? [String:Any]{
 				self.rooms = Array(d.keys).sorted()
 				for room in self.rooms{
+					// create a room object
 					self.furniture[room] = []
 					if let roomFurniture = d[room] as? [String:Any]{
 						let furnitureKeys = Array(roomFurniture.keys).sorted()

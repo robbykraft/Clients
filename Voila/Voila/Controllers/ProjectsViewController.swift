@@ -10,7 +10,7 @@ import UIKit
 
 class ProjectsViewController: UITableViewController {
 	
-	var projects:[String:Any] = [:]{
+	var projects:[Project] = []{
 		didSet{
 			self.tableView.reloadData()
 		}
@@ -33,10 +33,13 @@ class ProjectsViewController: UITableViewController {
 		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont.systemFont(ofSize: 25), NSForegroundColorAttributeName: UIColor.black], for:.normal)
 
 		Fire.shared.getData("projects") { (data) in
-			if let d = data as? [String:Any]{
-				for(
-				self.projects = d
+			var projectArray:[Project] = []
+			if let d = data as? [String:[String:Any]]{
+				for (key, value) in d{
+					projectArray.append(Project(key: key, data: value))
+				}
 			}
+			self.projects = projectArray
 		}
         // Do any additional setup after loading the view.
     }
