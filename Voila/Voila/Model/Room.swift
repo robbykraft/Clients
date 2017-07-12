@@ -10,9 +10,14 @@ import Foundation
 
 class Room{
 	var key:String = ""
-	var type:String = "" // room name in database
-	var customName:String = "" // rename a room
+	var name:String = "" // room name in database
+	var customName:String? // rename a room
 	
 	var furniture:[Furniture] = []
+	
+	init(key:String, name:String){
+		self.key = key
+		self.name = name
+	}
 	
 }

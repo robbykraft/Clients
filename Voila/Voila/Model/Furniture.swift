@@ -10,10 +10,12 @@ import Foundation
 
 class Furniture{
 	var name:String = ""
-	var price:Int = 0
+	var price:Float = 0
 	var room:Room?
 	
-	init(name:String, price:Int, room:Room){
+	var copies:Int = 1 // in a room of furniture items, copies of furniture stored here
+	
+	init(name:String, price:Float, room:Room){
 		self.name = name
 		self.price = price
 		self.room = room

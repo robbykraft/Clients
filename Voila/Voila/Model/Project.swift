@@ -20,14 +20,31 @@ class Project{
 	init(key:String, data:[String:Any]){
 		self.key = key
 		
-		if let name = data["name"] as? String { self.name = name }
+		if let projectName = data["name"] as? String { self.name = projectName }
 		if let active = data["active"] as? Bool { self.active = active }
-		if let content = data["content"] as? [String:Any] {
-			for (key, value) in content{
-				
+		if let rooms = data["rooms"] as? [String:Any] {
+			var roomArray:[Room] = []
+			for (roomKey, object) in rooms{
+				if let roomObject = object as? [String:Any]{
+					if let roomName = roomObject["name"] as? String {
+						let newRoom = Room(key: roomKey, name: roomName)
+						if let customName = roomObject["customName"] as? String { newRoom.customName = customName }
+						var furnitureArray:[Furniture] = []
+						if let furnitureList = roomObject["furniture"] as? [String:Int]{
+							for(furnitureName, count) in furnitureList{
+								let newFurniture = Furniture(name: furnitureName, price: Voila.shared.priceForFurniture(name: furnitureName), room: newRoom)
+								newFurniture.copies = count
+								furnitureArray.append(newFurniture)
+							}
+						}
+						newRoom.furniture = furnitureArray
+						// finished building room
+						roomArray.append(newRoom)
+					}
+				}
 			}
+			self.rooms = roomArray
 		}
-		
 	}
 	
 	func update(completionHandler:@escaping() -> ()){

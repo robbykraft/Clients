@@ -37,7 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		_ = Voila.shared
 		
 		Voila.shared.boot {
-			print(Voila.shared.furniture)
+			print(Voila.shared.rooms)
 			if (Auth.auth().currentUser) != nil {
 				// User is signed in.
 				self.launchApp(false)

@@ -10,7 +10,7 @@ import UIKit
 
 class ProjectTableViewController: UITableViewController {
 	
-	var data:[String:Any] = [:]{
+	var data:Project?{
 		didSet{
 			self.tableView.reloadData()
 		}
@@ -46,6 +46,13 @@ class ProjectTableViewController: UITableViewController {
     }
 
     // MARK: - Table view data source
+	
+	override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+		if let project = self.data{
+			return project.name
+		}
+		return nil
+	}
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
@@ -54,24 +61,33 @@ class ProjectTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return Array(data.keys).count
+		if let project = self.data{
+			return project.rooms.count
+		}
+        return 0
     }
 
 	
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 //        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
 		let cell = UITableViewCell.init(style: .value1, reuseIdentifier: "RoomCell")
-
-		let keys = Array(self.data.keys)
-		let object:[String:Any] = self.data[ keys[indexPath.row] ] as! [String:Any]
-		let objectskeys = Array(object.keys)
-		
-		cell.textLabel?.text = keys[indexPath.row]
-		
-		cell.detailTextLabel?.text = String(describing:objectskeys.count)
-
+		if let project = self.data{
+			let room = project.rooms[indexPath.row]
+			cell.textLabel?.text = room.name
+			if let customName = room.customName { cell.textLabel?.text = customName }
+			cell.detailTextLabel?.text = "\(room.furniture.count)"
+		}
         return cell
     }
+	
+	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		if let project = self.data{
+			let room = project.rooms[indexPath.row]
+			let vc = RoomTableViewController()
+			vc.data = room
+			self.navigationController?.pushViewController(vc, animated: true)
+		}
+	}
 
     /*
     // Override to support conditional editing of the table view.

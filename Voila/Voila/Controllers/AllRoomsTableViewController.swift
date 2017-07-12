@@ -19,7 +19,7 @@ class AllRoomsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 		
-		self.data = Voila.shared.rooms
+		self.data = Voila.shared.roomNames
 		
 		self.title = "Add/Remove Rooms"
 		

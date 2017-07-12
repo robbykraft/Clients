@@ -18,7 +18,7 @@ class ProjectsViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-		self.title = "Proposals"
+		self.title = "Projects"
 
 		self.tableView.separatorStyle = .none
 		
@@ -53,7 +53,7 @@ class ProjectsViewController: UITableViewController {
 		case 0:
 			return 1
 		default:
-			return Array(self.projects.keys).count
+			return self.projects.count
 		}
 	}
 	
@@ -68,24 +68,24 @@ class ProjectsViewController: UITableViewController {
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		if(indexPath.section == 0){
-			let cell = UITableViewCell.init(style: .default, reuseIdentifier: "CreateProposalCell")
-			cell.textLabel?.text = "Create Proposal"
+			let cell = UITableViewCell.init(style: .default, reuseIdentifier: "CreateProjectCell")
+			cell.textLabel?.text = "Create Project"
 			return cell
 		}
-		let keys:[String] = Array(self.projects.keys)
-		let object:[String:Any] = (self.projects[ keys[indexPath.row] ] as? [String:Any])!
-		let cell = UITableViewCell.init(style: .default, reuseIdentifier: "ProposalCell")
-		cell.textLabel?.text = object["name"] as? String
+		let project = self.projects[indexPath.row]
+		
+		let cell = UITableViewCell.init(style: .default, reuseIdentifier: "ProjectCell")
+		cell.textLabel?.text = project.name
+		cell.detailTextLabel?.text = "\(project.rooms.count) rooms"
+		if(project.rooms.count == 1) { cell.detailTextLabel?.text = "\(project.rooms.count) room" }
 		return cell
 	}
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		let keys:[String] = Array(self.projects.keys)
-		let object:[String:Any] = (self.projects[ keys[indexPath.row] ] as? [String:Any])!
+		Voila.shared.project = self.projects[indexPath.row]
 		let vc = ProjectTableViewController()
-		Voila.shared.loadProject(key: keys[indexPath.row], object: object) {
-			self.navigationController?.pushViewController(vc, animated: true)
-		}
+		vc.data = self.projects[indexPath.row]
+		self.navigationController?.pushViewController(vc, animated: true)
 	}
 	
 	func doneButtonPressed(){

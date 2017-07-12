@@ -10,24 +10,18 @@ import UIKit
 
 class RoomTableViewController: UITableViewController {
 	
-	var data:[String:Any] = [:]{
+	var data:Room?{
 		didSet{
+			if let room = self.data{
+				self.title = room.name
+				if let customName = room.customName{
+					self.title = customName
+				}
+			}
 			self.tableView.reloadData()
 		}
 	}
 	
-	var room:String?{
-		didSet{
-			Fire.shared.getData("data") { (data) in
-				if let d = data as? [String:Any]{
-					if let roomString = self.room{
-						self.data = d[roomString] as! [String:Any]
-					}
-				}
-			}
-		}
-	}
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -35,7 +29,7 @@ class RoomTableViewController: UITableViewController {
 
 		navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
 
-		let addButton = UIBarButtonItem.init(title: "+", style: .done, target: self, action: #selector(addRoomHandler))
+		let addButton = UIBarButtonItem.init(title: "+", style: .done, target: self, action: #selector(addFurnitureHandler))
 		self.navigationItem.rightBarButtonItem = addButton
 		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont.systemFont(ofSize: 25), NSForegroundColorAttributeName: UIColor.black], for:.normal)
 
@@ -48,7 +42,7 @@ class RoomTableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
 	
-	func addRoomHandler(){
+	func addFurnitureHandler(){
 		let nav = UINavigationController()
 		nav.viewControllers = [AllRoomsTableViewController()]
 		self.present(nav, animated: true, completion: nil)
@@ -62,28 +56,26 @@ class RoomTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return Array(data.keys).count
-    }
+		if let room = self.data{
+			return room.furniture.count
+		}
+		return 0
+	}
 
 	
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 //        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
 		let cell = UITableViewCell.init(style: .value1, reuseIdentifier: "RoomCell")
-
-		let keys = Array(self.data.keys)
-		let object:[String:Any] = self.data[ keys[indexPath.row] ] as! [String:Any]
-		let objectskeys = Array(object.keys)
 		
-		cell.textLabel?.text = keys[indexPath.row]
-		
-		cell.detailTextLabel?.text = String(describing:objectskeys.count)
-
+		if let room = self.data{
+			let furniture = room.furniture[indexPath.row]
+			cell.textLabel?.text = furniture.name
+			cell.detailTextLabel?.text = "\(furniture.copies)"
+		}
         return cell
     }
 
