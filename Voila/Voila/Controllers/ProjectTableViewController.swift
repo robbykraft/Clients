@@ -27,8 +27,9 @@ class ProjectTableViewController: UITableViewController {
 
 		navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
 
-		let addButton = UIBarButtonItem.init(title: "Proposal", style: .done, target: self, action: #selector(addRoomHandler))
+		let addButton = UIBarButtonItem.init(title: "Proposal", style: .done, target: self, action: #selector(makeProposalHandler))
 		self.navigationItem.rightBarButtonItem = addButton
+		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)!, NSForegroundColorAttributeName: Style.shared.blue], for:.normal)
 //		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont.systemFont(ofSize: 25), NSForegroundColorAttributeName: UIColor.black], for:.normal)
 
         // Uncomment the following line to preserve selection between presentations
@@ -37,6 +38,10 @@ class ProjectTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
+	
+	func makeProposalHandler(){
+		
+	}
 	
 	func addRoomHandler(){
 		let nav = UINavigationController()
