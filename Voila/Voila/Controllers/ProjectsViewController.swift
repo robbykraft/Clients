@@ -28,7 +28,7 @@ class ProjectsViewController: UITableViewController {
 //		self.navigationItem.leftBarButtonItem = newBackButton
 //		self.navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont.boldSystemFont(ofSize: 18), NSForegroundColorAttributeName: UIColor.black], for:.normal)
 
-		let addButton = UIBarButtonItem.init(title: "Settings", style: .done, target: self, action: #selector(newProjectHandler))
+		let addButton = UIBarButtonItem.init(title: "Settings", style: .done, target: self, action: #selector(settingsHandler))
 		self.navigationItem.rightBarButtonItem = addButton
 //		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont.systemFont(ofSize: 25), NSForegroundColorAttributeName: UIColor.black], for:.normal)
 
@@ -67,7 +67,7 @@ class ProjectsViewController: UITableViewController {
 	override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
 		switch section {
 		case 0:
-			return "New"
+			return nil
 		default:
 			return "Current"
 		}
@@ -92,10 +92,20 @@ class ProjectsViewController: UITableViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		Voila.shared.project = self.projects[indexPath.row]
-		let vc = ProjectTableViewController()
-		vc.data = self.projects[indexPath.row]
-		self.navigationController?.pushViewController(vc, animated: true)
+		switch indexPath.section{
+		case 0:
+			self.newProjectHandler()
+			tableView.deselectRow(at: indexPath, animated: true)
+		default:
+			Voila.shared.project = self.projects[indexPath.row]
+			let vc = ProjectTableViewController()
+			vc.data = self.projects[indexPath.row]
+			self.navigationController?.pushViewController(vc, animated: true)
+		}
+	}
+	
+	func settingsHandler(){
+		
 	}
 	
 	func doneButtonPressed(){

@@ -15,7 +15,7 @@ class Furniture{
 	
 	var copies:Int = 1 // in a room of furniture items, copies of furniture stored here
 	
-	init(name:String, price:Float, room:Room){
+	init(name:String, price:Float, room:Room?){
 		self.name = name
 		self.price = price
 		self.room = room

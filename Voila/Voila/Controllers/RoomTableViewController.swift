@@ -32,8 +32,6 @@ class RoomTableViewController: UITableViewController {
 		let addButton = UIBarButtonItem.init(title: "+", style: .done, target: self, action: #selector(addFurnitureHandler))
 		self.navigationItem.rightBarButtonItem = addButton
 		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont.systemFont(ofSize: 25), NSForegroundColorAttributeName: UIColor.black], for:.normal)
-
-		
 		
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -61,23 +59,43 @@ class RoomTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		if let room = self.data{
-			return room.furniture.count
+			if let furnitureArray = Voila.shared.furniture[room.name]{
+				return furnitureArray.count
+			}
 		}
 		return 0
 	}
 
 	
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+
 		let cell = UITableViewCell.init(style: .value1, reuseIdentifier: "RoomCell")
 		cell.textLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
 		cell.detailTextLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
+
 		
-		if let room = self.data{
-			let furniture = room.furniture[indexPath.row]
-			cell.textLabel?.text = furniture.name
-			cell.detailTextLabel?.text = "\(furniture.copies)"
+		if let myRoom = self.data{
+			if let furnitureArray = Voila.shared.furniture[myRoom.name]{
+
+				let furniture = furnitureArray[indexPath.row]
+				cell.textLabel?.text = furniture.name
+				
+				for myFurniture in myRoom.furniture{
+					if furniture.name == myFurniture.name{
+						cell.textLabel?.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)
+						cell.textLabel?.textColor = Style.shared.blue
+						cell.detailTextLabel?.textColor = Style.shared.blue
+						cell.detailTextLabel?.text = "\(myFurniture.copies)"
+					}
+				}
+			}
 		}
+		
+//		if let room = self.data{
+//			let furniture = room.furniture[indexPath.row]
+//			cell.textLabel?.text = furniture.name
+//			cell.detailTextLabel?.text = "\(furniture.copies)"
+//		}
         return cell
     }
 

@@ -81,6 +81,18 @@ class AllRoomsTableViewController: UITableViewController {
 		}
         return cell
     }
+	
+	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		let roomNameString = Voila.shared.roomNames[indexPath.row]
+		if let types = self.roomTypesAndCounts{
+			if let count = types[roomNameString]{
+				self.roomTypesAndCounts![roomNameString] = count + 1
+			} else{
+				self.roomTypesAndCounts![roomNameString] = 1
+			}
+		}
+		tableView.deselectRow(at: indexPath, animated: true)
+	}
 
     /*
     // Override to support conditional editing of the table view.

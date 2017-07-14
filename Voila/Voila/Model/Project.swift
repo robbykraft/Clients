@@ -72,6 +72,36 @@ class Project{
 		return dictionary
 	}
 	
+	func updateFromRoomTypesAndCounts(target:[String:Int], completionHandler:(()->())?){
+		let current = self.roomTypesAndCounts()
+		for (roomKey,count) in target{
+			// iterate over all target ROOMS
+			if let currentCount = current[roomKey]{
+				// if room currently also exists, but number is different
+				if currentCount < count{
+					for i in currentCount..<count{
+//						Voila.shared.addRoomToProject(roomKey)
+					}
+				}
+				else if currentCount > count{
+					// remove room from everything really
+					
+				}
+			} else{
+				// ROOM does not currently exist
+				for i in 0..<count{
+//					Voila.shared.addRoomToProject(roomKey)
+				}
+			}
+		}
+		// remove all ROOM in current if doesn't exist in target
+		for (key,_) in current{
+			if target[key] == nil{
+				self.rooms = self.rooms.filter({ $0.name != key })
+			}
+		}
+	}
+	
 	func update(completionHandler:(() -> ())?){
 		
 	}

@@ -3,10 +3,9 @@ class Voila{
 	static let shared = Voila()
 	fileprivate init(){ }
 
-	// master database list of rooms and their furniture
-	var rooms:[Room] = []
-	var roomNames:[String] = []
-//	var furniture:[String:[Furniture]] = [:]
+	// master database of rooms (keys) and their furniture
+	var furniture:[String:[Furniture]] = [:]
+	var roomNames:[String] = []  // array of keys of above database
 
 	var project:Project?{    // currently editing
 		didSet{
@@ -20,30 +19,28 @@ class Voila{
 	
 	func boot(completionHandler:@escaping() -> ()){
 		Fire.shared.getData("data") { (data) in
-			var roomArray:[Room] = []
+			var furnitureDictionary:[String:[Furniture]] = [:]
 			if let d = data as? [String:Any]{
 				for (roomName, roomObject) in d{
 					// iterate over room names
-					let newRoom = Room(key: roomName, name: roomName)  // these are room templates they don't have keys
 					var newRoomFurniture:[Furniture] = []
 					// add all the furniture, cost, and other details
 					if let furniture = roomObject as? [String:Any]{
 						for (furnitureName, furnitureObject) in furniture{
 							if let obj = furnitureObject as? [String:Any]{
 								if let cost = obj["cost"] as? Float{
-									let newFurniture = Furniture(name: furnitureName, price: cost, room: newRoom)
+									let newFurniture = Furniture(name: furnitureName, price: cost, room: nil)
 									newRoomFurniture.append(newFurniture)
 								}
 							}
 						}
 					}
-					newRoom.furniture = newRoomFurniture
-					// new room finished
-					roomArray.append(newRoom)
+					// all room furniture gathered
+					furnitureDictionary[roomName] = newRoomFurniture
 				}
 			}
-			self.rooms = roomArray
-			self.roomNames = self.rooms.map({ return $0.name }).sorted()
+			self.furniture = furnitureDictionary
+			self.roomNames = Array(furnitureDictionary.keys).sorted()
 			completionHandler()
 		}
 	}
