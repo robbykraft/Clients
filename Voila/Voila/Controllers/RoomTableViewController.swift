@@ -70,6 +70,8 @@ class RoomTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 //        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
 		let cell = UITableViewCell.init(style: .value1, reuseIdentifier: "RoomCell")
+		cell.textLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
+		cell.detailTextLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
 		
 		if let room = self.data{
 			let furniture = room.furniture[indexPath.row]

@@ -26,6 +26,8 @@ class AllRoomsTableViewController: UITableViewController {
 		
 		self.title = "Add/Remove Rooms"
 		
+		self.tableView.separatorStyle = .none
+		
 		let newBackButton = UIBarButtonItem.init(title: "Done", style: .done, target: self, action: #selector(doneHandler))
 		self.navigationItem.rightBarButtonItem = newBackButton
 		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont.boldSystemFont(ofSize: 18), NSForegroundColorAttributeName: UIColor.black], for:.normal)
@@ -39,6 +41,8 @@ class AllRoomsTableViewController: UITableViewController {
     }
 	
 	func doneHandler(){
+		// update
+		
 		self.dismiss(animated: true, completion: nil)
 	}
 
@@ -63,6 +67,8 @@ class AllRoomsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 //        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
 		let cell = UITableViewCell.init(style: .value1, reuseIdentifier: "RoomCell")
+		cell.textLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
+		cell.detailTextLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
 		
 		let roomNameString = Voila.shared.roomNames[indexPath.row]
 		cell.textLabel?.text = roomNameString

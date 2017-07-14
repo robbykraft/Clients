@@ -15,6 +15,7 @@ class ProjectTableViewController: UITableViewController {
 			self.tableView.reloadData()
 			if let d = self.data{
 				self.title = d.name
+				print(d.databaseForm())
 			}
 		}
 	}
@@ -57,19 +58,18 @@ class ProjectTableViewController: UITableViewController {
 	override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
 		switch section {
 		case 0:
-			return "Project Settings"
+			return nil
+//			return "Project Settings"
 		default:
 			return "Rooms"
 		}
 	}
 
 	override func numberOfSections(in tableView: UITableView) -> Int {
-		// #warning Incomplete implementation, return the number of sections
 		return 2
 	}
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
 		switch section{
 		case 0: return 1
 		case 1:
@@ -86,14 +86,18 @@ class ProjectTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 //        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
 		let cell = UITableViewCell.init(style: .value1, reuseIdentifier: "ProjectCell")
+		cell.textLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
+		cell.detailTextLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
 		switch indexPath.section {
 		case 0:
-			cell.textLabel?.text = "Edit Settings"
+			cell.textLabel?.text = "Project Details"
+			cell.textLabel?.textColor = Style.shared.gray
 		default:
 			if let project = self.data{
 				switch indexPath.row {
 				case project.rooms.count:
 					cell.textLabel?.text = "+/- Add / Remove Rooms"
+					cell.textLabel?.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)
 					cell.textLabel?.textColor = Style.shared.blue
 				default:
 					let room = project.rooms[indexPath.row]

@@ -20,4 +20,16 @@ class Room{
 		self.name = name
 	}
 	
+	func databaseForm() -> [String:Any]{
+		var dictionary:[String:Any] = [:]
+		dictionary["name"] = name
+		if let custom = self.customName{ dictionary["custom"] = custom }
+		var furnitureDictionary:[String:Any] = [:]
+		for furniture in self.furniture{
+			furnitureDictionary[furniture.name] = furniture.copies
+		}
+		dictionary["furniture"] = furnitureDictionary
+		return dictionary
+	}
+	
 }

@@ -60,7 +60,19 @@ class Project{
 		}
 	}
 	
-	func update(completionHandler:@escaping() -> ()){
+	func databaseForm() -> [String:Any]{
+		var dictionary:[String:Any] = [:]
+		dictionary["active"] = self.active
+		dictionary["name"] = self.name
+		var roomDictionary:[String:Any] = [:]
+		for room in self.rooms{
+			roomDictionary[room.key] = room.databaseForm()
+		}
+		dictionary["rooms"] = roomDictionary
+		return dictionary
+	}
+	
+	func update(completionHandler:(() -> ())?){
 		
 	}
 	
