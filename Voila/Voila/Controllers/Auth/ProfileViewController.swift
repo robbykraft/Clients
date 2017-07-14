@@ -9,11 +9,6 @@
 import UIKit
 import Firebase
 
-func statusBarHeight() -> CGFloat {
-	let statusBarSize = UIApplication.shared.statusBarFrame.size
-	return Swift.min(statusBarSize.width, statusBarSize.height)
-}
-
 func dateStringForUnixTime(_ unixTime:Double) -> String{
 	let date:Date = Date(timeIntervalSince1970: unixTime)
 	let dateFormatter:DateFormatter = DateFormatter.init()

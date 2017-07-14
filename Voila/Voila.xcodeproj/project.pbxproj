@@ -17,6 +17,7 @@
 		D511F06C1F0D574C005AB196 /* Fire.swift in Sources */ = {isa = PBXBuildFile; fileRef = D511F06A1F0D574C005AB196 /* Fire.swift */; };
 		D511F06E1F0D5870005AB196 /* MasterNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D511F06D1F0D5870005AB196 /* MasterNavigationController.swift */; };
 		D511F0701F0D5893005AB196 /* ProjectsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D511F06F1F0D5893005AB196 /* ProjectsViewController.swift */; };
+		D5836C231F19183F006064E7 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5836C221F19183F006064E7 /* Style.swift */; };
 		D5BEB7291F13D1B4000C724A /* RoomTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BEB7281F13D1B4000C724A /* RoomTableViewController.swift */; };
 		D5BEB72B1F13D6B8000C724A /* AllRoomsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BEB72A1F13D6B8000C724A /* AllRoomsTableViewController.swift */; };
 		D5DE2D211F151ACD0071955D /* Voila.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DE2D201F151ACD0071955D /* Voila.swift */; };
@@ -63,6 +64,7 @@
 		D511F06A1F0D574C005AB196 /* Fire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fire.swift; sourceTree = "<group>"; };
 		D511F06D1F0D5870005AB196 /* MasterNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterNavigationController.swift; sourceTree = "<group>"; };
 		D511F06F1F0D5893005AB196 /* ProjectsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectsViewController.swift; sourceTree = "<group>"; };
+		D5836C221F19183F006064E7 /* Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		D5BEB7281F13D1B4000C724A /* RoomTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomTableViewController.swift; sourceTree = "<group>"; };
 		D5BEB72A1F13D6B8000C724A /* AllRoomsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllRoomsTableViewController.swift; sourceTree = "<group>"; };
 		D5DE2D201F151ACD0071955D /* Voila.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Voila.swift; sourceTree = "<group>"; };
@@ -190,6 +192,7 @@
 			isa = PBXGroup;
 			children = (
 				D511F06A1F0D574C005AB196 /* Fire.swift */,
+				D5836C221F19183F006064E7 /* Style.swift */,
 				D5DE2D201F151ACD0071955D /* Voila.swift */,
 			);
 			path = Singletons;
@@ -407,6 +410,7 @@
 				D5BEB7291F13D1B4000C724A /* RoomTableViewController.swift in Sources */,
 				D511F0701F0D5893005AB196 /* ProjectsViewController.swift in Sources */,
 				D5BEB72B1F13D6B8000C724A /* AllRoomsTableViewController.swift in Sources */,
+				D5836C231F19183F006064E7 /* Style.swift in Sources */,
 				D511F06C1F0D574C005AB196 /* Fire.swift in Sources */,
 				D5DE2D2F1F15302E0071955D /* Room.swift in Sources */,
 				D5DE2D2B1F1529CE0071955D /* ProfileViewController.swift in Sources */,

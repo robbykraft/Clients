@@ -17,6 +17,19 @@ class Project{
 	// contains furniture inside each room
 	var rooms:[Room] = []
 	
+	func roomTypesAndCounts() -> [String:Int] {
+		var dictionary:[String:Int] = [:]
+		for i in 0..<self.rooms.count{
+			let room = rooms[i].name
+			if let roomExists = dictionary[room]{
+				dictionary[room] = roomExists + 1
+			} else{
+				dictionary[room] = 1
+			}
+		}
+		return dictionary
+	}
+	
 	init(key:String, data:[String:Any]){
 		self.key = key
 		

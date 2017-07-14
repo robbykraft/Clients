@@ -22,15 +22,15 @@ class ProjectsViewController: UITableViewController {
 
 		self.tableView.separatorStyle = .none
 		
-//		navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+		navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
 		
 		let newBackButton = UIBarButtonItem.init(title: "Done", style: .done, target: self, action: #selector(doneButtonPressed))
 		self.navigationItem.leftBarButtonItem = newBackButton
 		self.navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont.boldSystemFont(ofSize: 18), NSForegroundColorAttributeName: UIColor.black], for:.normal)
 
-		let addButton = UIBarButtonItem.init(title: "+", style: .done, target: self, action: #selector(addProposalHandler))
+		let addButton = UIBarButtonItem.init(title: "⚙", style: .done, target: self, action: #selector(addProposalHandler))
 		self.navigationItem.rightBarButtonItem = addButton
-		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont.systemFont(ofSize: 25), NSForegroundColorAttributeName: UIColor.black], for:.normal)
+//		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont.systemFont(ofSize: 25), NSForegroundColorAttributeName: UIColor.black], for:.normal)
 
 		Fire.shared.getData("projects") { (data) in
 			var projectArray:[Project] = []

@@ -35,6 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		FirebaseApp.configure()
 		_ = Fire.shared
 		_ = Voila.shared
+		_ = Style.shared
 		
 		Voila.shared.boot {
 			print(Voila.shared.rooms)

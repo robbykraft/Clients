@@ -10,16 +10,19 @@ import UIKit
 
 class AllRoomsTableViewController: UITableViewController {
 	
-	var data:[String] = []{
+	var data:Project?{
 		didSet{
 			self.tableView.reloadData()
+			if let d = self.data{
+				self.roomTypesAndCounts = d.roomTypesAndCounts()
+			}
 		}
 	}
+	
+	var roomTypesAndCounts:[String:Int]?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-		
-		self.data = Voila.shared.roomNames
 		
 		self.title = "Add/Remove Rooms"
 		
@@ -53,16 +56,23 @@ class AllRoomsTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return self.data.count
+        return Voila.shared.roomNames.count
     }
 
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 //        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-		let cell = UITableViewCell.init(style: .default, reuseIdentifier: "RoomCell")
+		let cell = UITableViewCell.init(style: .value1, reuseIdentifier: "RoomCell")
 		
-		cell.textLabel?.text = self.data[indexPath.row]
-
+		let roomNameString = Voila.shared.roomNames[indexPath.row]
+		cell.textLabel?.text = roomNameString
+		
+		if let types = self.roomTypesAndCounts{
+			if let count = types[roomNameString]{
+				cell.textLabel?.textColor = Style.shared.blue
+				cell.detailTextLabel?.text = "\(count)"
+			}
+		}
         return cell
     }
 

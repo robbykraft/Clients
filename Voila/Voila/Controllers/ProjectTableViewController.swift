@@ -13,6 +13,9 @@ class ProjectTableViewController: UITableViewController {
 	var data:Project?{
 		didSet{
 			self.tableView.reloadData()
+			if let d = self.data{
+				self.title = d.name
+			}
 		}
 	}
 	
@@ -23,9 +26,9 @@ class ProjectTableViewController: UITableViewController {
 
 		navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
 
-		let addButton = UIBarButtonItem.init(title: "+", style: .done, target: self, action: #selector(addRoomHandler))
+		let addButton = UIBarButtonItem.init(title: "Proposal", style: .done, target: self, action: #selector(addRoomHandler))
 		self.navigationItem.rightBarButtonItem = addButton
-		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont.systemFont(ofSize: 25), NSForegroundColorAttributeName: UIColor.black], for:.normal)
+//		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont.systemFont(ofSize: 25), NSForegroundColorAttributeName: UIColor.black], for:.normal)
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -36,7 +39,11 @@ class ProjectTableViewController: UITableViewController {
 	
 	func addRoomHandler(){
 		let nav = UINavigationController()
-		nav.viewControllers = [AllRoomsTableViewController()]
+		let vc = AllRoomsTableViewController()
+		if let d = self.data{
+			vc.data = d
+		}
+		nav.viewControllers = [vc]
 		self.present(nav, animated: true, completion: nil)
 	}
 
@@ -48,44 +55,72 @@ class ProjectTableViewController: UITableViewController {
     // MARK: - Table view data source
 	
 	override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-		if let project = self.data{
-			return project.name
+		switch section {
+		case 0:
+			return "Project Settings"
+		default:
+			return "Rooms"
 		}
-		return nil
 	}
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
-    }
+	override func numberOfSections(in tableView: UITableView) -> Int {
+		// #warning Incomplete implementation, return the number of sections
+		return 2
+	}
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-		if let project = self.data{
-			return project.rooms.count
+		switch section{
+		case 0: return 1
+		case 1:
+			if let project = self.data{
+				return project.rooms.count + 1
+			}
+		default:
+			return 0
 		}
-        return 0
+		return 0
     }
 
 	
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 //        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-		let cell = UITableViewCell.init(style: .value1, reuseIdentifier: "RoomCell")
-		if let project = self.data{
-			let room = project.rooms[indexPath.row]
-			cell.textLabel?.text = room.name
-			if let customName = room.customName { cell.textLabel?.text = customName }
-			cell.detailTextLabel?.text = "\(room.furniture.count)"
+		let cell = UITableViewCell.init(style: .value1, reuseIdentifier: "ProjectCell")
+		switch indexPath.section {
+		case 0:
+			cell.textLabel?.text = "Edit Settings"
+		default:
+			if let project = self.data{
+				switch indexPath.row {
+				case project.rooms.count:
+					cell.textLabel?.text = "+/- Add / Remove Rooms"
+					cell.textLabel?.textColor = Style.shared.blue
+				default:
+					let room = project.rooms[indexPath.row]
+					cell.textLabel?.text = room.name
+					if let customName = room.customName { cell.textLabel?.text = customName }
+					cell.detailTextLabel?.text = "\(room.furniture.count)"
+				}
+			}
 		}
-        return cell
+		return cell
     }
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		if let project = self.data{
-			let room = project.rooms[indexPath.row]
-			let vc = RoomTableViewController()
-			vc.data = room
-			self.navigationController?.pushViewController(vc, animated: true)
+		switch indexPath.section{
+		case 0: break
+		default:
+			if let project = self.data{
+				switch indexPath.row{
+				case project.rooms.count:
+					self.addRoomHandler()
+				default:
+					let room = project.rooms[indexPath.row]
+					let vc = RoomTableViewController()
+					vc.data = room
+					self.navigationController?.pushViewController(vc, animated: true)
+				}
+			}
 		}
 	}
 
