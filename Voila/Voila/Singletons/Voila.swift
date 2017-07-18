@@ -45,30 +45,9 @@ class Voila{
 		}
 	}
 	
-
+	func createRoom(roomType:String, completionHandler:(() -> ())?){
 		
-//	func boot(completionHandler:@escaping() -> ()){
-//		Fire.shared.getData("data") { (data) in
-//			if let d = data as? [String:Any]{
-//				self.roomNames = Array(d.keys).sorted()
-//				for room in self.roomNames{
-//					// create a room object
-//					self.furniture[room] = []
-//					if let roomFurniture = d[room] as? [String:Any]{
-//						let furnitureKeys = Array(roomFurniture.keys).sorted()
-//						for key in furnitureKeys{
-//							if let furnitureItem = roomFurniture[key] as? [String:Any]{
-//								if let cost = furnitureItem["cost"] as? Int{
-//									let furniture = Furniture(name: key, price: cost, room: room)
-//									self.furniture[room]?.append(furniture)
-//								}
-//							}
-//						}
-//					}
-//				}
-//			}
-//			completionHandler()
-//		}
-//	}
-//	
+	}
+	
+	
 }

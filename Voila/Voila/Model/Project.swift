@@ -12,7 +12,7 @@ class Project{
 	var key:String = "" // the key in the database under "projects"
 
 	var name:String = ""
-	var active:Bool = true
+	var archived:Bool = false
 	
 	// contains furniture inside each room
 	var rooms:[Room] = []
@@ -34,7 +34,7 @@ class Project{
 		self.key = key
 		
 		if let projectName = data["name"] as? String { self.name = projectName }
-		if let active = data["active"] as? Bool { self.active = active }
+		if let archived = data["archived"] as? Bool { self.archived = archived }
 		if let rooms = data["rooms"] as? [String:Any] {
 			var roomArray:[Room] = []
 			for (roomKey, object) in rooms{
@@ -62,7 +62,7 @@ class Project{
 	
 	func databaseForm() -> [String:Any]{
 		var dictionary:[String:Any] = [:]
-		dictionary["active"] = self.active
+		dictionary["archived"] = self.archived
 		dictionary["name"] = self.name
 		var roomDictionary:[String:Any] = [:]
 		for room in self.rooms{
@@ -72,15 +72,15 @@ class Project{
 		return dictionary
 	}
 	
-	func updateFromRoomTypesAndCounts(target:[String:Int], completionHandler:(()->())?){
+	func synchronize(target:[String:Int], completionHandler:(()->())?){
 		let current = self.roomTypesAndCounts()
 		for (roomKey,count) in target{
 			// iterate over all target ROOMS
 			if let currentCount = current[roomKey]{
 				// if room currently also exists, but number is different
 				if currentCount < count{
-					for i in currentCount..<count{
-//						Voila.shared.addRoomToProject(roomKey)
+					for _ in currentCount..<count{
+						Voila.shared.createRoom(roomType: roomKey, completionHandler: nil)
 					}
 				}
 				else if currentCount > count{

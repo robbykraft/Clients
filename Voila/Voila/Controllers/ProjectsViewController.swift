@@ -114,13 +114,13 @@ class ProjectsViewController: UITableViewController {
 	}
 	
 	func newProjectHandler(){
-		let alertController = UIAlertController(title: "New Project", message: nil, preferredStyle: UIAlertControllerStyle.alert)
+		let alertController = UIAlertController(title: "Create a Project", message: "Enter Project Name", preferredStyle: .alert)
 		alertController.addTextField { (textField : UITextField) -> Void in
 			textField.placeholder = "Project Name"
 		}
-		let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) { (result : UIAlertAction) -> Void in
+		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (result : UIAlertAction) -> Void in
 		}
-		let okAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) { (result : UIAlertAction) -> Void in
+		let okAction = UIAlertAction(title: "OK", style: .default) { (result : UIAlertAction) -> Void in
 			if let fields = alertController.textFields{
 				if let text = fields.first!.text{
 					Fire.shared.addData(["name":text, "active":true], asChildAt: "projects", completionHandler: { (success, newKey, ref) in
