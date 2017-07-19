@@ -13,6 +13,12 @@ class Voila{
 		}
 	}
 	
+	var room:Int?{ // currently editing room, the index of [Room] array in self.project
+		didSet{
+			
+		}
+	}
+	
 	func priceForFurniture(name:String) -> Float{
 		return 123.0
 	}

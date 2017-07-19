@@ -10,15 +10,21 @@ import UIKit
 
 class RoomTableViewController: UITableViewController {
 	
-	var data:Room?{
+//	var data:Room?{
+//		didSet{
+//			if let room = self.data{
+//				self.title = room.name
+//				if let customName = room.customName{
+//					self.title = customName
+//				}
+//			}
+//			self.tableView.reloadData()
+//		}
+//	}
+	
+	var data:[Furniture]?{
 		didSet{
-			if let room = self.data{
-				self.title = room.name
-				if let customName = room.customName{
-					self.title = customName
-				}
-			}
-			self.tableView.reloadData()
+			
 		}
 	}
 	
@@ -62,9 +68,12 @@ class RoomTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		if let room = self.data{
-			if let furnitureArray = Voila.shared.furniture[room.name]{
-				return furnitureArray.count
+		if let index = Voila.shared.room{
+			if let project = Voila.shared.project{
+				let room = project.rooms[index]
+				if let furnitureArray = Voila.shared.furniture[room.name]{
+					return furnitureArray.count
+				}
 			}
 		}
 		return 0
@@ -78,18 +87,21 @@ class RoomTableViewController: UITableViewController {
 		cell.detailTextLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
 
 		
-		if let myRoom = self.data{
-			if let furnitureArray = Voila.shared.furniture[myRoom.name]{
-
-				let furniture = furnitureArray[indexPath.row]
-				cell.textLabel?.text = furniture.name
-				
-				for myFurniture in myRoom.furniture{
-					if furniture.name == myFurniture.name{
-						cell.textLabel?.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)
-						cell.textLabel?.textColor = Style.shared.blue
-						cell.detailTextLabel?.textColor = Style.shared.blue
-						cell.detailTextLabel?.text = "\(myFurniture.copies)"
+		if let index = Voila.shared.room{
+			if let project = Voila.shared.project{
+				let room = project.rooms[index]
+				if let furnitureArray = Voila.shared.furniture[room.name]{
+					
+					let furniture = furnitureArray[indexPath.row]
+					cell.textLabel?.text = furniture.name
+					
+					for myFurniture in room.furniture{
+						if furniture.name == myFurniture.name{
+							cell.textLabel?.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)
+							cell.textLabel?.textColor = Style.shared.blue
+							cell.detailTextLabel?.textColor = Style.shared.blue
+							cell.detailTextLabel?.text = "\(myFurniture.copies)"
+						}
 					}
 				}
 			}
@@ -102,6 +114,18 @@ class RoomTableViewController: UITableViewController {
 //		}
         return cell
     }
+	
+	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		if let index = Voila.shared.room{
+			if let project = Voila.shared.project{
+				let room = project.rooms[index]
+				if let furnitureArray = Voila.shared.furniture[room.name]{
+					let furniture = furnitureArray[indexPath.row]
+//					if(room.furniture)
+				}
+			}
+		}
+	}
 
     /*
     // Override to support conditional editing of the table view.

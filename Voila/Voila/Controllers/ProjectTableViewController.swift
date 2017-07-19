@@ -120,9 +120,10 @@ class ProjectTableViewController: UITableViewController {
 				case project.rooms.count:
 					self.addRoomHandler()
 				default:
-					let room = project.rooms[indexPath.row]
+//					let room = project.rooms[indexPath.row]
+					Voila.shared.room = indexPath.row
 					let vc = RoomTableViewController()
-					vc.data = room
+//					vc.data = room
 					self.navigationController?.pushViewController(vc, animated: true)
 				}
 			}
