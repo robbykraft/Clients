@@ -15,9 +15,13 @@ class Room{
 	
 	var furniture:[Furniture] = []
 	
-	init(key:String, name:String){
-		self.key = key
+	init(name:String, key:String?){
 		self.name = name
+		if let k = key{
+			self.key = k
+		} else{
+			self.key = Fire.shared.database.childByAutoId().key
+		}
 	}
 	
 	func databaseForm() -> [String:Any]{
@@ -28,7 +32,9 @@ class Room{
 		for furniture in self.furniture{
 			furnitureDictionary[furniture.name] = furniture.copies
 		}
-		dictionary["furniture"] = furnitureDictionary
+		if furnitureDictionary.count > 0 {
+			dictionary["furniture"] = furnitureDictionary
+		}
 		return dictionary
 	}
 	

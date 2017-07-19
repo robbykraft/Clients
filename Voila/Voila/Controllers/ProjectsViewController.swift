@@ -100,7 +100,6 @@ class ProjectsViewController: UITableViewController {
 		default:
 			Voila.shared.project = self.projects[indexPath.row]
 			let vc = ProjectTableViewController()
-			vc.data = self.projects[indexPath.row]
 			self.navigationController?.pushViewController(vc, animated: true)
 		}
 	}
@@ -130,7 +129,6 @@ class ProjectsViewController: UITableViewController {
 									if project.key == key{
 										Voila.shared.project = project
 										let vc = ProjectTableViewController()
-										vc.data = Voila.shared.project
 										self.navigationController?.pushViewController(vc, animated: true)
 									}
 								}

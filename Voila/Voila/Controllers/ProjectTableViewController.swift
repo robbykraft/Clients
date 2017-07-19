@@ -10,18 +10,12 @@ import UIKit
 
 class ProjectTableViewController: UITableViewController {
 	
-	var data:Project?{
-		didSet{
-			self.tableView.reloadData()
-			if let d = self.data{
-				self.title = d.name
-				print(d.databaseForm())
-			}
-		}
-	}
-	
 	override func viewDidLoad() {
         super.viewDidLoad()
+		
+		if let project = Voila.shared.project{
+			self.title = project.name
+		}
 
 		self.tableView.separatorStyle = .none
 
@@ -39,6 +33,11 @@ class ProjectTableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
 	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		self.tableView.reloadData()
+	}
+	
 	func makeProposalHandler(){
 		
 	}
@@ -46,9 +45,6 @@ class ProjectTableViewController: UITableViewController {
 	func addRoomHandler(){
 		let nav = UINavigationController()
 		let vc = AllRoomsTableViewController()
-		if let d = self.data{
-			vc.data = d
-		}
 		nav.viewControllers = [vc]
 		self.present(nav, animated: true, completion: nil)
 	}
@@ -78,7 +74,7 @@ class ProjectTableViewController: UITableViewController {
 		switch section{
 		case 0: return 1
 		case 1:
-			if let project = self.data{
+			if let project = Voila.shared.project{
 				return project.rooms.count + 1
 			}
 		default:
@@ -98,7 +94,7 @@ class ProjectTableViewController: UITableViewController {
 			cell.textLabel?.text = "Project Details"
 			cell.textLabel?.textColor = Style.shared.gray
 		default:
-			if let project = self.data{
+			if let project = Voila.shared.project{
 				switch indexPath.row {
 				case project.rooms.count:
 					cell.textLabel?.text = "+/- Add / Remove Rooms"
@@ -119,7 +115,7 @@ class ProjectTableViewController: UITableViewController {
 		switch indexPath.section{
 		case 0: break
 		default:
-			if let project = self.data{
+			if let project = Voila.shared.project{
 				switch indexPath.row{
 				case project.rooms.count:
 					self.addRoomHandler()

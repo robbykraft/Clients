@@ -40,7 +40,7 @@ class Project{
 			for (roomKey, object) in rooms{
 				if let roomObject = object as? [String:Any]{
 					if let roomName = roomObject["name"] as? String {
-						let newRoom = Room(key: roomKey, name: roomName)
+						let newRoom = Room(name: roomName, key: roomKey)
 						if let customName = roomObject["customName"] as? String { newRoom.customName = customName }
 						var furnitureArray:[Furniture] = []
 						if let furnitureList = roomObject["furniture"] as? [String:Int]{
@@ -72,38 +72,44 @@ class Project{
 		return dictionary
 	}
 	
-	func synchronize(target:[String:Int], completionHandler:(()->())?){
-		let current = self.roomTypesAndCounts()
-		for (roomKey,count) in target{
-			// iterate over all target ROOMS
-			if let currentCount = current[roomKey]{
-				// if room currently also exists, but number is different
-				if currentCount < count{
-					for _ in currentCount..<count{
-						Voila.shared.createRoom(roomType: roomKey, completionHandler: nil)
-					}
-				}
-				else if currentCount > count{
-					// remove room from everything really
-					
-				}
-			} else{
-				// ROOM does not currently exist
-				for i in 0..<count{
-//					Voila.shared.addRoomToProject(roomKey)
-				}
-			}
-		}
-		// remove all ROOM in current if doesn't exist in target
-		for (key,_) in current{
-			if target[key] == nil{
-				self.rooms = self.rooms.filter({ $0.name != key })
-			}
-		}
-	}
+//	func synchronize(target:[String:Int], completionHandler:(()->())?){
+//		let current = self.roomTypesAndCounts()
+//		for (roomKey,count) in target{
+//			// iterate over all target ROOMS
+//			if let currentCount = current[roomKey]{
+//				// if room currently also exists, but number is different
+//				if currentCount < count{
+//					for _ in currentCount..<count{
+//						Voila.shared.createRoom(roomType: roomKey, completionHandler: nil)
+//					}
+//				}
+//				else if currentCount > count{
+//					// remove room from everything really
+//					
+//				}
+//			} else{
+//				// ROOM does not currently exist
+//				for i in 0..<count{
+////					Voila.shared.addRoomToProject(roomKey)
+//				}
+//			}
+//		}
+//		// remove all ROOM in current if doesn't exist in target
+//		for (key,_) in current{
+//			if target[key] == nil{
+//				self.rooms = self.rooms.filter({ $0.name != key })
+//			}
+//		}
+//	}
 	
-	func update(completionHandler:(() -> ())?){
-		
+	func synchronize(completionHandler:(() -> ())?){
+		print("synchronizing")
+		print(self.databaseForm())
+		Fire.shared.setData(self.databaseForm(), at: "projects/" + self.key) { (success, ref) in
+			if let completion = completionHandler{
+				completion()
+			}
+		}
 	}
 	
 }

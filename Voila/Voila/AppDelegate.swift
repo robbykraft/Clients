@@ -44,7 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			} else {
 				// No user is signed in.
 				self.launchApp(true)
-			}
+			}			
 		}
 		
 		return true

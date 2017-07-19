@@ -10,21 +10,17 @@ import UIKit
 
 class AllRoomsTableViewController: UITableViewController {
 	
-	var data:Project?{
-		didSet{
-			self.tableView.reloadData()
-			if let d = self.data{
-				self.roomTypesAndCounts = d.roomTypesAndCounts()
-			}
-		}
-	}
-	
 	var roomTypesAndCounts:[String:Int]?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 		
 		self.title = "Add/Remove Rooms"
+		
+		if let project = Voila.shared.project{
+			self.roomTypesAndCounts = project.roomTypesAndCounts()
+			self.tableView.reloadData()
+		}
 		
 		self.tableView.separatorStyle = .none
 		
@@ -53,12 +49,10 @@ class AllRoomsTableViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return Voila.shared.roomNames.count
     }
 
@@ -83,14 +77,23 @@ class AllRoomsTableViewController: UITableViewController {
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		let roomNameString = Voila.shared.roomNames[indexPath.row]
-		if let types = self.roomTypesAndCounts{
-			if let count = types[roomNameString]{
-				self.roomTypesAndCounts![roomNameString] = count + 1
-			} else{
-				self.roomTypesAndCounts![roomNameString] = 1
-			}
+		if Voila.shared.project != nil {
+			let newRoom = Room(name: roomNameString, key: nil)
+			Voila.shared.project!.rooms.append(newRoom)
+			Voila.shared.project!.synchronize(completionHandler: {
+				self.roomTypesAndCounts = Voila.shared.project!.roomTypesAndCounts()
+				self.tableView.reloadData()
+			})
 		}
-		tableView.deselectRow(at: indexPath, animated: true)
+//		if let types = self.roomTypesAndCounts{
+//			if let count = types[roomNameString]{
+//				self.roomTypesAndCounts![roomNameString] = count + 1
+//			} else{
+//				self.roomTypesAndCounts![roomNameString] = 1
+//			}
+//		}
+		tableView.reloadData()
+//		tableView.deselectRow(at: indexPath, animated: true)
 	}
 
     /*
