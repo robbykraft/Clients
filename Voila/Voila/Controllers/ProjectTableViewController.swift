@@ -121,7 +121,10 @@ class ProjectTableViewController: UITableViewController {
 					self.addRoomHandler()
 				default:
 //					let room = project.rooms[indexPath.row]
-					Voila.shared.room = indexPath.row
+//					Voila.shared.room = indexPath.row
+					if let project = Voila.shared.project{
+						Voila.shared.roomKey = project.rooms[indexPath.row].key
+					}
 					let vc = RoomTableViewController()
 //					vc.data = room
 					self.navigationController?.pushViewController(vc, animated: true)

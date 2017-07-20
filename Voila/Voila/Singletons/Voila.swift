@@ -13,9 +13,93 @@ class Voila{
 		}
 	}
 	
-	var room:Int?{ // currently editing room, the index of [Room] array in self.project
+	var roomKey:String?{ // currently editing room, the key of the room in the [Room] arary in self.project
+		// NO////the index of [Room] array in self.project
 		didSet{
 			
+		}
+	}
+	
+	func currentRoomAllFurniture()->[Furniture]{
+		if let p = self.project{
+			if let key = self.roomKey{
+				for room in p.rooms{
+					if room.key == key{
+						if let furnitureArray = self.furniture[room.name]{
+							return furnitureArray
+						}
+					}
+				}
+			}
+		}
+		return []
+	}
+	func currentRoomCurrentFurniture()->[Furniture]{
+		if let p = self.project{
+			if let key = self.roomKey{
+				for room in p.rooms{
+					if room.key == key{
+						return room.furniture
+					}
+				}
+			}
+		}
+		return []
+	}
+	
+	func currentRoomName()->String?{
+		if let p = self.project{
+			if let key = self.roomKey{
+				for room in p.rooms{
+					if room.key == key{
+						if let custom = room.customName{
+							return custom
+						}
+						return room.name
+					}
+				}
+			}
+		}
+		return nil
+	}
+	
+	func currentRoomIndex()->Int?{
+		if let key = self.roomKey{
+			if let p = self.project{
+				for i in 0 ..< p.rooms.count{
+					if p.rooms[i].key == key{
+						return i
+					}
+				}
+			}
+		}
+		return nil
+	}
+	
+	func setFurnitureCopies(furnitureName:String, copies:Int, completionHandler:(()->())?){
+		if let project = self.project{
+			if let key = self.roomKey{
+				for i in 0 ..< project.rooms.count{
+					if project.rooms[i].key == key{
+						for j in 0 ..< project.rooms[i].furniture.count{
+							if project.rooms[i].furniture[j].name == furnitureName{
+								project.rooms[i].furniture[j].copies = copies
+								if let completion = completionHandler{
+									completion()
+								}
+								return
+							}
+						}
+						// furniture doesn't yet exist in room on project
+						// TODO: price needs to be not 0
+						project.rooms[i].furniture.append(Furniture(name: furnitureName, price: 0, room: project.rooms[i]))
+						if let completion = completionHandler{
+							completion()
+						}
+						return
+					}
+				}
+			}
 		}
 	}
 	
