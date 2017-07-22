@@ -150,24 +150,49 @@ class RoomTableViewController: UITableViewController {
 		
 	}
 
-    /*
+	
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
         return true
     }
-    */
-
-    /*
+	
+	override func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+		return "Clear"
+	}
+	
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
+//            tableView.deleteRows(at: [indexPath], with: .fade)
+			let furnitureArray = Voila.shared.currentRoomAllFurniture()
+			let furniture = furnitureArray[indexPath.row]
+			
+			let myFurnitureArray = Voila.shared.currentRoomCurrentFurniture()
+			for myFurniture in myFurnitureArray{
+				print("built arrays")
+				if furniture.name == myFurniture.name{
+					print("found name match \(furniture.name)")
+					let copies = myFurniture.copies
+					print("currently \(copies) copies")
+					Voila.shared.setFurnitureCopies(furnitureName: furniture.name, copies: 0, completionHandler: {
+						print("set furniture copies done")
+						if let project = Voila.shared.project{
+							project.synchronize(completionHandler: {
+								print("project synchronized")
+								self.tableView.reloadData()
+							})
+						}
+					})
+					return
+				}
+			}
+			
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
-    */
+    
 
 }

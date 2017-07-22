@@ -22,6 +22,7 @@ class AllRoomsTableViewController: UITableViewController {
 			self.tableView.reloadData()
 		}
 		
+		
 		self.tableView.separatorStyle = .none
 		
 		let newBackButton = UIBarButtonItem.init(title: "Done", style: .done, target: self, action: #selector(doneHandler))
@@ -68,7 +69,9 @@ class AllRoomsTableViewController: UITableViewController {
 		
 		if let types = self.roomTypesAndCounts{
 			if let count = types[roomNameString]{
+				cell.textLabel?.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)
 				cell.textLabel?.textColor = Style.shared.blue
+				cell.detailTextLabel?.textColor = Style.shared.blue
 				cell.detailTextLabel?.text = "\(count)"
 			}
 		}
@@ -96,25 +99,38 @@ class AllRoomsTableViewController: UITableViewController {
 //		tableView.deselectRow(at: indexPath, animated: true)
 	}
 
-    /*
+	
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
         return true
     }
-    */
-
-    /*
+	
+	override func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+		return "- 1"
+	}
+	
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
+//            tableView.deleteRows(at: [indexPath], with: .fade)
+			
+			let roomNameString = Voila.shared.roomNames[indexPath.row]
+			
+			if Voila.shared.removeRoomFromProject(roomName: roomNameString) == true{
+				Voila.shared.project!.synchronize(completionHandler: {
+					self.roomTypesAndCounts = Voila.shared.project!.roomTypesAndCounts()
+					self.tableView.reloadData()
+				})
+
+			}
+
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
-    */
+	
 
     /*
     // Override to support rearranging the table view.

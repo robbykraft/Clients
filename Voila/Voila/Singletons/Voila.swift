@@ -84,6 +84,8 @@ class Voila{
 						for j in 0 ..< project.rooms[i].furniture.count{
 							if project.rooms[i].furniture[j].name == furnitureName{
 								project.rooms[i].furniture[j].copies = copies
+								// if copies is 0, remove item entirely
+								if copies <= 0{ project.rooms[i].furniture.remove(at: j) }
 								if let completion = completionHandler{
 									completion()
 								}
@@ -92,7 +94,9 @@ class Voila{
 						}
 						// furniture doesn't yet exist in room on project
 						// TODO: price needs to be not 0
-						project.rooms[i].furniture.append(Furniture(name: furnitureName, price: 0, room: project.rooms[i]))
+						let newFurniture = Furniture(name: furnitureName, price: 0, room: project.rooms[i])
+						newFurniture.copies = copies
+						project.rooms[i].furniture.append(newFurniture)
 						if let completion = completionHandler{
 							completion()
 						}
@@ -105,6 +109,18 @@ class Voila{
 	
 	func priceForFurniture(name:String) -> Float{
 		return 123.0
+	}
+	
+	func removeRoomFromProject(roomName:String) -> Bool{
+		if let project = self.project{
+			for i in (0..<project.rooms.count).reversed(){
+				if project.rooms[i].name == roomName{
+					project.rooms.remove(at: i)
+					return true
+				}
+			}
+		}
+		return false
 	}
 	
 	func boot(completionHandler:@escaping() -> ()){
