@@ -113,7 +113,7 @@ class ProjectsViewController: UITableViewController {
 	}
 	
 	func newProjectHandler(){
-		let alertController = UIAlertController(title: "Create a Project", message: "Enter Project Name", preferredStyle: .alert)
+		let alertController = UIAlertController(title: "New Project Name", message: nil, preferredStyle: .alert)
 		alertController.addTextField { (textField : UITextField) -> Void in
 			textField.placeholder = "Project Name"
 		}

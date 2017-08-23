@@ -104,7 +104,10 @@ class ProjectTableViewController: UITableViewController {
 					let room = project.rooms[indexPath.row]
 					cell.textLabel?.text = room.name
 					if let customName = room.customName { cell.textLabel?.text = customName }
-					cell.detailTextLabel?.text = "\(room.furniture.count)"
+					if room.furniture.count <= 0 {
+						cell.detailTextLabel?.text = "empty"
+						cell.detailTextLabel?.textColor = Style.shared.blue
+					}
 				}
 			}
 		}

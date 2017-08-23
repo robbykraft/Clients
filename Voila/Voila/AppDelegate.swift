@@ -46,9 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 				self.launchApp(true)
 			}			
 		}
-		
 		return true
-
 	}
 
 	func applicationWillResignActive(_ application: UIApplication) {

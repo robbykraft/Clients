@@ -39,7 +39,6 @@ class RoomTableViewController: UITableViewController {
 		self.navigationItem.rightBarButtonItem = addButton
 		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)!, NSForegroundColorAttributeName: Style.shared.blue], for:.normal)
 		
-		
 		self.title = Voila.shared.currentRoomName()
 
 		
@@ -79,6 +78,15 @@ class RoomTableViewController: UITableViewController {
 		return Voila.shared.currentRoomAllFurniture().count
 	}
 
+	override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+		let myFurnitureArray = Voila.shared.currentRoomCurrentFurniture()
+		var count = 0
+		for item in myFurnitureArray{
+			count += item.copies
+		}
+		if count == 1 {return "\(count) Item"}
+		return "\(count) Items"
+	}
 	
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
