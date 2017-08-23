@@ -112,6 +112,31 @@ class ProjectsViewController: UITableViewController {
 		self.dismiss(animated: true, completion: nil)
 	}
 	
+	func fillTemplate(){
+		let alertController = UIAlertController(title: "Fill project with a template?", message: nil, preferredStyle: .alert)
+		let template1Action = UIAlertAction(title: "Small 1 Bedroom", style: .default) { (result : UIAlertAction) -> Void in
+			Voila.shared.project?.setFromTemplate(completionHandler: { 
+				let vc = ProjectTableViewController()
+				self.navigationController?.pushViewController(vc, animated: true)
+			})
+		}
+		let template2Action = UIAlertAction(title: "Large 2 Bedroom", style: .default) { (result : UIAlertAction) -> Void in
+			Voila.shared.project?.setFromTemplate(completionHandler: {
+				let vc = ProjectTableViewController()
+				self.navigationController?.pushViewController(vc, animated: true)
+			})
+		}
+		let skipAction = UIAlertAction(title: "Skip", style: .cancel) { (result : UIAlertAction) -> Void in
+			let vc = ProjectTableViewController()
+			self.navigationController?.pushViewController(vc, animated: true)
+
+		}
+		alertController.addAction(template1Action)
+		alertController.addAction(template2Action)
+		alertController.addAction(skipAction)
+		self.present(alertController, animated: true, completion: nil)
+	}
+	
 	func newProjectHandler(){
 		let alertController = UIAlertController(title: "New Project Name", message: nil, preferredStyle: .alert)
 		alertController.addTextField { (textField : UITextField) -> Void in
@@ -122,14 +147,13 @@ class ProjectsViewController: UITableViewController {
 		let okAction = UIAlertAction(title: "OK", style: .default) { (result : UIAlertAction) -> Void in
 			if let fields = alertController.textFields{
 				if let text = fields.first!.text{
-					Fire.shared.addData(["name":text, "active":true], asChildAt: "projects", completionHandler: { (success, newKey, ref) in
+					Fire.shared.addData(["name":text, "archived":false], asChildAt: "projects", completionHandler: { (success, newKey, ref) in
 						self.reloadData({
 							if let key = newKey{
 								for project in self.projects{
 									if project.key == key{
 										Voila.shared.project = project
-										let vc = ProjectTableViewController()
-										self.navigationController?.pushViewController(vc, animated: true)
+										self.fillTemplate()
 									}
 								}
 							}
