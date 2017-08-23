@@ -39,7 +39,7 @@ class ProjectTableViewController: UITableViewController {
 	}
 	
 	func makeProposalHandler(){
-		
+		self.navigationController?.pushViewController(ProposalViewController(), animated: true)		
 	}
 	
 	func addRoomHandler(){
