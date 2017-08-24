@@ -94,6 +94,11 @@ class RoomTableViewController: UITableViewController {
 		cell.textLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
 		cell.detailTextLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
 
+		// selection color
+		let bgColorView = UIView()
+		bgColorView.backgroundColor = Style.shared.cellSelectionColor
+		cell.selectedBackgroundView = bgColorView
+
 		let allFurnitureArray = Voila.shared.currentRoomAllFurniture()
 		let myFurnitureArray = Voila.shared.currentRoomCurrentFurniture()
 		let furniture = allFurnitureArray[indexPath.row]

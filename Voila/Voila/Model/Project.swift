@@ -30,6 +30,16 @@ class Project{
 		return dictionary
 	}
 	
+	func furnitureCount() -> Int{
+		var count = 0
+		for room in rooms{
+			for furniture in room.furniture{
+				count += furniture.copies
+			}
+		}
+		return count
+	}
+	
 	init(key:String, data:[String:Any]){
 		self.key = key
 		

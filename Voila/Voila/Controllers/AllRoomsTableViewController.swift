@@ -63,7 +63,12 @@ class AllRoomsTableViewController: UITableViewController {
 		let cell = UITableViewCell.init(style: .value1, reuseIdentifier: "RoomCell")
 		cell.textLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
 		cell.detailTextLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
-		
+
+		// selection color
+		let bgColorView = UIView()
+		bgColorView.backgroundColor = Style.shared.cellSelectionColor
+		cell.selectedBackgroundView = bgColorView
+
 		let roomNameString = Voila.shared.roomNames[indexPath.row]
 		cell.textLabel?.text = roomNameString
 		

@@ -28,10 +28,14 @@ class ProjectsViewController: UITableViewController {
 //		self.navigationItem.leftBarButtonItem = newBackButton
 //		self.navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont.boldSystemFont(ofSize: 18), NSForegroundColorAttributeName: UIColor.black], for:.normal)
 
-		let addButton = UIBarButtonItem.init(title: "Settings", style: .done, target: self, action: #selector(settingsHandler))
-		self.navigationItem.leftBarButtonItem = addButton
+		let settingsButton = UIBarButtonItem.init(title: "Settings", style: .done, target: self, action: #selector(settingsHandler))
+		self.navigationItem.leftBarButtonItem = settingsButton
 		self.navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)!, NSForegroundColorAttributeName: Style.shared.blue], for:.normal)
 //		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont.systemFont(ofSize: 25), NSForegroundColorAttributeName: UIColor.black], for:.normal)
+		
+		let addButton = UIBarButtonItem.init(title: "+", style: .done, target: self, action: #selector(self.newProjectHandler))
+		self.navigationItem.rightBarButtonItem = addButton
+		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P24)!, NSForegroundColorAttributeName: Style.shared.blue], for:.normal)
 
         // Do any additional setup after loading the view.
 		self.reloadData(nil)
@@ -52,6 +56,13 @@ class ProjectsViewController: UITableViewController {
 		}
 	}
 	
+	override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+		switch indexPath.section{
+		case 0: return 44
+		default: return 90
+		}
+	}
+
 	override func numberOfSections(in tableView: UITableView) -> Int {
 		return 2
 	}
@@ -76,20 +87,23 @@ class ProjectsViewController: UITableViewController {
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-		let cell = UITableViewCell.init(style: .default, reuseIdentifier: "CreateProjectCell")
-		cell.textLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
-		cell.detailTextLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
-
 		switch indexPath.section{
 		case 0:
+			let cell = UITableViewCell.init(style: .default, reuseIdentifier: "CreateProjectCell")
+			cell.textLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
+			cell.detailTextLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
 			cell.textLabel?.text = "Create Project"
+			// selection color
+			let bgColorView = UIView()
+			bgColorView.backgroundColor = Style.shared.cellSelectionColor
+			cell.selectedBackgroundView = bgColorView
+			return cell
 		default:
+			let cell = ProjectTableViewCell()
 			let project = self.projects[indexPath.row]
-			cell.textLabel?.text = project.name
-			cell.detailTextLabel?.text = "\(project.rooms.count) rooms"
-			if(project.rooms.count == 1) { cell.detailTextLabel?.text = "\(project.rooms.count) room" }
+			cell.data = project;
+			return cell
 		}
-		return cell
 	}
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -113,7 +127,7 @@ class ProjectsViewController: UITableViewController {
 	}
 	
 	func fillTemplate(){
-		let alertController = UIAlertController(title: "Fill project with a template?", message: nil, preferredStyle: .alert)
+		let alertController = UIAlertController(title: "Begin from a template?", message: nil, preferredStyle: .alert)
 		let template1Action = UIAlertAction(title: "Small 1 Bedroom", style: .default) { (result : UIAlertAction) -> Void in
 			Voila.shared.project?.setFromTemplate(completionHandler: { 
 				let vc = ProjectTableViewController()

@@ -17,7 +17,7 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 	let lockboxField: UITextField = UITextField()
 //	let creationDateField: UITextField = UITextField()
 //	let detailField: UITextField = UITextField()
-//	let signoutButton: UIButton = UIButton()
+	let deleteButton: UIButton = UIButton()
 	
 	var updateTimer:Timer?  // live updates to profile entries, prevents updating too frequently
 	
@@ -29,9 +29,9 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 		self.title = "EDIT INFO"
 		
 		// buttons
-//		signoutButton.setTitle("Sign Out", for: UIControlState())
+		deleteButton.setTitle("Sign Out", for: UIControlState())
 //		profileImageButton.addTarget(self, action: #selector(profilePictureButtonHandler), for: .touchUpInside)
-//		signoutButton.addTarget(self, action: #selector(logOut), for: UIControlEvents.touchUpInside)
+		deleteButton.addTarget(self, action: #selector(deleteProject), for: UIControlEvents.touchUpInside)
 		
 		// ui custom
 		nameField.delegate = self
@@ -45,7 +45,7 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 		lockboxField.backgroundColor = UIColor.white
 //		creationDateField.backgroundColor = UIColor.white
 //		detailField.backgroundColor = UIColor.white
-//		signoutButton.backgroundColor = lightBlue
+		deleteButton.backgroundColor = Style.shared.red
 		nameField.placeholder = "Name"
 		lockboxField.placeholder = "Lockbox Info"
 //		creationDateField.placeholder = "Creation Date"
@@ -76,7 +76,7 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 		self.view.addSubview(lockboxField)
 //		self.view.addSubview(creationDateField)
 //		self.view.addSubview(detailField)
-//		self.view.addSubview(signoutButton)
+		self.view.addSubview(deleteButton)
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -98,7 +98,7 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 		lockboxField.frame = CGRect(x: 0, y: header + imgArea + 10*2 + 44*1, width: self.view.bounds.size.width, height: 44)
 //		creationDateField.frame = CGRect(x: 0, y: header + imgArea + 10*3 + 44*2, width: self.view.bounds.size.width, height: 44)
 //		detailField.frame = CGRect(x: 0, y: header + imgArea + 10*4 + 44*3, width: self.view.bounds.size.width, height: 44)
-//		signoutButton.frame = CGRect(x: 0, y: header + imgArea + 10*5 + 44*4, width: self.view.bounds.size.width, height: 44)
+		deleteButton.frame = CGRect(x: 0, y: header + imgArea + 10*5 + 44*4, width: self.view.bounds.size.width, height: 44)
 		
 		// populate screen
 //		Fire.shared.getCurrentUser { (uid, userData) in
@@ -112,6 +112,10 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 		if(updateTimer != nil){
 			updateWithDelay()
 		}
+	}
+	
+	func deleteProject(){
+		
 	}
 	
 	func populateUserData(_ uid:String, userData:[String:Any]){

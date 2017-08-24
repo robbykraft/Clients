@@ -65,7 +65,7 @@ class ProjectTableViewController: UITableViewController {
 			return "Rooms"
 		}
 	}
-
+	
 	override func numberOfSections(in tableView: UITableView) -> Int {
 		return 2
 	}
@@ -89,6 +89,12 @@ class ProjectTableViewController: UITableViewController {
 		let cell = UITableViewCell.init(style: .value1, reuseIdentifier: "ProjectCell")
 		cell.textLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
 		cell.detailTextLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
+		
+		// selection color
+		let bgColorView = UIView()
+		bgColorView.backgroundColor = Style.shared.cellSelectionColor
+		cell.selectedBackgroundView = bgColorView
+
 		switch indexPath.section {
 		case 0:
 			cell.textLabel?.text = "Project Details"
@@ -116,7 +122,9 @@ class ProjectTableViewController: UITableViewController {
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		switch indexPath.section{
-		case 0: break
+		case 0:
+			self.navigationController?.pushViewController(EditProjectViewController(), animated: true)
+			break
 		default:
 			if let project = Voila.shared.project{
 				switch indexPath.row{

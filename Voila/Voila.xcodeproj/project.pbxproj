@@ -21,6 +21,7 @@
 		D56805FC1F4E0E9700328586 /* ProposalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56805FB1F4E0E9700328586 /* ProposalViewController.swift */; };
 		D5836C231F19183F006064E7 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5836C221F19183F006064E7 /* Style.swift */; };
 		D5836C251F193A61006064E7 /* EditProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5836C241F193A61006064E7 /* EditProjectViewController.swift */; };
+		D5B8000E1F4F1B91008470A3 /* ProjectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B8000D1F4F1B91008470A3 /* ProjectTableViewCell.swift */; };
 		D5BEB7291F13D1B4000C724A /* RoomTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BEB7281F13D1B4000C724A /* RoomTableViewController.swift */; };
 		D5BEB72B1F13D6B8000C724A /* AllRoomsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BEB72A1F13D6B8000C724A /* AllRoomsTableViewController.swift */; };
 		D5DE2D211F151ACD0071955D /* Voila.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DE2D201F151ACD0071955D /* Voila.swift */; };
@@ -71,6 +72,7 @@
 		D56805FB1F4E0E9700328586 /* ProposalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProposalViewController.swift; sourceTree = "<group>"; };
 		D5836C221F19183F006064E7 /* Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		D5836C241F193A61006064E7 /* EditProjectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProjectViewController.swift; sourceTree = "<group>"; };
+		D5B8000D1F4F1B91008470A3 /* ProjectTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectTableViewCell.swift; sourceTree = "<group>"; };
 		D5BEB7281F13D1B4000C724A /* RoomTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomTableViewController.swift; sourceTree = "<group>"; };
 		D5BEB72A1F13D6B8000C724A /* AllRoomsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllRoomsTableViewController.swift; sourceTree = "<group>"; };
 		D5DE2D201F151ACD0071955D /* Voila.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Voila.swift; sourceTree = "<group>"; };
@@ -189,6 +191,7 @@
 				D511F06F1F0D5893005AB196 /* ProjectsViewController.swift */,
 				D5836C241F193A61006064E7 /* EditProjectViewController.swift */,
 				D5DE2D251F1528650071955D /* ProjectTableViewController.swift */,
+				D5B8000C1F4F1B91008470A3 /* Cells */,
 				D5BEB7281F13D1B4000C724A /* RoomTableViewController.swift */,
 				D5BEB72A1F13D6B8000C724A /* AllRoomsTableViewController.swift */,
 				D56805FB1F4E0E9700328586 /* ProposalViewController.swift */,
@@ -205,6 +208,14 @@
 				D56805F91F4DE9C800328586 /* EmailMaker.swift */,
 			);
 			path = Singletons;
+			sourceTree = "<group>";
+		};
+		D5B8000C1F4F1B91008470A3 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				D5B8000D1F4F1B91008470A3 /* ProjectTableViewCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		D5DE2D221F151DAF0071955D /* Model */ = {
@@ -415,6 +426,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D5DE2D211F151ACD0071955D /* Voila.swift in Sources */,
+				D5B8000E1F4F1B91008470A3 /* ProjectTableViewCell.swift in Sources */,
 				D5DE2D241F151DCE0071955D /* Furniture.swift in Sources */,
 				D5BEB7291F13D1B4000C724A /* RoomTableViewController.swift in Sources */,
 				D56805FA1F4DE9C800328586 /* EmailMaker.swift in Sources */,

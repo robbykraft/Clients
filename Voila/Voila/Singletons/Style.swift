@@ -39,6 +39,8 @@ class Style {
 	let lightBlue = UIColor(red:0.53, green:0.77, blue:1.00, alpha:1.00)
 	let purple = UIColor(red: 88/255.0, green: 86/255.0, blue: 214/255.0, alpha: 1.0)
 	
+	let cellSelectionColor = UIColor(red: 0, green: 122/255.0, blue: 1.0, alpha: 0.1)
+	
 	var P40:CGFloat = 40
 	var P30:CGFloat = 30
 	var P24:CGFloat = 24
