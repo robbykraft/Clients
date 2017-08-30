@@ -41,6 +41,11 @@ class ProjectsViewController: UITableViewController {
 		self.reloadData(nil)
     }
 	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		self.tableView.reloadData()
+	}
+	
 	func reloadData(_ completionHandler:(() -> ())?){
 		Fire.shared.getData("projects") { (data) in
 			var projectArray:[Project] = []

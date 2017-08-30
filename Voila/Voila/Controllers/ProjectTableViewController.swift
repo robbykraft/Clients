@@ -36,6 +36,9 @@ class ProjectTableViewController: UITableViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		self.tableView.reloadData()
+		if let project = Voila.shared.project{
+			self.title = project.name
+		}
 	}
 	
 	func makeProposalHandler(){
@@ -99,6 +102,15 @@ class ProjectTableViewController: UITableViewController {
 		case 0:
 			cell.textLabel?.text = "Project Details"
 			cell.textLabel?.textColor = Style.shared.gray
+			
+			if let project = Voila.shared.project{
+				if project.email != nil && project.email! != ""{
+					cell.detailTextLabel?.text = ""
+				} else{
+					cell.detailTextLabel?.text = "email needed"
+					cell.detailTextLabel?.textColor = Style.shared.red
+				}
+			}
 		default:
 			if let project = Voila.shared.project{
 				switch indexPath.row {

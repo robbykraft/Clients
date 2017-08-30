@@ -14,6 +14,7 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 	let profileImageView:UIImageView = UIImageView()
 	let profileImageButton:UIButton = UIButton()
 	let nameField: UITextField = UITextField()
+	let emailField: UITextField = UITextField()
 	let lockboxField: UITextField = UITextField()
 //	let creationDateField: UITextField = UITextField()
 //	let detailField: UITextField = UITextField()
@@ -26,15 +27,16 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 		
 		self.view.backgroundColor = Style.shared.whiteSmoke
 		
-		self.title = "EDIT INFO"
+		self.title = "DETAILS"
 		
 		// buttons
-		deleteButton.setTitle("Sign Out", for: UIControlState())
+		deleteButton.setTitle("Delete", for: UIControlState())
 //		profileImageButton.addTarget(self, action: #selector(profilePictureButtonHandler), for: .touchUpInside)
 		deleteButton.addTarget(self, action: #selector(deleteProject), for: UIControlEvents.touchUpInside)
 		
 		// ui custom
 		nameField.delegate = self
+		emailField.delegate = self
 		lockboxField.delegate = self
 //		creationDateField.delegate = self
 //		detailField.delegate = self
@@ -42,16 +44,18 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 		profileImageView.backgroundColor = UIColor.white
 		profileImageView.clipsToBounds = true
 		nameField.backgroundColor = UIColor.white
+		emailField.backgroundColor = UIColor.white
 		lockboxField.backgroundColor = UIColor.white
 //		creationDateField.backgroundColor = UIColor.white
 //		detailField.backgroundColor = UIColor.white
 		deleteButton.backgroundColor = Style.shared.red
 		nameField.placeholder = "Name"
+		emailField.placeholder = "Email"
 		lockboxField.placeholder = "Lockbox Info"
 //		creationDateField.placeholder = "Creation Date"
 //		detailField.placeholder = "Detail Text"
 		
-		lockboxField.isEnabled = false
+//		lockboxField.isEnabled = false
 //		creationDateField.isEnabled = false
 //		lockboxField.textColor = gray
 //		creationDateField.textColor = gray
@@ -59,13 +63,14 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 		// text field padding
 		let paddingName = UIView.init(frame: CGRect(x: 0, y: 0, width: 10, height: 40))
 		let paddingEmail = UIView.init(frame: CGRect(x: 0, y: 0, width: 10, height: 40))
-		let paddingCreationDate = UIView.init(frame: CGRect(x: 0, y: 0, width: 10, height: 40))
-		let paddingDetail = UIView.init(frame: CGRect(x: 0, y: 0, width: 10, height: 40))
+		let paddingLockbox = UIView.init(frame: CGRect(x: 0, y: 0, width: 10, height: 40))
 		nameField.leftView = paddingName
-		lockboxField.leftView = paddingEmail
+		emailField.leftView = paddingEmail
+		lockboxField.leftView = paddingLockbox
 //		creationDateField.leftView = paddingCreationDate
 //		detailField.leftView = paddingDetail
 		nameField.leftViewMode = .always
+		emailField.leftViewMode = .always
 		lockboxField.leftViewMode = .always
 //		creationDateField.leftViewMode = .always
 //		detailField.leftViewMode = .always
@@ -73,8 +78,8 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 		self.view.addSubview(profileImageView)
 		self.view.addSubview(profileImageButton)
 		self.view.addSubview(nameField)
+		self.view.addSubview(emailField)
 		self.view.addSubview(lockboxField)
-//		self.view.addSubview(creationDateField)
 //		self.view.addSubview(detailField)
 		self.view.addSubview(deleteButton)
 	}
@@ -95,15 +100,14 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 		profileImageView.layer.cornerRadius = imgSize*0.5
 		profileImageButton.frame = profileImageView.frame
 		nameField.frame = CGRect(x: 0, y: header + imgArea + 10, width: self.view.bounds.size.width, height: 44)
-		lockboxField.frame = CGRect(x: 0, y: header + imgArea + 10*2 + 44*1, width: self.view.bounds.size.width, height: 44)
+		emailField.frame = CGRect(x: 0, y: header + imgArea + 10*2 + 44*1, width: self.view.bounds.size.width, height: 44)
+		lockboxField.frame = CGRect(x: 0, y: header + imgArea + 10*3 + 44*2, width: self.view.bounds.size.width, height: 44)
 //		creationDateField.frame = CGRect(x: 0, y: header + imgArea + 10*3 + 44*2, width: self.view.bounds.size.width, height: 44)
 //		detailField.frame = CGRect(x: 0, y: header + imgArea + 10*4 + 44*3, width: self.view.bounds.size.width, height: 44)
 		deleteButton.frame = CGRect(x: 0, y: header + imgArea + 10*5 + 44*4, width: self.view.bounds.size.width, height: 44)
 		
 		// populate screen
-//		Fire.shared.getCurrentUser { (uid, userData) in
-//			self.populateUserData(uid, userData: userData)
-//		}
+		self.populateData()
 		
 		NotificationCenter.default.addObserver(self, selector: #selector(textFieldDidChange), name: NSNotification.Name(rawValue: "UITextFieldTextDidChangeNotification"), object: nil)
 	}
@@ -118,7 +122,13 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 		
 	}
 	
-	func populateUserData(_ uid:String, userData:[String:Any]){
+	func populateData(){
+		if let project = Voila.shared.project{
+			if let email = project.email{
+				self.emailField.text = email
+			}
+			self.nameField.text = project.name
+		}
 //		if let profileImage = userData["image"] as? String{
 //			Fire.shared.imageFromStorageBucket(profileImage, completionHandler: { (image, didRequireDownload) in
 //				self.profileImageView.image = image
@@ -151,12 +161,18 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 	
 	func updateWithDelay() {
 		// TODO: list all UITextFields here
-//		if let nameText = nameField.text{
-//			Fire.shared.updateCurrentUserWith(key:"displayName", object: nameText, completionHandler: nil)
-//		}
-//		if let detailText = detailField.text{
-//			Fire.shared.updateCurrentUserWith(key: "detail", object: detailText, completionHandler: nil)
-//		}
+		if let nameText = nameField.text{
+			if let project = Voila.shared.project{
+				project.name = nameText
+				project.synchronize(completionHandler: nil)
+			}
+		}
+		if let emailText = emailField.text{
+			if let project = Voila.shared.project{
+				project.email = emailText
+				project.synchronize(completionHandler: nil)
+			}
+		}
 		if(updateTimer != nil){
 			updateTimer?.invalidate()
 			updateTimer = nil

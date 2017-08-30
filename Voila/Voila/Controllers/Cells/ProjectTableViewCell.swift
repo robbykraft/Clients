@@ -16,10 +16,20 @@ class ProjectTableViewCell: UITableViewCell {
 				self.infoText.text = "\(project.rooms.count) rooms\n\(project.furnitureCount()) items"
 				self.textLabel?.text = project.name
 				if(project.rooms.count == 1) { self.infoText.text = "\(project.rooms.count) room" }
+				var emailString = "✗ Email"
+				var proposalString = "✗ Proposal Sent"
+				if project.email != nil && project.email! != ""{
+					emailString = "✓ Email"
+				}
+//				if project.email != nil && project.email! != ""{
+//					emailString = "✓ Email"
+//				}
+				self.tasksText.text = emailString + "\n" + proposalString
 			}
 		}
 	}
 	let infoText = UILabel()
+	let tasksText = UILabel()
 	
 	let separator = UIView()
 
@@ -42,12 +52,19 @@ class ProjectTableViewCell: UITableViewCell {
 	func initUI(){
 		self.textLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P24)
 		self.detailTextLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15)
+		
 		self.infoText.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15)
 		self.infoText.numberOfLines = 2
 		self.infoText.textColor = UIColor.gray
+
+		self.tasksText.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P12)
+		self.tasksText.numberOfLines = 3
+		self.tasksText.textColor = UIColor.gray
+
 		self.separator.backgroundColor = UIColor.lightGray
 		self.addSubview(self.infoText)
 		self.addSubview(self.separator)
+		self.addSubview(self.tasksText)
 		
 		let bgColorView = UIView()
 		bgColorView.backgroundColor = Style.shared.cellSelectionColor
@@ -58,9 +75,17 @@ class ProjectTableViewCell: UITableViewCell {
 		super.layoutSubviews()
 		let PAD:CGFloat = 10;
 		let size = self.frame.size
-		self.textLabel?.frame = CGRect(x: PAD, y: PAD, width: size.width-PAD*2, height: size.height*0.33)
+		if let textLabel = self.textLabel{
+			textLabel.sizeToFit()
+			textLabel.frame = CGRect(x: PAD, y: PAD*0.5, width: textLabel.frame.size.width, height: textLabel.frame.size.height)
+		}
+
 		self.infoText.sizeToFit()
-		self.infoText.frame = CGRect(x: PAD*2, y:  PAD + self.textLabel!.frame.size.height, width: self.infoText.frame.size.width, height: self.infoText.frame.size.height)
+		self.infoText.frame = CGRect(x: PAD*2, y:  PAD*0.5 + self.textLabel!.frame.size.height, width: self.infoText.frame.size.width, height: self.infoText.frame.size.height)
+		
+		self.tasksText.sizeToFit()
+		self.tasksText.frame = CGRect(x: size.width*0.5, y: PAD*0.5 + self.textLabel!.frame.size.height, width: size.width*0.5-PAD, height: self.tasksText.frame.size.height)
+		
 		self.separator.frame = CGRect(x: PAD, y: size.height-1, width: size.width-PAD*2, height: 1)
 	}
 

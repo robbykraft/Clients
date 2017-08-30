@@ -9,6 +9,12 @@
 import Foundation
 
 class Project{
+	
+//	var clientName:String?
+	
+	var email:String?
+	var lockbox:String?
+	
 	var key:String = "" // the key in the database under "projects"
 
 	var name:String = ""
@@ -44,6 +50,8 @@ class Project{
 		self.key = key
 		
 		if let projectName = data["name"] as? String { self.name = projectName }
+		if let email = data["email"] as? String { self.email = email }
+		if let lockbox = data["lockbox"] as? String { self.lockbox = lockbox }
 		if let archived = data["archived"] as? Bool { self.archived = archived }
 		if let rooms = data["rooms"] as? [String:Any] {
 			var roomArray:[Room] = []
@@ -74,6 +82,8 @@ class Project{
 		var dictionary:[String:Any] = [:]
 		dictionary["archived"] = self.archived
 		dictionary["name"] = self.name
+		if let email = self.email{ dictionary["email"] = email }
+		if let lockbox = self.lockbox{ dictionary["lockbox"] = lockbox }
 		var roomDictionary:[String:Any] = [:]
 		for room in self.rooms{
 			roomDictionary[room.key] = room.databaseForm()
@@ -113,8 +123,8 @@ class Project{
 //	}
 	
 	func synchronize(completionHandler:(() -> ())?){
-		print("synchronizing")
-		print(self.databaseForm())
+//		print("synchronizing")
+//		print(self.databaseForm())
 		Fire.shared.setData(self.databaseForm(), at: "projects/" + self.key) { (success, ref) in
 			if let completion = completionHandler{
 				completion()
