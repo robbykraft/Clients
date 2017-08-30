@@ -21,6 +21,10 @@ class ProjectTableViewCell: UITableViewCell {
 				if project.email != nil && project.email! != ""{
 					emailString = "✓ Email"
 				}
+				if let sent = project.proposalSent{
+					let date = Date(timeIntervalSince1970: TimeInterval(sent))
+					proposalString = "✓ Sent " + Style.shared.dayStringForDate(date)
+				}
 //				if project.email != nil && project.email! != ""{
 //					emailString = "✓ Email"
 //				}

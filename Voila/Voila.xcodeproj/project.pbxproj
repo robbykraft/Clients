@@ -17,7 +17,6 @@
 		D511F06C1F0D574C005AB196 /* Fire.swift in Sources */ = {isa = PBXBuildFile; fileRef = D511F06A1F0D574C005AB196 /* Fire.swift */; };
 		D511F06E1F0D5870005AB196 /* MasterNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D511F06D1F0D5870005AB196 /* MasterNavigationController.swift */; };
 		D511F0701F0D5893005AB196 /* ProjectsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D511F06F1F0D5893005AB196 /* ProjectsViewController.swift */; };
-		D56805FA1F4DE9C800328586 /* EmailMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56805F91F4DE9C800328586 /* EmailMaker.swift */; };
 		D56805FC1F4E0E9700328586 /* ProposalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56805FB1F4E0E9700328586 /* ProposalViewController.swift */; };
 		D5836C231F19183F006064E7 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5836C221F19183F006064E7 /* Style.swift */; };
 		D5836C251F193A61006064E7 /* EditProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5836C241F193A61006064E7 /* EditProjectViewController.swift */; };
@@ -68,7 +67,6 @@
 		D511F06A1F0D574C005AB196 /* Fire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fire.swift; sourceTree = "<group>"; };
 		D511F06D1F0D5870005AB196 /* MasterNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterNavigationController.swift; sourceTree = "<group>"; };
 		D511F06F1F0D5893005AB196 /* ProjectsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectsViewController.swift; sourceTree = "<group>"; };
-		D56805F91F4DE9C800328586 /* EmailMaker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EmailMaker.swift; path = Voila/Singletons/EmailMaker.swift; sourceTree = SOURCE_ROOT; };
 		D56805FB1F4E0E9700328586 /* ProposalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProposalViewController.swift; sourceTree = "<group>"; };
 		D5836C221F19183F006064E7 /* Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		D5836C241F193A61006064E7 /* EditProjectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProjectViewController.swift; sourceTree = "<group>"; };
@@ -205,7 +203,6 @@
 				D511F06A1F0D574C005AB196 /* Fire.swift */,
 				D5836C221F19183F006064E7 /* Style.swift */,
 				D5DE2D201F151ACD0071955D /* Voila.swift */,
-				D56805F91F4DE9C800328586 /* EmailMaker.swift */,
 			);
 			path = Singletons;
 			sourceTree = "<group>";
@@ -429,7 +426,6 @@
 				D5B8000E1F4F1B91008470A3 /* ProjectTableViewCell.swift in Sources */,
 				D5DE2D241F151DCE0071955D /* Furniture.swift in Sources */,
 				D5BEB7291F13D1B4000C724A /* RoomTableViewController.swift in Sources */,
-				D56805FA1F4DE9C800328586 /* EmailMaker.swift in Sources */,
 				D511F0701F0D5893005AB196 /* ProjectsViewController.swift in Sources */,
 				D5BEB72B1F13D6B8000C724A /* AllRoomsTableViewController.swift in Sources */,
 				D5836C231F19183F006064E7 /* Style.swift in Sources */,

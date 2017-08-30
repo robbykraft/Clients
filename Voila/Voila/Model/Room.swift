@@ -24,6 +24,10 @@ class Room{
 		}
 	}
 	
+	func getCost() -> Int{
+		return 500
+	}
+	
 	func databaseForm() -> [String:Any]{
 		var dictionary:[String:Any] = [:]
 		dictionary["name"] = name

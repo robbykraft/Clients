@@ -36,7 +36,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		_ = Fire.shared
 		_ = Voila.shared
 		_ = Style.shared
-		_ = EmailMaker.shared
 		
 		Voila.shared.boot {
 			if (Auth.auth().currentUser) != nil {

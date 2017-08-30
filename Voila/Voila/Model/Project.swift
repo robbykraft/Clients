@@ -14,6 +14,7 @@ class Project{
 	
 	var email:String?
 	var lockbox:String?
+	var proposalSent:Int? // the unix timestamp of the date sent
 	
 	var key:String = "" // the key in the database under "projects"
 
@@ -49,10 +50,14 @@ class Project{
 	init(key:String, data:[String:Any]){
 		self.key = key
 		
+		// required meta
 		if let projectName = data["name"] as? String { self.name = projectName }
+		if let archived = data["archived"] as? Bool { self.archived = archived }
+		// optional meta
 		if let email = data["email"] as? String { self.email = email }
 		if let lockbox = data["lockbox"] as? String { self.lockbox = lockbox }
-		if let archived = data["archived"] as? Bool { self.archived = archived }
+		if let proposalSent = data["proposalSent"] as? Int { self.proposalSent = proposalSent }
+		// room data
 		if let rooms = data["rooms"] as? [String:Any] {
 			var roomArray:[Room] = []
 			for (roomKey, object) in rooms{
@@ -80,10 +85,14 @@ class Project{
 	
 	func databaseForm() -> [String:Any]{
 		var dictionary:[String:Any] = [:]
-		dictionary["archived"] = self.archived
+		// required meta
 		dictionary["name"] = self.name
+		dictionary["archived"] = self.archived
+		// optional meta
 		if let email = self.email{ dictionary["email"] = email }
 		if let lockbox = self.lockbox{ dictionary["lockbox"] = lockbox }
+		if let proposalSent = self.proposalSent{ dictionary["proposalSent"] = proposalSent }
+		// rooms
 		var roomDictionary:[String:Any] = [:]
 		for room in self.rooms{
 			roomDictionary[room.key] = room.databaseForm()

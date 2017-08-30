@@ -18,14 +18,23 @@ class ProposalViewController: UIViewController {
 		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)!, NSForegroundColorAttributeName: Style.shared.blue], for:.normal)
 
 		let webView:UIWebView = UIWebView()
-		webView.loadHTMLString(EmailMaker.shared.htmlStringForProposal(), baseURL: nil)
+		webView.loadHTMLString(Voila.shared.htmlProposal(), baseURL: nil)
 		self.view = webView
 
         // Do any additional setup after loading the view.
     }
 	
 	func sendProposal(){
-		
+		if let project = Voila.shared.project{
+			if project.email != nil && project.email! != ""{
+				
+			} else{
+				let alert = UIAlertController(title: "Email Missing", message: "Enter client's email in 'Project Details'", preferredStyle: .alert)
+				let action1 = UIAlertAction.init(title: "Okay", style: .default, handler: nil)
+				alert.addAction(action1)
+				self.present(alert, animated: true, completion: nil)
+			}
+		}
 	}
 
     override func didReceiveMemoryWarning() {
