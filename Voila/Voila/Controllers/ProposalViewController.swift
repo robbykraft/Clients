@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import MessageUI
 
-class ProposalViewController: UIViewController {
+class ProposalViewController: UIViewController, MFMailComposeViewControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,17 +24,51 @@ class ProposalViewController: UIViewController {
 
         // Do any additional setup after loading the view.
     }
+
+	
+	func configuredMailComposeViewController() -> MFMailComposeViewController {
+		let mailComposerVC = MFMailComposeViewController()
+		mailComposerVC.mailComposeDelegate = self
+		mailComposerVC.setToRecipients(["someone@somewhere.com"])
+		mailComposerVC.setSubject("Voila Proposal")
+		mailComposerVC.setMessageBody(Voila.shared.htmlProposal(), isHTML: true)
+		return mailComposerVC
+	}
 	
 	func sendProposal(){
 		if let project = Voila.shared.project{
-			if project.email != nil && project.email! != ""{
-				
-			} else{
-				let alert = UIAlertController(title: "Email Missing", message: "Enter client's email in 'Project Details'", preferredStyle: .alert)
-				let action1 = UIAlertAction.init(title: "Okay", style: .default, handler: nil)
-				alert.addAction(action1)
-				self.present(alert, animated: true, completion: nil)
+			print("project.email")
+			print(project.email)
+			
+			let mailComposeViewController = configuredMailComposeViewController()
+			if MFMailComposeViewController.canSendMail() {
+				self.present(mailComposeViewController, animated: true, completion: nil)
+			} else {
+				//			self.showSendMailErrorAlert()
 			}
+
+			
+//			if project.email != nil && project.email! != ""{
+
+//				let emailString = project.email!
+
+//				print("MFMailComposeViewController")
+//				let mc:MFMailComposeViewController = MFMailComposeViewController()
+//				mc.mailComposeDelegate = self
+//				mc.setSubject("Voila Proposal")
+//				mc.setMessageBody(Voila.shared.htmlProposal(), isHTML: true)
+//				mc.setToRecipients(["robby@robbykraft.com"])
+//				mc.setToRecipients([emailString])
+//				print(mc);
+//				self.present(mc, animated: true, completion: nil)
+
+				
+//			} else{
+//				let alert = UIAlertController(title: "Email Missing", message: "Enter client's email in 'Project Details'", preferredStyle: .alert)
+//				let action1 = UIAlertAction.init(title: "Okay", style: .default, handler: nil)
+//				alert.addAction(action1)
+//				self.present(alert, animated: true, completion: nil)
+//			}
 		}
 	}
 
@@ -52,5 +87,5 @@ class ProposalViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
+	
 }

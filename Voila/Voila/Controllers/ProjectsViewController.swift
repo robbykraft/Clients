@@ -18,7 +18,7 @@ class ProjectsViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-		self.title = "Voila"
+		self.title = "Projects"
 
 		self.tableView.separatorStyle = .none
 		
@@ -62,65 +62,67 @@ class ProjectsViewController: UITableViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-		switch indexPath.section{
-		case 0: return 44
-		default: return 90
-		}
+//		switch indexPath.section{
+//		case 0: return 44
+//		default: return 90
+//		}
+		return 90
 	}
 
 	override func numberOfSections(in tableView: UITableView) -> Int {
-		return 2
+//		return 2
+		return 1
 	}
 
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		switch section {
-		case 0:
-			return 1
-		default:
+//		switch section {
+//		case 0:
+//			return 1
+//		default:
 			return self.projects.count
-		}
+//		}
 	}
 	
 	override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-		switch section {
-		case 0:
-			return nil
-		default:
+//		switch section {
+//		case 0:
+//			return nil
+//		default:
 			return "Current"
-		}
+//		}
 	}
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-		switch indexPath.section{
-		case 0:
-			let cell = UITableViewCell.init(style: .default, reuseIdentifier: "CreateProjectCell")
-			cell.textLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
-			cell.detailTextLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
-			cell.textLabel?.text = "Create Project"
-			// selection color
-			let bgColorView = UIView()
-			bgColorView.backgroundColor = Style.shared.cellSelectionColor
-			cell.selectedBackgroundView = bgColorView
-			return cell
-		default:
+//		switch indexPath.section{
+//		case 0:
+//			let cell = UITableViewCell.init(style: .default, reuseIdentifier: "CreateProjectCell")
+//			cell.textLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
+//			cell.detailTextLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
+//			cell.textLabel?.text = "Create Project"
+//			// selection color
+//			let bgColorView = UIView()
+//			bgColorView.backgroundColor = Style.shared.cellSelectionColor
+//			cell.selectedBackgroundView = bgColorView
+//			return cell
+//		default:
 			let cell = ProjectTableViewCell()
 			let project = self.projects[indexPath.row]
 			cell.data = project;
 			return cell
-		}
+//		}
 	}
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		switch indexPath.section{
-		case 0:
-			self.newProjectHandler()
-			tableView.deselectRow(at: indexPath, animated: true)
-		default:
+//		switch indexPath.section{
+//		case 0:
+//			self.newProjectHandler()
+//			tableView.deselectRow(at: indexPath, animated: true)
+//		default:
 			Voila.shared.project = self.projects[indexPath.row]
 			let vc = ProjectTableViewController()
 			self.navigationController?.pushViewController(vc, animated: true)
-		}
+//		}
 	}
 	
 	func settingsHandler(){
@@ -190,5 +192,7 @@ class ProjectsViewController: UITableViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+	
+	
 
 }

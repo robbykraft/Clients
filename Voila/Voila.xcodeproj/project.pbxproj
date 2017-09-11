@@ -18,6 +18,7 @@
 		D511F06E1F0D5870005AB196 /* MasterNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D511F06D1F0D5870005AB196 /* MasterNavigationController.swift */; };
 		D511F0701F0D5893005AB196 /* ProjectsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D511F06F1F0D5893005AB196 /* ProjectsViewController.swift */; };
 		D56805FC1F4E0E9700328586 /* ProposalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56805FB1F4E0E9700328586 /* ProposalViewController.swift */; };
+		D571D60D1F66DDC2004453D3 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D571D60C1F66DDC2004453D3 /* MessageUI.framework */; };
 		D5836C231F19183F006064E7 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5836C221F19183F006064E7 /* Style.swift */; };
 		D5836C251F193A61006064E7 /* EditProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5836C241F193A61006064E7 /* EditProjectViewController.swift */; };
 		D5B8000E1F4F1B91008470A3 /* ProjectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B8000D1F4F1B91008470A3 /* ProjectTableViewCell.swift */; };
@@ -68,6 +69,7 @@
 		D511F06D1F0D5870005AB196 /* MasterNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterNavigationController.swift; sourceTree = "<group>"; };
 		D511F06F1F0D5893005AB196 /* ProjectsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectsViewController.swift; sourceTree = "<group>"; };
 		D56805FB1F4E0E9700328586 /* ProposalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProposalViewController.swift; sourceTree = "<group>"; };
+		D571D60C1F66DDC2004453D3 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		D5836C221F19183F006064E7 /* Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		D5836C241F193A61006064E7 /* EditProjectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProjectViewController.swift; sourceTree = "<group>"; };
 		D5B8000D1F4F1B91008470A3 /* ProjectTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectTableViewCell.swift; sourceTree = "<group>"; };
@@ -88,6 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D571D60D1F66DDC2004453D3 /* MessageUI.framework in Frameworks */,
 				44D790C51C029AEDBEF9BD48 /* Pods_Voila.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -121,6 +124,7 @@
 		65026ABC06AA1C28BDA1FE4A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D571D60C1F66DDC2004453D3 /* MessageUI.framework */,
 				F6CF78C23B362FCE1B751FA3 /* Pods_Voila.framework */,
 			);
 			name = Frameworks;

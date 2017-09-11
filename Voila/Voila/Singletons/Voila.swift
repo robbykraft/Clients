@@ -1,3 +1,6 @@
+import UIKit
+import MessageUI
+
 
 class Voila{
 	static let shared = Voila()
@@ -229,8 +232,42 @@ class Voila{
 	//////////////////////////////////////////////////////////////////////////
 	// PROPOSAL
 	
+	func mailDidFinish(_ result: MFMailComposeResult){
+		switch result{
+		case .sent:
+			print("sent")
+		case .saved:
+			print("saved")
+		case .failed:
+			print("failed")
+		case .cancelled:
+			print("canceled")
+		}
+		
+	}
+	
+	func sendProposal(_ viewController:UIViewController){
+		if let project = Voila.shared.project{
+			if project.email != nil && project.email! != "" && MFMailComposeViewController.canSendMail() {
+				let sendEmail = project.email!
+				let mailComposerVC = MFMailComposeViewController()
+				mailComposerVC.mailComposeDelegate = viewController as! MFMailComposeViewControllerDelegate
+				mailComposerVC.setToRecipients([sendEmail])
+				mailComposerVC.setSubject("Voila Proposal")
+				mailComposerVC.setMessageBody(Voila.shared.htmlProposal(), isHTML: true)
+				viewController.present(mailComposerVC, animated: true, completion: nil)
+			} else{
+				let alert = UIAlertController(title: "Email Missing", message: "Enter client's email in 'Project Details'", preferredStyle: .alert)
+				let action1 = UIAlertAction.init(title: "Okay", style: .default, handler: nil)
+				alert.addAction(action1)
+				viewController.present(alert, animated: true, completion: nil)
+			}
+		}
+	}
+
+	
 	func htmlProposal()->String{
-		return pageHeader + self.tableForProject() + termsAndConditionsText + pageFooter
+		return pageHeader + self.titleForProject() + self.tableForProject() + termsAndConditionsText + pageFooter
 	}
 	
 	func tableForProject()->String{
@@ -264,7 +301,15 @@ class Voila{
 		"Home Staging • Re-Styling • Interior Design • Developer Services • Painting" +
 		"</p></div><p style=\"color:#888;font-style: italic;\">" +
 		"Voila Design is Philadelphia’s award winning Home Staging and Interior Design firm. Awarded the \"Best of Philly\" accolade for Home Staging as well as a 26 episode Interior Design agreement with HGTV, the Voila Design team has proven themselves to be an industry leader in the Tri- State Area and beyond. The Voila Design team specializes in preparing properties to sell for the highest market value and in the shortest amount of time. Unlike the competition, Voila Design owns top of the line furnishings, accessories and artwork which allows every Home Staging project to be customized to suit each and every space. The award winning Voila Design team has the unique ability to turn a space from bland to grand in 24 hours or less!" +
-	"</p><h2 style=\"text-align:center;\">Home Staging Proposal</h2><h2 style=\"text-align:center;\">1234 Park Pl. Springville</h2>"
+	"</p><h2 style=\"text-align:center;\">Home Staging Proposal</h2>"
+	
+	func titleForProject() -> String{
+		var unitTitle = "";
+		if let project = self.project{
+			unitTitle = project.name
+		}
+		return "<h2 style=\"text-align:center;\">" + unitTitle + "</h2>"
+	}
 	
 	var pageFooter = "<hr><div style=\"text-align:center;\"><p><strong>Voila Design Home Services LLC</strong><br>267.688.2520<br><a href=\"mailto:tiffanyfasone@gmail.com\">tiffanyfasone@gmail.com</a><br><a href=\"http://voiladesignhome.com\">voiladesignhome.com</a><br><a href=\"https://www.google.com/maps/place/Voila+Design+Home/@39.9296906,-75.1710639,17z/\">1630 S Broad Street<br>Philadelphia, PA 19145</a></p></div></div></body></html>"
 	

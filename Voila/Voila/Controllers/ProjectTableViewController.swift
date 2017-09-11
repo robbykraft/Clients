@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import MessageUI
 
-class ProjectTableViewController: UITableViewController {
+class ProjectTableViewController: UITableViewController, MFMailComposeViewControllerDelegate {
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,7 +43,8 @@ class ProjectTableViewController: UITableViewController {
 	}
 	
 	func makeProposalHandler(){
-		self.navigationController?.pushViewController(ProposalViewController(), animated: true)		
+		Voila.shared.sendProposal(self)
+//		self.navigationController?.pushViewController(ProposalViewController(), animated: true)
 	}
 	
 	func addRoomHandler(){
@@ -175,5 +177,13 @@ class ProjectTableViewController: UITableViewController {
         }    
     }
     */
+	
+	
+	
+	func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+		Voila.shared.mailDidFinish(result)
+		self.dismiss(animated: true, completion: nil)
+	}
+
 
 }

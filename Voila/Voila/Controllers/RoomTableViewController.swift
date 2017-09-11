@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import MessageUI
 
-class RoomTableViewController: UITableViewController {
+class RoomTableViewController: UITableViewController, MFMailComposeViewControllerDelegate {
 	
 //	var data:Room?{
 //		didSet{
@@ -54,7 +55,7 @@ class RoomTableViewController: UITableViewController {
 //	}
 	
 	func makeProposalHandler(){
-		
+		Voila.shared.sendProposal(self)
 	}
 	
 	func addFurnitureHandler(){
@@ -206,6 +207,14 @@ class RoomTableViewController: UITableViewController {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
-    
+	
+	
+	
+	func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+		Voila.shared.mailDidFinish(result)
+		self.dismiss(animated: true, completion: nil)
+	}
+	
+
 
 }
