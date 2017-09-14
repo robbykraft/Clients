@@ -29,6 +29,9 @@ class RoomTableViewController: UITableViewController, MFMailComposeViewControlle
 		}
 	}
 	
+	let titleButton = UIButton(type: .custom)
+
+	
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -41,6 +44,14 @@ class RoomTableViewController: UITableViewController, MFMailComposeViewControlle
 		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)!, NSForegroundColorAttributeName: Style.shared.blue], for:.normal)
 		
 		self.title = Voila.shared.currentRoomName()
+		
+		titleButton.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
+//		titleButton.backgroundColor = UIColor.red
+		titleButton.titleLabel?.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)
+		titleButton.setTitleColor(UIColor.black, for: .normal)
+		titleButton.setTitle(Voila.shared.currentRoomName(), for: .normal)
+		titleButton.addTarget(self, action: #selector(self.clickOnButton), for: .touchUpInside)
+		self.navigationItem.titleView = titleButton
 
 		
         // Uncomment the following line to preserve selection between presentations
@@ -49,6 +60,31 @@ class RoomTableViewController: UITableViewController, MFMailComposeViewControlle
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
+	
+//	func clickOnButton(button: UIButton) {
+//		let alert = UIAlertController(title: "Custom Name", message: "Give this room a custom name?", preferredStyle: .alert)
+//	}
+	func clickOnButton(button: UIButton) {
+		let alertController = UIAlertController(title: "Custom Name", message: "Give this room a custom name?", preferredStyle: .alert)
+		alertController.addTextField { (textField : UITextField) -> Void in
+			textField.placeholder = "Room Name"
+		}
+		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (result : UIAlertAction) -> Void in
+		}
+		let okAction = UIAlertAction(title: "OK", style: .default) { (result : UIAlertAction) -> Void in
+			if let fields = alertController.textFields{
+				if let text = fields.first!.text{
+					Voila.shared.setCustomRoomName(customName: text, completionHandler: {
+						self.titleButton.setTitle(Voila.shared.currentRoomName(), for: .normal)
+						self.titleButton.sizeToFit()
+					})
+				}
+			}
+		}
+		alertController.addAction(cancelAction)
+		alertController.addAction(okAction)
+		self.present(alertController, animated: true, completion: nil)
+	}
 	
 //	override func viewWillAppear(_ animated: Bool) {
 //		super.viewWillAppear(animated)

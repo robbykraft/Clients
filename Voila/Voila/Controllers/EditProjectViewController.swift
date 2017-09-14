@@ -129,6 +129,7 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 			}
 			self.nameField.text = project.name
 		}
+		profileImageView.image = UIImage(named: "house")
 //		if let profileImage = userData["image"] as? String{
 //			Fire.shared.imageFromStorageBucket(profileImage, completionHandler: { (image, didRequireDownload) in
 //				self.profileImageView.image = image

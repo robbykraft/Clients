@@ -24,6 +24,24 @@ class Voila{
 		}
 	}
 	
+	func setCustomRoomName(customName:String, completionHandler:(()->())?){
+		if let p = self.project{
+			if let key = self.roomKey{
+				for room in p.rooms{
+					if room.key == key{
+						room.customName = customName
+						p.synchronize(completionHandler: { 
+							if let completion = completionHandler{
+								completion()
+							}
+						})
+					}
+				}
+			}
+		}
+	}
+
+	
 	func currentRoomAllFurniture()->[Furniture]{
 		if let p = self.project{
 			if let key = self.roomKey{
