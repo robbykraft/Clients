@@ -269,7 +269,7 @@ class Voila{
 			if project.email != nil && project.email! != "" && MFMailComposeViewController.canSendMail() {
 				let sendEmail = project.email!
 				let mailComposerVC = MFMailComposeViewController()
-				mailComposerVC.mailComposeDelegate = viewController as! MFMailComposeViewControllerDelegate
+				mailComposerVC.mailComposeDelegate = viewController as? MFMailComposeViewControllerDelegate
 				mailComposerVC.setToRecipients([sendEmail])
 				mailComposerVC.setSubject("Voila Proposal")
 				mailComposerVC.setMessageBody(Voila.shared.htmlProposal(), isHTML: true)

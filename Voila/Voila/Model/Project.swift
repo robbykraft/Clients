@@ -64,7 +64,7 @@ class Project{
 				if let roomObject = object as? [String:Any]{
 					if let roomName = roomObject["name"] as? String {
 						let newRoom = Room(name: roomName, key: roomKey)
-						if let customName = roomObject["customName"] as? String { newRoom.customName = customName }
+						if let customName = roomObject["custom"] as? String { newRoom.customName = customName }
 						var furnitureArray:[Furniture] = []
 						if let furnitureList = roomObject["furniture"] as? [String:Int]{
 							for(furnitureName, count) in furnitureList{

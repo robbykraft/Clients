@@ -123,7 +123,9 @@ class ProjectTableViewController: UITableViewController, MFMailComposeViewContro
 				default:
 					let room = project.rooms[indexPath.row]
 					cell.textLabel?.text = room.name
-					if let customName = room.customName { cell.textLabel?.text = customName }
+					if let customName = room.customName {
+						cell.textLabel?.text = customName
+					}
 					if room.furniture.count <= 0 {
 						cell.detailTextLabel?.text = "empty"
 						cell.detailTextLabel?.textColor = Style.shared.blue
