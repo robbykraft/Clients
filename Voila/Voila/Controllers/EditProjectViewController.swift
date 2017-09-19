@@ -16,6 +16,8 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 	let nameField: UITextField = UITextField()
 	let emailField: UITextField = UITextField()
 	let lockboxField: UITextField = UITextField()
+	let clientField: UITextField = UITextField()
+	let realtorField: UITextField = UITextField()
 //	let creationDateField: UITextField = UITextField()
 //	let detailField: UITextField = UITextField()
 	let deleteButton: UIButton = UIButton()
@@ -38,6 +40,8 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 		nameField.delegate = self
 		emailField.delegate = self
 		lockboxField.delegate = self
+		clientField.delegate = self
+		realtorField.delegate = self
 //		creationDateField.delegate = self
 //		detailField.delegate = self
 		profileImageView.contentMode = .scaleAspectFill
@@ -46,12 +50,16 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 		nameField.backgroundColor = UIColor.white
 		emailField.backgroundColor = UIColor.white
 		lockboxField.backgroundColor = UIColor.white
+		clientField.backgroundColor = UIColor.white
+		realtorField.backgroundColor = UIColor.white
 //		creationDateField.backgroundColor = UIColor.white
 //		detailField.backgroundColor = UIColor.white
 		deleteButton.backgroundColor = Style.shared.red
 		nameField.placeholder = "Name"
 		emailField.placeholder = "Email"
 		lockboxField.placeholder = "Lockbox Info"
+		clientField.placeholder = "Client Name"
+		realtorField.placeholder = "Realtor Info"
 //		creationDateField.placeholder = "Creation Date"
 //		detailField.placeholder = "Detail Text"
 		
@@ -64,14 +72,20 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 		let paddingName = UIView.init(frame: CGRect(x: 0, y: 0, width: 10, height: 40))
 		let paddingEmail = UIView.init(frame: CGRect(x: 0, y: 0, width: 10, height: 40))
 		let paddingLockbox = UIView.init(frame: CGRect(x: 0, y: 0, width: 10, height: 40))
+		let paddingClient = UIView.init(frame: CGRect(x: 0, y: 0, width: 10, height: 40))
+		let paddingRealtor = UIView.init(frame: CGRect(x: 0, y: 0, width: 10, height: 40))
 		nameField.leftView = paddingName
 		emailField.leftView = paddingEmail
 		lockboxField.leftView = paddingLockbox
+		clientField.leftView = paddingClient
+		realtorField.leftView = paddingRealtor
 //		creationDateField.leftView = paddingCreationDate
 //		detailField.leftView = paddingDetail
 		nameField.leftViewMode = .always
 		emailField.leftViewMode = .always
 		lockboxField.leftViewMode = .always
+		clientField.leftViewMode = .always
+		realtorField.leftViewMode = .always
 //		creationDateField.leftViewMode = .always
 //		detailField.leftViewMode = .always
 		
@@ -80,6 +94,8 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 		self.view.addSubview(nameField)
 		self.view.addSubview(emailField)
 		self.view.addSubview(lockboxField)
+		self.view.addSubview(clientField)
+		self.view.addSubview(realtorField)
 //		self.view.addSubview(detailField)
 		self.view.addSubview(deleteButton)
 	}
@@ -101,10 +117,12 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 		profileImageButton.frame = profileImageView.frame
 		nameField.frame = CGRect(x: 0, y: header + imgArea + 10, width: self.view.bounds.size.width, height: 44)
 		emailField.frame = CGRect(x: 0, y: header + imgArea + 10*2 + 44*1, width: self.view.bounds.size.width, height: 44)
-		lockboxField.frame = CGRect(x: 0, y: header + imgArea + 10*3 + 44*2, width: self.view.bounds.size.width, height: 44)
+		clientField.frame = CGRect(x: 0, y: header + imgArea + 10*3 + 44*2, width: self.view.bounds.size.width, height: 44)
+		lockboxField.frame = CGRect(x: 0, y: header + imgArea + 10*4 + 44*3, width: self.view.bounds.size.width, height: 44)
+		realtorField.frame = CGRect(x: 0, y: header + imgArea + 10*5 + 44*4, width: self.view.bounds.size.width, height: 44)
 //		creationDateField.frame = CGRect(x: 0, y: header + imgArea + 10*3 + 44*2, width: self.view.bounds.size.width, height: 44)
 //		detailField.frame = CGRect(x: 0, y: header + imgArea + 10*4 + 44*3, width: self.view.bounds.size.width, height: 44)
-		deleteButton.frame = CGRect(x: 0, y: header + imgArea + 10*5 + 44*4, width: self.view.bounds.size.width, height: 44)
+		deleteButton.frame = CGRect(x: 0, y: header + imgArea + 10*6 + 44*5, width: self.view.bounds.size.width, height: 44)
 		
 		// populate screen
 		self.populateData()
@@ -119,13 +137,31 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 	}
 	
 	func deleteProject(){
-		
+		if let thisProject = Voila.shared.project{
+			Fire.shared.database.child("projects").child(thisProject.key).removeValue { error in
+				if let masterNav = self.navigationController as? MasterNavigationController{
+					masterNav.projectsVC.reloadData({
+						Voila.shared.project = nil
+						self.navigationController?.popToRootViewController(animated: true)
+					})
+				}
+			}
+		}
 	}
 	
 	func populateData(){
 		if let project = Voila.shared.project{
 			if let email = project.email{
 				self.emailField.text = email
+			}
+			if let lockbox = project.lockbox{
+				self.lockboxField.text = lockbox
+			}
+			if let clientName = project.clientName{
+				self.clientField.text = clientName
+			}
+			if let realtorName = project.realtorName{
+				self.realtorField.text = realtorName
 			}
 			self.nameField.text = project.name
 		}

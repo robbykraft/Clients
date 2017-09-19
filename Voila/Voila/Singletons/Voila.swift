@@ -165,7 +165,9 @@ class Voila{
 						}
 					}
 					// all room furniture gathered
-					furnitureDictionary[roomName] = newRoomFurniture
+					furnitureDictionary[roomName] = newRoomFurniture.sorted(by: { (a, b) -> Bool in
+						return a.name < b.name
+					})
 				}
 			}
 			self.furniture = furnitureDictionary

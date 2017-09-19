@@ -18,20 +18,22 @@ class ProjectsViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-		self.title = "Projects"
+		self.title = "Voila"
+		let titleImage = UIImageView(image: UIImage(named: "logo"))
+		titleImage.autoresizingMask = [.flexibleBottomMargin, .flexibleHeight, .flexibleRightMargin, .flexibleLeftMargin, .flexibleTopMargin, .flexibleWidth]
+		titleImage.contentMode = .scaleAspectFit
+		titleImage.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
+		self.navigationItem.titleView = titleImage
+
+		
 
 		self.tableView.separatorStyle = .none
 		
 		navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-		
-//		let newBackButton = UIBarButtonItem.init(title: "Done", style: .done, target: self, action: #selector(doneButtonPressed))
-//		self.navigationItem.leftBarButtonItem = newBackButton
-//		self.navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont.boldSystemFont(ofSize: 18), NSForegroundColorAttributeName: UIColor.black], for:.normal)
 
-		let settingsButton = UIBarButtonItem.init(title: "Settings", style: .done, target: self, action: #selector(settingsHandler))
-		self.navigationItem.leftBarButtonItem = settingsButton
-		self.navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)!, NSForegroundColorAttributeName: Style.shared.blue], for:.normal)
-//		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont.systemFont(ofSize: 25), NSForegroundColorAttributeName: UIColor.black], for:.normal)
+//		let settingsButton = UIBarButtonItem.init(title: "Settings", style: .done, target: self, action: #selector(settingsHandler))
+//		self.navigationItem.leftBarButtonItem = settingsButton
+//		self.navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)!, NSForegroundColorAttributeName: Style.shared.blue], for:.normal)
 		
 		let addButton = UIBarButtonItem.init(title: "+", style: .done, target: self, action: #selector(self.newProjectHandler))
 		self.navigationItem.rightBarButtonItem = addButton
@@ -136,13 +138,13 @@ class ProjectsViewController: UITableViewController {
 	func fillTemplate(){
 		let alertController = UIAlertController(title: "Begin from a template?", message: nil, preferredStyle: .alert)
 		let template1Action = UIAlertAction(title: "Small 1 Bedroom", style: .default) { (result : UIAlertAction) -> Void in
-			Voila.shared.project?.setFromTemplate(completionHandler: { 
+			Voila.shared.project?.setFromSmallTemplate(completionHandler: {
 				let vc = ProjectTableViewController()
 				self.navigationController?.pushViewController(vc, animated: true)
 			})
 		}
 		let template2Action = UIAlertAction(title: "Large 2 Bedroom", style: .default) { (result : UIAlertAction) -> Void in
-			Voila.shared.project?.setFromTemplate(completionHandler: {
+			Voila.shared.project?.setFromLargeTemplate(completionHandler: {
 				let vc = ProjectTableViewController()
 				self.navigationController?.pushViewController(vc, animated: true)
 			})
