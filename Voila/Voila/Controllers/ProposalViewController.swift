@@ -17,6 +17,10 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 	
 	let projectTitle = UILabel()
 	let projectDescription = UILabel()
+	let salesTaxLabel = UILabel()
+	let discountLabel = UILabel()
+	let discountField = UITextField()
+	let salesTaxField = UITextField()
 	let scrollView = UIScrollView()
 	var roomLabels:[UILabel] = []
 	var roomFields:[UITextField] = []
@@ -49,7 +53,34 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 			self.projectDescription.font = UIFont(name:SYSTEM_FONT, size:Style.shared.P24)
 			self.projectDescription.text = "Total: $\(project.cost())"
 			self.scrollView.addSubview(self.projectDescription)
+	
+			self.salesTaxLabel.font = UIFont(name:SYSTEM_FONT, size:Style.shared.P18)
+			self.salesTaxLabel.text = "% sales tax"
+			self.scrollView.addSubview(self.salesTaxLabel)
+			self.discountLabel.font = UIFont(name:SYSTEM_FONT, size:Style.shared.P18)
+			self.discountLabel.text = "$ discount"
+			self.scrollView.addSubview(self.discountLabel)
 			
+			self.salesTaxField.backgroundColor = .white
+			self.salesTaxField.textAlignment = .right
+			self.salesTaxField.keyboardType = .decimalPad
+			self.salesTaxField.placeholder = "0.0"
+			self.salesTaxField.delegate = self
+			self.salesTaxField.layer.cornerRadius = 5.0
+			self.discountField.backgroundColor = .white
+			self.discountField.textAlignment = .right
+			self.discountField.keyboardType = .numberPad
+			self.discountField.delegate = self
+			self.discountField.layer.cornerRadius = 5.0
+			self.scrollView.addSubview(self.discountField)
+			self.scrollView.addSubview(self.salesTaxField)
+			let insetPadding1 = UIView.init(frame: CGRect(x: 0, y: 0, width: 10, height: 30))
+			salesTaxField.rightView = insetPadding1
+			salesTaxField.rightViewMode = .always
+			let insetPadding2 = UIView.init(frame: CGRect(x: 0, y: 0, width: 10, height: 30))
+			discountField.rightView = insetPadding2
+			discountField.rightViewMode = .always
+
 			hr.backgroundColor = .black
 			self.scrollView.addSubview(hr)
 			
@@ -123,12 +154,11 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 	override func viewWillDisappear(_ animated: Bool) {
 		self.updateCustomCosts(updateCompletion: nil)
 	}
-	
-	
+
 	deinit{
 		self.deregisterFromKeyboardNotifications()
 	}
-	
+
 	override func viewWillAppear(_ animated: Bool) {
 		let padding:CGFloat = 15;
 		self.projectTitle.frame = CGRect.init(x: padding, y: padding, width: self.view.bounds.size.width, height: self.view.bounds.size.height)
@@ -136,8 +166,14 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 		
 		self.projectDescription.frame = CGRect.init(x: padding, y: padding + self.projectTitle.bounds.size.height, width: self.view.bounds.size.width, height: self.view.bounds.size.height)
 		self.projectDescription.sizeToFit()
+		
+		self.salesTaxField.frame = CGRect.init(x: padding, y: 5 + projectDescription.frame.origin.y + self.projectDescription.bounds.size.height, width: self.view.bounds.size.width * 0.4, height:32)
+		self.discountField.frame = CGRect.init(x: padding, y: 5 + salesTaxField.frame.origin.y + self.salesTaxField.bounds.size.height, width: self.view.bounds.size.width * 0.4, height:32)
 
-		let labelYStart:CGFloat = self.projectDescription.frame.origin.y + self.projectDescription.frame.size.height + padding
+		self.salesTaxLabel.frame = CGRect.init(x: padding + self.view.bounds.size.width * 0.5, y: 5 + projectDescription.frame.origin.y + self.projectDescription.bounds.size.height, width: self.view.bounds.size.width * 0.3, height:40)
+		self.discountLabel.frame = CGRect.init(x: padding + self.view.bounds.size.width * 0.5, y: 5 + salesTaxField.frame.origin.y + self.salesTaxField.bounds.size.height, width: self.view.bounds.size.width * 0.3, height:40)
+
+		let labelYStart:CGFloat = self.discountField.frame.origin.y + self.discountField.frame.size.height + padding
 
 		hr.frame = CGRect(x: padding, y: labelYStart - padding*0.333, width: self.view.bounds.size.width-padding*2, height: 1)
 		
@@ -191,7 +227,7 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 		if self.keyboardSize == nil{
 //			var info = notification.userInfo!
 //			let keySize = (info[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size
-			self.keyboardSize = CGSize(width: self.view.bounds.size.width, height: 270)//keySize
+			self.keyboardSize = CGSize(width: self.view.bounds.size.width, height: 300)//keySize
 		}
 		if let activeField = self.activeField {
 			let navBarHeight:CGFloat = self.navigationController!.navigationBar.frame.height
