@@ -12,6 +12,7 @@ class Room{
 	var key:String = ""
 	var name:String = "" // room name in database
 	var customName:String? // rename a room
+	var cost:Int? // force override dynamic calculation of room cost
 	
 	var furniture:[Furniture] = []
 	
@@ -25,13 +26,24 @@ class Room{
 	}
 	
 	func getCost() -> Int{
-		return 500
+		if let custom = self.cost{
+			return custom
+		}
+		var total:Float = 0.0
+		for item in self.furniture{
+			let thisCost = Voila.shared.priceForFurniture(name: item.name)
+			let copies = item.copies
+			total += thisCost * Float(copies)
+		}
+		
+		return Int(round(total/100)*100)
 	}
 	
 	func databaseForm() -> [String:Any]{
 		var dictionary:[String:Any] = [:]
 		dictionary["name"] = name
-		if let custom = self.customName{ dictionary["custom"] = custom }
+		if let customName = self.customName{ dictionary["custom"] = customName }
+		if let customCost = self.cost{ dictionary["cost"] = customCost }
 		var furnitureDictionary:[String:Any] = [:]
 		for furniture in self.furniture{
 			furnitureDictionary[furniture.name] = furniture.copies

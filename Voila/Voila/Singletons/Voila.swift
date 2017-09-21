@@ -10,6 +10,10 @@ class Voila{
 	var furniture:[String:[Furniture]] = [:]
 	var templates:[String:[Room]] = [:]
 	var roomNames:[String] = []  // array of keys of above database
+	
+	var furnitureCost:[String:Float] = [
+		"Accent Chair" : 62.5, "Accessories" : 18.75, "Area Rug" : 62.5, "Art" : 25, "Bar" : 75, "Bar Stools" : 25, "Bench" : 37.5, "Coffee Table" : 50, "Console Table" : 50, "Desk" : 75, "Desk Chair" : 25, "Floor Lamp" : 25, "Large Console" : 75, "Large Desk" : 100, "Ottoman" : 50, "Outdoor Sofa" : 150, "Poof" : 22.5, "Pub Chairs" : 25, "Pub Table" : 50, "Runner Rug" : 25, "Sectional" : 25, "Side Chair" : 100, "Side Table" : 50, "Small Desk" : 50, "Small Sofa" : 25, "Sofa" : 25, "Window Treatments" : 25, "Console" : 87.5, "Laundry Basket" : 12.5, "Rug" : 50, "Towels" : 12.5, "Bed Frame" : 37.5, "Box Spring" : 50, "Day Bed" : 37.5, "Dresser" : 100, "Head Board" : 50, "King Bed" : 75, "Lamp" : 18.75, "Night Table" : 37.5, "Queen Bed" : 50, "Twin Bed" : 37.5, "Bistro Set" : 37.5, "Dining Chairs" : 37.5, "Dining Table" : 100, "Outdoor Lounger" : 100, "Outdoor Rug" : 50, "Outdoor Sectional" : 200, "Outdoor Side Table" : 37.5, "Counter Stools" : 37.5, "Dining Console" : 87.5, "Head Chairs" : 50, "Kitchen Chairs" : 25, "Kitchen Table" : 87.5, "Pub Stools" : 25, "Mirror" : 25, "Narow console table" : 50, "Card Table" : 75, "Counter Accessories" : 25, "Kichen Accessories" : 25
+	]
 
 	var project:Project?{    // currently editing
 		didSet{
@@ -130,7 +134,10 @@ class Voila{
 	}
 	
 	func priceForFurniture(name:String) -> Float{
-		return 123.0
+		if let cost = self.furnitureCost[name]{
+			return cost
+		}
+		return 0.0
 	}
 	
 	func removeRoomFromProject(roomName:String) -> Bool{
@@ -315,7 +322,7 @@ class Voila{
 				// last row, cost
 				table.append("<tr><td></td><td></td><td><strong>$" + String(describing:room.getCost()) + "</strong></td></tr>")
 			}
-			table.append("<tr style=\"background-color:#555\"><td style=\"color:#FFF;\"><strong>Total</strong></td><td style=\"color:#FFF;\"></td><td style=\"color:#FFF;\"><strong>$2500</strong></td></tr>")
+			table.append("<tr style=\"background-color:#555\"><td style=\"color:#FFF;\"><strong>Total</strong></td><td style=\"color:#FFF;\"></td><td style=\"color:#FFF;\"><strong>$" + String(describing:project.cost()) + "</strong></td></tr>")
 		}
 		table.append("</table>")
 		return table

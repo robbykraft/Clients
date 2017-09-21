@@ -43,8 +43,8 @@ class ProjectTableViewController: UITableViewController, MFMailComposeViewContro
 	}
 	
 	func makeProposalHandler(){
-		Voila.shared.sendProposal(self)
-//		self.navigationController?.pushViewController(ProposalViewController(), animated: true)
+//		Voila.shared.sendProposal(self)
+		self.navigationController?.pushViewController(ProposalViewController(), animated: true)
 	}
 	
 	func addRoomHandler(){

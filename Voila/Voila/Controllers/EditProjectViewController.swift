@@ -120,7 +120,7 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 		let navBarHeight:CGFloat = self.navigationController!.navigationBar.frame.height
 		let statusHeight:CGFloat = statusBarHeight()
 		
-		let header = navBarHeight + statusHeight
+//		let header = navBarHeight + statusHeight
 		
 		// frames
 		let imgSize:CGFloat = self.view.bounds.size.width * 0.4
@@ -279,47 +279,26 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 		//Need to calculate keyboard exact size due to Apple suggestions
 		self.scrollView.isScrollEnabled = true
 		if self.keyboardSize == nil{
-			var info = notification.userInfo!
-			let keySize = (info[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size
-			self.keyboardSize = keySize
+//			var info = notification.userInfo!
+//			let keySize = (info[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size
+			self.keyboardSize = CGSize(width: self.view.bounds.size.width, height: 270)//keySize
 		}
-		
-//		let contentInsets : UIEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, keyboardSize!.height, 0.0)
-		
-//		self.scrollView.contentInset = contentInsets
-//		self.scrollView.scrollIndicatorInsets = contentInsets
-
-//		var aRect : CGRect = self.view.frame
-//		aRect.size.height -= keyboardSize!.height
 		if let activeField = self.activeField {
-//			if (!aRect.contains(activeField.frame.origin)){
-//				self.scrollView.scrollRectToVisible(activeField.frame, animated: true)
-//			}
-			
 			let navBarHeight:CGFloat = self.navigationController!.navigationBar.frame.height
 			let statusHeight:CGFloat = statusBarHeight()
 			let header = navBarHeight + statusHeight
-			
 			var newSize = self.view.bounds.size
 			newSize.height += (self.keyboardSize?.height)! - header
 			self.scrollView.contentSize = newSize
 			let fieldFromBottom = (self.scrollView.bounds.size.height-activeField.frame.origin.y-120)
-			print(fieldFromBottom)
 			let scrollToY = newSize.height - 1 - fieldFromBottom
 			self.scrollView.scrollRectToVisible(CGRect.init(x: 0, y: scrollToY, width: 1, height: 1), animated: true)
 		}
 	}
 	
 	func keyboardWillBeHidden(notification: NSNotification){
-		//Once keyboard disappears, restore original positions
-//		var info = notification.userInfo!
-//		let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size
-//		let contentInsets : UIEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, -keyboardSize!.height, 0.0)
 		self.scrollView.contentSize = self.view.bounds.size
 		self.scrollView.scrollRectToVisible(CGRect.init(x: 0, y: 0, width: 1, height: 1), animated: true)
-//		self.scrollView.contentInset = contentInsets
-//		self.scrollView.scrollIndicatorInsets = contentInsets
-//		self.scrollView.contentInset = UIEdgeInsets.zero;
 		self.view.endEditing(true)
 		self.scrollView.isScrollEnabled = false
 	}

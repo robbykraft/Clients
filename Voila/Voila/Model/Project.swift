@@ -26,6 +26,10 @@ class Project{
 	// contains furniture inside each room
 	var rooms:[Room] = []
 	
+	func cost() -> Int{
+		return rooms.map({ return $0.getCost() }).reduce(0,+)
+	}
+	
 	func roomTypesAndCounts() -> [String:Int] {
 		var dictionary:[String:Int] = [:]
 		for i in 0..<self.rooms.count{
@@ -69,6 +73,7 @@ class Project{
 					if let roomName = roomObject["name"] as? String {
 						let newRoom = Room(name: roomName, key: roomKey)
 						if let customName = roomObject["custom"] as? String { newRoom.customName = customName }
+						if let customCost = roomObject["cost"] as? Int { newRoom.cost = customCost }
 						var furnitureArray:[Furniture] = []
 						if let furnitureList = roomObject["furniture"] as? [String:Int]{
 							for(furnitureName, count) in furnitureList{

@@ -91,7 +91,8 @@ class RoomTableViewController: UITableViewController, MFMailComposeViewControlle
 //	}
 	
 	func makeProposalHandler(){
-		Voila.shared.sendProposal(self)
+//		Voila.shared.sendProposal(self)
+		self.navigationController?.pushViewController(ProposalViewController(), animated: true)
 	}
 	
 	func addFurnitureHandler(){
