@@ -203,7 +203,6 @@ class Project{
 		self.rooms = [bathroom, diningRoom, kitchen, livingRoom, bedroom];
 		
 		self.synchronize(completionHandler: {
-			print("project synchronized")
 			if let completion = completionHandler{
 				completion()
 			}
@@ -320,9 +319,7 @@ class Project{
 		]
 		self.rooms = [masterBathroom, bathroom, diningRoom, kitchen, livingRoom, familyRoom, masterBedroom, bedroom];
 		
-		
 		self.synchronize(completionHandler: {
-			print("project synchronized")
 			if let completion = completionHandler{
 				completion()
 			}

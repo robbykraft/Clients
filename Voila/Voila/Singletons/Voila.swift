@@ -268,7 +268,14 @@ class Voila{
 	
 	func sendProposal(_ viewController:UIViewController){
 		if let project = Voila.shared.project{
-			if project.email != nil && project.email! != "" && MFMailComposeViewController.canSendMail() {
+			if project.email != nil && project.email! != "" {
+				if !MFMailComposeViewController.canSendMail() {
+					let alert = UIAlertController(title: "Email", message: "This app uses your iOS email account. Setup email in your iOS settings.", preferredStyle: .alert)
+					let action1 = UIAlertAction.init(title: "Okay", style: .default, handler: nil)
+					alert.addAction(action1)
+					viewController.present(alert, animated: true, completion: nil)
+					return;
+				}
 				let sendEmail = project.email!
 				let mailComposerVC = MFMailComposeViewController()
 				mailComposerVC.mailComposeDelegate = viewController as? MFMailComposeViewControllerDelegate

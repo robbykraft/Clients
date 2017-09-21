@@ -10,6 +10,10 @@ import UIKit
 
 class EditProjectViewController: UIViewController, UITextFieldDelegate{
 	
+	// for the ios keyboard covers textfield thing
+	let scrollView:UIScrollView = UIScrollView()
+	var activeField: UITextField?
+	var keyboardSize: CGSize?
 	
 	let profileImageView:UIImageView = UIImageView()
 	let profileImageButton:UIButton = UIButton()
@@ -27,8 +31,15 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		self.view.backgroundColor = Style.shared.whiteSmoke
 		
+		self.scrollView.frame = self.view.bounds
+		self.scrollView.contentSize = CGSize(width: self.view.bounds.size.width, height: self.view.bounds.size.height)
+		self.view.addSubview(scrollView)
+		
+
+		self.scrollView.backgroundColor = Style.shared.whiteSmoke
+		self.scrollView.isScrollEnabled = false
+
 		self.title = "DETAILS"
 		
 		// buttons
@@ -89,16 +100,19 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 //		creationDateField.leftViewMode = .always
 //		detailField.leftViewMode = .always
 		
-		self.view.addSubview(profileImageView)
-		self.view.addSubview(profileImageButton)
-		self.view.addSubview(nameField)
-		self.view.addSubview(emailField)
-		self.view.addSubview(lockboxField)
-		self.view.addSubview(clientField)
-		self.view.addSubview(realtorField)
-//		self.view.addSubview(detailField)
-		self.view.addSubview(deleteButton)
+		self.scrollView.addSubview(profileImageView)
+		self.scrollView.addSubview(profileImageButton)
+		self.scrollView.addSubview(nameField)
+		self.scrollView.addSubview(emailField)
+		self.scrollView.addSubview(lockboxField)
+		self.scrollView.addSubview(clientField)
+		self.scrollView.addSubview(realtorField)
+//		self.scrollView.addSubview(detailField)
+		self.scrollView.addSubview(deleteButton)
+		
+		self.registerForKeyboardNotifications()
 	}
+	
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
@@ -112,17 +126,17 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 		let imgSize:CGFloat = self.view.bounds.size.width * 0.4
 		let imgArea:CGFloat = self.view.bounds.size.width * 0.5
 		profileImageView.frame = CGRect(x: 0, y: 0, width: imgSize, height: imgSize)
-		profileImageView.center = CGPoint(x: self.view.center.x, y: header + imgArea*0.5)
+		profileImageView.center = CGPoint(x: self.view.center.x, y: imgArea*0.5)
 		profileImageView.layer.cornerRadius = imgSize*0.5
 		profileImageButton.frame = profileImageView.frame
-		nameField.frame = CGRect(x: 0, y: header + imgArea + 10, width: self.view.bounds.size.width, height: 44)
-		emailField.frame = CGRect(x: 0, y: header + imgArea + 10*2 + 44*1, width: self.view.bounds.size.width, height: 44)
-		clientField.frame = CGRect(x: 0, y: header + imgArea + 10*3 + 44*2, width: self.view.bounds.size.width, height: 44)
-		lockboxField.frame = CGRect(x: 0, y: header + imgArea + 10*4 + 44*3, width: self.view.bounds.size.width, height: 44)
-		realtorField.frame = CGRect(x: 0, y: header + imgArea + 10*5 + 44*4, width: self.view.bounds.size.width, height: 44)
+		nameField.frame = CGRect(x: 0, y: imgArea + 10, width: self.view.bounds.size.width, height: 44)
+		emailField.frame = CGRect(x: 0, y: imgArea + 10*2 + 44*1, width: self.view.bounds.size.width, height: 44)
+		clientField.frame = CGRect(x: 0, y: imgArea + 10*3 + 44*2, width: self.view.bounds.size.width, height: 44)
+		lockboxField.frame = CGRect(x: 0, y: imgArea + 10*4 + 44*3, width: self.view.bounds.size.width, height: 44)
+		realtorField.frame = CGRect(x: 0, y: imgArea + 10*5 + 44*4, width: self.view.bounds.size.width, height: 44)
 //		creationDateField.frame = CGRect(x: 0, y: header + imgArea + 10*3 + 44*2, width: self.view.bounds.size.width, height: 44)
 //		detailField.frame = CGRect(x: 0, y: header + imgArea + 10*4 + 44*3, width: self.view.bounds.size.width, height: 44)
-		deleteButton.frame = CGRect(x: 0, y: header + imgArea + 10*6 + 44*5, width: self.view.bounds.size.width, height: 44)
+		deleteButton.frame = CGRect(x: 0, y: imgArea + 10*6 + 44*5, width: self.view.bounds.size.width, height: 44)
 		
 		// populate screen
 		self.populateData()
@@ -134,6 +148,7 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 		if(updateTimer != nil){
 			updateWithDelay()
 		}
+		self.deregisterFromKeyboardNotifications()
 	}
 	
 	func deleteProject(){
@@ -198,17 +213,20 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 	
 	func updateWithDelay() {
 		// TODO: list all UITextFields here
-		if let nameText = nameField.text{
-			if let project = Voila.shared.project{
+		if let project = Voila.shared.project{
+			if let nameText = nameField.text{
 				project.name = nameText
-				project.synchronize(completionHandler: nil)
 			}
-		}
-		if let emailText = emailField.text{
-			if let project = Voila.shared.project{
+			if let emailText = emailField.text{
 				project.email = emailText
-				project.synchronize(completionHandler: nil)
 			}
+			if let clientNameText = clientField.text{
+				project.clientName = clientNameText
+			}
+			if let realtorNameText = realtorField.text{
+				project.realtorName = realtorNameText
+			}
+			project.synchronize(completionHandler: nil)
 		}
 		if(updateTimer != nil){
 			updateTimer?.invalidate()
@@ -218,6 +236,7 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 	
 	
 	func textFieldDidEndEditing(_ textField: UITextField) {
+		activeField = nil
 		// TODO: list all UITextFields here
 //		if(textField.isEqual(nameField)){
 //			Fire.shared.updateCurrentUserWith(key: "displayName", object: textField.text!, completionHandler: nil)
@@ -242,5 +261,72 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
         // Pass the selected object to the new view controller.
     }
     */
+	
+	
+	func registerForKeyboardNotifications(){
+		//Adding notifies on keyboard appearing
+		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+	}
+	
+	func deregisterFromKeyboardNotifications(){
+		//Removing notifies on keyboard appearing
+		NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+		NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+	}
+	
+	func keyboardWasShown(notification: NSNotification){
+		//Need to calculate keyboard exact size due to Apple suggestions
+		self.scrollView.isScrollEnabled = true
+		if self.keyboardSize == nil{
+			var info = notification.userInfo!
+			let keySize = (info[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size
+			self.keyboardSize = keySize
+		}
+		
+//		let contentInsets : UIEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, keyboardSize!.height, 0.0)
+		
+//		self.scrollView.contentInset = contentInsets
+//		self.scrollView.scrollIndicatorInsets = contentInsets
+
+//		var aRect : CGRect = self.view.frame
+//		aRect.size.height -= keyboardSize!.height
+		if let activeField = self.activeField {
+//			if (!aRect.contains(activeField.frame.origin)){
+//				self.scrollView.scrollRectToVisible(activeField.frame, animated: true)
+//			}
+			
+			let navBarHeight:CGFloat = self.navigationController!.navigationBar.frame.height
+			let statusHeight:CGFloat = statusBarHeight()
+			let header = navBarHeight + statusHeight
+			
+			var newSize = self.view.bounds.size
+			newSize.height += (self.keyboardSize?.height)! - header
+			self.scrollView.contentSize = newSize
+			let fieldFromBottom = (self.scrollView.bounds.size.height-activeField.frame.origin.y-120)
+			print(fieldFromBottom)
+			let scrollToY = newSize.height - 1 - fieldFromBottom
+			self.scrollView.scrollRectToVisible(CGRect.init(x: 0, y: scrollToY, width: 1, height: 1), animated: true)
+		}
+	}
+	
+	func keyboardWillBeHidden(notification: NSNotification){
+		//Once keyboard disappears, restore original positions
+//		var info = notification.userInfo!
+//		let keyboardSize = (info[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size
+//		let contentInsets : UIEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, -keyboardSize!.height, 0.0)
+		self.scrollView.contentSize = self.view.bounds.size
+		self.scrollView.scrollRectToVisible(CGRect.init(x: 0, y: 0, width: 1, height: 1), animated: true)
+//		self.scrollView.contentInset = contentInsets
+//		self.scrollView.scrollIndicatorInsets = contentInsets
+//		self.scrollView.contentInset = UIEdgeInsets.zero;
+		self.view.endEditing(true)
+		self.scrollView.isScrollEnabled = false
+	}
+	
+	func textFieldDidBeginEditing(_ textField: UITextField){
+		activeField = textField
+	}
+	
 
 }
