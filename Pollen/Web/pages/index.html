@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>New Entry</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Bootstrap Datetimepicker -->
+    <link rel="stylesheet" href="../vendor/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" />
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+<style>
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {display:none;}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.btn-secondary {
+  color: #292b2c;
+  background-color: #fff;
+  border-color: #ccc;
+}
+
+.btn-secondary:hover {
+  color: #292b2c;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+
+.btn-secondary:focus, .btn-secondary.focus {
+  -webkit-box-shadow: 0 0 0 2px rgba(204, 204, 204, 0.5);
+          box-shadow: 0 0 0 2px rgba(204, 204, 204, 0.5);
+}
+
+.btn-secondary.disabled, .btn-secondary:disabled {
+  background-color: #fff;
+  border-color: #ccc;
+}
+
+.btn-secondary:active, .btn-secondary.active,
+.show > .btn-secondary.dropdown-toggle {
+  color: #292b2c;
+  background-color: #e6e6e6;
+  background-image: none;
+  border-color: #adadad;
+}
+
+</style>
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Austin Pollen</a>
+            </div>
+            <!-- /.navbar-header -->
+
+            <ul class="nav navbar-top-links navbar-right">
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="#"><i class="fa fa-user fa-fw"></i><span id="user-email-span"></span></a>
+                        </li>
+                        <!-- <li class="divider"></li>
+                        <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li> -->
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+            <!-- /.navbar-top-links -->
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li>
+                            <a href="index.html"><i class="fa fa-edit fa-fw"></i> New Entry</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">New Entry</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                <form role="form">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <button type="button" class="btn btn-secondary" data-toggle="collapse" data-target="#form-group-pollen-input-0">Spring</button>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="collapse" id="form-group-pollen-input-0">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <button type="button" class="btn btn-secondary" data-toggle="collapse" data-target="#form-group-pollen-input-1">Summer</button>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="collapse" id="form-group-pollen-input-1">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <button type="button" class="btn btn-secondary" data-toggle="collapse" data-target="#form-group-pollen-input-2">Autumn</button>
+
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="collapse" id="form-group-pollen-input-2">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <button type="button" class="btn btn-secondary" data-toggle="collapse" data-target="#form-group-pollen-input-3">Winter</button>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="collapse" id="form-group-pollen-input-3">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Submit
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <form role="form" id="form-submit-panel">
+                                        <div class="form-group">
+                                            <label>Date and Time of Sample</label>
+                                            <input type="text" class="form-control" id="date-field">
+                                        </div>
+                                        <button type="button" class="btn btn-default" onclick="submitEntry()">Submit</button>
+                                        <button type="reset" class="btn btn-default" onclick="reset()">Reset</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </form>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="../vendor/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="../vendor/metisMenu/metisMenu.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="../dist/js/sb-admin-2.js"></script>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/3.6.5/firebase.js"></script>
+    <script src="../dist/js/fireuser.js"></script>
+
+    <!-- Date and Time -->
+    <script src="../vendor/momentjs/moment.min.js"></script>
+    <script type="text/javascript" src="../vendor/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+
+<script>
+function isBlank(str) { return (!str || /^\s*$/.test(str)); }
+
+
+var pollenKeys = [];
+var userEmail = "";
+
+function getDateKey(){
+    var string = $('#date-field').val();
+    var month = string.substr(0,2);
+    var day = string.substr(3,2);
+    var year = string.substr(6,4);
+    return String(year) + String(month) + String(day);
+}
+
+function humanReadableDate(){
+    var string = $('#date-field').val();
+    var month = string.substr(0,2);
+    var day = string.substr(3,2);
+    var year = string.substr(6,4);
+    return String(month) + "-" + String(day) + "-" + String(year);
+}
+
+function getTimestamp(){
+    var string = $('#date-field').val();
+    // var timestamp = moment(string,'MM/DD/YYYY HH:mm a').utc().unix();
+    // var timestamp = moment(string,'MM-DD-YYYY HH:mm a').utcOffset('+0700').unix();
+    return moment(string,'MM-DD-YYYY hh:mm A').unix();
+}
+
+function submitEntry(){
+    var utcTime = getTimestamp();
+    var dateKey = getDateKey();
+    var data = {};
+    data["counts"] = {};
+    data["date"] = utcTime;
+    data["user"] = userEmail;
+
+    for (var i = 0; i < pollenKeys.length; i++){
+        var key = pollenKeys[i];
+        // get number values from fields
+        var entry = $("#" + key).val();
+        if(!isBlank(entry)){
+            var intEntry = parseInt(entry);
+            if(!isNaN(intEntry)){
+                data["counts"][key] = intEntry;
+            }
+        }
+        // check if TRACE is switched
+        if( $("#check-" + key).is(":checked") ){
+            data["counts"][key] = "t";
+        }
+    }
+    var numberOfEntries = (Object.keys(data["counts"])).length;
+    var updates = {};
+    updates['/collections/' + dateKey] = data;
+    firebase.database().ref().update(updates);
+    alert("" + numberOfEntries + " Entries for " + humanReadableDate() + " uploaded");
+}
+
+$( document ).ready(function() {
+
+    $("#date-field").datetimepicker();
+
+    $('#date-field').val( moment().format('MM/DD/YYYY h:mm A') );
+
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          // User is signed in.
+          userEmail = user.email;
+          $("#user-email-span").html(" " + user.email);
+        } else {
+          // No user is signed in.
+        }
+    });
+
+    var typesRef = firebase.database().ref("types");
+    var collectionsRef = firebase.database().ref("collections");
+
+    typesRef.on("value", function(snapshot) {
+        buildDom( snapshot.val() );
+    }, function (errorObject) {
+        console.log("The read failed: " + errorObject.code);
+    });
+
+});
+
+function buildDom(types){
+    var seasons = [ [], [], [], [] ];
+    if(types == undefined){
+        console.log('error: error reading database, possibly corrupted');
+        return;
+    }
+    for(var key in types) {
+        var type = types[key];
+        var season = type["season"];
+        type["key"] = key;
+        pollenKeys.push(key); // add to the global variable
+        seasons[season].push(type);
+    }
+    for(var s = 0; s < seasons.length; s++){
+        seasons[s].sort(function(a,b) {return (a["name"] > b["name"]) ? 1 : ((b["name"] > a["name"]) ? -1 : 0);} ); 
+        for(var i = 0; i < seasons[s].length; i++){
+            pollen = seasons[s][i];
+            var name = pollen["name"];
+            var key = pollen["key"];
+            var newFormField = "<div class='form-group'><div class='row'><div class='col-xs-6'><label>" + name + "</label><input class='form-control' id='" + key + "'></div><div class='col-xs-6'><label>Trace Amount</label><br><label class='switch'><input type='checkbox' id='check-" + key + "'><div class='slider'></div></label></div></div></div>";
+            $("#form-group-pollen-input-" + s).append(newFormField);
+        }
+    }
+}
+
+</script>
+</body>
+
+</html>

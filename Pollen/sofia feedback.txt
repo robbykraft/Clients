@@ -1,0 +1,9 @@
+font
+different font for middle
+
+curved text
+tapping on the radial bars
+
+accentuate difference between orange and green on the radial bar
+
+button press action on the circle button (ripple)
