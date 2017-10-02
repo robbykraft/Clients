@@ -13,10 +13,11 @@ class ProjectTableViewController: UITableViewController, MFMailComposeViewContro
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
-		
 		if let project = Voila.shared.project{
 			self.title = project.name
 		}
+		
+//		UIBarButtonItem
 
 		self.tableView.separatorStyle = .none
 
