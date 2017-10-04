@@ -9,7 +9,7 @@
 import UIKit
 import MessageUI
 
-class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailComposeViewControllerDelegate {
+class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailComposeViewControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
 	
 	// for the ios keyboard covers textfield thing
 	var activeField: UITextField?
@@ -19,12 +19,24 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 	let projectDescription = UILabel()
 	let salesTaxLabel = UILabel()
 	let discountLabel = UILabel()
+//	let discountButton = UITextField()
+//	let salesTaxButton = UITextField()
 	let discountField = UITextField()
 	let salesTaxField = UITextField()
 	let scrollView = UIScrollView()
 	var roomLabels:[UILabel] = []
 	var roomFields:[UITextField] = []
 	let hr = UIView();
+	
+	// picker stuff
+	let taxItems = ["2.5", "5", "7.5", "10"]
+	let discountItems = ["200", "400", "800", "1600"];
+	let salesTaxPicker = UIPickerView()
+	let discountPicker = UIPickerView()
+	let pickerToolbar = UIToolbar()
+	
+	var contentHeight:CGFloat = 0
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,6 +57,7 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 	
 	func buildPage(){
 		if let project = Voila.shared.project{
+			
 			self.projectTitle.numberOfLines = 3
 			self.projectTitle.text = project.name
 			self.projectTitle.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P40)
@@ -61,16 +74,14 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 			self.discountLabel.text = "$ discount"
 			self.scrollView.addSubview(self.discountLabel)
 			
+//			self.salesTaxButton.addTarget(self, action: #selector(salesTaxPressed), for: .touchUpInside)
+//			self.discountButton.addTarget(self, action: #selector(discountPressed), for: .touchUpInside)
 			self.salesTaxField.backgroundColor = .white
 			self.salesTaxField.textAlignment = .right
-			self.salesTaxField.keyboardType = .decimalPad
-			self.salesTaxField.placeholder = "0.0"
-			self.salesTaxField.delegate = self
+//			self.salesTaxButton.setTitle("0.0", for: .normal)
 			self.salesTaxField.layer.cornerRadius = 5.0
 			self.discountField.backgroundColor = .white
 			self.discountField.textAlignment = .right
-			self.discountField.keyboardType = .numberPad
-			self.discountField.delegate = self
 			self.discountField.layer.cornerRadius = 5.0
 			self.scrollView.addSubview(self.discountField)
 			self.scrollView.addSubview(self.salesTaxField)
@@ -80,6 +91,9 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 			let insetPadding2 = UIView.init(frame: CGRect(x: 0, y: 0, width: 10, height: 30))
 			discountField.rightView = insetPadding2
 			discountField.rightViewMode = .always
+			
+			self.salesTaxField.text = "2.5"
+			self.discountField.text = "200"
 
 			hr.backgroundColor = .black
 			self.scrollView.addSubview(hr)
@@ -107,6 +121,75 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 				self.roomFields.append(roomField)
 			}
 		}
+		
+		self.salesTaxPicker.backgroundColor = .white
+		self.discountPicker.backgroundColor = .white
+		self.salesTaxPicker.delegate = self
+		self.discountPicker.delegate = self
+		self.salesTaxPicker.dataSource = self
+		self.discountPicker.dataSource = self
+		
+		pickerToolbar.barStyle = .default
+//		pickerToolbar.isTranslucent = true
+		pickerToolbar.tintColor = Style.shared.blue
+		pickerToolbar.sizeToFit()
+		
+		let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(pickerDone))
+		pickerToolbar.items = [doneButton]
+		pickerToolbar.isUserInteractionEnabled = true
+		
+		self.discountField.inputView = self.discountPicker
+		self.discountField.inputAccessoryView = pickerToolbar
+		self.salesTaxField.inputView = self.salesTaxPicker
+		self.salesTaxField.inputAccessoryView = pickerToolbar
+		
+		self.updateTotals()
+	}
+	
+	func updateTotals(){
+		let salesTax:Float = Float(salesTaxField.text!)!
+		let discount:Float = Float(discountField.text!)!
+		if let project = Voila.shared.project{
+			let rawCost = project.cost()
+			let adjustedCost = Float(rawCost) + Float(rawCost) * salesTax * 0.01 - discount
+			let adjustedInt = Int(adjustedCost*0.01) * 100
+			self.projectDescription.text = "Total: $\(adjustedInt) (from \(rawCost))"
+		}
+	}
+	
+	func pickerDone(){
+		self.discountField.resignFirstResponder()
+		self.salesTaxField.resignFirstResponder()
+		self.scrollView.contentSize = CGSize(width: self.view.bounds.width, height: contentHeight)
+		self.updateTotals()
+	}
+
+	func numberOfComponents(in pickerView: UIPickerView) -> Int {
+		return 1
+	}
+	func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+		if(pickerView == self.salesTaxPicker){
+			return self.taxItems.count
+		} else if(pickerView == self.discountPicker){
+			return self.discountItems.count
+		}
+		return 0
+	}
+	func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+		if(pickerView == self.salesTaxPicker){
+			return self.taxItems[row]
+		} else if(pickerView == self.discountPicker){
+			return self.discountItems[row]
+		}
+		return ""
+	}
+	func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+		if(pickerView == self.salesTaxPicker){
+			self.salesTaxField.text = self.taxItems[row]
+		} else if(pickerView == self.discountPicker){
+			self.discountField.text = self.discountItems[row]
+		}
+		self.updateTotals()
 	}
 	
 	func updateCustomCosts(updateCompletion:(() -> ())?){
@@ -170,8 +253,10 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 		self.salesTaxField.frame = CGRect.init(x: padding, y: 5 + projectDescription.frame.origin.y + self.projectDescription.bounds.size.height, width: self.view.bounds.size.width * 0.4, height:32)
 		self.discountField.frame = CGRect.init(x: padding, y: 5 + salesTaxField.frame.origin.y + self.salesTaxField.bounds.size.height, width: self.view.bounds.size.width * 0.4, height:32)
 
-		self.salesTaxLabel.frame = CGRect.init(x: padding + self.view.bounds.size.width * 0.5, y: 5 + projectDescription.frame.origin.y + self.projectDescription.bounds.size.height, width: self.view.bounds.size.width * 0.3, height:40)
-		self.discountLabel.frame = CGRect.init(x: padding + self.view.bounds.size.width * 0.5, y: 5 + salesTaxField.frame.origin.y + self.salesTaxField.bounds.size.height, width: self.view.bounds.size.width * 0.3, height:40)
+		self.salesTaxLabel.sizeToFit()
+		self.discountLabel.sizeToFit()
+		self.salesTaxLabel.frame = CGRect.init(x: padding * 2 + self.salesTaxField.frame.size.width, y: 5 + projectDescription.frame.origin.y + self.projectDescription.bounds.size.height, width: self.salesTaxLabel.bounds.size.width, height:self.salesTaxLabel.bounds.size.height)
+		self.discountLabel.frame = CGRect.init(x: padding * 2 + self.discountField.frame.size.width, y: 5 + salesTaxField.frame.origin.y + self.salesTaxField.bounds.size.height, width: self.discountLabel.bounds.size.width, height:self.discountLabel.bounds.size.height)
 
 		let labelYStart:CGFloat = self.discountField.frame.origin.y + self.discountField.frame.size.height + padding
 
@@ -189,7 +274,8 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 			field.frame = CGRect(x: self.view.bounds.size.width-fieldW-padding, y: yPos, width: fieldW, height: 40)
 			yPos += 50
 		}
-		self.scrollView.contentSize = CGSize(width: self.view.bounds.width, height: yPos)
+		self.contentHeight = yPos
+		self.scrollView.contentSize = CGSize(width: self.view.bounds.width, height: contentHeight)
 	}
 
 	func sendProposal(){

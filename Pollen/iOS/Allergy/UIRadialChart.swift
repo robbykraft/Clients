@@ -183,13 +183,14 @@ class UIRadialChart: UIView {
 				var valuePCT = CGFloat(logValue)
 				if(valuePCT > 0.75){ valuePCT = 0.75 }
 				let thisRadius:CGFloat = valuePCT * barHeight
+				let arcHeight:CGFloat = (barHeight*0.4)+thisRadius
 				let angle = CGFloat(Double.pi * 2 / Double(count))
 				let textAngle = angle*CGFloat(Float(i)+0.5) - CGFloat(Double.pi*0.5)
-				let textRadius = (radius+(barHeight*0.4))+thisRadius-(barHeight*0.22)
+				let textRadius = radius + arcHeight*0.5
 				if textAngle > 0 && textAngle < CGFloat.pi{
-					Style.shared.centreArcPerpendicular(text: name, context: context, radius: textRadius, angle: -textAngle, colour: UIColor.white, font: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P12)!, clockwise: false)
+					Style.shared.centreArcPerpendicular(text: name, context: context, radius: textRadius, angle: -textAngle, colour: UIColor.white, font: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P24)!, clockwise: false)
 				} else{
-					Style.shared.centreArcPerpendicular(text: name, context: context, radius: textRadius, angle: -textAngle, colour: UIColor.white, font: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P12)!, clockwise: true)
+					Style.shared.centreArcPerpendicular(text: name, context: context, radius: textRadius, angle: -textAngle, colour: UIColor.white, font: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P24)!, clockwise: true)
 				}
 			}
 			let image = UIGraphicsGetImageFromCurrentImageContext()
