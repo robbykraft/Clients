@@ -23,6 +23,14 @@ class Project{
 	var name:String = ""
 	var archived:Bool = false
 	
+	// stuff that gets filled when filling the proposal
+	var discountTotal:Int?
+	var discountPct:Int?
+	var discountText:String?
+	var taxPct:Float?
+	var taxTotal:Int?
+	var renewalsTotal:Int?
+	
 	// contains furniture inside each room
 	var rooms:[Room] = []
 	

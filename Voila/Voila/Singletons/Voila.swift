@@ -301,13 +301,49 @@ class Voila{
 
 	
 	func htmlProposal()->String{
-		return pageHeader + self.titleForProject() + self.tableForProject() + termsAndConditionsText + pageFooter
+		print(pageHeader + self.titleForProject() + self.tableOfCosts() + self.tableForProject() + termsAndConditionsText + pageFooter)
+		return pageHeader + self.titleForProject() + self.tableOfCosts() + self.tableForProject() + termsAndConditionsText + pageFooter
 	}
+	
+	func tableOfCosts()->String{
+		var table = ""
+		if let project = self.project{
+			
+			let total:Int = project.cost()
+			var discountTotal:Int = 0
+			var discountPct:Int = 0
+			var discountText:String = ""
+			var taxPct:Float = 0.0
+			var taxTotal:Int = 0
+			var renewalsTotal:Int = 0
+			
+			if let a = project.discountTotal { discountTotal = a }
+			if let a = project.discountPct { discountPct = a }
+			if let a = project.discountText { discountText = a }
+			if let a = project.taxPct { taxPct = a }
+			if let a = project.taxTotal { taxTotal = a }
+			if let a = project.renewalsTotal { renewalsTotal = a }
+			
+			let totalAfterDiscount = total - discountTotal
+			let grandTotal:Int = totalAfterDiscount - taxTotal
+
+			let discountTotalRounded = Int(round(Float(discountTotal)/100)*100)
+			let totalAfterDiscountRounded:Int = Int(round(Float(totalAfterDiscount)/100)*100)
+			let taxTotalRounded:Int = Int(round(Float(taxTotal)/100)*100)
+			let grandTotalRounded:Int = Int(round(Float(grandTotal)/100)*100)
+			let renewalsTotalRounded:Int = Int(round(Float(renewalsTotal)/100)*100)
+
+			table.append("<table style=\"margin:auto\"><tr style=\"font-weight: bold;\"><td>Total Before Discount</td><td></td><td>$\(total)</td></tr><tr><td></td><td></td><td></td></tr><tr style=\"font-weight: bold;\"><td>Discount</td><td></td><td></td></tr><tr><td style=\"text-align: right\">\(discountText)</td><td>\(discountPct)%</td><td>($\(discountTotalRounded))</td></tr><tr><td></td><td></td><td></td></tr><tr style=\"font-weight: bold;\"><td>Total Before Taxes</td><td></td><td>$\(totalAfterDiscountRounded)</td></tr><tr><td></td><td></td><td></td></tr><tr style=\"font-weight: bold;\"><td>Sales Tax</td><td>\(Int(taxPct*100.0))%</td><td>$\(taxTotalRounded)</td></tr><tr><td></td><td></td><td></td></tr><tr style=\"font-weight: bold;\"><td style=\"background-color:#EEE\">Grand Total</td><td></td><td style=\"background-color:#EEE\">$\(grandTotalRounded)</td></tr><tr><td></td><td></td><td></td></tr><tr><td>Monthly Renewals</td><td></td><td>$\(renewalsTotalRounded)</td></tr></table><hr>")
+		}
+		return table
+	}
+	
+
 	
 	func tableForProject()->String{
 		var table = ""
 		// header row
-		table.append("<table><tr style=\"background-color:#555\"><td style=\"color:#FFF;\"><strong>Description</strong></td><td style=\"color:#FFF;\"><strong>Quantity</strong></td><td style=\"color:#FFF;\"><strong>Cost</strong></td></tr>")
+		table.append("<table style=\"margin:auto\"><tr style=\"background-color:#555\"><td style=\"color:#FFF;\"><strong>Description</strong></td><td style=\"color:#FFF;\"><strong>Quantity</strong></td><td style=\"color:#FFF;\"><strong>Cost</strong></td></tr>")
 		// for each room
 		if let project = self.project{
 			for room in project.rooms{

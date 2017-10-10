@@ -52,8 +52,13 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 	let pickerDiscountText = UIPickerView()
 	let pickerRenewal = UIPickerView()
 	let pickerToolbar = UIToolbar()
-	
+	let numberToolbar = UIToolbar()
+
 	var contentHeight:CGFloat = 0
+	
+	
+	var updateTimer:Timer?  // live updates to profile entries, prevents updating too frequently
+
 
 
     override func viewDidLoad() {
@@ -138,11 +143,14 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 				roomField.backgroundColor = .white
 				roomField.textAlignment = .right
 				roomField.keyboardType = .numberPad
+				roomField.inputAccessoryView = numberToolbar
+
 				roomField.delegate = self
 				let insetPadding = UIView.init(frame: CGRect(x: 0, y: 0, width: 10, height: 30))
 				roomField.rightView = insetPadding
 				roomField.rightViewMode = .always
 				roomField.layer.cornerRadius = 5.0
+				roomField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
 				self.scrollView.addSubview(roomLabel)
 				self.scrollView.addSubview(roomField)
 				self.roomLabels.append(roomLabel)
@@ -158,6 +166,14 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 		let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(pickerDone))
 		pickerToolbar.items = [doneButton]
 		pickerToolbar.isUserInteractionEnabled = true
+
+		numberToolbar.barStyle = .default
+		//		numberToolbar = true
+		numberToolbar.tintColor = Style.shared.blue
+		numberToolbar.sizeToFit()
+		let doneButton2 = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(numberDone))
+		numberToolbar.items = [doneButton2]
+		numberToolbar.isUserInteractionEnabled = true
 
 		for picker in [self.pickerTax, self.pickerDiscount, self.pickerDiscountText, self.pickerRenewal]{
 			picker.delegate = self
@@ -182,8 +198,12 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 	}
 	
 	deinit{
+		if(updateTimer != nil){
+			updateWithDelay()
+		}
 		self.deregisterFromKeyboardNotifications()
 	}
+	
 	
 	override func viewWillAppear(_ animated: Bool) {
 		let padding:CGFloat = 15;
@@ -265,6 +285,13 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 			let grandTotal:Int = totalBefore2 - salesTaxSum
 			let grandTotalRounded:Int = Int(Float(totalBefore2 - salesTaxSum)*0.01)*100
 			let renewalCost:Int = Int(Float(grandTotal)*0.3333 * renewal)
+			
+			project.discountTotal = discountAmount
+			project.discountPct = Int(discount)
+			project.discountText = _1discountTextField.text
+			project.taxPct = salesTax
+			project.taxTotal = salesTaxSum
+			project.renewalsTotal = renewalCost
 
 			self._0totalBeforeField.text = "$\(rawCost)"
 //			self._1discountTextField.text = "%\(discount)"
@@ -295,6 +322,17 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 		self.scrollView.contentSize = CGSize(width: self.view.bounds.width, height: contentHeight)
 		self.updateTotals()
 	}
+	
+	func numberDone(){
+		for field in self.roomFields {
+			field.resignFirstResponder()
+		}
+		self.scrollView.contentSize = CGSize(width: self.view.bounds.width, height: contentHeight)
+		self.updateCustomCosts {
+			self.updateTotals()
+		}
+	}
+
 
 	func numberOfComponents(in pickerView: UIPickerView) -> Int {
 		return 1
@@ -356,6 +394,27 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 		}
 	}
 	
+	func textFieldDidChange(textField: UITextField){
+		if(updateTimer != nil){
+			updateTimer?.invalidate()
+			updateTimer = nil
+		}
+		updateTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateWithDelay), userInfo: nil, repeats: false)
+	}
+	
+	func updateWithDelay() {
+		// TODO: list all UITextFields here
+		self.updateCustomCosts {
+			self.updateTotals()
+		}
+		if(updateTimer != nil){
+			updateTimer?.invalidate()
+			updateTimer = nil
+		}
+	}
+	
+
+	
 //	func textFieldDidEndEditing(_ textField: UITextField) {
 //		let i = textField.tag
 //		if let fieldText = textField.text{
@@ -411,8 +470,8 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 			let navBarHeight:CGFloat = self.navigationController!.navigationBar.frame.height
 			let statusHeight:CGFloat = statusBarHeight()
 //			let header = navBarHeight + statusHeight
-			var newSize = self.view.bounds.size
-			newSize.height += (self.keyboardSize?.height)!
+			var newSize = self.scrollView.bounds.size
+			newSize.height += abs((self.keyboardSize?.height)!) + 300
 			self.scrollView.contentSize = newSize
 			let fieldFromBottom = (self.scrollView.bounds.size.height-activeField.frame.origin.y)
 			print(fieldFromBottom)
