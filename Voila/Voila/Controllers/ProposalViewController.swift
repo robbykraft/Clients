@@ -16,23 +16,41 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 	var keyboardSize: CGSize?
 	
 	let projectTitle = UILabel()
-	let projectDescription = UILabel()
-	let salesTaxLabel = UILabel()
-	let discountLabel = UILabel()
-//	let discountButton = UITextField()
-//	let salesTaxButton = UITextField()
-	let discountField = UITextField()
-	let salesTaxField = UITextField()
+//	let projectDescription = UILabel()
+
+	let _0totalBeforeField = UITextField()
+	let _1discountTextField = UITextField()
+	let _2discountField = UITextField()
+	let _3discountSummaryField = UITextField()
+	let _4totalBeforeField = UITextField()
+	let _5salesTaxField = UITextField()
+	let _6salesTaxSummaryField = UITextField()
+	let _7grandTotalField = UITextField()
+	let _8renewalField = UITextField()
+	let _9renewalSummaryField = UITextField()
+
+	let _0totalBeforeLabel = UILabel()
+	let _1discountLabel = UILabel()
+	let _2discountPctLabel = UILabel()
+	let _4totalBeforeLabel = UILabel()
+	let _5salesTaxLabel = UILabel()
+	let _7grandTotalLabel = UILabel()
+	let _8renewalLabel = UILabel()
+
 	let scrollView = UIScrollView()
 	var roomLabels:[UILabel] = []
 	var roomFields:[UITextField] = []
 	let hr = UIView();
 	
 	// picker stuff
-	let taxItems = ["2.5", "5", "7.5", "10"]
-	let discountItems = ["200", "400", "800", "1600"];
-	let salesTaxPicker = UIPickerView()
-	let discountPicker = UIPickerView()
+	let taxItems = ["Phila 8%", "PA 6%", "NJ 7%"]
+	let discountTextItems = ["New Client", "Friends & Family", "Discount"]
+	let discountItems = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
+	let renewalItems = [2, 3, 4, 5, 6]
+	let pickerTax = UIPickerView()
+	let pickerDiscount = UIPickerView()
+	let pickerDiscountText = UIPickerView()
+	let pickerRenewal = UIPickerView()
 	let pickerToolbar = UIToolbar()
 	
 	var contentHeight:CGFloat = 0
@@ -63,37 +81,47 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 			self.projectTitle.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P40)
 			self.scrollView.addSubview(self.projectTitle)
 			
-			self.projectDescription.font = UIFont(name:SYSTEM_FONT, size:Style.shared.P24)
-			self.projectDescription.text = "Total: $\(project.cost())"
-			self.scrollView.addSubview(self.projectDescription)
-	
-			self.salesTaxLabel.font = UIFont(name:SYSTEM_FONT, size:Style.shared.P18)
-			self.salesTaxLabel.text = "% sales tax"
-			self.scrollView.addSubview(self.salesTaxLabel)
-			self.discountLabel.font = UIFont(name:SYSTEM_FONT, size:Style.shared.P18)
-			self.discountLabel.text = "$ discount"
-			self.scrollView.addSubview(self.discountLabel)
+//			self.projectDescription.font = UIFont(name:SYSTEM_FONT, size:Style.shared.P24)
+//			self.projectDescription.text = "Total: $\(project.cost())"
+//			self.scrollView.addSubview(self.projectDescription)
 			
-//			self.salesTaxButton.addTarget(self, action: #selector(salesTaxPressed), for: .touchUpInside)
-//			self.discountButton.addTarget(self, action: #selector(discountPressed), for: .touchUpInside)
-			self.salesTaxField.backgroundColor = .white
-			self.salesTaxField.textAlignment = .right
-//			self.salesTaxButton.setTitle("0.0", for: .normal)
-			self.salesTaxField.layer.cornerRadius = 5.0
-			self.discountField.backgroundColor = .white
-			self.discountField.textAlignment = .right
-			self.discountField.layer.cornerRadius = 5.0
-			self.scrollView.addSubview(self.discountField)
-			self.scrollView.addSubview(self.salesTaxField)
-			let insetPadding1 = UIView.init(frame: CGRect(x: 0, y: 0, width: 10, height: 30))
-			salesTaxField.rightView = insetPadding1
-			salesTaxField.rightViewMode = .always
-			let insetPadding2 = UIView.init(frame: CGRect(x: 0, y: 0, width: 10, height: 30))
-			discountField.rightView = insetPadding2
-			discountField.rightViewMode = .always
+			for label in [_0totalBeforeLabel, _1discountLabel, _2discountPctLabel, _4totalBeforeLabel, _5salesTaxLabel, _7grandTotalLabel, _8renewalLabel]{
+				label.font = UIFont(name:SYSTEM_FONT, size:Style.shared.P18)
+				label.textAlignment = .right
+				self.scrollView.addSubview(label)
+			}
+			self._0totalBeforeLabel.text = "Total"
+			self._1discountLabel.text = "Discount"
+			self._2discountPctLabel.text = "%"
+			self._4totalBeforeLabel.text = "Total Before Tax"
+			self._5salesTaxLabel.text = "Sales Tax"
+			self._7grandTotalLabel.text = "Grand Total"
+			self._8renewalLabel.text = "Montly Renewals"
+
+			for field in [self._0totalBeforeField, self._1discountTextField, self._2discountField, self._3discountSummaryField, self._4totalBeforeField, self._5salesTaxField, self._6salesTaxSummaryField, self._7grandTotalField, self._8renewalField, self._9renewalSummaryField]{
+				field.backgroundColor = .clear
+				field.textAlignment = .right
+				field.layer.cornerRadius = 5.0
+				let insetPadding = UIView.init(frame: CGRect(x: 0, y: 0, width: 10, height: 30))
+				field.rightView = insetPadding
+				field.rightViewMode = .always
+				self.scrollView.addSubview(field)
+			}
+			self._1discountTextField.text = discountTextItems.first
+			self._2discountField.text = String(describing:discountItems.first!)
+			self._5salesTaxField.text = taxItems.first
+			self._8renewalField.text = String(describing:renewalItems.first!)
+			self._1discountTextField.backgroundColor = .white
+			self._2discountField.backgroundColor = .white
+			self._5salesTaxField.backgroundColor = .white
+			self._8renewalField.backgroundColor = .white
 			
-			self.salesTaxField.text = "2.5"
-			self.discountField.text = "200"
+			self._0totalBeforeLabel.font = UIFont(name:SYSTEM_FONT_B, size:Style.shared.P18)
+			self._0totalBeforeField.font = UIFont(name:SYSTEM_FONT_B, size:Style.shared.P18)
+			self._4totalBeforeLabel.font = UIFont(name:SYSTEM_FONT_B, size:Style.shared.P18)
+			self._4totalBeforeField.font = UIFont(name:SYSTEM_FONT_B, size:Style.shared.P18)
+			self._7grandTotalLabel.font = UIFont(name:SYSTEM_FONT_B, size:Style.shared.P18)
+			self._7grandTotalField.font = UIFont(name:SYSTEM_FONT_B, size:Style.shared.P18)
 
 			hr.backgroundColor = .black
 			self.scrollView.addSubview(hr)
@@ -122,44 +150,148 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 			}
 		}
 		
-		self.salesTaxPicker.backgroundColor = .white
-		self.discountPicker.backgroundColor = .white
-		self.salesTaxPicker.delegate = self
-		self.discountPicker.delegate = self
-		self.salesTaxPicker.dataSource = self
-		self.discountPicker.dataSource = self
 		
 		pickerToolbar.barStyle = .default
 //		pickerToolbar.isTranslucent = true
 		pickerToolbar.tintColor = Style.shared.blue
 		pickerToolbar.sizeToFit()
-		
 		let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(pickerDone))
 		pickerToolbar.items = [doneButton]
 		pickerToolbar.isUserInteractionEnabled = true
+
+		for picker in [self.pickerTax, self.pickerDiscount, self.pickerDiscountText, self.pickerRenewal]{
+			picker.delegate = self
+			picker.backgroundColor = .white
+			picker.dataSource = self
+		}
 		
-		self.discountField.inputView = self.discountPicker
-		self.discountField.inputAccessoryView = pickerToolbar
-		self.salesTaxField.inputView = self.salesTaxPicker
-		self.salesTaxField.inputAccessoryView = pickerToolbar
-		
+		self._1discountTextField.inputView = self.pickerDiscountText
+		self._1discountTextField.inputAccessoryView = pickerToolbar
+		self._2discountField.inputView = self.pickerDiscount
+		self._2discountField.inputAccessoryView = pickerToolbar
+		self._5salesTaxField.inputView = self.pickerTax
+		self._5salesTaxField.inputAccessoryView = pickerToolbar
+		self._8renewalField.inputView = self.pickerRenewal
+		self._8renewalField.inputAccessoryView = pickerToolbar
+
 		self.updateTotals()
 	}
 	
+	override func viewWillDisappear(_ animated: Bool) {
+		self.updateCustomCosts(updateCompletion: nil)
+	}
+	
+	deinit{
+		self.deregisterFromKeyboardNotifications()
+	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		let padding:CGFloat = 15;
+		self.projectTitle.frame = CGRect.init(x: padding, y: padding, width: self.view.bounds.size.width - padding*2, height: self.view.bounds.size.height)
+		self.projectTitle.sizeToFit()
+		
+//		self.projectDescription.frame = CGRect.init(x: padding, y: padding + self.projectTitle.bounds.size.height, width: self.view.bounds.size.width, height: self.view.bounds.size.height)
+//		self.projectDescription.sizeToFit()
+		
+		let yPad:CGFloat = 5
+		var i:CGFloat = 0
+		let startY:CGFloat = projectTitle.frame.origin.y + self.projectTitle.bounds.size.height
+		for field in [self._0totalBeforeField, self._1discountTextField, self._2discountField, self._3discountSummaryField, self._4totalBeforeField, self._5salesTaxField, self._6salesTaxSummaryField, self._7grandTotalField, self._8renewalField, self._9renewalSummaryField]{
+			field.frame = CGRect.init(x: padding + self.view.bounds.size.width * 0.5, y: startY + (32+yPad)*i, width: self.view.bounds.size.width * 0.5-padding*2, height:32)
+			i += 1
+		}
+		
+		for label in [_0totalBeforeLabel, _1discountLabel, _2discountPctLabel, _4totalBeforeLabel, _5salesTaxLabel, _7grandTotalLabel, _8renewalLabel]{
+			label.sizeToFit()
+		}
+		self._0totalBeforeLabel.frame = CGRect.init(x: 5, y: startY + 5 + (32+yPad) * 0,
+		                                            width: self.view.bounds.size.width * 0.5 - 5, height:self._0totalBeforeLabel.bounds.size.height)
+		self._1discountLabel.frame = CGRect.init(x: 5, y: startY + 5 + (32+yPad) * 1,
+		                                         width: self.view.bounds.size.width * 0.5 - 5, height:self._1discountLabel.bounds.size.height)
+		self._2discountPctLabel.frame = CGRect.init(x: 5, y: startY + 5 + (32+yPad) * 2,
+		                                         width: self.view.bounds.size.width * 0.5 - 5, height:self._2discountPctLabel.bounds.size.height)
+		self._4totalBeforeLabel.frame = CGRect.init(x: 5, y: startY + 5 + (32+yPad) * 4,
+		                                            width: self.view.bounds.size.width * 0.5 - 5, height:self._4totalBeforeLabel.bounds.size.height)
+		self._5salesTaxLabel.frame = CGRect.init(x: 5, y: startY + 5 + (32+yPad) * 5,
+		                                         width: self.view.bounds.size.width * 0.5 - 5, height:self._5salesTaxLabel.bounds.size.height)
+		self._7grandTotalLabel.frame = CGRect.init(x: 5, y: startY + 5 + (32+yPad) * 7,
+		                                           width: self.view.bounds.size.width * 0.5 - 5, height:self._7grandTotalLabel.bounds.size.height)
+		self._8renewalLabel.frame = CGRect.init(x: 5, y: startY + 5 + (32+yPad) * 8,
+		                                        width: self.view.bounds.size.width * 0.5 - 5, height:self._8renewalLabel.bounds.size.height)
+		
+		// fix for iphone 5 size
+//		self._1discountTextField.frame = CGRect.init(x: self.view.bounds.size.width * 0.5 - padding, y: startY + (32+yPad)*1, width: self.view.bounds.size.width * 0.5, height:32)
+//		self._1discountLabel.frame = CGRect.init(x: 5, y: startY + 5 + (32+yPad) * 1,
+//		                                         width: self.view.bounds.size.width * 0.5 - padding*2, height:self._1discountLabel.bounds.size.height)
+
+
+		let labelYStart:CGFloat = self._9renewalSummaryField.frame.origin.y + self._9renewalSummaryField.frame.size.height + padding
+		
+		hr.frame = CGRect(x: padding, y: labelYStart - padding*0.333, width: self.view.bounds.size.width-padding*2, height: 1)
+		
+		let labelW = self.view.bounds.size.width * 0.5
+		let fieldW = self.view.bounds.size.width * 0.25
+		var yPos = labelYStart
+		for label in self.roomLabels{
+			label.frame = CGRect(x: padding, y: yPos, width: labelW, height: 40)
+			yPos += 50
+		}
+		yPos = labelYStart
+		for field in self.roomFields{
+			field.frame = CGRect(x: self.view.bounds.size.width-fieldW-padding, y: yPos, width: fieldW, height: 40)
+			yPos += 50
+		}
+		self.contentHeight = yPos
+		self.scrollView.contentSize = CGSize(width: self.view.bounds.width, height: contentHeight)
+	}
+
 	func updateTotals(){
-		let salesTax:Float = Float(salesTaxField.text!)!
-		let discount:Float = Float(discountField.text!)!
+		
 		if let project = Voila.shared.project{
 			let rawCost = project.cost()
-			let adjustedCost = Float(rawCost) + Float(rawCost) * salesTax * 0.01 - discount
-			let adjustedInt = Int(adjustedCost*0.01) * 100
-			self.projectDescription.text = "Total: $\(adjustedInt) (from \(rawCost))"
+//			let taxItems = ["Phila 8%", "PA 6%", "NJ 7%"]
+			var salesTax:Float = 0.08
+			switch _5salesTaxField.text!{
+			case taxItems[0]: salesTax = 0.08
+			case taxItems[1]: salesTax = 0.06
+			case taxItems[2]: salesTax = 0.07
+			default: salesTax = 0.08
+			}
+			let discount:Float = Float(_2discountField.text!)!
+			let renewal:Float = Float(_8renewalField.text!)!
+			let discountAmount:Int = Int(discount * 0.01 * Float(rawCost))
+			let totalBefore2:Int = rawCost - discountAmount
+			let salesTaxSum:Int = Int(Float(totalBefore2) * salesTax)
+			let grandTotal:Int = totalBefore2 - salesTaxSum
+			let grandTotalRounded:Int = Int(Float(totalBefore2 - salesTaxSum)*0.01)*100
+			let renewalCost:Int = Int(Float(grandTotal)*0.3333 * renewal)
+
+			self._0totalBeforeField.text = "$\(rawCost)"
+//			self._1discountTextField.text = "%\(discount)"
+//			self._2discountField.text = "$\(rawCost)"
+			self._3discountSummaryField.text = "$\(discountAmount)"
+			self._4totalBeforeField.text = "$\(totalBefore2)"
+//			self._5salesTaxField.text = "$\(rawCost)"
+			self._6salesTaxSummaryField.text = "$\(salesTaxSum)"
+			self._7grandTotalField.text = "$\(grandTotalRounded)"
+//			self._8renewalField.text = "$\(rawCost)"
+			self._9renewalSummaryField.text = "$\(renewalCost)"
+			
 		}
+		
+//		if let project = Voila.shared.project{
+//			let rawCost = project.cost()
+//			let adjustedCost = Float(rawCost) + Float(rawCost) * salesTax * 0.01 - discount
+//			let adjustedInt = Int(adjustedCost*0.01) * 100
+//			self.projectDescription.text = "Total: $\(adjustedInt) (from \(rawCost))"
+//		}
 	}
 	
 	func pickerDone(){
-		self.discountField.resignFirstResponder()
-		self.salesTaxField.resignFirstResponder()
+		self._1discountTextField.resignFirstResponder()
+		self._2discountField.resignFirstResponder()
+		self._5salesTaxField.resignFirstResponder()
+		self._8renewalField.resignFirstResponder()
 		self.scrollView.contentSize = CGSize(width: self.view.bounds.width, height: contentHeight)
 		self.updateTotals()
 	}
@@ -168,26 +300,30 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 		return 1
 	}
 	func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-		if(pickerView == self.salesTaxPicker){
-			return self.taxItems.count
-		} else if(pickerView == self.discountPicker){
-			return self.discountItems.count
+		switch pickerView{
+		case self.pickerDiscountText: return self.discountTextItems.count
+		case self.pickerDiscount: return self.discountItems.count
+		case self.pickerTax: return self.taxItems.count
+		case self.pickerRenewal: return self.renewalItems.count
+		default: return 0
 		}
-		return 0
 	}
 	func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-		if(pickerView == self.salesTaxPicker){
-			return self.taxItems[row]
-		} else if(pickerView == self.discountPicker){
-			return self.discountItems[row]
+		switch pickerView{
+		case self.pickerDiscountText: return self.discountTextItems[row]
+		case self.pickerDiscount: return String(describing:self.discountItems[row])
+		case self.pickerTax: return self.taxItems[row]
+		case self.pickerRenewal: return String(describing:self.renewalItems[row])
+		default: return ""
 		}
-		return ""
 	}
 	func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-		if(pickerView == self.salesTaxPicker){
-			self.salesTaxField.text = self.taxItems[row]
-		} else if(pickerView == self.discountPicker){
-			self.discountField.text = self.discountItems[row]
+		switch pickerView{
+		case self.pickerDiscountText: self._1discountTextField.text = self.discountTextItems[row]
+		case self.pickerDiscount: self._2discountField.text = String(describing:self.discountItems[row])
+		case self.pickerTax: self._5salesTaxField.text = self.taxItems[row]
+		case self.pickerRenewal: self._8renewalField.text = String(describing:self.renewalItems[row])
+		default: break
 		}
 		self.updateTotals()
 	}
@@ -234,50 +370,6 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 //		}
 //	}
 	
-	override func viewWillDisappear(_ animated: Bool) {
-		self.updateCustomCosts(updateCompletion: nil)
-	}
-
-	deinit{
-		self.deregisterFromKeyboardNotifications()
-	}
-
-	override func viewWillAppear(_ animated: Bool) {
-		let padding:CGFloat = 15;
-		self.projectTitle.frame = CGRect.init(x: padding, y: padding, width: self.view.bounds.size.width, height: self.view.bounds.size.height)
-		self.projectTitle.sizeToFit()
-		
-		self.projectDescription.frame = CGRect.init(x: padding, y: padding + self.projectTitle.bounds.size.height, width: self.view.bounds.size.width, height: self.view.bounds.size.height)
-		self.projectDescription.sizeToFit()
-		
-		self.salesTaxField.frame = CGRect.init(x: padding, y: 5 + projectDescription.frame.origin.y + self.projectDescription.bounds.size.height, width: self.view.bounds.size.width * 0.4, height:32)
-		self.discountField.frame = CGRect.init(x: padding, y: 5 + salesTaxField.frame.origin.y + self.salesTaxField.bounds.size.height, width: self.view.bounds.size.width * 0.4, height:32)
-
-		self.salesTaxLabel.sizeToFit()
-		self.discountLabel.sizeToFit()
-		self.salesTaxLabel.frame = CGRect.init(x: padding * 2 + self.salesTaxField.frame.size.width, y: 5 + projectDescription.frame.origin.y + self.projectDescription.bounds.size.height, width: self.salesTaxLabel.bounds.size.width, height:self.salesTaxLabel.bounds.size.height)
-		self.discountLabel.frame = CGRect.init(x: padding * 2 + self.discountField.frame.size.width, y: 5 + salesTaxField.frame.origin.y + self.salesTaxField.bounds.size.height, width: self.discountLabel.bounds.size.width, height:self.discountLabel.bounds.size.height)
-
-		let labelYStart:CGFloat = self.discountField.frame.origin.y + self.discountField.frame.size.height + padding
-
-		hr.frame = CGRect(x: padding, y: labelYStart - padding*0.333, width: self.view.bounds.size.width-padding*2, height: 1)
-		
-		let labelW = self.view.bounds.size.width * 0.5
-		let fieldW = self.view.bounds.size.width * 0.25
-		var yPos = labelYStart
-		for label in self.roomLabels{
-			label.frame = CGRect(x: padding, y: yPos, width: labelW, height: 40)
-			yPos += 50
-		}
-		yPos = labelYStart
-		for field in self.roomFields{
-			field.frame = CGRect(x: self.view.bounds.size.width-fieldW-padding, y: yPos, width: fieldW, height: 40)
-			yPos += 50
-		}
-		self.contentHeight = yPos
-		self.scrollView.contentSize = CGSize(width: self.view.bounds.width, height: contentHeight)
-	}
-
 	func sendProposal(){
 		self.view.endEditing(true)
 		self.updateCustomCosts {

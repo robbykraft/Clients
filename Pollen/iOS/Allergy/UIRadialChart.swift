@@ -31,7 +31,7 @@ class UIRadialChart: UIView {
 					let circle = subs[0] as? CAShapeLayer
 					circle?.fillColor = UIColor.white.cgColor
 					self.label.textColor = UIColor.black
-					self.dayLabel.textColor = UIColor.gray
+					self.dayLabel.textColor = self.dayLabelGray
 
 				}
 			}
@@ -43,6 +43,8 @@ class UIRadialChart: UIView {
 	let label = UILabel()
 	let arcLayer = CALayer()
 	let circleLayer = CALayer()
+	
+	let dayLabelGray = UIColor(white: 0.66, alpha: 1.0)
 	
 //	var radialLabels:[UILabel] = []
 	
@@ -101,8 +103,8 @@ class UIRadialChart: UIView {
 		label.textColor = UIColor.black
 		self.addSubview(label)
 		
-		dayLabel.font = UIFont.init(name: SYSTEM_FONT, size:Style.shared.P15)
-		dayLabel.textColor = UIColor.gray
+		dayLabel.font = UIFont.init(name: SYSTEM_FONT, size:Style.shared.P21)
+		dayLabel.textColor = self.dayLabelGray
 		self.addSubview(dayLabel)
 		
 		self.addSubview(radialLabelImageView)
@@ -114,7 +116,8 @@ class UIRadialChart: UIView {
 		label.center = CGPoint.init(x: self.frame.size.width*0.5, y: self.frame.size.height*0.5)
 		
 		dayLabel.sizeToFit()
-		dayLabel.center = CGPoint.init(x: self.frame.size.width*0.5, y: self.frame.size.height*0.5 - self.frame.width*0.33 + 50)
+//		dayLabel.center = CGPoint.init(x: self.frame.size.width*0.5, y: self.frame.size.height*0.5 - self.frame.width*0.33 + 50)
+		dayLabel.center = CGPoint.init(x: self.frame.size.width*0.5, y: self.frame.size.height*0.5 - self.frame.width*0.25 + 50)
 	}
 	
 	func redrawGraph(){

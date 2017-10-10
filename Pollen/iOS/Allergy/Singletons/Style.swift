@@ -15,11 +15,12 @@ extension UIColor {
 import UIKit
 
 //let SYSTEM_FONT:String = "ArialRoundedMTBold"
-let SYSTEM_FONT:String = "BanglaSangamMN"
-let SYSTEM_FONT_B:String = "BanglaSangamMN-Bold"
-
-//let SYSTEM_FONT:String = "Optima-Regular"
-//let SYSTEM_FONT_B:String = "Optima-ExtraBlack"
+//let SYSTEM_FONT:String = "BanglaSangamMN"
+//let SYSTEM_FONT_B:String = "BanglaSangamMN-Bold"
+let SYSTEM_FONT:String = "AppleSDGothicNeo-UltraLight"
+let SYSTEM_FONT_B:String = "AppleSDGothicNeo-Bold"
+//let SYSTEM_FONT:String = "Thonburi-Light"
+//let SYSTEM_FONT_B:String = "Thonburi-Bold"
 
 
 let IS_IPAD:Bool = UIDevice.current.userInterfaceIdiom == UIUserInterfaceIdiom.pad
@@ -56,6 +57,7 @@ class Style {
 	var P40:CGFloat = 40
 	var P30:CGFloat = 30
 	var P24:CGFloat = 24
+	var P21:CGFloat = 21
 	var P18:CGFloat = 18
 	var P15:CGFloat = 15
 	var P12:CGFloat = 12
@@ -70,6 +72,7 @@ class Style {
 			P40 = 60
 			P30 = 50
 			P24 = 36
+			P21 = 32
 			P18 = 27
 			P15 = 26
 			P12 = 24
