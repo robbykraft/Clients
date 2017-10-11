@@ -282,8 +282,8 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 			let discountAmount:Int = Int(discount * 0.01 * Float(rawCost))
 			let totalBefore2:Int = rawCost - discountAmount
 			let salesTaxSum:Int = Int(Float(totalBefore2) * salesTax)
-			let grandTotal:Int = totalBefore2 - salesTaxSum
-			let grandTotalRounded:Int = Int(Float(totalBefore2 - salesTaxSum)*0.01)*100
+			let grandTotal:Int = totalBefore2 + salesTaxSum
+			let grandTotalRounded:Int = Int(Float(grandTotal)*0.01)*100
 			let renewalCost:Int = Int(Float(grandTotal)*0.3333 * renewal)
 			
 			project.discountTotal = discountAmount

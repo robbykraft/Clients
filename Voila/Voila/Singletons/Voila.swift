@@ -325,7 +325,7 @@ class Voila{
 			if let a = project.renewalsTotal { renewalsTotal = a }
 			
 			let totalAfterDiscount = total - discountTotal
-			let grandTotal:Int = totalAfterDiscount - taxTotal
+			let grandTotal:Int = totalAfterDiscount + taxTotal
 
 			let discountTotalRounded = Int(round(Float(discountTotal)/100)*100)
 			let totalAfterDiscountRounded:Int = Int(round(Float(totalAfterDiscount)/100)*100)
