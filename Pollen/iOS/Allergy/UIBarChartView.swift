@@ -77,7 +77,7 @@ class UIBarChartView: UIView {
 	
 	override func layoutSubviews(){
 		super.layoutSubviews()
-		let lineWidth:CGFloat = 15
+		let lineWidth:CGFloat = 18
 		let spacer:CGFloat = 2
 		let padLabel:CGFloat = 20
 		let padW:CGFloat = 0.5 * (self.frame.size.width - CGFloat((count-1) * (lineWidth+spacer)))
@@ -100,7 +100,7 @@ class UIBarChartView: UIView {
 		
 		touchAreas = []
 		
-		let lineWidth:CGFloat = 15
+		let lineWidth:CGFloat = 18
 		let spacer:CGFloat = 2
 		let padLabel:CGFloat = 20
 		let padW:CGFloat = 0.5 * (self.frame.size.width - CGFloat((count-1) * (lineWidth+spacer)))

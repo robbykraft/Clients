@@ -32,6 +32,8 @@
 		D5A9973F1E9BEC8600F37F52 /* Fire.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9973D1E9BEC8600F37F52 /* Fire.swift */; };
 		D5D014DB1E9E71DA00BF7374 /* DetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D014D91E9E71DA00BF7374 /* DetailTableViewController.swift */; };
 		D5D014DC1E9E71DA00BF7374 /* LineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D014DA1E9E71DA00BF7374 /* LineTableViewCell.swift */; };
+		D5F5EA3D1F96610C004FB5DE /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F5EA3C1F96610C004FB5DE /* LoginView.swift */; };
+		D5F5EA3F1F966851004FB5DE /* QuerySlide.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F5EA3E1F966851004FB5DE /* QuerySlide.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,6 +68,8 @@
 		D5D014D91E9E71DA00BF7374 /* DetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailTableViewController.swift; sourceTree = "<group>"; };
 		D5D014DA1E9E71DA00BF7374 /* LineTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineTableViewCell.swift; sourceTree = "<group>"; };
 		D5F33C681EAA5D3000DB01C3 /* Allergy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Allergy.entitlements; sourceTree = "<group>"; };
+		D5F5EA3C1F96610C004FB5DE /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		D5F5EA3E1F966851004FB5DE /* QuerySlide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuerySlide.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +122,8 @@
 				D51C22A81E92E5EB00887F42 /* ViewController.swift */,
 				D532B3271E9D4F700090FC7A /* UIRadialChart.swift */,
 				D55D06931E9C2161000AB9D9 /* UIBarChartView.swift */,
+				D5F5EA3C1F96610C004FB5DE /* LoginView.swift */,
+				D5F5EA3E1F966851004FB5DE /* QuerySlide.swift */,
 				D5D014D81E9E71DA00BF7374 /* Detail */,
 				D5A997351E9BE71D00F37F52 /* MasterNavigationController.swift */,
 				D54B973E1E9DD83B0064EAED /* Preferences */,
@@ -326,9 +332,11 @@
 				D5099BE61ECDFDC30095905F /* UILightNavigationController.swift in Sources */,
 				D5300EB91E9EC46900874C18 /* SliderTableViewCell.swift in Sources */,
 				D5D014DB1E9E71DA00BF7374 /* DetailTableViewController.swift in Sources */,
+				D5F5EA3D1F96610C004FB5DE /* LoginView.swift in Sources */,
 				D563489A1EBA89A00025A73C /* CenteredTableViewCell.swift in Sources */,
 				D5A997341E9BE71200F37F52 /* ProfileViewController.swift in Sources */,
 				D54B973D1E9DD32E0064EAED /* Extensions.swift in Sources */,
+				D5F5EA3F1F966851004FB5DE /* QuerySlide.swift in Sources */,
 				D55D06941E9C2161000AB9D9 /* UIBarChartView.swift in Sources */,
 				D532B3211E9C82240090FC7A /* Style.swift in Sources */,
 				D532B3231E9C840E0090FC7A /* Pollen.swift in Sources */,

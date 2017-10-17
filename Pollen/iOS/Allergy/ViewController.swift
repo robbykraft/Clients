@@ -22,6 +22,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 	
 	var samples:[Sample] = []
 	
+	var slides:[QuerySlide] = []
+	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		self.navigationController?.delegate = self
@@ -42,13 +44,13 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 		let radius:CGFloat = self.view.frame.size.height * 1.25
 		let circleCenter = CGPoint.init(x: self.view.center.x, y: barChartTop - radius)
 		
-		self.scrollView.frame = self.view.bounds
+		self.scrollView.frame = CGRect(x: 0, y: 22, width: self.view.frame.size.width, height: self.view.frame.size.height-22)
 		self.scrollView.delegate = self
 		self.scrollView.contentSize = CGSize(width: self.view.bounds.width, height: self.view.bounds.height + barChartTop - 80)
 		self.scrollView.isPagingEnabled = true
-		self.view = self.scrollView
+		self.view.addSubview(self.scrollView)
 		
-		self.view.backgroundColor = Style.shared.whiteSmoke
+		self.scrollView.backgroundColor = Style.shared.whiteSmoke
 		
 		
 		let layer = CAShapeLayer()
@@ -58,12 +60,12 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 //		layer.fillColor = Style.shared.lightBlue.cgColor
 //		layer.lineWidth = 10
 //		layer.strokeColor = Style.shared.blue.cgColor
-		self.view.layer.addSublayer(layer)
+		self.scrollView.layer.addSublayer(layer)
 		
 		let image = self.makeCurvedAttributionText(size: CGSize.init(width: radius*2, height: radius*2), textRadius: radius-Style.shared.P18)
 		let radialLabelImageView:UIImageView = UIImageView(image: image)
 		radialLabelImageView.frame = CGRect(x: 0, y: 0, width: radius*2, height: radius*2)
-		self.view.addSubview(radialLabelImageView)
+		self.scrollView.addSubview(radialLabelImageView)
 		radialLabelImageView.center = circleCenter
 		
 		if(IS_IPAD){
@@ -75,13 +77,13 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 		} else{
 			radialChart = UIRadialChart.init(frame: CGRect.init(x: 0, y: statusBarHeight + (self.view.frame.size.width - 320.0) * 0.25, width: self.view.frame.size.width, height: self.view.frame.size.width))
 		}
-		self.view.addSubview(radialChart)
+		self.scrollView.addSubview(radialChart)
 
 		radialChartOrigin = CGPoint(x: self.view.bounds.size.width*0.5, y: statusBarHeight + (self.view.frame.size.width - 320.0) * 0.25 + self.view.frame.size.width*0.5 )
 
 		barChart = UIBarChartView.init(frame: CGRect.init(x: 0, y: barChartTop, width: self.view.frame.size.width, height: 200))
 		barChart.delegate = self
-		self.view.addSubview(barChart)
+		self.scrollView.addSubview(barChart)
 		
 		radialButton.frame = CGRect.init(x: 0, y: 0, width: radialChart.frame.size.width*0.66, height: radialChart.frame.size.height*0.66)
 		radialButton.center = radialChart.center
@@ -91,14 +93,28 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 		radialButton.addTarget(self, action: #selector(radialTouchDown), for: .touchDragEnter)
 		radialButton.addTarget(self, action: #selector(radialTouchDown), for: .touchDown)
 		radialButton.addTarget(self, action: #selector(radialTouchUpInside), for: .touchUpInside)
-		self.view.addSubview(radialButton)
+		self.scrollView.addSubview(radialButton)
 		
 		preferencesButton.frame = CGRect.init(x: 0, y: 0, width: 40, height: 40)
 		preferencesButton.setImage(UIImage.init(named: "cogs")?.imageWithTint(UIColor.white), for: .normal)
 		preferencesButton.center = CGPoint.init(x: self.view.frame.size.width - 22-5, y: statusBarHeight+22+5)
 		preferencesButton.addTarget(self, action: #selector(preferencesButtonPressed), for: .touchUpInside)
-		self.view.addSubview(preferencesButton)
+		self.scrollView.addSubview(preferencesButton)
 		
+		
+		let sevenDwarfs = ["Congestion", "Runny", "Itchy", "Sneezy", "Sleepy"]
+		for i in 0..<5{
+			let pad:CGFloat = 5.0
+			let h:CGFloat = self.view.bounds.size.height/8
+			let rect = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: h)
+			let slide = QuerySlide(frame: rect)
+			slide.coverText.text = sevenDwarfs[i]
+			slide.alpha = 0
+			slide.center = CGPoint(x: self.view.center.x, y: 75 + barChartTop + (h+pad)*CGFloat(i))
+//			slide.coverButton.backgroundColor = UIColor(hue: CGFloat(i)/5, saturation: 1.0, brightness: 1.0, alpha: 1.0)
+			self.scrollView.addSubview(slide)
+			self.slides.append(slide)
+		}
 	}
 	
 	func downloadAndRefresh(){
@@ -186,7 +202,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 		// at the centre of the screen maths convention
 		// Obviously change your origin to suit...
 		// *******************************************************************
-		context.translateBy (x: size.width / 2, y: size.height / 2)
+		context.translateBy (x: size.width / 2, y: size.height / 2 )
 		context.scaleBy (x: 1, y: -1)
 
 		Style.shared.centreArcPerpendicular(text: "provided by Allergy Free Austin", context: context, radius: textRadius, angle: -CGFloat.pi*0.5, colour: UIColor.white, font: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P12)!, clockwise: false)
@@ -199,12 +215,17 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 	/////////////// SCROLL VIEW ///////////////////
 	
 	func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//		print(scrollView.contentOffset.y);
 		var pct = scrollView.contentOffset.y / (scrollView.contentSize.height - self.view.bounds.height)
 		if pct < 0.0 { pct = 0.0}
 		if pct > 1.0 { pct = 1.0}
 		let alpha = 1.0 - sqrt(pct)
 		self.radialChart.alpha = alpha
 		self.radialChart.center = CGPoint(x: radialChartOrigin.x, y: radialChartOrigin.y - pct * 100)
+		self.barChart.alpha = alpha
+		for view in slides{
+			view.alpha = pct
+		}
 	}
 
 	override func didReceiveMemoryWarning() {

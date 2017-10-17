@@ -39,13 +39,14 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 
 	let scrollView = UIScrollView()
 	var roomLabels:[UILabel] = []
+	var roomContents:[UILabel] = []
 	var roomFields:[UITextField] = []
 	let hr = UIView();
 	
 	// picker stuff
-	let taxItems = ["Phila 8%", "PA 6%", "NJ 7%"]
+	let taxItems = ["Phila 8%", "PA 6%", "NJ 7%", "0%"]
 	let discountTextItems = ["New Client", "Friends & Family", "Discount"]
-	let discountItems = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
+	let discountItems = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
 	let renewalItems = [2, 3, 4, 5, 6]
 	let pickerTax = UIPickerView()
 	let pickerDiscount = UIPickerView()
@@ -101,7 +102,7 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 			self._4totalBeforeLabel.text = "Total Before Tax"
 			self._5salesTaxLabel.text = "Sales Tax"
 			self._7grandTotalLabel.text = "Grand Total"
-			self._8renewalLabel.text = "Montly Renewals"
+			self._8renewalLabel.text = "Monthly Renewals"
 
 			for field in [self._0totalBeforeField, self._1discountTextField, self._2discountField, self._3discountSummaryField, self._4totalBeforeField, self._5salesTaxField, self._6salesTaxSummaryField, self._7grandTotalField, self._8renewalField, self._9renewalSummaryField]{
 				field.backgroundColor = .clear
@@ -151,9 +152,26 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 				roomField.rightViewMode = .always
 				roomField.layer.cornerRadius = 5.0
 				roomField.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
+				
+				let roomFurniture = UILabel()
+				roomFurniture.numberOfLines = room.furniture.count
+				roomFurniture.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P12)
+				var furnitureString = ""
+				for i in 0..<room.furniture.count{
+					let furniture = room.furniture[i]
+					if i < room.furniture.count - 1{
+						furnitureString += furniture.name + " (\(furniture.copies))" + "\n"
+					} else{
+						furnitureString += furniture.name + " (\(furniture.copies))"
+					}
+				}
+				roomFurniture.text = furnitureString
+				
 				self.scrollView.addSubview(roomLabel)
+				self.scrollView.addSubview(roomFurniture)
 				self.scrollView.addSubview(roomField)
 				self.roomLabels.append(roomLabel)
+				self.roomContents.append(roomFurniture)
 				self.roomFields.append(roomField)
 			}
 		}
@@ -244,6 +262,9 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 //		self._1discountLabel.frame = CGRect.init(x: 5, y: startY + 5 + (32+yPad) * 1,
 //		                                         width: self.view.bounds.size.width * 0.5 - padding*2, height:self._1discountLabel.bounds.size.height)
 
+		for contents in self.roomContents{
+			contents.sizeToFit()
+		}
 
 		let labelYStart:CGFloat = self._9renewalSummaryField.frame.origin.y + self._9renewalSummaryField.frame.size.height + padding
 		
@@ -252,14 +273,24 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 		let labelW = self.view.bounds.size.width * 0.5
 		let fieldW = self.view.bounds.size.width * 0.25
 		var yPos = labelYStart
-		for label in self.roomLabels{
+//		for label in self.roomLabels{
+//			label.frame = CGRect(x: padding, y: yPos, width: labelW, height: 40)
+//			yPos += 50
+//		}
+//		yPos = labelYStart
+//		for field in self.roomFields{
+//			field.frame = CGRect(x: self.view.bounds.size.width-fieldW-padding, y: yPos, width: fieldW, height: 40)
+//			yPos += 50
+//		}
+		
+		for i in 0..<self.roomLabels.count{
+			let label = self.roomLabels[i]
+			let field = self.roomFields[i]
+			let contents = self.roomContents[i]
 			label.frame = CGRect(x: padding, y: yPos, width: labelW, height: 40)
-			yPos += 50
-		}
-		yPos = labelYStart
-		for field in self.roomFields{
 			field.frame = CGRect(x: self.view.bounds.size.width-fieldW-padding, y: yPos, width: fieldW, height: 40)
-			yPos += 50
+			contents.frame = CGRect(x: padding*2, y: yPos+45, width: contents.frame.size.width, height: contents.frame.size.height)
+			yPos += 50 + contents.frame.size.height
 		}
 		self.contentHeight = yPos
 		self.scrollView.contentSize = CGSize(width: self.view.bounds.width, height: contentHeight)
@@ -275,6 +306,7 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 			case taxItems[0]: salesTax = 0.08
 			case taxItems[1]: salesTax = 0.06
 			case taxItems[2]: salesTax = 0.07
+			case taxItems[3]: salesTax = 0.0
 			default: salesTax = 0.08
 			}
 			let discount:Float = Float(_2discountField.text!)!
@@ -284,7 +316,7 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 			let salesTaxSum:Int = Int(Float(totalBefore2) * salesTax)
 			let grandTotal:Int = totalBefore2 + salesTaxSum
 			let grandTotalRounded:Int = Int(Float(grandTotal)*0.01)*100
-			let renewalCost:Int = Int(Float(grandTotal)*0.3333 * renewal)
+			let renewalCost:Int = Int(Float(grandTotal) / renewal)
 			
 			project.discountTotal = discountAmount
 			project.discountPct = Int(discount)
@@ -461,17 +493,18 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 	func keyboardWasShown(notification: NSNotification){
 		//Need to calculate keyboard exact size due to Apple suggestions
 //		self.scrollView.isScrollEnabled = true
-		if self.keyboardSize == nil{
+//		if self.keyboardSize == nil{
 //			var info = notification.userInfo!
 //			let keySize = (info[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size
-			self.keyboardSize = CGSize(width: self.view.bounds.size.width, height: 300)//keySize
-		}
+//			self.keyboardSize = CGSize(width: self.view.bounds.size.width, height: 300)//keySize
+//		}
 		if let activeField = self.activeField {
 			let navBarHeight:CGFloat = self.navigationController!.navigationBar.frame.height
 			let statusHeight:CGFloat = statusBarHeight()
 //			let header = navBarHeight + statusHeight
-			var newSize = self.scrollView.bounds.size
-			newSize.height += abs((self.keyboardSize?.height)!) + 300
+			var newSize = self.scrollView.contentSize
+//			newSize.height += abs((self.keyboardSize?.height)!) + 300
+			newSize.height += 300
 			self.scrollView.contentSize = newSize
 			let fieldFromBottom = (self.scrollView.bounds.size.height-activeField.frame.origin.y)
 			print(fieldFromBottom)
@@ -481,8 +514,9 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 	}
 	
 	func keyboardWillBeHidden(notification: NSNotification){
-		self.scrollView.contentSize = self.view.bounds.size
-		self.scrollView.scrollRectToVisible(CGRect.init(x: 0, y: 0, width: 1, height: 1), animated: true)
+//		self.scrollView.contentSize = self.view.bounds.size
+		self.scrollView.contentSize = CGSize(width: self.view.bounds.width, height: contentHeight)
+//		self.scrollView.scrollRectToVisible(CGRect.init(x: 0, y: 0, width: 1, height: 1), animated: true)
 		self.view.endEditing(true)
 //		self.scrollView.isScrollEnabled = false
 	}
