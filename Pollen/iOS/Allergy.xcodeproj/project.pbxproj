@@ -19,6 +19,7 @@
 		D532B3231E9C840E0090FC7A /* Pollen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D532B3221E9C840E0090FC7A /* Pollen.swift */; };
 		D532B3261E9C86360090FC7A /* Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = D532B3251E9C86360090FC7A /* Sample.swift */; };
 		D532B3281E9D4F700090FC7A /* UIRadialChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = D532B3271E9D4F700090FC7A /* UIRadialChart.swift */; };
+		D53343EE1F97A58C00313B18 /* QueryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53343ED1F97A58C00313B18 /* QueryView.swift */; };
 		D54B973D1E9DD32E0064EAED /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54B973C1E9DD32E0064EAED /* Extensions.swift */; };
 		D54B97401E9DD83B0064EAED /* MyAllergies.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54B973F1E9DD83B0064EAED /* MyAllergies.swift */; };
 		D54B97421E9DD8610064EAED /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54B97411E9DD8610064EAED /* Preferences.swift */; };
@@ -54,6 +55,7 @@
 		D532B3221E9C840E0090FC7A /* Pollen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pollen.swift; sourceTree = "<group>"; };
 		D532B3251E9C86360090FC7A /* Sample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sample.swift; sourceTree = "<group>"; };
 		D532B3271E9D4F700090FC7A /* UIRadialChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIRadialChart.swift; sourceTree = "<group>"; };
+		D53343ED1F97A58C00313B18 /* QueryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryView.swift; sourceTree = "<group>"; };
 		D54B973C1E9DD32E0064EAED /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		D54B973F1E9DD83B0064EAED /* MyAllergies.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyAllergies.swift; sourceTree = "<group>"; };
 		D54B97411E9DD8610064EAED /* Preferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
@@ -116,16 +118,14 @@
 			children = (
 				D5F33C681EAA5D3000DB01C3 /* Allergy.entitlements */,
 				D51C22A61E92E5EB00887F42 /* AppDelegate.swift */,
+				D5A997351E9BE71D00F37F52 /* MasterNavigationController.swift */,
+				D51C22A81E92E5EB00887F42 /* ViewController.swift */,
 				D5A9973B1E9BEC8600F37F52 /* Singletons */,
 				D532B3241E9C861E0090FC7A /* Model */,
 				D5A997301E9BE71200F37F52 /* Login */,
-				D51C22A81E92E5EB00887F42 /* ViewController.swift */,
-				D532B3271E9D4F700090FC7A /* UIRadialChart.swift */,
-				D55D06931E9C2161000AB9D9 /* UIBarChartView.swift */,
-				D5F5EA3C1F96610C004FB5DE /* LoginView.swift */,
-				D5F5EA3E1F966851004FB5DE /* QuerySlide.swift */,
+				D53343F01F97A5EB00313B18 /* Charts */,
+				D53343EF1F97A5A500313B18 /* Query */,
 				D5D014D81E9E71DA00BF7374 /* Detail */,
-				D5A997351E9BE71D00F37F52 /* MasterNavigationController.swift */,
 				D54B973E1E9DD83B0064EAED /* Preferences */,
 				D51C22AD1E92E5EB00887F42 /* Assets.xcassets */,
 				D51C22AF1E92E5EB00887F42 /* LaunchScreen.storyboard */,
@@ -142,6 +142,25 @@
 				D532B3251E9C86360090FC7A /* Sample.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		D53343EF1F97A5A500313B18 /* Query */ = {
+			isa = PBXGroup;
+			children = (
+				D53343ED1F97A58C00313B18 /* QueryView.swift */,
+				D5F5EA3E1F966851004FB5DE /* QuerySlide.swift */,
+				D5F5EA3C1F96610C004FB5DE /* LoginView.swift */,
+			);
+			path = Query;
+			sourceTree = "<group>";
+		};
+		D53343F01F97A5EB00313B18 /* Charts */ = {
+			isa = PBXGroup;
+			children = (
+				D532B3271E9D4F700090FC7A /* UIRadialChart.swift */,
+				D55D06931E9C2161000AB9D9 /* UIBarChartView.swift */,
+			);
+			path = Charts;
 			sourceTree = "<group>";
 		};
 		D54B973E1E9DD83B0064EAED /* Preferences */ = {
@@ -343,6 +362,7 @@
 				D51C22A91E92E5EB00887F42 /* ViewController.swift in Sources */,
 				D5D014DC1E9E71DA00BF7374 /* LineTableViewCell.swift in Sources */,
 				D5A9973F1E9BEC8600F37F52 /* Fire.swift in Sources */,
+				D53343EE1F97A58C00313B18 /* QueryView.swift in Sources */,
 				D5A997361E9BE71D00F37F52 /* MasterNavigationController.swift in Sources */,
 				D5A997331E9BE71200F37F52 /* LoginViewController.swift in Sources */,
 				D51C22A71E92E5EB00887F42 /* AppDelegate.swift in Sources */,

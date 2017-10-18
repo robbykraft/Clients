@@ -22,7 +22,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 	
 	var samples:[Sample] = []
 	
-	var slides:[QuerySlide] = []
+	let queryView = QueryView()
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
@@ -101,20 +101,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 		preferencesButton.addTarget(self, action: #selector(preferencesButtonPressed), for: .touchUpInside)
 		self.scrollView.addSubview(preferencesButton)
 		
-		
-		let sevenDwarfs = ["Congestion", "Runny", "Itchy", "Sneezy", "Sleepy"]
-		for i in 0..<5{
-			let pad:CGFloat = 5.0
-			let h:CGFloat = self.view.bounds.size.height/8
-			let rect = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: h)
-			let slide = QuerySlide(frame: rect)
-			slide.coverText.text = sevenDwarfs[i]
-			slide.alpha = 0
-			slide.center = CGPoint(x: self.view.center.x, y: 75 + barChartTop + (h+pad)*CGFloat(i))
-//			slide.coverButton.backgroundColor = UIColor(hue: CGFloat(i)/5, saturation: 1.0, brightness: 1.0, alpha: 1.0)
-			self.scrollView.addSubview(slide)
-			self.slides.append(slide)
-		}
+		queryView.alpha = 0.0
+		queryView.frame = CGRect(x: 0, y: barChartTop + 15, width: self.view.frame.size.width, height: self.scrollView.contentSize.height - barChartTop - 15)
+		self.scrollView.addSubview(queryView)
 	}
 	
 	func downloadAndRefresh(){
@@ -223,9 +212,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 		self.radialChart.alpha = alpha
 		self.radialChart.center = CGPoint(x: radialChartOrigin.x, y: radialChartOrigin.y - pct * 100)
 		self.barChart.alpha = alpha
-		for view in slides{
-			view.alpha = pct
-		}
+		self.queryView.alpha = pct
 	}
 
 	override func didReceiveMemoryWarning() {
