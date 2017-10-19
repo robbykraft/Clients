@@ -47,7 +47,7 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 	let taxItems = ["Phila 8%", "PA 6%", "NJ 7%", "0%"]
 	let discountTextItems = ["New Client", "Friends & Family", "Discount"]
 	let discountItems = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
-	let renewalItems = [2, 3, 4, 5, 6]
+//	let renewalItems = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43 ,44, 45, 46, 47, 48, 49 ,50]
 	let pickerTax = UIPickerView()
 	let pickerDiscount = UIPickerView()
 	let pickerDiscountText = UIPickerView()
@@ -102,7 +102,7 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 			self._4totalBeforeLabel.text = "Total Before Tax"
 			self._5salesTaxLabel.text = "Sales Tax"
 			self._7grandTotalLabel.text = "Grand Total"
-			self._8renewalLabel.text = "Monthly Renewals"
+			self._8renewalLabel.text = "Monthly Renewals %"
 
 			for field in [self._0totalBeforeField, self._1discountTextField, self._2discountField, self._3discountSummaryField, self._4totalBeforeField, self._5salesTaxField, self._6salesTaxSummaryField, self._7grandTotalField, self._8renewalField, self._9renewalSummaryField]{
 				field.backgroundColor = .clear
@@ -116,7 +116,8 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 			self._1discountTextField.text = discountTextItems.first
 			self._2discountField.text = String(describing:discountItems.first!)
 			self._5salesTaxField.text = taxItems.first
-			self._8renewalField.text = String(describing:renewalItems.first!)
+//			self._8renewalField.text = String(describing:renewalItems.first!)
+			self._8renewalField.text = "33"
 			self._1discountTextField.backgroundColor = .white
 			self._2discountField.backgroundColor = .white
 			self._5salesTaxField.backgroundColor = .white
@@ -128,6 +129,8 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 			self._6salesTaxSummaryField.isEnabled = false
 			self._7grandTotalField.isEnabled = false
 			self._9renewalSummaryField.isEnabled = false
+			
+			self._8renewalField.keyboardType = .numberPad
 
 			self._0totalBeforeLabel.font = UIFont(name:SYSTEM_FONT_B, size:Style.shared.P18)
 			self._0totalBeforeField.font = UIFont(name:SYSTEM_FONT_B, size:Style.shared.P18)
@@ -212,8 +215,8 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 		self._2discountField.inputAccessoryView = pickerToolbar
 		self._5salesTaxField.inputView = self.pickerTax
 		self._5salesTaxField.inputAccessoryView = pickerToolbar
-		self._8renewalField.inputView = self.pickerRenewal
-		self._8renewalField.inputAccessoryView = pickerToolbar
+//		self._8renewalField.inputView = self.pickerRenewal
+		self._8renewalField.inputAccessoryView = numberToolbar
 
 		self.updateTotals()
 	}
@@ -317,13 +320,13 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 			default: salesTax = 0.08
 			}
 			let discount:Float = Float(_2discountField.text!)!
-			let renewal:Float = Float(_8renewalField.text!)!
+			let renewal:Float = Float(_8renewalField.text!)!  // percent number
 			let discountAmount:Int = Int(discount * 0.01 * Float(rawCost))
 			let totalBefore2:Int = rawCost - discountAmount
 			let salesTaxSum:Int = Int(Float(totalBefore2) * salesTax)
 			let grandTotal:Int = totalBefore2 + salesTaxSum
 			let grandTotalRounded:Int = Int(Float(grandTotal)*0.01)*100
-			let renewalCost:Int = Int(Float(grandTotal) / renewal)
+			let renewalCost:Int = Int(Float(grandTotal) * renewal * 0.01)
 			
 			project.discountTotal = discountAmount
 			project.discountPct = Int(discount)
@@ -366,6 +369,7 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 		for field in self.roomFields {
 			field.resignFirstResponder()
 		}
+		self._8renewalField.resignFirstResponder()
 		self.scrollView.contentSize = CGSize(width: self.view.bounds.width, height: contentHeight)
 		self.updateCustomCosts {
 			self.updateTotals()
@@ -381,7 +385,7 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 		case self.pickerDiscountText: return self.discountTextItems.count
 		case self.pickerDiscount: return self.discountItems.count
 		case self.pickerTax: return self.taxItems.count
-		case self.pickerRenewal: return self.renewalItems.count
+//		case self.pickerRenewal: return self.renewalItems.count
 		default: return 0
 		}
 	}
@@ -390,7 +394,7 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 		case self.pickerDiscountText: return self.discountTextItems[row]
 		case self.pickerDiscount: return String(describing:self.discountItems[row])
 		case self.pickerTax: return self.taxItems[row]
-		case self.pickerRenewal: return String(describing:self.renewalItems[row])
+//		case self.pickerRenewal: return String(describing:self.renewalItems[row])
 		default: return ""
 		}
 	}
@@ -399,7 +403,7 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 		case self.pickerDiscountText: self._1discountTextField.text = self.discountTextItems[row]
 		case self.pickerDiscount: self._2discountField.text = String(describing:self.discountItems[row])
 		case self.pickerTax: self._5salesTaxField.text = self.taxItems[row]
-		case self.pickerRenewal: self._8renewalField.text = String(describing:self.renewalItems[row])
+//		case self.pickerRenewal: self._8renewalField.text = String(describing:self.renewalItems[row])
 		default: break
 		}
 		self.updateTotals()
