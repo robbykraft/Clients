@@ -122,6 +122,13 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 			self._5salesTaxField.backgroundColor = .white
 			self._8renewalField.backgroundColor = .white
 			
+			self._0totalBeforeField.isEnabled = false
+			self._3discountSummaryField.isEnabled = false
+			self._4totalBeforeField.isEnabled = false
+			self._6salesTaxSummaryField.isEnabled = false
+			self._7grandTotalField.isEnabled = false
+			self._9renewalSummaryField.isEnabled = false
+
 			self._0totalBeforeLabel.font = UIFont(name:SYSTEM_FONT_B, size:Style.shared.P18)
 			self._0totalBeforeField.font = UIFont(name:SYSTEM_FONT_B, size:Style.shared.P18)
 			self._4totalBeforeLabel.font = UIFont(name:SYSTEM_FONT_B, size:Style.shared.P18)

@@ -24,6 +24,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 	
 	let queryView = QueryView()
 	
+	var barChartCenter:CGPoint = .zero
+	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		self.navigationController?.delegate = self
@@ -84,6 +86,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 		barChart = UIBarChartView.init(frame: CGRect.init(x: 0, y: barChartTop, width: self.view.frame.size.width, height: 200))
 		barChart.delegate = self
 		self.scrollView.addSubview(barChart)
+		self.barChartCenter = barChart.center
 		
 		radialButton.frame = CGRect.init(x: 0, y: 0, width: radialChart.frame.size.width*0.66, height: radialChart.frame.size.height*0.66)
 		radialButton.center = radialChart.center
@@ -212,6 +215,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 		self.radialChart.alpha = alpha
 		self.radialChart.center = CGPoint(x: radialChartOrigin.x, y: radialChartOrigin.y - pct * 100)
 		self.barChart.alpha = alpha
+		self.barChart.center = CGPoint(x:self.barChartCenter.x, y:self.barChartCenter.y + pct*self.view.frame.size.height)
 		self.queryView.alpha = pct
 	}
 

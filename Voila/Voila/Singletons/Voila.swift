@@ -11,6 +11,30 @@ class Voila{
 	var templates:[String:[Room]] = [:]
 	var roomNames:[String] = []  // array of keys of above database
 	
+	let roomSort:[String:Int] = [
+		"Foyer" : 2,
+		"Living Room" : 3,
+		"Kitchen" : 4,
+		"Dining Room" : 5,
+		"Family Room" : 6,
+		"Master Bathroom" : 7,
+		"Master Bedroom" : 8,
+		"Bathrooms" : 9,
+		"Bedroom" : 10,
+		"Front Patio" : 11,
+		"Deck,Patio" : 12,
+		"Den" : 13,
+		"Office" : 14,
+		"Flex Space" : 15,
+		"Game Room" : 16,
+		"Hallways" : 17,
+		"Basement" : 18,
+		"Laundry Room" : 19,
+		"Library" : 20,
+		"Media Room" : 21,
+		"Yard" : 22
+	]
+	
 	var furnitureCost:[String:Float] = [
 		"Accent Chair" : 62.5, "Accessories" : 18.75, "Area Rug" : 62.5, "Art" : 25, "Bar" : 75, "Bar Stools" : 25, "Bench" : 37.5, "Coffee Table" : 50, "Console Table" : 50, "Desk" : 75, "Desk Chair" : 25, "Floor Lamp" : 25, "Large Console" : 75, "Large Desk" : 100, "Ottoman" : 50, "Outdoor Sofa" : 150, "Poof" : 22.5, "Pub Chairs" : 25, "Pub Table" : 50, "Runner Rug" : 25, "Sectional" : 25, "Side Chair" : 100, "Side Table" : 50, "Small Desk" : 50, "Small Sofa" : 25, "Sofa" : 25, "Window Treatments" : 25, "Console" : 87.5, "Laundry Basket" : 12.5, "Rug" : 50, "Towels" : 12.5, "Bed Frame" : 37.5, "Box Spring" : 50, "Day Bed" : 37.5, "Dresser" : 100, "Head Board" : 50, "King Bed" : 75, "Lamp" : 18.75, "Night Table" : 37.5, "Queen Bed" : 50, "Twin Bed" : 37.5, "Bistro Set" : 37.5, "Dining Chairs" : 37.5, "Dining Table" : 100, "Outdoor Lounger" : 100, "Outdoor Rug" : 50, "Outdoor Sectional" : 200, "Outdoor Side Table" : 37.5, "Counter Stools" : 37.5, "Dining Console" : 87.5, "Head Chairs" : 50, "Kitchen Chairs" : 25, "Kitchen Table" : 87.5, "Pub Stools" : 25, "Mirror" : 25, "Narow console table" : 50, "Card Table" : 75, "Counter Accessories" : 25, "Kichen Accessories" : 25
 	]
@@ -28,6 +52,15 @@ class Voila{
 		}
 	}
 	
+	// make sure to reload app data after deleting!
+	func deleteProject(project:Project, completionHandler:(()->())?){
+		Fire.shared.database.child("projects").child(project.key).removeValue { error in
+			if let completion = completionHandler{
+				completion()
+			}
+		}
+	}
+
 	func setCustomRoomName(customName:String, completionHandler:(()->())?){
 		if let p = self.project{
 			if let key = self.roomKey{
@@ -185,76 +218,15 @@ class Voila{
 
 				// in buildout, this will be replaced with a dynamic data pull from the database
 				//  and results in the same objects being saved into self.templates
-				self.makeTemplatesManually()
 				
 				completionHandler()
 			}
 		}
 	}
 	
-	func makeTemplatesManually(){
-		let bathroom = Room(name: "Bathroom", key: nil)
-		bathroom.furniture = [
-			Furniture(name: "Accessories", price: Voila.shared.priceForFurniture(name: "Accessories"), room: bathroom),
-			Furniture(name: "Art", price: Voila.shared.priceForFurniture(name: "Art"), room: bathroom),
-			Furniture(name: "Bench", price: Voila.shared.priceForFurniture(name: "Bench"), room: bathroom),
-			Furniture(name: "Console", price: Voila.shared.priceForFurniture(name: "Console"), room: bathroom),
-			Furniture(name: "Laundry Basket", price: Voila.shared.priceForFurniture(name: "Laundry Basket"), room: bathroom),
-			Furniture(name: "Poof", price: Voila.shared.priceForFurniture(name: "Poof"), room: bathroom),
-			Furniture(name: "Rug", price: Voila.shared.priceForFurniture(name: "Rug"), room: bathroom),
-			Furniture(name: "Towels", price: Voila.shared.priceForFurniture(name: "Towels"), room: bathroom)
-		]
-		let diningRoom = Room(name: "Dining Room", key: nil)
-		let chairs = Furniture(name: "Dining Chairs", price: Voila.shared.priceForFurniture(name: "Dining Chairs"), room: diningRoom)
-		chairs.copies = 4
-		diningRoom.furniture = [
-			Furniture(name: "Accessories", price: Voila.shared.priceForFurniture(name: "Accessories"), room: diningRoom),
-			Furniture(name: "Art", price: Voila.shared.priceForFurniture(name: "Art"), room: diningRoom),
-			chairs,
-			Furniture(name: "Dining Table", price: Voila.shared.priceForFurniture(name: "Dining Table"), room: diningRoom)
-		]
-		let kitchen = Room(name: "Kitchen", key: nil)
-		let stools = Furniture(name: "Counter Stools", price: Voila.shared.priceForFurniture(name: "Counter Stools"), room: kitchen)
-		stools.copies = 2
-		kitchen.furniture = [
-			Furniture(name: "Accessories", price: Voila.shared.priceForFurniture(name: "Accessories"), room: kitchen),
-			Furniture(name: "Art", price: Voila.shared.priceForFurniture(name: "Art"), room: kitchen),
-			stools
-		]
-		let livingRoom = Room(name: "Living Room", key: nil)
-		livingRoom.furniture = [
-			Furniture(name: "Accent Chair", price: Voila.shared.priceForFurniture(name: "Accent Chair"), room: livingRoom),
-			Furniture(name: "Accessories", price: Voila.shared.priceForFurniture(name: "Accessories"), room: livingRoom),
-			Furniture(name: "Area Rug", price: Voila.shared.priceForFurniture(name: "Area Rug"), room: livingRoom),
-			Furniture(name: "Art", price: Voila.shared.priceForFurniture(name: "Art"), room: livingRoom),
-			Furniture(name: "Coffee Table", price: Voila.shared.priceForFurniture(name: "Coffee Table"), room: livingRoom),
-			Furniture(name: "Floor Lamp", price: Voila.shared.priceForFurniture(name: "Floor Lamp"), room: livingRoom),
-			Furniture(name: "Side Table", price: Voila.shared.priceForFurniture(name: "Side Table"), room: livingRoom),
-			Furniture(name: "Sofa", price: Voila.shared.priceForFurniture(name: "Sofa"), room: livingRoom)
-		]
-		let bedroom = Room(name: "Master Bedroom", key: nil)
-		bedroom.furniture = [
-			Furniture(name: "Accent Chair", price: Voila.shared.priceForFurniture(name: "Accent Chair"), room: bedroom),
-			Furniture(name: "Accessories", price: Voila.shared.priceForFurniture(name: "Accessories"), room: bedroom),
-			Furniture(name: "Area Rug", price: Voila.shared.priceForFurniture(name: "Area Rug"), room: bedroom),
-			Furniture(name: "Art", price: Voila.shared.priceForFurniture(name: "Art"), room: bedroom),
-			Furniture(name: "Bed Frame", price: Voila.shared.priceForFurniture(name: "Bed Frame"), room: bedroom),
-			Furniture(name: "Box Spring", price: Voila.shared.priceForFurniture(name: "Box Spring"), room: bedroom),
-			Furniture(name: "Lamp", price: Voila.shared.priceForFurniture(name: "Lamp"), room: bedroom),
-			Furniture(name: "Night Table", price: Voila.shared.priceForFurniture(name: "Night Table"), room: bedroom),
-			Furniture(name: "Queen Bed", price: Voila.shared.priceForFurniture(name: "Queen Bed"), room: bedroom),
-		]
-		self.templates["small"] = [bathroom, diningRoom, kitchen, livingRoom, bedroom];
-		
-		// todo, needs actual large data
-		self.templates["large"] = [bathroom, diningRoom, kitchen, livingRoom, bedroom];
-	}
-	
-	
 	func createRoom(roomType:String, completionHandler:(() -> ())?){
 		
 	}
-	
 	
 	//////////////////////////////////////////////////////////////////////////
 	// PROPOSAL
@@ -299,7 +271,6 @@ class Voila{
 		}
 	}
 
-	
 	func htmlProposal()->String{
 		print(pageHeader + self.titleForProject() + self.tableOfCosts() + self.tableForProject() + termsAndConditionsText + pageFooter)
 		return pageHeader + self.titleForProject() + self.tableOfCosts() + self.tableForProject() + termsAndConditionsText + pageFooter
@@ -371,7 +342,7 @@ class Voila{
 	
 	var fakeTable = "<table><tr style=\"background-color:#555\"><td style=\"color:#FFF;\"><strong>Description</strong></td><td style=\"color:#FFF;\"><strong>Quantity</strong></td><td style=\"color:#FFF;\"><strong>Cost</strong></td></tr><tr style=\"background-color:#EEE\"><td><strong>Bathroom</strong></td><td></td><td></td></tr><tr><td>Accessories</td><td>1</td><td></td></tr><tr><td>Art</td><td>1</td><td></td></tr><tr><td>Bench</td><td>1</td><td></td></tr><tr><td>Console</td><td>1</td><td></td></tr><tr><td>Laundry Basket</td><td>1</td><td></td></tr><tr><td>Poof</td><td>1</td><td></td></tr><tr><td>Rug</td><td>1</td><td></td></tr><tr><td>Towels</td><td>1</td><td></td></tr><tr><td></td><td></td><td><strong>$500</strong></td></tr><tr style=\"background-color:#EEE\"><td><strong>Dining Room</strong></td><td></td><td></td></tr><tr><td>Accessories</td><td>1</td><td></td></tr><tr><td>Art</td><td>1</td><td></td></tr><tr><td>Dining Chairs</td><td>4</td><td></td></tr><tr><td>Dining Table</td><td>1</td><td></td></tr><tr><td></td><td></td><td><strong>$500</strong></td></tr><tr style=\"background-color:#EEE\"><td><strong>Kitchen</strong></td><td></td><td></td></tr><tr><td>Accessories</td><td>1</td><td></td></tr><tr><td>Art</td><td>1</td><td></td></tr><tr><td>Counter Stools</td><td>2</td><td></td></tr><tr><td></td><td></td><td><strong>$500</strong></td></tr><tr style=\"background-color:#EEE\"><td><strong>Living Room</strong></td><td></td><td></td></tr><tr><td>Accent Chair</td><td>1</td><td></td></tr><tr><td>Accessories</td><td>1</td><td></td></tr><tr><td>Area Rug</td><td>1</td><td></td></tr><tr><td>Art</td><td>1</td><td></td></tr><tr><td>Coffee Table</td><td>1</td><td></td></tr><tr><td>Floor Lamp</td><td>1</td><td></td></tr><tr><td>Side Table</td><td>1</td><td></td></tr><tr><td>Sofa</td><td>1</td><td></td></tr><tr><td></td><td></td><td><strong>$500</strong></td></tr><tr style=\"background-color:#EEE\"><td><strong>Master Bedroom</strong></td><td></td><td></td></tr><tr><td>Accent Chair</td><td>1</td><td></td></tr><tr><td>Accessories</td><td>1</td><td></td></tr><tr><td>Area Rug</td><td>1</td><td></td></tr><tr><td>Art</td><td>1</td><td></td></tr><tr><td>Bed Frame</td><td>1</td><td></td></tr><tr><td>Box Spring</td><td>1</td><td></td></tr><tr><td>Lamp</td><td>1</td><td></td></tr><tr><td>Night Table</td><td>1</td><td></td></tr><tr><td>Queen Bed</td><td>1</td><td></td></tr><tr><td></td><td></td><td><strong>$500</strong></td></tr><tr style=\"background-color:#555\"><td style=\"color:#FFF;\"><strong>Total</strong></td><td style=\"color:#FFF;\"></td><td style=\"color:#FFF;\"><strong>$2500</strong></td></tr></table>"
 	
-	var pageHeader = "<!DOCTYPE html><html><body style=\"background-color: #EEE; padding:2em; font-size:.4em;\"><div style=\"background-color: #FFF; padding:2em;\"><div style=\"text-align:center\"><img style=\"max-width:100%\" src=\"https://firebasestorage.googleapis.com/v0/b/voila-eda7d.appspot.com/o/logo.png?alt=media&token=9e4d2823-9d2e-4fd7-8240-d2f5c4ebb98d\"></div><div style=\"text-align:center\"><p style=\"color:#888;font-size: 1.3em;\">" +
+	var pageHeader = "<!DOCTYPE html><html><body style=\"background-color: #EEE; padding:2em; font-size:.4em;\"><div style=\"background-color: #FFF; padding:2em;\"><div id=\"custom-note-section\" style=\"text-align:left\">&nbsp;</div><div style=\"text-align:center\"><img style=\"max-width:100%\" src=\"https://firebasestorage.googleapis.com/v0/b/voila-eda7d.appspot.com/o/logo.png?alt=media&token=9e4d2823-9d2e-4fd7-8240-d2f5c4ebb98d\"></div><div style=\"text-align:center\"><p style=\"color:#888;font-size: 1.3em;\">" +
 		"Home Staging • Re-Styling • Interior Design • Developer Services • Painting" +
 		"</p></div><p style=\"color:#888;font-style: italic;\">" +
 		"Voila Design is Philadelphia’s award winning Home Staging and Interior Design firm. Awarded the \"Best of Philly\" accolade for Home Staging as well as a 26 episode Interior Design agreement with HGTV, the Voila Design team has proven themselves to be an industry leader in the Tri- State Area and beyond. The Voila Design team specializes in preparing properties to sell for the highest market value and in the shortest amount of time. Unlike the competition, Voila Design owns top of the line furnishings, accessories and artwork which allows every Home Staging project to be customized to suit each and every space. The award winning Voila Design team has the unique ability to turn a space from bland to grand in 24 hours or less!" +

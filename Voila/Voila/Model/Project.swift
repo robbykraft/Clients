@@ -96,6 +96,17 @@ class Project{
 					}
 				}
 			}
+			roomArray.sort(by: { (a, b) -> Bool in
+				var aRank:Int = 0
+				var bRank:Int = 0
+				if let aR = Voila.shared.roomSort[a.name]{
+					aRank = aR
+				}
+				if let bR = Voila.shared.roomSort[b.name]{
+					bRank = bR
+				}
+				return aRank < bRank
+			})
 			self.rooms = roomArray
 		}
 	}
@@ -162,16 +173,9 @@ class Project{
 	
 	func setFromSmallTemplate(completionHandler:(() -> ())?){
 		
-		let bathroom = Room(name: "Bathroom", key: nil)
-		bathroom.furniture = [
-			Furniture(name: "Accessories", price: Voila.shared.priceForFurniture(name: "Accessories"), room: bathroom),
-			Furniture(name: "Art", price: Voila.shared.priceForFurniture(name: "Art"), room: bathroom),
-			Furniture(name: "Bench", price: Voila.shared.priceForFurniture(name: "Bench"), room: bathroom),
-			Furniture(name: "Console", price: Voila.shared.priceForFurniture(name: "Console"), room: bathroom),
-			Furniture(name: "Laundry Basket", price: Voila.shared.priceForFurniture(name: "Laundry Basket"), room: bathroom),
-			Furniture(name: "Poof", price: Voila.shared.priceForFurniture(name: "Poof"), room: bathroom),
-			Furniture(name: "Rug", price: Voila.shared.priceForFurniture(name: "Rug"), room: bathroom),
-			Furniture(name: "Towels", price: Voila.shared.priceForFurniture(name: "Towels"), room: bathroom)
+		let bathrooms = Room(name: "Bathrooms", key: nil)
+		bathrooms.furniture = [
+			Furniture(name: "Art & Accessories", price: Voila.shared.priceForFurniture(name: "Art & Accessories"), room: bathrooms),
 		]
 		let diningRoom = Room(name: "Dining Room", key: nil)
 		let chairs = Furniture(name: "Dining Chairs", price: Voila.shared.priceForFurniture(name: "Dining Chairs"), room: diningRoom)
@@ -213,7 +217,7 @@ class Project{
 			Furniture(name: "Night Table", price: Voila.shared.priceForFurniture(name: "Night Table"), room: bedroom),
 			Furniture(name: "Queen Bed", price: Voila.shared.priceForFurniture(name: "Queen Bed"), room: bedroom),
 		]
-		self.rooms = [bathroom, diningRoom, kitchen, livingRoom, bedroom];
+		self.rooms = [bathrooms, diningRoom, kitchen, livingRoom, bedroom];
 		
 		self.synchronize(completionHandler: {
 			if let completion = completionHandler{
@@ -237,16 +241,9 @@ class Project{
 			Furniture(name: "Rug", price: Voila.shared.priceForFurniture(name: "Rug"), room: masterBathroom),
 			Furniture(name: "Towels", price: Voila.shared.priceForFurniture(name: "Towels"), room: masterBathroom)
 		]
-		let bathroom = Room(name: "Bathroom", key: nil)
-		bathroom.furniture = [
-			Furniture(name: "Accessories", price: Voila.shared.priceForFurniture(name: "Accessories"), room: bathroom),
-			Furniture(name: "Art", price: Voila.shared.priceForFurniture(name: "Art"), room: bathroom),
-			Furniture(name: "Bench", price: Voila.shared.priceForFurniture(name: "Bench"), room: bathroom),
-			Furniture(name: "Console", price: Voila.shared.priceForFurniture(name: "Console"), room: bathroom),
-			Furniture(name: "Laundry Basket", price: Voila.shared.priceForFurniture(name: "Laundry Basket"), room: bathroom),
-			Furniture(name: "Poof", price: Voila.shared.priceForFurniture(name: "Poof"), room: bathroom),
-			Furniture(name: "Rug", price: Voila.shared.priceForFurniture(name: "Rug"), room: bathroom),
-			Furniture(name: "Towels", price: Voila.shared.priceForFurniture(name: "Towels"), room: bathroom)
+		let bathrooms = Room(name: "Bathrooms", key: nil)
+		bathrooms.furniture = [
+			Furniture(name: "Art & Accessories", price: Voila.shared.priceForFurniture(name: "Art & Accessories"), room: bathrooms),
 		]
 		let diningRoom = Room(name: "Dining Room", key: nil)
 		let chairs = Furniture(name: "Dining Chairs", price: Voila.shared.priceForFurniture(name: "Dining Chairs"), room: diningRoom)
@@ -330,7 +327,7 @@ class Project{
 			Furniture(name: "Night Table", price: Voila.shared.priceForFurniture(name: "Night Table"), room: bedroom),
 			Furniture(name: "Queen Bed", price: Voila.shared.priceForFurniture(name: "Queen Bed"), room: bedroom),
 		]
-		self.rooms = [masterBathroom, bathroom, diningRoom, kitchen, livingRoom, familyRoom, masterBedroom, bedroom];
+		self.rooms = [bathrooms, diningRoom, kitchen, livingRoom, familyRoom, masterBedroom, bedroom];
 		
 		self.synchronize(completionHandler: {
 			if let completion = completionHandler{

@@ -192,8 +192,8 @@
 		D511F0671F0D574C005AB196 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				D511F06D1F0D5870005AB196 /* MasterNavigationController.swift */,
 				D5DE2D271F1529920071955D /* Auth */,
+				D511F06D1F0D5870005AB196 /* MasterNavigationController.swift */,
 				D511F06F1F0D5893005AB196 /* ProjectsViewController.swift */,
 				D5836C241F193A61006064E7 /* EditProjectViewController.swift */,
 				D5DE2D251F1528650071955D /* ProjectTableViewController.swift */,
