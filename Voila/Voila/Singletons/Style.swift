@@ -97,10 +97,18 @@ class Style {
 	
 	func dayStringForDate(_ date:Date) -> String{
 		if(NSCalendar.current.isDateInToday(date)){
-			return "today"
+			let calendar = Calendar.current
+			let hour = calendar.component(.hour, from: date)
+			let minutes = calendar.component(.minute, from: date)
+			return "Today \(hour):\(minutes)"
+//			return "Today"
 		}
 		if(NSCalendar.current.isDateInYesterday(date)){
-			return "yesterday"
+			let calendar = Calendar.current
+			let hour = calendar.component(.hour, from: date)
+			let minutes = calendar.component(.minute, from: date)
+			return "Yesterday \(hour):\(minutes)"
+//			return "Yesterday"
 		}
 		if(abs(date.timeIntervalSinceNow) < 432000){
 			let dateFormatter = DateFormatter()

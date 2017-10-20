@@ -58,6 +58,8 @@ class ProposalsTableViewController: UITableViewController {
 //        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
 		let cell = UITableViewCell(style: .value1, reuseIdentifier: "sent-proposal-cell")
 		
+		cell.isUserInteractionEnabled = false
+		
 		let project = self.data[indexPath.row]
 		cell.textLabel?.text = project.name
 		if let sentDate = project.proposalSent{
