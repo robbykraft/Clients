@@ -72,7 +72,14 @@ class Project{
 		if let lockbox = data["lockbox"] as? String { self.lockbox = lockbox }
 		if let clientName = data["clientName"] as? String { self.clientName = clientName }
 		if let realtorName = data["realtorName"] as? String { self.realtorName = realtorName }
-		if let proposalSent = data["proposalSent"] as? Int { self.proposalSent = proposalSent }
+		if let proposalSent = data["date"] as? Int { self.proposalSent = proposalSent }
+		// proposal
+		if let discountTotal = data["discountTotal"] as? Int? { self.discountTotal = discountTotal }
+		if let discountPct = data["discountPct"] as? Int? { self.discountPct = discountPct }
+		if let discountText = data["discountText"] as? String? { self.discountText = discountText }
+		if let taxPct = data["taxPct"] as? Float? { self.taxPct = taxPct }
+		if let taxTotal = data["taxTotal"] as? Int? { self.taxTotal = taxTotal }
+		if let renewalsTotal = data["renewalsTotal"] as? Int? { self.renewalsTotal = renewalsTotal }
 		// room data
 		if let rooms = data["rooms"] as? [String:Any] {
 			var roomArray:[Room] = []
@@ -121,7 +128,15 @@ class Project{
 		if let lockbox = self.lockbox{ dictionary["lockbox"] = lockbox }
 		if let clientName = self.clientName{ dictionary["clientName"] = clientName }
 		if let realtorName = self.realtorName{ dictionary["realtorName"] = realtorName }
-		if let proposalSent = self.proposalSent{ dictionary["proposalSent"] = proposalSent }
+		if let proposalSent = self.proposalSent{ dictionary["date"] = proposalSent }
+		// proposal
+		if let discountTotal = self.discountTotal{ dictionary["discountTotal"] = discountTotal}
+		if let discountPct = self.discountPct{ dictionary["discountPct"] = discountPct}
+		if let discountText = self.discountText{ dictionary["discountText"] = discountText}
+		if let taxPct = self.taxPct{ dictionary["taxPct"] = taxPct}
+		if let taxTotal = self.taxTotal{ dictionary["taxTotal"] = taxTotal}
+		if let renewalsTotal = self.renewalsTotal{ dictionary["renewalsTotal"] = renewalsTotal}
+
 		// rooms
 		var roomDictionary:[String:Any] = [:]
 		for room in self.rooms{

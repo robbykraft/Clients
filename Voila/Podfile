@@ -6,4 +6,5 @@ target 'Voila' do
 	pod 'FirebaseDatabase', '~> 4.0'
 	pod 'FirebaseAuth', '~> 4.0'
 	pod 'FirebaseStorage', '~> 2.0'
+	pod 'SwipeCellKit'
 end

@@ -31,9 +31,10 @@ class ProjectsViewController: UITableViewController {
 		
 		navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
 
-//		let settingsButton = UIBarButtonItem.init(title: "Settings", style: .done, target: self, action: #selector(settingsHandler))
-//		self.navigationItem.leftBarButtonItem = settingsButton
-//		self.navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)!, NSForegroundColorAttributeName: Style.shared.blue], for:.normal)
+		
+		let proposalsButton = UIBarButtonItem.init(title: "Proposals", style: .done, target: self, action: #selector(allProposalsHandler))
+		self.navigationItem.leftBarButtonItem = proposalsButton
+		self.navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)!, NSForegroundColorAttributeName: Style.shared.blue], for:.normal)
 		
 		let addButton = UIBarButtonItem.init(title: "+", style: .done, target: self, action: #selector(self.newProjectHandler))
 		self.navigationItem.rightBarButtonItem = addButton
@@ -155,9 +156,10 @@ class ProjectsViewController: UITableViewController {
 		}
 	}
 	
+	
 
-	func settingsHandler(){
-		
+	func allProposalsHandler(){
+		self.navigationController?.pushViewController(ProposalsTableViewController(), animated: true)
 	}
 	
 	func doneButtonPressed(){

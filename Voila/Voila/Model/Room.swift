@@ -34,8 +34,7 @@ class Room{
 			let thisCost = Voila.shared.priceForFurniture(name: item.name)
 			let copies = item.copies
 			total += thisCost * Float(copies)
-		}
-		
+		}		
 		return Int(round(total/100)*100)
 	}
 	
