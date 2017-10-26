@@ -37,14 +37,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		_ = Voila.shared
 		_ = Style.shared
 		
-		Voila.shared.boot {
-			if (Auth.auth().currentUser) != nil {
-				// User is signed in.
+		if (Auth.auth().currentUser) == nil{
+			self.launchApp(true)
+		}
+		else{
+			// User is signed in.
+			Voila.shared.boot {
 				self.launchApp(false)
-			} else {
-				// No user is signed in.
-				self.launchApp(true)
-			}			
+			}
 		}
 		return true
 	}

@@ -42,7 +42,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 		self.view.addSubview(emailField)
 		self.view.addSubview(passwordField)
 		
-		loginButton.setTitle("Login / Create Account", for: UIControlState())
+		loginButton.setTitle("Login", for: UIControlState())
 		loginButton.addTarget(self, action: #selector(buttonHandler), for: UIControlEvents.touchUpInside)
 		loginButton.backgroundColor = lightBlue
 		
@@ -70,14 +70,25 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 		Auth.auth().signIn(withEmail: username, password: pass, completion: { (user, error) in
 			if(error == nil){
 				// Success, logging in with email
-				self.present(MasterNavigationController(), animated: true, completion: nil);
+				Voila.shared.boot(completionHandler: {
+					self.present(MasterNavigationController(), animated: true, completion: nil);
+				})
 			} else{
+				// no ability to create account, just show them an error
+				let alert = UIAlertController(title: "Account doesn't exist", message: "email or password are incorrect", preferredStyle: .alert)
+				let action1 = UIAlertAction.init(title: "Okay", style: .default, handler: nil)
+				alert.addAction(action1)
+				self.present(alert, animated: true, completion: nil)
+
+				/*
 				// 2 POSSIBILITIES: (1) Account doesn't exist  (2) Account exists, password was incorrect
 				Auth.auth().createUser(withEmail: username, password: pass, completion: { (user, error) in
 					if(error == nil){
 						// Success, created account, logging in now
 						Fire.shared.newUser(user!, completionHandler: { (success) in
-							self.present(MasterNavigationController(), animated: true, completion: nil)
+							Voila.shared.boot(completionHandler: {
+								self.present(MasterNavigationController(), animated: true, completion: nil)
+							})
 						})
 					} else{
 						let errorMessage = "Account exists but password is incorrect"
@@ -104,6 +115,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 						self.present(alert, animated: true, completion: nil)
 					}
 				})
+				*/
 			}
 		})
 	}
