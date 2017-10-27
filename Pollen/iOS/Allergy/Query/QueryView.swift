@@ -15,6 +15,8 @@ class QueryView: UIView {
 	
 	let dateLabel = UILabel()
 	
+	let topQuestionLabel = UILabel()
+	
 
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -29,10 +31,15 @@ class QueryView: UIView {
 	}
 	
 	func initUI(){
-
+		
 		dateLabel.textColor = Style.shared.blue
-		dateLabel.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P30)
+		dateLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P30)
 		self.addSubview(dateLabel)
+		
+		topQuestionLabel.textColor = Style.shared.blue
+		topQuestionLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P24)
+		topQuestionLabel.text = "What is bothering you today?"
+		self.addSubview(topQuestionLabel)
 
 		let sevenDwarfs = ["Congestion", "Runny", "Itchy", "Sneezy", "Sleepy"]
 		for i in 0..<5{
@@ -62,11 +69,17 @@ class QueryView: UIView {
 		dateLabel.sizeToFit()
 		dateLabel.center = CGPoint(x: self.bounds.size.width*0.5, y: dateLabel.frame.size.height*0.5)
 
+		topQuestionLabel.sizeToFit()
+		topQuestionLabel.center = CGPoint(x: self.bounds.size.width*0.5, y: dateLabel.frame.origin.y + dateLabel.frame.size.height + topQuestionLabel.frame.size.height*0.5 + 10)
+		
+		let yTop:CGFloat = topQuestionLabel.frame.origin.y + topQuestionLabel.frame.size.height
+		let questionFrame = CGRect(x: 0, y: yTop + 15, width: self.bounds.size.width, height: self.bounds.size.height - yTop - queryDoneButton.frame.size.height - 15 - 20 - 10)
+		
 		for i in 0..<slides.count{
 			let pad:CGFloat = 5.0
-			let h:CGFloat = self.bounds.size.height/7
+			let h:CGFloat = (questionFrame.size.height-pad*5)/5
 			slides[i].frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: h)
-			slides[i].center = CGPoint(x: self.center.x, y: dateLabel.frame.size.height + 15 + h*0.5 + (h+pad)*CGFloat(i))
+			slides[i].center = CGPoint(x: self.center.x, y: questionFrame.origin.y + h*0.5 + (h+pad)*CGFloat(i))
 		}
 		queryDoneButton.center = CGPoint(x: self.bounds.size.width*0.5, y: self.bounds.size.height - queryDoneButton.frame.size.height*0.5 - 20)
 	}

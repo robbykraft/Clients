@@ -64,11 +64,12 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 //		layer.strokeColor = Style.shared.blue.cgColor
 		self.scrollView.layer.addSublayer(layer)
 		
-		let image = self.makeCurvedAttributionText(size: CGSize.init(width: radius*2, height: radius*2), textRadius: radius-Style.shared.P18)
-		let radialLabelImageView:UIImageView = UIImageView(image: image)
-		radialLabelImageView.frame = CGRect(x: 0, y: 0, width: radius*2, height: radius*2)
-		self.scrollView.addSubview(radialLabelImageView)
-		radialLabelImageView.center = circleCenter
+		// attribution text
+//		let image = self.makeCurvedAttributionText(size: CGSize.init(width: radius*2, height: radius*2), textRadius: radius-Style.shared.P18)
+//		let radialLabelImageView:UIImageView = UIImageView(image: image)
+//		radialLabelImageView.frame = CGRect(x: 0, y: 0, width: radius*2, height: radius*2)
+//		self.scrollView.addSubview(radialLabelImageView)
+//		radialLabelImageView.center = circleCenter
 		
 		if(IS_IPAD){
 			radialChart = UIRadialChart.init(frame:
@@ -185,24 +186,24 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 		}
 	}
 	
-	func makeCurvedAttributionText(size:CGSize, textRadius:CGFloat) -> UIImage{
-		UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
-//		UIGraphicsBeginImageContextWithOptions(size, true, 0.0)
-		let context = UIGraphicsGetCurrentContext()!
-		// *******************************************************************
-		// Scale & translate the context to have 0,0
-		// at the centre of the screen maths convention
-		// Obviously change your origin to suit...
-		// *******************************************************************
-		context.translateBy (x: size.width / 2, y: size.height / 2 )
-		context.scaleBy (x: 1, y: -1)
-
-		Style.shared.centreArcPerpendicular(text: "provided by Allergy Free Austin", context: context, radius: textRadius, angle: -CGFloat.pi*0.5, colour: UIColor.white, font: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P12)!, clockwise: false)
-//		Style.shared.centreArcPerpendicular(text: name, context: context, radius: textRadius, angle: -textAngle, colour: UIColor.white, font: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P12)!, clockwise: true)
-		let image = UIGraphicsGetImageFromCurrentImageContext()
-		UIGraphicsEndImageContext()
-		return image!
-	}
+//	func makeCurvedAttributionText(size:CGSize, textRadius:CGFloat) -> UIImage{
+//		UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
+////		UIGraphicsBeginImageContextWithOptions(size, true, 0.0)
+//		let context = UIGraphicsGetCurrentContext()!
+//		// *******************************************************************
+//		// Scale & translate the context to have 0,0
+//		// at the centre of the screen maths convention
+//		// Obviously change your origin to suit...
+//		// *******************************************************************
+//		context.translateBy (x: size.width / 2, y: size.height / 2 )
+//		context.scaleBy (x: 1, y: -1)
+//
+//		Style.shared.centreArcPerpendicular(text: "provided by Allergy Free Austin", context: context, radius: textRadius, angle: -CGFloat.pi*0.5, colour: UIColor.white, font: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P12)!, clockwise: false)
+////		Style.shared.centreArcPerpendicular(text: name, context: context, radius: textRadius, angle: -textAngle, colour: UIColor.white, font: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P12)!, clockwise: true)
+//		let image = UIGraphicsGetImageFromCurrentImageContext()
+//		UIGraphicsEndImageContext()
+//		return image!
+//	}
 	
 	/////////////// SCROLL VIEW ///////////////////
 	
@@ -212,7 +213,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 		if pct < 0.0 { pct = 0.0}
 		if pct > 1.0 { pct = 1.0}
 		let alpha = 1.0 - sqrt(pct)
-		self.radialChart.alpha = alpha
+//		self.radialChart.alpha = alpha
 		self.radialChart.center = CGPoint(x: radialChartOrigin.x, y: radialChartOrigin.y - pct * 100)
 		self.barChart.alpha = alpha
 		self.barChart.center = CGPoint(x:self.barChartCenter.x, y:self.barChartCenter.y + pct*self.view.frame.size.height)

@@ -38,6 +38,16 @@ class QuerySlide: UIView {
 
 		
 		coverButton.addTarget(self, action: #selector(coverButtonHandler), for: .touchUpInside)
+		coverButton.addTarget(self, action: #selector(coverButtonSetSelected), for: .touchDown)
+		coverButton.addTarget(self, action: #selector(coverButtonSetSelected), for: .touchDragEnter)
+
+		coverButton.addTarget(self, action: #selector(coverButtonSetUnselected), for: .touchDragOutside)
+		coverButton.addTarget(self, action: #selector(coverButtonSetUnselected), for: .touchCancel)
+		coverButton.addTarget(self, action: #selector(coverButtonSetUnselected), for: .touchDragExit)
+		coverButton.addTarget(self, action: #selector(coverButtonSetUnselected), for: .touchUpInside)
+
+//		coverButton.setBackgroundImage(UIImage(named:"white")?.imageWithTint(Style.shared.blue), for: .selected)
+//		coverButton.setBackgroundImage(UIImage(named:"white")?.imageWithTint(Style.shared.blue), for: .highlighted)
 
 		scrollView.showsHorizontalScrollIndicator = false
 		scrollView.isScrollEnabled = false
@@ -61,7 +71,7 @@ class QuerySlide: UIView {
 		coverButton.layer.borderColor = Style.shared.blue.cgColor
 		coverButton.layer.borderWidth = 4
 		coverButton.center = CGPoint(x:self.bounds.size.width*0.25, y:self.bounds.size.height*0.5)
-
+		
 		coverText.center = CGPoint(x: coverButton.center.x +
 		                              coverButton.frame.size.width*0.5 +
 		                              10 + 
@@ -92,5 +102,12 @@ class QuerySlide: UIView {
 	
 	@objc func coverButtonHandler(){
 		self.scrollView.scrollRectToVisible(CGRect(x: self.bounds.width, y: 0, width: self.bounds.width, height: self.bounds.height), animated: true)
+	}
+	
+	@objc func coverButtonSetSelected(){
+		coverButton.layer.backgroundColor = Style.shared.blue.cgColor
+	}
+	@objc func coverButtonSetUnselected(){
+		coverButton.layer.backgroundColor = UIColor.white.cgColor
 	}
 }

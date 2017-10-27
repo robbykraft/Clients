@@ -17,10 +17,12 @@ import UIKit
 //let SYSTEM_FONT:String = "ArialRoundedMTBold"
 //let SYSTEM_FONT:String = "BanglaSangamMN"
 //let SYSTEM_FONT_B:String = "BanglaSangamMN-Bold"
-let SYSTEM_FONT:String = "AppleSDGothicNeo-UltraLight"
-let SYSTEM_FONT_B:String = "AppleSDGothicNeo-Bold"
+//let SYSTEM_FONT:String = "AppleSDGothicNeo-UltraLight"
+//let SYSTEM_FONT_B:String = "AppleSDGothicNeo-Bold"
 //let SYSTEM_FONT:String = "Thonburi-Light"
 //let SYSTEM_FONT_B:String = "Thonburi-Bold"
+let SYSTEM_FONT = "AvenirNext-Medium"
+let SYSTEM_FONT_B = "AvenirNext-Bold"
 
 
 let IS_IPAD:Bool = UIDevice.current.userInterfaceIdiom == UIUserInterfaceIdiom.pad
@@ -108,8 +110,8 @@ class Style {
 		navigationBarAppearace.titleTextAttributes = [NSFontAttributeName : UIFont(name: SYSTEM_FONT_B, size: self.P24)!,
 		                                              NSForegroundColorAttributeName : UIColor.black]
 //		NSKernAttributeName : CGFloat(-4.0)]
-		
 	}
+	
 	
 	func dayStringForDate(_ date:Date) -> String{
 		if(NSCalendar.current.isDateInToday(date)){
@@ -208,6 +210,44 @@ class Style {
 		context.restoreGState()
 	}
 
+}
+
+extension UIImageView {
+	func tint(color:UIColor){
+		if let image = self.image{
+			let newImage = image.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+			self.image = newImage
+		}
+		self.tintColor = color
+	}
+}
+
+
+extension UIImage {
+	
+	func maskWithColor(color: UIColor) -> UIImage? {
+		let maskImage = cgImage!
+		
+		let width = size.width
+		let height = size.height
+		let bounds = CGRect(x: 0, y: 0, width: width, height: height)
+		
+		let colorSpace = CGColorSpaceCreateDeviceRGB()
+		let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue)
+		let context = CGContext(data: nil, width: Int(width), height: Int(height), bitsPerComponent: 8, bytesPerRow: 0, space: colorSpace, bitmapInfo: bitmapInfo.rawValue)!
+		
+		context.clip(to: bounds, mask: maskImage)
+		context.setFillColor(color.cgColor)
+		context.fill(bounds)
+		
+		if let cgImage = context.makeImage() {
+			let coloredImage = UIImage(cgImage: cgImage)
+			return coloredImage
+		} else {
+			return nil
+		}
+	}
+	
 }
 
 func statusBarHeight() -> CGFloat {

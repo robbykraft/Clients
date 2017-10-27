@@ -52,6 +52,8 @@ class UIRadialChart: UIView {
 	
 	let dayLabel = UILabel()
 	
+	let attributionText = UIImageView()
+	
 	func refreshViewData() {
 		if let d = data{
 			let summary = d.generateSummary()
@@ -107,6 +109,9 @@ class UIRadialChart: UIView {
 		dayLabel.textColor = self.dayLabelGray
 		self.addSubview(dayLabel)
 		
+		attributionText.frame = CGRect(x: 0, y: 0, width: radius*2, height: radius*2)
+		self.addSubview(attributionText)
+		
 		self.addSubview(radialLabelImageView)
 	}
 	
@@ -118,6 +123,7 @@ class UIRadialChart: UIView {
 		dayLabel.sizeToFit()
 //		dayLabel.center = CGPoint.init(x: self.frame.size.width*0.5, y: self.frame.size.height*0.5 - self.frame.width*0.33 + 50)
 		dayLabel.center = CGPoint.init(x: self.frame.size.width*0.5, y: self.frame.size.height*0.5 - self.frame.width*0.25 + 50)
+		attributionText.center = CGPoint.init(x: self.frame.size.width*0.5, y: self.frame.size.height*0.5)
 	}
 	
 	func redrawGraph(){
@@ -207,8 +213,33 @@ class UIRadialChart: UIView {
 		self.layer.insertSublayer(circleLayer, below: label.layer)
 		self.bringSubview(toFront: radialLabelImageView)
 		self.radialLabelImageView.center = CGPoint(x: self.frame.size.width*0.5, y: self.frame.size.height*0.5)
+		
+		attributionText.image = self.makeCurvedAttributionText(size: CGSize.init(width: radius*2, height: radius*2), textRadius: radius-Style.shared.P18)
+//		attributionText.backgroundColor = .purple
+		self.bringSubview(toFront: attributionText)
 	}
 
+	
+	
+	
+	func makeCurvedAttributionText(size:CGSize, textRadius:CGFloat) -> UIImage{
+		UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
+		//		UIGraphicsBeginImageContextWithOptions(size, true, 0.0)
+		let context = UIGraphicsGetCurrentContext()!
+		// *******************************************************************
+		// Scale & translate the context to have 0,0
+		// at the centre of the screen maths convention
+		// Obviously change your origin to suit...
+		// *******************************************************************
+		context.translateBy (x: size.width / 2, y: size.height / 2 )
+		context.scaleBy (x: 1, y: -1)
+		
+		Style.shared.centreArcPerpendicular(text: "provided by Allergy Free Austin", context: context, radius: textRadius, angle: -CGFloat.pi*0.5, colour: UIColor.gray, font: UIFont(name: SYSTEM_FONT, size: Style.shared.P12)!, clockwise: false)
+		//		Style.shared.centreArcPerpendicular(text: name, context: context, radius: textRadius, angle: -textAngle, colour: UIColor.white, font: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P12)!, clockwise: true)
+		let image = UIGraphicsGetImageFromCurrentImageContext()
+		UIGraphicsEndImageContext()
+		return image!
+	}
 	
 		
 }
