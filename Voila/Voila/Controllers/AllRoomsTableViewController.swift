@@ -17,6 +17,8 @@ class AllRoomsTableViewController: UITableViewController {
 		
 		self.title = "Add/Remove Rooms"
 		
+		self.tableView.backgroundColor = Style.shared.ecruWhite
+
 		if let project = Voila.shared.project{
 			self.roomTypesAndCounts = project.roomTypesAndCounts()
 			self.tableView.reloadData()
@@ -27,7 +29,7 @@ class AllRoomsTableViewController: UITableViewController {
 		
 		let newBackButton = UIBarButtonItem.init(title: "Done", style: .done, target: self, action: #selector(doneHandler))
 		self.navigationItem.rightBarButtonItem = newBackButton
-		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)!, NSForegroundColorAttributeName: Style.shared.blue], for:.normal)
+		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)!, NSForegroundColorAttributeName: Style.shared.highlight], for:.normal)
 		
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -49,6 +51,10 @@ class AllRoomsTableViewController: UITableViewController {
 
     // MARK: - Table view data source
 
+	override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+		return Style.shared.P48
+	}
+
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -60,23 +66,16 @@ class AllRoomsTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 //        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-		let cell = UITableViewCell.init(style: .value1, reuseIdentifier: "RoomCell")
-		cell.textLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
-		cell.detailTextLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
-
-		// selection color
-		let bgColorView = UIView()
-		bgColorView.backgroundColor = Style.shared.cellSelectionColor
-		cell.selectedBackgroundView = bgColorView
+		let cell = TableViewCell.init(style: .value1, reuseIdentifier: "RoomCell")
 
 		let roomNameString = Voila.shared.roomNames[indexPath.row]
 		cell.textLabel?.text = roomNameString
 		
 		if let types = self.roomTypesAndCounts{
 			if let count = types[roomNameString]{
-				cell.textLabel?.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)
-				cell.textLabel?.textColor = Style.shared.blue
-				cell.detailTextLabel?.textColor = Style.shared.blue
+				cell.textLabel?.font = UIFont(name: SYSTEM_FONT_B, size: (cell.textLabel?.font.pointSize)!)
+				cell.textLabel?.textColor = Style.shared.highlight
+				cell.detailTextLabel?.textColor = Style.shared.highlight
 				cell.detailTextLabel?.text = "\(count)"
 			}
 		}

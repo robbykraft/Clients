@@ -69,12 +69,13 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 		
 		let sendButton = UIBarButtonItem.init(title: "Email", style: .done, target: self, action: #selector(sendProposal))
 		self.navigationItem.rightBarButtonItem = sendButton
-		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)!, NSForegroundColorAttributeName: Style.shared.blue], for:.normal)
+		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)!, NSForegroundColorAttributeName: Style.shared.highlight], for:.normal)
 
         // Do any additional setup after loading the view.
 		self.scrollView.frame = self.view.bounds
 		self.view.addSubview(self.scrollView)
-		self.scrollView.backgroundColor = Style.shared.athensGray
+		self.view.backgroundColor = Style.shared.ecruWhite
+		self.scrollView.backgroundColor = Style.shared.ecruWhite
 		buildPage()
 		self.registerForKeyboardNotifications()
     }
@@ -102,7 +103,7 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 			self._4totalBeforeLabel.text = "Total Before Tax"
 			self._5salesTaxLabel.text = "Sales Tax"
 			self._7grandTotalLabel.text = "Grand Total"
-			self._8renewalLabel.text = "Monthly Renewals %"
+			self._8renewalLabel.text = "Monthly Renewal %"
 
 			for field in [self._0totalBeforeField, self._1discountTextField, self._2discountField, self._3discountSummaryField, self._4totalBeforeField, self._5salesTaxField, self._6salesTaxSummaryField, self._7grandTotalField, self._8renewalField, self._9renewalSummaryField]{
 				field.backgroundColor = .clear
@@ -118,10 +119,11 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 			self._5salesTaxField.text = taxItems.first
 //			self._8renewalField.text = String(describing:renewalItems.first!)
 			self._8renewalField.text = "33"
-			self._1discountTextField.backgroundColor = .white
-			self._2discountField.backgroundColor = .white
-			self._5salesTaxField.backgroundColor = .white
-			self._8renewalField.backgroundColor = .white
+			self._1discountTextField.backgroundColor = Style.shared.ecruLight
+			self._2discountField.backgroundColor = Style.shared.ecruLight
+			self._5salesTaxField.backgroundColor = Style.shared.ecruLight
+			self._8renewalField.backgroundColor = Style.shared.ecruLight
+			
 			
 			self._0totalBeforeField.isEnabled = false
 			self._3discountSummaryField.isEnabled = false
@@ -151,7 +153,7 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 				if let name = room.customName{ roomLabel.text = name }
 				roomField.text = String(describing:room.getCost())
 				roomField.tag = i
-				roomField.backgroundColor = .white
+				roomField.backgroundColor = Style.shared.ecruLight
 				roomField.textAlignment = .right
 				roomField.keyboardType = .numberPad
 				roomField.inputAccessoryView = numberToolbar
@@ -189,15 +191,15 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 		
 		pickerToolbar.barStyle = .default
 //		pickerToolbar.isTranslucent = true
-		pickerToolbar.tintColor = Style.shared.blue
+		pickerToolbar.tintColor = Style.shared.highlight
 		pickerToolbar.sizeToFit()
 		let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(pickerDone))
 		pickerToolbar.items = [doneButton]
 		pickerToolbar.isUserInteractionEnabled = true
 
 		numberToolbar.barStyle = .default
-		//		numberToolbar = true
-		numberToolbar.tintColor = Style.shared.blue
+//		numberToolbar = true
+		numberToolbar.tintColor = Style.shared.highlight
 		numberToolbar.sizeToFit()
 		let doneButton2 = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(numberDone))
 		numberToolbar.items = [doneButton2]
@@ -265,7 +267,7 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 		self._7grandTotalLabel.frame = CGRect.init(x: 5, y: startY + 5 + (32+yPad) * 7,
 		                                           width: self.view.bounds.size.width * 0.5 - 5, height:self._7grandTotalLabel.bounds.size.height)
 		self._8renewalLabel.frame = CGRect.init(x: 5, y: startY + 5 + (32+yPad) * 8,
-		                                        width: self.view.bounds.size.width * 0.5 - 5, height:self._8renewalLabel.bounds.size.height)
+		                                        width: self.view.bounds.size.width * 0.5, height:self._8renewalLabel.bounds.size.height)
 		
 		// fix for iphone 5 size
 //		self._1discountTextField.frame = CGRect.init(x: self.view.bounds.size.width * 0.5 - padding, y: startY + (32+yPad)*1, width: self.view.bounds.size.width * 0.5, height:32)

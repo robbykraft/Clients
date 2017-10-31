@@ -15,6 +15,8 @@ class ProposalsTableViewController: UITableViewController {
 			self.tableView.reloadData()
 		}
 	}
+	
+	var confirmations:[Bool] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,15 +28,31 @@ class ProposalsTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
 		
+		self.tableView.backgroundColor = Style.shared.ecruWhite
+
+		
 		Fire.shared.getData("proposals") { (data) in
-			var proposalArray:[Project] = []
-			if let d = data as? [String:Any]{
-				for (key,value) in d{
-					let project = Project(key: key, data: value as! [String : Any])
-					proposalArray.append(project)
+			Fire.shared.getData("confirmations") { (confirmData) in
+				var confirmArray:[Bool] = []
+				var proposalArray:[Project] = []
+				if let d = data as? [String:Any]{
+					for (key,value) in d{
+						let project = Project(key: key, data: value as! [String : Any])
+						proposalArray.append(project)
+						if let confirmD = confirmData as? [String:Any]{
+							if let didConfirm = confirmD[key]{
+								confirmArray.append(true)
+							} else{
+								confirmArray.append(false)
+							}
+						} else{
+							confirmArray.append(false)
+						}
+					}
 				}
+				self.confirmations = confirmArray
+				self.data = proposalArray
 			}
-			self.data = proposalArray
 		}
     }
 
@@ -52,11 +70,15 @@ class ProposalsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.data.count
     }
+	
+	override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+		return Style.shared.P60
+	}
 
 	
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 //        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-		let cell = UITableViewCell(style: .value1, reuseIdentifier: "sent-proposal-cell")
+		let cell = DetailDetailTableViewCell(style: .value1, reuseIdentifier: "sent-proposal-cell")
 		
 		cell.isUserInteractionEnabled = false
 		
@@ -64,9 +86,20 @@ class ProposalsTableViewController: UITableViewController {
 		cell.textLabel?.text = project.name
 		if let sentDate = project.proposalSent{
 			print(sentDate)
-			cell.detailTextLabel?.text = Style.shared.dayStringForDate(Date(timeIntervalSince1970: TimeInterval(sentDate)))
+//			cell.detailTextLabel?.text = Style.shared.dayStringForDate(Date(timeIntervalSince1970: TimeInterval(sentDate)))
+			cell.detailDetailTextLabel.text = Style.shared.dayStringForDate(Date(timeIntervalSince1970: TimeInterval(sentDate)))
 		}
-        return cell
+		if self.confirmations.count > indexPath.row{
+			switch self.confirmations[indexPath.row]{
+			case true:
+				cell.detailTextLabel?.text = "confirmed"
+				cell.detailTextLabel?.textColor = .black
+			case false:
+				cell.detailTextLabel?.text = "not yet"
+				cell.detailTextLabel?.textColor = Style.shared.highlight
+			}
+		}
+		return cell
     }
 	
 

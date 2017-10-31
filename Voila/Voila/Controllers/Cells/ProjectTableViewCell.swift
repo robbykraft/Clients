@@ -64,6 +64,8 @@ class ProjectTableViewCell: UITableViewCell {
 		self.tasksText.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P12)
 		self.tasksText.numberOfLines = 3
 		self.tasksText.textColor = UIColor.gray
+		
+		self.backgroundColor = Style.shared.ecruLight
 
 		self.separator.backgroundColor = UIColor.lightGray
 		self.addSubview(self.infoText)

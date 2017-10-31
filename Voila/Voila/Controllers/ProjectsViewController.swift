@@ -25,7 +25,7 @@ class ProjectsViewController: UITableViewController {
 		titleImage.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
 		self.navigationItem.titleView = titleImage
 
-		
+		self.view.backgroundColor = Style.shared.ecruWhite
 
 		self.tableView.separatorStyle = .none
 		
@@ -34,11 +34,11 @@ class ProjectsViewController: UITableViewController {
 		
 		let proposalsButton = UIBarButtonItem.init(title: "Proposals", style: .done, target: self, action: #selector(allProposalsHandler))
 		self.navigationItem.leftBarButtonItem = proposalsButton
-		self.navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)!, NSForegroundColorAttributeName: Style.shared.blue], for:.normal)
+		self.navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)!, NSForegroundColorAttributeName: Style.shared.highlight], for:.normal)
 		
 		let addButton = UIBarButtonItem.init(title: "+", style: .done, target: self, action: #selector(self.newProjectHandler))
 		self.navigationItem.rightBarButtonItem = addButton
-		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P24)!, NSForegroundColorAttributeName: Style.shared.blue], for:.normal)
+		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P24)!, NSForegroundColorAttributeName: Style.shared.highlight], for:.normal)
 
         // Do any additional setup after loading the view.
 		self.reloadData(nil)

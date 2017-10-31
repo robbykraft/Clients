@@ -20,12 +20,14 @@ class ProjectTableViewController: UITableViewController, MFMailComposeViewContro
 //		UIBarButtonItem
 
 		self.tableView.separatorStyle = .none
+		
+		self.tableView.backgroundColor = Style.shared.ecruWhite
 
 		navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
 
 		let addButton = UIBarButtonItem.init(title: "Proposal", style: .done, target: self, action: #selector(makeProposalHandler))
 		self.navigationItem.rightBarButtonItem = addButton
-		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)!, NSForegroundColorAttributeName: Style.shared.blue], for:.normal)
+		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)!, NSForegroundColorAttributeName: Style.shared.highlight], for:.normal)
 //		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont.systemFont(ofSize: 25), NSForegroundColorAttributeName: UIColor.black], for:.normal)
 
         // Uncomment the following line to preserve selection between presentations
@@ -75,6 +77,10 @@ class ProjectTableViewController: UITableViewController, MFMailComposeViewContro
 	override func numberOfSections(in tableView: UITableView) -> Int {
 		return 2
 	}
+	
+	override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+		return Style.shared.P48
+	}
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		switch section{
@@ -92,14 +98,7 @@ class ProjectTableViewController: UITableViewController, MFMailComposeViewContro
 	
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 //        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-		let cell = UITableViewCell.init(style: .value1, reuseIdentifier: "ProjectCell")
-		cell.textLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
-		cell.detailTextLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
-		
-		// selection color
-		let bgColorView = UIView()
-		bgColorView.backgroundColor = Style.shared.cellSelectionColor
-		cell.selectedBackgroundView = bgColorView
+		let cell = TableViewCell.init(style: .value1, reuseIdentifier: "ProjectCell")
 
 		switch indexPath.section {
 		case 0:
@@ -120,7 +119,7 @@ class ProjectTableViewController: UITableViewController, MFMailComposeViewContro
 				case project.rooms.count:
 					cell.textLabel?.text = "+/- Add / Remove Rooms"
 					cell.textLabel?.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)
-					cell.textLabel?.textColor = Style.shared.blue
+					cell.textLabel?.textColor = Style.shared.highlight
 				default:
 					let room = project.rooms[indexPath.row]
 					cell.textLabel?.text = room.name
@@ -129,7 +128,7 @@ class ProjectTableViewController: UITableViewController, MFMailComposeViewContro
 					}
 					if room.furniture.count <= 0 {
 						cell.detailTextLabel?.text = "empty"
-						cell.detailTextLabel?.textColor = Style.shared.blue
+						cell.detailTextLabel?.textColor = Style.shared.highlight
 					}
 				}
 			}

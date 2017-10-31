@@ -24,6 +24,9 @@ let IS_IPHONE:Bool = UIDevice.current.userInterfaceIdiom == UIUserInterfaceIdiom
 
 class Style {
 	
+	let highlight = UIColor(red:0.9, green:0.2, blue:0.3, alpha: 1.0)
+	let ecruWhite = UIColor(red:0.97, green:0.96, blue:0.89, alpha:1.00)
+	let ecruLight = UIColor(red:0.985, green:0.98, blue:0.94, alpha:1.00)
 	let gray = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
 	let darkGray = UIColor(red:0.22, green:0.22, blue:0.22, alpha:1.00)
 	let whiteSmoke = UIColor(red:0.96, green:0.96, blue:0.96, alpha:1.00)
@@ -33,17 +36,20 @@ class Style {
 	let orange = UIColor(red: 255/255.0, green: 149/255.0, blue: 0, alpha: 1.0)
 	let blue = UIColor(red: 0, green: 122/255.0, blue: 1.0, alpha: 1.0)
 	let green = UIColor(red:0.00, green:0.65, blue:0.22, alpha:1.00)
-	//	let green = UIColor(red: 76/255.0, green: 217/255.0, blue: 100/255.0, alpha: 1.0)
+//	let green = UIColor(red: 76/255.0, green: 217/255.0, blue: 100/255.0, alpha: 1.0)
 	let alienGreen = UIColor(red:0.30, green:0.85, blue:0.39, alpha:1.00)
 	let softBlue = UIColor(red:0.20, green:0.67, blue:0.86, alpha:1.00)
 	let lightBlue = UIColor(red:0.53, green:0.77, blue:1.00, alpha:1.00)
 	let purple = UIColor(red: 88/255.0, green: 86/255.0, blue: 214/255.0, alpha: 1.0)
 	
-	let cellSelectionColor = UIColor(red: 0, green: 122/255.0, blue: 1.0, alpha: 0.1)
+	let cellSelectionColor = UIColor(red:0.95, green:0.935, blue:0.79, alpha:1.00)
 	
+	var P60:CGFloat = 60
+	var P48:CGFloat = 48
 	var P40:CGFloat = 40
 	var P30:CGFloat = 30
 	var P24:CGFloat = 24
+	var P21:CGFloat = 21
 	var P18:CGFloat = 18
 	var P15:CGFloat = 15
 	var P12:CGFloat = 12
@@ -52,9 +58,12 @@ class Style {
 	
 	fileprivate init() {
 		if(IS_IPAD){
+			P60 = 90
+			P48 = 70
 			P40 = 60
 			P30 = 50
 			P24 = 42
+			P21 = 38
 			P18 = 32
 			P15 = 26
 			P12 = 24
@@ -79,6 +88,12 @@ class Style {
 		let navigationBarAppearace = UINavigationBar.appearance()
 		navigationBarAppearace.titleTextAttributes = [NSFontAttributeName : UIFont(name: SYSTEM_FONT_B, size: self.P18)!,
 		                                              NSForegroundColorAttributeName : UIColor.black]
+		
+//		UINavigationBar.appearance().translucent = false
+//		UINavigationBar.appearance().barTintColor = self.ecruWhite
+		UINavigationBar.appearance().tintColor = self.highlight
+//		UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName:self.highlight]
+
 		
 //		navigationBarAppearace.tintColor = UIColor.white
 //		navigationBarAppearace.setBackgroundImage(UIImage.init(named: "darkGray"), for: .default)

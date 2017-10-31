@@ -24,6 +24,8 @@
 		D5836C231F19183F006064E7 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5836C221F19183F006064E7 /* Style.swift */; };
 		D5836C251F193A61006064E7 /* EditProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5836C241F193A61006064E7 /* EditProjectViewController.swift */; };
 		D589EF191F9A54A700166597 /* ProposalsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D589EF181F9A54A700166597 /* ProposalsTableViewController.swift */; };
+		D58BE7F81FA8D00A004FB07C /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58BE7F71FA8D00A004FB07C /* TableViewCell.swift */; };
+		D58BE7FA1FA8D834004FB07C /* DetailDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58BE7F91FA8D834004FB07C /* DetailDetailTableViewCell.swift */; };
 		D5B8000E1F4F1B91008470A3 /* ProjectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B8000D1F4F1B91008470A3 /* ProjectTableViewCell.swift */; };
 		D5BEB7291F13D1B4000C724A /* RoomTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BEB7281F13D1B4000C724A /* RoomTableViewController.swift */; };
 		D5BEB72B1F13D6B8000C724A /* AllRoomsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BEB72A1F13D6B8000C724A /* AllRoomsTableViewController.swift */; };
@@ -78,6 +80,8 @@
 		D5836C221F19183F006064E7 /* Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		D5836C241F193A61006064E7 /* EditProjectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProjectViewController.swift; sourceTree = "<group>"; };
 		D589EF181F9A54A700166597 /* ProposalsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProposalsTableViewController.swift; sourceTree = "<group>"; };
+		D58BE7F71FA8D00A004FB07C /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
+		D58BE7F91FA8D834004FB07C /* DetailDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailDetailTableViewCell.swift; sourceTree = "<group>"; };
 		D5B8000D1F4F1B91008470A3 /* ProjectTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectTableViewCell.swift; sourceTree = "<group>"; };
 		D5BEB7281F13D1B4000C724A /* RoomTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomTableViewController.swift; sourceTree = "<group>"; };
 		D5BEB72A1F13D6B8000C724A /* AllRoomsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllRoomsTableViewController.swift; sourceTree = "<group>"; };
@@ -224,6 +228,8 @@
 			isa = PBXGroup;
 			children = (
 				D5B8000D1F4F1B91008470A3 /* ProjectTableViewCell.swift */,
+				D58BE7F91FA8D834004FB07C /* DetailDetailTableViewCell.swift */,
+				D58BE7F71FA8D00A004FB07C /* TableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -441,6 +447,7 @@
 				D5DE2D241F151DCE0071955D /* Furniture.swift in Sources */,
 				D5BEB7291F13D1B4000C724A /* RoomTableViewController.swift in Sources */,
 				D589EF191F9A54A700166597 /* ProposalsTableViewController.swift in Sources */,
+				D58BE7F81FA8D00A004FB07C /* TableViewCell.swift in Sources */,
 				D511F0701F0D5893005AB196 /* ProjectsViewController.swift in Sources */,
 				D5BEB72B1F13D6B8000C724A /* AllRoomsTableViewController.swift in Sources */,
 				D5836C231F19183F006064E7 /* Style.swift in Sources */,
@@ -453,6 +460,7 @@
 				D5836C251F193A61006064E7 /* EditProjectViewController.swift in Sources */,
 				D56805FC1F4E0E9700328586 /* ProposalViewController.swift in Sources */,
 				D5DE2D291F1529B60071955D /* LoginViewController.swift in Sources */,
+				D58BE7FA1FA8D834004FB07C /* DetailDetailTableViewCell.swift in Sources */,
 				D5DE2D2D1F152B5E0071955D /* Project.swift in Sources */,
 				D559D3801F8D0E50005F0788 /* NewProposalViewController.swift in Sources */,
 			);

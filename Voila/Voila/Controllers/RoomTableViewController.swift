@@ -37,11 +37,13 @@ class RoomTableViewController: UITableViewController, MFMailComposeViewControlle
 
 		self.tableView.separatorStyle = .none
 
+		self.tableView.backgroundColor = Style.shared.ecruWhite
+		
 		navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
 
 		let addButton = UIBarButtonItem.init(title: "Proposal", style: .done, target: self, action: #selector(makeProposalHandler))
 		self.navigationItem.rightBarButtonItem = addButton
-		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)!, NSForegroundColorAttributeName: Style.shared.blue], for:.normal)
+		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)!, NSForegroundColorAttributeName: Style.shared.highlight], for:.normal)
 		
 		self.title = Voila.shared.currentRoomName()
 		
@@ -108,6 +110,10 @@ class RoomTableViewController: UITableViewController, MFMailComposeViewControlle
 
     // MARK: - Table view data source
 
+	override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+		return Style.shared.P48
+	}
+
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -128,14 +134,7 @@ class RoomTableViewController: UITableViewController, MFMailComposeViewControlle
 	
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-		let cell = UITableViewCell.init(style: .value1, reuseIdentifier: "RoomCell")
-		cell.textLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
-		cell.detailTextLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
-
-		// selection color
-		let bgColorView = UIView()
-		bgColorView.backgroundColor = Style.shared.cellSelectionColor
-		cell.selectedBackgroundView = bgColorView
+		let cell = TableViewCell.init(style: .value1, reuseIdentifier: "RoomCell")
 
 		let allFurnitureArray = Voila.shared.currentRoomAllFurniture()
 		let myFurnitureArray = Voila.shared.currentRoomCurrentFurniture()
@@ -156,9 +155,9 @@ class RoomTableViewController: UITableViewController, MFMailComposeViewControlle
 		
 		for myFurniture in myFurnitureArray{
 			if furniture.name == myFurniture.name{
-				cell.textLabel?.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)
-				cell.textLabel?.textColor = Style.shared.blue
-				cell.detailTextLabel?.textColor = Style.shared.blue
+				cell.textLabel?.font = UIFont(name: SYSTEM_FONT_B, size: (cell.textLabel?.font.pointSize)!)
+				cell.textLabel?.textColor = Style.shared.highlight
+				cell.detailTextLabel?.textColor = Style.shared.highlight
 				cell.detailTextLabel?.text = "\(myFurniture.copies)"
 			}
 		}

@@ -68,6 +68,7 @@ class QuerySlide: UIView {
 		let pct:CGFloat = 0.9
 		coverButton.frame = CGRect(x: 0, y: 0, width: self.bounds.height*pct, height: self.bounds.height*pct)
 		coverButton.layer.cornerRadius = self.bounds.height*pct*0.5
+		coverButton.layer.backgroundColor = UIColor.white.cgColor
 		coverButton.layer.borderColor = Style.shared.blue.cgColor
 		coverButton.layer.borderWidth = 4
 		coverButton.center = CGPoint(x:self.bounds.size.width*0.25, y:self.bounds.size.height*0.5)

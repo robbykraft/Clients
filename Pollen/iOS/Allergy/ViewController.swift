@@ -11,7 +11,7 @@ import Firebase
 
 class ViewController: UIViewController, UINavigationControllerDelegate, BarChartDelegate, UIScrollViewDelegate{
 	
-	let scrollView = UIScrollView()
+	let scrollView = MainScrollView()
 	
 	var radialChart = UIRadialChart()
 	var barChart = UIBarChartView()
@@ -49,7 +49,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 		self.scrollView.frame = CGRect(x: 0, y: 22, width: self.view.frame.size.width, height: self.view.frame.size.height-22)
 		self.scrollView.delegate = self
 		self.scrollView.contentSize = CGSize(width: self.view.bounds.width, height: self.view.bounds.height + barChartTop - 80)
+		self.scrollView.showsVerticalScrollIndicator = false
 		self.scrollView.isPagingEnabled = true
+		self.scrollView.delaysContentTouches = false
 		self.view.addSubview(self.scrollView)
 		
 		self.scrollView.backgroundColor = Style.shared.whiteSmoke
