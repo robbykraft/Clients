@@ -42,7 +42,8 @@ class Style {
 	let lightBlue = UIColor(red:0.53, green:0.77, blue:1.00, alpha:1.00)
 	let purple = UIColor(red: 88/255.0, green: 86/255.0, blue: 214/255.0, alpha: 1.0)
 	
-	let cellSelectionColor = UIColor(red:0.95, green:0.935, blue:0.79, alpha:1.00)
+//	let cellSelectionColor = UIColor(red:0.95, green:0.935, blue:0.79, alpha:1.00)
+	let cellSelectionColor = UIColor(red:0.94, green:0.94, blue:0.96, alpha:1.00)
 	
 	var P60:CGFloat = 60
 	var P48:CGFloat = 48

@@ -25,7 +25,8 @@ class ProjectsViewController: UITableViewController {
 		titleImage.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
 		self.navigationItem.titleView = titleImage
 
-		self.view.backgroundColor = Style.shared.ecruWhite
+//		self.view.backgroundColor = .white
+		self.view.backgroundColor = Style.shared.whiteSmoke
 
 		self.tableView.separatorStyle = .none
 		

@@ -37,21 +37,24 @@ class RoomTableViewController: UITableViewController, MFMailComposeViewControlle
 
 		self.tableView.separatorStyle = .none
 
-		self.tableView.backgroundColor = Style.shared.ecruWhite
-		
+		self.tableView.backgroundColor = Style.shared.whiteSmoke
+		self.view.backgroundColor = Style.shared.whiteSmoke
+
 		navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
 
 		let addButton = UIBarButtonItem.init(title: "Proposal", style: .done, target: self, action: #selector(makeProposalHandler))
 		self.navigationItem.rightBarButtonItem = addButton
 		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)!, NSForegroundColorAttributeName: Style.shared.highlight], for:.normal)
 		
-		self.title = Voila.shared.currentRoomName()
 		
 		titleButton.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
 //		titleButton.backgroundColor = UIColor.red
 		titleButton.titleLabel?.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)
 		titleButton.setTitleColor(UIColor.black, for: .normal)
-		titleButton.setTitle(Voila.shared.currentRoomName(), for: .normal)
+		if let project = Voila.shared.project{
+//			self.title = project.name
+			titleButton.setTitle(project.name, for: .normal)
+		}
 		titleButton.addTarget(self, action: #selector(self.clickOnButton), for: .touchUpInside)
 		self.navigationItem.titleView = titleButton
 
@@ -123,13 +126,17 @@ class RoomTableViewController: UITableViewController, MFMailComposeViewControlle
 	}
 
 	override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+		var roomName = ""
+		if let name = Voila.shared.currentRoomName(){
+			roomName = name
+		}
 		let myFurnitureArray = Voila.shared.currentRoomCurrentFurniture()
 		var count = 0
 		for item in myFurnitureArray{
 			count += item.copies
 		}
-		if count == 1 {return "\(count) Item"}
-		return "\(count) Items"
+		if count == 1 {return roomName + ": \(count) Item"}
+		return roomName + ": \(count) Items"
 	}
 	
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

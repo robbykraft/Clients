@@ -74,8 +74,8 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
         // Do any additional setup after loading the view.
 		self.scrollView.frame = self.view.bounds
 		self.view.addSubview(self.scrollView)
-		self.view.backgroundColor = Style.shared.ecruWhite
-		self.scrollView.backgroundColor = Style.shared.ecruWhite
+		self.view.backgroundColor = Style.shared.whiteSmoke
+		self.scrollView.backgroundColor = Style.shared.whiteSmoke
 		buildPage()
 		self.registerForKeyboardNotifications()
     }
@@ -119,10 +119,10 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 			self._5salesTaxField.text = taxItems.first
 //			self._8renewalField.text = String(describing:renewalItems.first!)
 			self._8renewalField.text = "33"
-			self._1discountTextField.backgroundColor = Style.shared.ecruLight
-			self._2discountField.backgroundColor = Style.shared.ecruLight
-			self._5salesTaxField.backgroundColor = Style.shared.ecruLight
-			self._8renewalField.backgroundColor = Style.shared.ecruLight
+			self._1discountTextField.backgroundColor = .white
+			self._2discountField.backgroundColor = .white
+			self._5salesTaxField.backgroundColor = .white
+			self._8renewalField.backgroundColor = .white
 			
 			
 			self._0totalBeforeField.isEnabled = false
@@ -153,7 +153,7 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 				if let name = room.customName{ roomLabel.text = name }
 				roomField.text = String(describing:room.getCost())
 				roomField.tag = i
-				roomField.backgroundColor = Style.shared.ecruLight
+				roomField.backgroundColor = .white
 				roomField.textAlignment = .right
 				roomField.keyboardType = .numberPad
 				roomField.inputAccessoryView = numberToolbar

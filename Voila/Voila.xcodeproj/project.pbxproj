@@ -17,8 +17,6 @@
 		D511F06C1F0D574C005AB196 /* Fire.swift in Sources */ = {isa = PBXBuildFile; fileRef = D511F06A1F0D574C005AB196 /* Fire.swift */; };
 		D511F06E1F0D5870005AB196 /* MasterNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D511F06D1F0D5870005AB196 /* MasterNavigationController.swift */; };
 		D511F0701F0D5893005AB196 /* ProjectsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D511F06F1F0D5893005AB196 /* ProjectsViewController.swift */; };
-		D559D3801F8D0E50005F0788 /* NewProposalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D559D37E1F8D0E50005F0788 /* NewProposalViewController.swift */; };
-		D559D3811F8D0E50005F0788 /* NewProposalViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D559D37F1F8D0E50005F0788 /* NewProposalViewController.xib */; };
 		D56805FC1F4E0E9700328586 /* ProposalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56805FB1F4E0E9700328586 /* ProposalViewController.swift */; };
 		D571D60D1F66DDC2004453D3 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D571D60C1F66DDC2004453D3 /* MessageUI.framework */; };
 		D5836C231F19183F006064E7 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5836C221F19183F006064E7 /* Style.swift */; };
@@ -73,8 +71,6 @@
 		D511F06A1F0D574C005AB196 /* Fire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fire.swift; sourceTree = "<group>"; };
 		D511F06D1F0D5870005AB196 /* MasterNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterNavigationController.swift; sourceTree = "<group>"; };
 		D511F06F1F0D5893005AB196 /* ProjectsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectsViewController.swift; sourceTree = "<group>"; };
-		D559D37E1F8D0E50005F0788 /* NewProposalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewProposalViewController.swift; sourceTree = "<group>"; };
-		D559D37F1F8D0E50005F0788 /* NewProposalViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewProposalViewController.xib; sourceTree = "<group>"; };
 		D56805FB1F4E0E9700328586 /* ProposalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProposalViewController.swift; sourceTree = "<group>"; };
 		D571D60C1F66DDC2004453D3 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		D5836C221F19183F006064E7 /* Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
@@ -207,9 +203,7 @@
 				D5BEB7281F13D1B4000C724A /* RoomTableViewController.swift */,
 				D5BEB72A1F13D6B8000C724A /* AllRoomsTableViewController.swift */,
 				D56805FB1F4E0E9700328586 /* ProposalViewController.swift */,
-				D559D37E1F8D0E50005F0788 /* NewProposalViewController.swift */,
 				D589EF181F9A54A700166597 /* ProposalsTableViewController.swift */,
-				D559D37F1F8D0E50005F0788 /* NewProposalViewController.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -369,7 +363,6 @@
 				D511F0401F0D5618005AB196 /* LaunchScreen.storyboard in Resources */,
 				D511F0641F0D56F7005AB196 /* GoogleService-Info.plist in Resources */,
 				D511F03D1F0D5618005AB196 /* Assets.xcassets in Resources */,
-				D559D3811F8D0E50005F0788 /* NewProposalViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -462,7 +455,6 @@
 				D5DE2D291F1529B60071955D /* LoginViewController.swift in Sources */,
 				D58BE7FA1FA8D834004FB07C /* DetailDetailTableViewCell.swift in Sources */,
 				D5DE2D2D1F152B5E0071955D /* Project.swift in Sources */,
-				D559D3801F8D0E50005F0788 /* NewProposalViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

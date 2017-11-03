@@ -17,7 +17,8 @@ class AllRoomsTableViewController: UITableViewController {
 		
 		self.title = "Add/Remove Rooms"
 		
-		self.tableView.backgroundColor = Style.shared.ecruWhite
+		self.tableView.backgroundColor = Style.shared.whiteSmoke
+		self.view.backgroundColor = Style.shared.whiteSmoke
 
 		if let project = Voila.shared.project{
 			self.roomTypesAndCounts = project.roomTypesAndCounts()

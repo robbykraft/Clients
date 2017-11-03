@@ -65,7 +65,7 @@ class ProjectTableViewCell: UITableViewCell {
 		self.tasksText.numberOfLines = 3
 		self.tasksText.textColor = UIColor.gray
 		
-		self.backgroundColor = Style.shared.ecruLight
+		self.backgroundColor = .white
 
 		self.separator.backgroundColor = UIColor.lightGray
 		self.addSubview(self.infoText)

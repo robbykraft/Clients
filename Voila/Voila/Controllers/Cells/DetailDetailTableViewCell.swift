@@ -34,7 +34,7 @@ class DetailDetailTableViewCell: UITableViewCell {
 		self.textLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P21)
 		self.detailTextLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P21)
 		self.detailDetailTextLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15)
-		self.backgroundColor = Style.shared.ecruLight
+		self.backgroundColor = .white
 
 		// selection color
 		let bgColorView = UIView()

@@ -28,7 +28,8 @@ class ProposalsTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
 		
-		self.tableView.backgroundColor = Style.shared.ecruWhite
+		self.tableView.backgroundColor = Style.shared.whiteSmoke
+		self.view.backgroundColor = Style.shared.whiteSmoke
 
 		
 		Fire.shared.getData("proposals") { (data) in

@@ -17,11 +17,10 @@ class ProjectTableViewController: UITableViewController, MFMailComposeViewContro
 			self.title = project.name
 		}
 		
-//		UIBarButtonItem
-
 		self.tableView.separatorStyle = .none
 		
-		self.tableView.backgroundColor = Style.shared.ecruWhite
+		self.tableView.backgroundColor = Style.shared.whiteSmoke
+		self.view.backgroundColor = Style.shared.whiteSmoke
 
 		navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
 

@@ -37,8 +37,7 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 		self.view.addSubview(scrollView)
 		
 
-//		self.scrollView.backgroundColor = Style.shared.whiteSmoke
-		self.scrollView.backgroundColor = Style.shared.ecruWhite
+		self.scrollView.backgroundColor = Style.shared.whiteSmoke
 
 		self.scrollView.isScrollEnabled = false
 
@@ -60,13 +59,13 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 		profileImageView.contentMode = .scaleAspectFill
 		profileImageView.backgroundColor = UIColor.white
 		profileImageView.clipsToBounds = true
-		nameField.backgroundColor = Style.shared.ecruLight
-		emailField.backgroundColor = Style.shared.ecruLight
-		lockboxField.backgroundColor = Style.shared.ecruLight
-		clientField.backgroundColor = Style.shared.ecruLight
-		realtorField.backgroundColor = Style.shared.ecruLight
-//		creationDateField.backgroundColor = Style.shared.ecruLight
-//		detailField.backgroundColor = Style.shared.ecruLight
+		nameField.backgroundColor = .white
+		emailField.backgroundColor = .white
+		lockboxField.backgroundColor = .white
+		clientField.backgroundColor = .white
+		realtorField.backgroundColor = .white
+//		creationDateField.backgroundColor = .white
+//		detailField.backgroundColor = .white
 		deleteButton.backgroundColor = Style.shared.highlight
 		nameField.placeholder = "Name"
 		emailField.placeholder = "Email"
