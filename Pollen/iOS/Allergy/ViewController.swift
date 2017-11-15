@@ -117,11 +117,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 			let touchTape = UIView()
 			touchTape.layer.cornerRadius = 1.5
 			touchTape.frame = CGRect(x: 0, y: 0, width: 30, height: 3)
-			touchTape.center = CGPoint(x: self.view.center.x, y: barChartTop + CGFloat(i)*6)
+			touchTape.center = CGPoint(x: self.view.center.x, y: barChartTop + CGFloat(i)*6 - 30)
 			touchTape.clipsToBounds = true
 			touchTape.layer.backgroundColor = UIColor.white.cgColor
-			touchTape.alpha = 0.8
-			self.view.addSubview(touchTape)
+//			touchTape.alpha = 0.8
+			self.scrollView.addSubview(touchTape)
 		}
 	}
 	

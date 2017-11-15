@@ -222,6 +222,11 @@ extension UIImageView {
 	}
 }
 
+extension CGRect {
+	var bottom:CGFloat{
+		return self.origin.y + self.size.height
+	}
+}
 
 extension UIImage {
 	

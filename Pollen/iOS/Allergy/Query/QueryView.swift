@@ -8,19 +8,26 @@
 
 import UIKit
 
-class QueryView: UIView, QuerySlideDelegate {
+class QueryView: UIView, CategorySlideDelegate, ButtonPanelDelegate {
 	
 	let scrollView = MainScrollView()
 	
-//	var slides:[QuerySlide] = []
-	let queryDoneButton = UIButton()
-	
 	let dateLabel = UILabel()
-	
 	let topQuestionLabel = UILabel()
 	
 	let categorySlideView = CategorySlideView()
+	let buttonPanelView = ButtonPanelView()
 	
+	var selectedCategory:Int?
+	
+	let panelText = [
+		["itchy", "red", "watery", "bags"],    // eyes
+		["stuffy", "itchy", "runny", "blood"],  // nose
+		["pressure", "pain", "colored discharge", "tooth pain"],  // sinus
+		["clearing", "sore", "hoarse voice", "itchy / scratchy"]  // throat
+	]
+
+	let queryDoneButton = UIButton()
 
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -34,64 +41,68 @@ class QueryView: UIView, QuerySlideDelegate {
 		fatalError("This class does not support NSCoding")
 	}
 	
-	func didSelectButton(index: Int, slide: QuerySlide) {
-		let btnTexts = ["", "low", "med", "high"];
-		slide.coverButton.setTitle(btnTexts[index], for: .normal)
-//		for i in 0..<self.slides.count{
-//			if slide == self.slides[i]{
-//
-//			}
-//		}
+	func didSelectButton(index: Int) {
+		selectedCategory = index
+		buttonPanelView.showButtons()
+		guard index < self.panelText.count else { return }
+		let titles = self.panelText[index]
+		for i in 0..<titles.count{
+			buttonPanelView.buttons[i].setTitle(titles[i], for: .normal)
+		}
+	}
+	
+	func didPressPanelButton(index: Int) {
+		if let category = selectedCategory{
+//			self.categorySlideView.categoryHighlight[category] = !self.categorySlideView.categoryHighlight[category]
+			self.categorySlideView.categoryHighlight[category] = true
+			self.categorySlideView.setNeedsLayout()
+
+			buttonPanelView.buttons[index].setTitleColor(Style.shared.red, for: .normal)
+			buttonPanelView.buttons[index].layer.borderColor = Style.shared.red.cgColor
+
+		}
 	}
 	
 	func initUI(){
 		
+		categorySlideView.delegate = self
+		buttonPanelView.delegate = self
+		
 		self.scrollView.isPagingEnabled = true
 		self.scrollView.delaysContentTouches = false
 		self.scrollView.showsHorizontalScrollIndicator = false
-		self.addSubview(self.scrollView)
 		
 		dateLabel.textColor = Style.shared.blue
 		dateLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P30)
-		self.scrollView.addSubview(dateLabel)
-		
 		topQuestionLabel.textColor = Style.shared.blue
 		topQuestionLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P24)
 		topQuestionLabel.text = "What is bothering you today?"
-		self.scrollView.addSubview(topQuestionLabel)
-
-//		let sevenDwarfs = ["Congestion", "Runny", "Itchy", "Sneezy", "Sleepy"]
-//		for i in 0..<5{
-//			let slide = QuerySlide()
-//			slide.coverText.text = sevenDwarfs[i]
-////			slide.coverButton.backgroundColor = UIColor(hue: CGFloat(i)/5, saturation: 1.0, brightness: 1.0, alpha: 1.0)
-//			slide.delegate = self
-//			self.scrollView.addSubview(slide)
-//			self.slides.append(slide)
-//		}
-		
-		self.scrollView.addSubview(categorySlideView)
 		
 		queryDoneButton.setTitle("Done", for: .normal)
-		queryDoneButton.setTitleColor(Style.shared.blue, for: .normal)
 		queryDoneButton.titleLabel?.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P24)
-		queryDoneButton.layer.cornerRadius = 20
-		queryDoneButton.layer.backgroundColor = UIColor.white.cgColor
+		queryDoneButton.setTitleColor(Style.shared.blue, for: .normal)
 		queryDoneButton.layer.borderColor = Style.shared.blue.cgColor
+		queryDoneButton.layer.backgroundColor = UIColor.white.cgColor
+		queryDoneButton.layer.cornerRadius = 20
 		queryDoneButton.layer.borderWidth = 4
 		queryDoneButton.sizeToFit()
 		queryDoneButton.frame = CGRect(x: 0, y: 0, width: queryDoneButton.frame.size.width*2, height: queryDoneButton.frame.size.height*1.5)
-		self.scrollView.addSubview(queryDoneButton)
-		
+
 		queryDoneButton.addTarget(self, action: #selector(doneButtonHandler), for: .touchUpInside)
 		queryDoneButton.addTarget(self, action: #selector(doneButtonSetSelected), for: .touchDown)
 		queryDoneButton.addTarget(self, action: #selector(doneButtonSetSelected), for: .touchDragEnter)
-		
+
 		queryDoneButton.addTarget(self, action: #selector(doneButtonSetUnselected), for: .touchDragOutside)
 		queryDoneButton.addTarget(self, action: #selector(doneButtonSetUnselected), for: .touchCancel)
 		queryDoneButton.addTarget(self, action: #selector(doneButtonSetUnselected), for: .touchDragExit)
 		queryDoneButton.addTarget(self, action: #selector(doneButtonSetUnselected), for: .touchUpInside)
 
+		self.addSubview(self.scrollView)
+		self.scrollView.addSubview(dateLabel)
+		self.scrollView.addSubview(topQuestionLabel)
+		self.scrollView.addSubview(categorySlideView)
+		self.scrollView.addSubview(buttonPanelView)
+		self.scrollView.addSubview(queryDoneButton)
 	}
 
 	override func layoutSubviews() {
@@ -115,19 +126,16 @@ class QueryView: UIView, QuerySlideDelegate {
 		let yTop:CGFloat = topQuestionLabel.frame.origin.y + topQuestionLabel.frame.size.height
 		let questionFrame = CGRect(x: 0, y: yTop + 15, width: self.bounds.size.width, height: self.bounds.size.height - yTop - queryDoneButton.frame.size.height - 15 - 20 - 10)
 		
-//		for i in 0..<slides.count{
-//			let pad:CGFloat = 5.0
-//			let h:CGFloat = (questionFrame.size.height-pad*5)/5
-//			slides[i].frame = CGRect(x: w + 0, y: 0, width: self.bounds.size.width, height: h)
-//			slides[i].center = CGPoint(x: w + self.center.x, y: questionFrame.origin.y + h*0.5 + (h+pad)*CGFloat(i))
-//		}
-		
-		let pad:CGFloat = 5.0
+//		let pad:CGFloat = 5.0
 		let h:CGFloat = self.bounds.width * 0.23
 		categorySlideView.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: h)
 		categorySlideView.center = CGPoint(x: w + self.center.x, y: questionFrame.origin.y + h*0.5)
 
 		queryDoneButton.center = CGPoint(x: w + self.bounds.size.width*0.5, y: self.bounds.size.height - queryDoneButton.frame.size.height*0.5 - 20)
+		
+		let bpPadW:CGFloat = w*0.05
+		let bpPadH:CGFloat = w*0.05
+		buttonPanelView.frame = CGRect(x: w + bpPadW, y: categorySlideView.frame.bottom + bpPadH, width: w - bpPadW*2, height: queryDoneButton.frame.origin.y - categorySlideView.frame.bottom - bpPadH*2)
 	}
 	
 	func doneButtonHandler(){
@@ -142,13 +150,5 @@ class QueryView: UIView, QuerySlideDelegate {
 		self.queryDoneButton.layer.backgroundColor = UIColor.white.cgColor
 		queryDoneButton.setTitleColor(Style.shared.blue, for: .normal)
 	}
-
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
 
 }

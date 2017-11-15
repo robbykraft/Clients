@@ -34,6 +34,7 @@
 		D5B802091FA38D10002C4048 /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B802081FA38D10002C4048 /* Record.swift */; };
 		D5B8020C1FA39539002C4048 /* MainScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B8020B1FA39539002C4048 /* MainScrollView.swift */; };
 		D5C12BB41FBC8B40007EE678 /* CategorySlideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C12BB31FBC8B40007EE678 /* CategorySlideView.swift */; };
+		D5C12BB61FBC97EF007EE678 /* ButtonPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C12BB51FBC97EF007EE678 /* ButtonPanelView.swift */; };
 		D5D014DB1E9E71DA00BF7374 /* DetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D014D91E9E71DA00BF7374 /* DetailTableViewController.swift */; };
 		D5D014DC1E9E71DA00BF7374 /* LineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D014DA1E9E71DA00BF7374 /* LineTableViewCell.swift */; };
 		D5F5EA3D1F96610C004FB5DE /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F5EA3C1F96610C004FB5DE /* LoginView.swift */; };
@@ -73,6 +74,7 @@
 		D5B802081FA38D10002C4048 /* Record.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
 		D5B8020B1FA39539002C4048 /* MainScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScrollView.swift; sourceTree = "<group>"; };
 		D5C12BB31FBC8B40007EE678 /* CategorySlideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySlideView.swift; sourceTree = "<group>"; };
+		D5C12BB51FBC97EF007EE678 /* ButtonPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonPanelView.swift; sourceTree = "<group>"; };
 		D5D014D91E9E71DA00BF7374 /* DetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailTableViewController.swift; sourceTree = "<group>"; };
 		D5D014DA1E9E71DA00BF7374 /* LineTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineTableViewCell.swift; sourceTree = "<group>"; };
 		D5F33C681EAA5D3000DB01C3 /* Allergy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Allergy.entitlements; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 			children = (
 				D53343ED1F97A58C00313B18 /* QueryView.swift */,
 				D5C12BB31FBC8B40007EE678 /* CategorySlideView.swift */,
+				D5C12BB51FBC97EF007EE678 /* ButtonPanelView.swift */,
 				D5F5EA3E1F966851004FB5DE /* QuerySlide.swift */,
 				D5F5EA3C1F96610C004FB5DE /* LoginView.swift */,
 			);
@@ -371,6 +374,7 @@
 				D5D014DB1E9E71DA00BF7374 /* DetailTableViewController.swift in Sources */,
 				D5F5EA3D1F96610C004FB5DE /* LoginView.swift in Sources */,
 				D563489A1EBA89A00025A73C /* CenteredTableViewCell.swift in Sources */,
+				D5C12BB61FBC97EF007EE678 /* ButtonPanelView.swift in Sources */,
 				D5A997341E9BE71200F37F52 /* ProfileViewController.swift in Sources */,
 				D54B973D1E9DD32E0064EAED /* Extensions.swift in Sources */,
 				D5F5EA3F1F966851004FB5DE /* QuerySlide.swift in Sources */,
