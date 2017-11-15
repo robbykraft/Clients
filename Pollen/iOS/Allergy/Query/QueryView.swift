@@ -8,16 +8,18 @@
 
 import UIKit
 
-class QueryView: UIView {
+class QueryView: UIView, QuerySlideDelegate {
 	
 	let scrollView = MainScrollView()
 	
-	var slides:[QuerySlide] = []
+//	var slides:[QuerySlide] = []
 	let queryDoneButton = UIButton()
 	
 	let dateLabel = UILabel()
 	
 	let topQuestionLabel = UILabel()
+	
+	let categorySlideView = CategorySlideView()
 	
 
 	override init(frame: CGRect) {
@@ -30,6 +32,16 @@ class QueryView: UIView {
 	
 	required init(coder aDecoder: NSCoder) {
 		fatalError("This class does not support NSCoding")
+	}
+	
+	func didSelectButton(index: Int, slide: QuerySlide) {
+		let btnTexts = ["", "low", "med", "high"];
+		slide.coverButton.setTitle(btnTexts[index], for: .normal)
+//		for i in 0..<self.slides.count{
+//			if slide == self.slides[i]{
+//
+//			}
+//		}
 	}
 	
 	func initUI(){
@@ -48,14 +60,17 @@ class QueryView: UIView {
 		topQuestionLabel.text = "What is bothering you today?"
 		self.scrollView.addSubview(topQuestionLabel)
 
-		let sevenDwarfs = ["Congestion", "Runny", "Itchy", "Sneezy", "Sleepy"]
-		for i in 0..<5{
-			let slide = QuerySlide()
-			slide.coverText.text = sevenDwarfs[i]
-//			slide.coverButton.backgroundColor = UIColor(hue: CGFloat(i)/5, saturation: 1.0, brightness: 1.0, alpha: 1.0)
-			self.scrollView.addSubview(slide)
-			self.slides.append(slide)
-		}
+//		let sevenDwarfs = ["Congestion", "Runny", "Itchy", "Sneezy", "Sleepy"]
+//		for i in 0..<5{
+//			let slide = QuerySlide()
+//			slide.coverText.text = sevenDwarfs[i]
+////			slide.coverButton.backgroundColor = UIColor(hue: CGFloat(i)/5, saturation: 1.0, brightness: 1.0, alpha: 1.0)
+//			slide.delegate = self
+//			self.scrollView.addSubview(slide)
+//			self.slides.append(slide)
+//		}
+		
+		self.scrollView.addSubview(categorySlideView)
 		
 		queryDoneButton.setTitle("Done", for: .normal)
 		queryDoneButton.setTitleColor(Style.shared.blue, for: .normal)
@@ -100,12 +115,18 @@ class QueryView: UIView {
 		let yTop:CGFloat = topQuestionLabel.frame.origin.y + topQuestionLabel.frame.size.height
 		let questionFrame = CGRect(x: 0, y: yTop + 15, width: self.bounds.size.width, height: self.bounds.size.height - yTop - queryDoneButton.frame.size.height - 15 - 20 - 10)
 		
-		for i in 0..<slides.count{
-			let pad:CGFloat = 5.0
-			let h:CGFloat = (questionFrame.size.height-pad*5)/5
-			slides[i].frame = CGRect(x: w + 0, y: 0, width: self.bounds.size.width, height: h)
-			slides[i].center = CGPoint(x: w + self.center.x, y: questionFrame.origin.y + h*0.5 + (h+pad)*CGFloat(i))
-		}
+//		for i in 0..<slides.count{
+//			let pad:CGFloat = 5.0
+//			let h:CGFloat = (questionFrame.size.height-pad*5)/5
+//			slides[i].frame = CGRect(x: w + 0, y: 0, width: self.bounds.size.width, height: h)
+//			slides[i].center = CGPoint(x: w + self.center.x, y: questionFrame.origin.y + h*0.5 + (h+pad)*CGFloat(i))
+//		}
+		
+		let pad:CGFloat = 5.0
+		let h:CGFloat = self.bounds.width * 0.23
+		categorySlideView.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: h)
+		categorySlideView.center = CGPoint(x: w + self.center.x, y: questionFrame.origin.y + h*0.5)
+
 		queryDoneButton.center = CGPoint(x: w + self.bounds.size.width*0.5, y: self.bounds.size.height - queryDoneButton.frame.size.height*0.5 - 20)
 	}
 	

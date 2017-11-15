@@ -110,6 +110,19 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 		queryView.alpha = 0.0
 		queryView.frame = CGRect(x: 0, y: barChartTop + 15, width: self.view.frame.size.width, height: self.scrollView.contentSize.height - barChartTop - 15)
 		self.scrollView.addSubview(queryView)
+		
+		///////////////
+		
+		for i in 0..<3{
+			let touchTape = UIView()
+			touchTape.layer.cornerRadius = 1.5
+			touchTape.frame = CGRect(x: 0, y: 0, width: 30, height: 3)
+			touchTape.center = CGPoint(x: self.view.center.x, y: barChartTop + CGFloat(i)*6)
+			touchTape.clipsToBounds = true
+			touchTape.layer.backgroundColor = UIColor.white.cgColor
+			touchTape.alpha = 0.8
+			self.view.addSubview(touchTape)
+		}
 	}
 	
 	func downloadAndRefresh(){

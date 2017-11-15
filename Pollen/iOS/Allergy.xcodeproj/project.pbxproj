@@ -33,6 +33,7 @@
 		D5A9973F1E9BEC8600F37F52 /* Fire.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9973D1E9BEC8600F37F52 /* Fire.swift */; };
 		D5B802091FA38D10002C4048 /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B802081FA38D10002C4048 /* Record.swift */; };
 		D5B8020C1FA39539002C4048 /* MainScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B8020B1FA39539002C4048 /* MainScrollView.swift */; };
+		D5C12BB41FBC8B40007EE678 /* CategorySlideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C12BB31FBC8B40007EE678 /* CategorySlideView.swift */; };
 		D5D014DB1E9E71DA00BF7374 /* DetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D014D91E9E71DA00BF7374 /* DetailTableViewController.swift */; };
 		D5D014DC1E9E71DA00BF7374 /* LineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D014DA1E9E71DA00BF7374 /* LineTableViewCell.swift */; };
 		D5F5EA3D1F96610C004FB5DE /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F5EA3C1F96610C004FB5DE /* LoginView.swift */; };
@@ -71,6 +72,7 @@
 		D5A9973D1E9BEC8600F37F52 /* Fire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fire.swift; sourceTree = "<group>"; };
 		D5B802081FA38D10002C4048 /* Record.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
 		D5B8020B1FA39539002C4048 /* MainScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScrollView.swift; sourceTree = "<group>"; };
+		D5C12BB31FBC8B40007EE678 /* CategorySlideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySlideView.swift; sourceTree = "<group>"; };
 		D5D014D91E9E71DA00BF7374 /* DetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailTableViewController.swift; sourceTree = "<group>"; };
 		D5D014DA1E9E71DA00BF7374 /* LineTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineTableViewCell.swift; sourceTree = "<group>"; };
 		D5F33C681EAA5D3000DB01C3 /* Allergy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Allergy.entitlements; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 			isa = PBXGroup;
 			children = (
 				D53343ED1F97A58C00313B18 /* QueryView.swift */,
+				D5C12BB31FBC8B40007EE678 /* CategorySlideView.swift */,
 				D5F5EA3E1F966851004FB5DE /* QuerySlide.swift */,
 				D5F5EA3C1F96610C004FB5DE /* LoginView.swift */,
 			);
@@ -378,6 +381,7 @@
 				D51C22A91E92E5EB00887F42 /* ViewController.swift in Sources */,
 				D5D014DC1E9E71DA00BF7374 /* LineTableViewCell.swift in Sources */,
 				D5A9973F1E9BEC8600F37F52 /* Fire.swift in Sources */,
+				D5C12BB41FBC8B40007EE678 /* CategorySlideView.swift in Sources */,
 				D53343EE1F97A58C00313B18 /* QueryView.swift in Sources */,
 				D5A997361E9BE71D00F37F52 /* MasterNavigationController.swift in Sources */,
 				D5A997331E9BE71200F37F52 /* LoginViewController.swift in Sources */,

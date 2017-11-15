@@ -8,12 +8,18 @@
 
 import UIKit
 
+protocol QuerySlideDelegate: class {
+	func didSelectButton(index: Int, slide:QuerySlide)
+}
+
 class QuerySlide: UIView {
 
 	let scrollView = UIScrollView()
 	let coverButton = UIButton()
 	let coverText = UILabel()
 	let detailText = UILabel()
+	
+	var delegate:QuerySlideDelegate?
 	
 	let responseButtons:[UIButton] = [UIButton(), UIButton(), UIButton(), UIButton()]
 
@@ -70,6 +76,8 @@ class QuerySlide: UIView {
 		coverButton.layer.cornerRadius = self.bounds.height*pct*0.5
 		coverButton.layer.backgroundColor = UIColor.white.cgColor
 		coverButton.layer.borderColor = Style.shared.blue.cgColor
+		coverButton.titleLabel?.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P21)
+		coverButton.setTitleColor(Style.shared.blue, for: .normal)
 		coverButton.layer.borderWidth = 4
 		coverButton.center = CGPoint(x:self.bounds.size.width*0.25, y:self.bounds.size.height*0.5)
 		
@@ -90,15 +98,19 @@ class QuerySlide: UIView {
 			responseButtons[i].titleLabel?.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P21)
 			responseButtons[i].setTitleColor(Style.shared.blue, for: .normal)
 			responseButtons[i].layer.borderWidth = 4
+			responseButtons[i].tag = i
 			responseButtons[i].center = CGPoint(x:btnH*0.5 + startX + btnH*CGFloat(i), y:self.bounds.size.height*0.5)
 			
-			responseButtons[i].addTarget(self, action: #selector(responseButtonHandler), for: .touchUpInside)
+			responseButtons[i].addTarget(self, action: #selector(responseButtonHandler(sender:)), for: .touchUpInside)
 			self.scrollView.addSubview(responseButtons[i])
 		}
 	}
 	
-	@objc func responseButtonHandler(){
+	@objc func responseButtonHandler(sender:UIButton){
 		self.scrollView.scrollRectToVisible(CGRect(x: 0, y: 0, width: self.bounds.width, height: self.bounds.height), animated: true)
+		if let delegate = self.delegate{
+			delegate.didSelectButton(index: sender.tag, slide: self)
+		}
 	}
 	
 	@objc func coverButtonHandler(){
