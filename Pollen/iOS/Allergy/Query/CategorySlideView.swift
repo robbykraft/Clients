@@ -9,7 +9,7 @@
 import UIKit
 
 protocol CategorySlideDelegate: class {
-	func didSelectButton(index: Int)
+	func didSelectCategory(index: Int)
 }
 class CategorySlideView: UIView {
 
@@ -85,7 +85,7 @@ class CategorySlideView: UIView {
 	@objc func responseButtonHandler(sender:UIButton){
 		self.scrollView.scrollRectToVisible(CGRect(x: 0, y: 0, width: self.bounds.width, height: self.bounds.height), animated: true)
 		if let delegate = self.delegate{
-			delegate.didSelectButton(index: sender.tag)
+			delegate.didSelectCategory(index: sender.tag)
 		}
 	}
 	

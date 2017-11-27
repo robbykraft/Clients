@@ -26,6 +26,7 @@ class DetailTableViewController: UITableViewController {
 	
 	var report:[(String, Int, Float, Rating)]? // name, value, 0.0-1.0 value, Rating
 	
+	let gridView = UIView()
 	let gridLayer = CAShapeLayer()
 
     override func viewDidLoad() {
@@ -38,12 +39,17 @@ class DetailTableViewController: UITableViewController {
 
 		self.tableView.separatorStyle = .none
 		
-		self.view.layer.insertSublayer(gridLayer, at: 0)
 		let lineFrame:CGFloat = self.view.frame.size.width * 0.5
 		let strokeWeight:CGFloat = 38
 		let pad:CGFloat = 10
+		gridView.backgroundColor = .clear
 		gridLayer.sublayers = []
-		
+		gridView.frame = self.view.bounds
+//		gridView.frame = CGRect(x: self.view.bounds.size.width*0.5, y: self.view.bounds.size.height*0.5, width: self.view.bounds.size.width, height: self.view.bounds.size.height)
+//		gridView.backgroundColor = .purple
+		self.view.addSubview(gridView)
+		self.gridView.layer.insertSublayer(gridLayer, at: 0)
+
 		let ratingArray:[Rating] = [.low, .medium, .heavy, .veryHeavy]
 		
 		for rating in ratingArray{
@@ -108,6 +114,10 @@ class DetailTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
 
+	}
+	
+	override func viewDidLayoutSubviews() {
+		self.view.sendSubview(toBack: self.gridView)
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {

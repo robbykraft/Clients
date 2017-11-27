@@ -42,6 +42,7 @@ class Sample: NSObject {
 		var ratings:[Rating] = []
 		for key in Array(self.values.keys) {
 			if Pollen.shared.myAllergies[key]!{
+				// unexpectedly found nil unwrapping value
 				ratings.append(Pollen.shared.ratingFor(key: key, value: self.values[key]!))
 			}
 		}

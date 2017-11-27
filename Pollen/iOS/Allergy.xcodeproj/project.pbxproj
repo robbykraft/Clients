@@ -31,10 +31,11 @@
 		D5A997361E9BE71D00F37F52 /* MasterNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A997351E9BE71D00F37F52 /* MasterNavigationController.swift */; };
 		D5A9973E1E9BEC8600F37F52 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9973C1E9BEC8600F37F52 /* Cache.swift */; };
 		D5A9973F1E9BEC8600F37F52 /* Fire.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9973D1E9BEC8600F37F52 /* Fire.swift */; };
+		D5B4D69C1FCC591000270404 /* DegreePanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B4D69B1FCC591000270404 /* DegreePanelView.swift */; };
 		D5B802091FA38D10002C4048 /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B802081FA38D10002C4048 /* Record.swift */; };
 		D5B8020C1FA39539002C4048 /* MainScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B8020B1FA39539002C4048 /* MainScrollView.swift */; };
 		D5C12BB41FBC8B40007EE678 /* CategorySlideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C12BB31FBC8B40007EE678 /* CategorySlideView.swift */; };
-		D5C12BB61FBC97EF007EE678 /* ButtonPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C12BB51FBC97EF007EE678 /* ButtonPanelView.swift */; };
+		D5C12BB61FBC97EF007EE678 /* SymptomPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C12BB51FBC97EF007EE678 /* SymptomPanelView.swift */; };
 		D5D014DB1E9E71DA00BF7374 /* DetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D014D91E9E71DA00BF7374 /* DetailTableViewController.swift */; };
 		D5D014DC1E9E71DA00BF7374 /* LineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D014DA1E9E71DA00BF7374 /* LineTableViewCell.swift */; };
 		D5F5EA3D1F96610C004FB5DE /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F5EA3C1F96610C004FB5DE /* LoginView.swift */; };
@@ -71,10 +72,11 @@
 		D5A997351E9BE71D00F37F52 /* MasterNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterNavigationController.swift; sourceTree = "<group>"; };
 		D5A9973C1E9BEC8600F37F52 /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		D5A9973D1E9BEC8600F37F52 /* Fire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fire.swift; sourceTree = "<group>"; };
+		D5B4D69B1FCC591000270404 /* DegreePanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DegreePanelView.swift; sourceTree = "<group>"; };
 		D5B802081FA38D10002C4048 /* Record.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
 		D5B8020B1FA39539002C4048 /* MainScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScrollView.swift; sourceTree = "<group>"; };
 		D5C12BB31FBC8B40007EE678 /* CategorySlideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySlideView.swift; sourceTree = "<group>"; };
-		D5C12BB51FBC97EF007EE678 /* ButtonPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonPanelView.swift; sourceTree = "<group>"; };
+		D5C12BB51FBC97EF007EE678 /* SymptomPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymptomPanelView.swift; sourceTree = "<group>"; };
 		D5D014D91E9E71DA00BF7374 /* DetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailTableViewController.swift; sourceTree = "<group>"; };
 		D5D014DA1E9E71DA00BF7374 /* LineTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineTableViewCell.swift; sourceTree = "<group>"; };
 		D5F33C681EAA5D3000DB01C3 /* Allergy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Allergy.entitlements; sourceTree = "<group>"; };
@@ -158,7 +160,8 @@
 			children = (
 				D53343ED1F97A58C00313B18 /* QueryView.swift */,
 				D5C12BB31FBC8B40007EE678 /* CategorySlideView.swift */,
-				D5C12BB51FBC97EF007EE678 /* ButtonPanelView.swift */,
+				D5C12BB51FBC97EF007EE678 /* SymptomPanelView.swift */,
+				D5B4D69B1FCC591000270404 /* DegreePanelView.swift */,
 				D5F5EA3E1F966851004FB5DE /* QuerySlide.swift */,
 				D5F5EA3C1F96610C004FB5DE /* LoginView.swift */,
 			);
@@ -269,7 +272,7 @@
 				TargetAttributes = {
 					D51C22A21E92E5EB00887F42 = {
 						CreatedOnToolsVersion = 8.3;
-						DevelopmentTeam = 78C98TD784;
+						DevelopmentTeam = LZQR3392T8;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Push = {
@@ -371,10 +374,11 @@
 				D532B3281E9D4F700090FC7A /* UIRadialChart.swift in Sources */,
 				D5099BE61ECDFDC30095905F /* UILightNavigationController.swift in Sources */,
 				D5300EB91E9EC46900874C18 /* SliderTableViewCell.swift in Sources */,
+				D5B4D69C1FCC591000270404 /* DegreePanelView.swift in Sources */,
 				D5D014DB1E9E71DA00BF7374 /* DetailTableViewController.swift in Sources */,
 				D5F5EA3D1F96610C004FB5DE /* LoginView.swift in Sources */,
 				D563489A1EBA89A00025A73C /* CenteredTableViewCell.swift in Sources */,
-				D5C12BB61FBC97EF007EE678 /* ButtonPanelView.swift in Sources */,
+				D5C12BB61FBC97EF007EE678 /* SymptomPanelView.swift in Sources */,
 				D5A997341E9BE71200F37F52 /* ProfileViewController.swift in Sources */,
 				D54B973D1E9DD32E0064EAED /* Extensions.swift in Sources */,
 				D5F5EA3F1F966851004FB5DE /* QuerySlide.swift in Sources */,
@@ -511,7 +515,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Allergy/Allergy.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 78C98TD784;
+				DEVELOPMENT_TEAM = LZQR3392T8;
 				INFOPLIST_FILE = Allergy/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -533,7 +537,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Allergy/Allergy.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 78C98TD784;
+				DEVELOPMENT_TEAM = LZQR3392T8;
 				INFOPLIST_FILE = Allergy/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

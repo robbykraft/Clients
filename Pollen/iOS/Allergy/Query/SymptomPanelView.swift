@@ -8,15 +8,15 @@
 
 import UIKit
 
-protocol ButtonPanelDelegate{
-	func didPressPanelButton(index:Int)
+protocol SymptomPanelDelegate{
+	func didSelectSymptom(index:Int)
 }
 
-class ButtonPanelView: UIView {
+class SymptomPanelView: UIView {
 	
 	let buttons = [UIButton(), UIButton(), UIButton(), UIButton()]
 	
-	var delegate:ButtonPanelDelegate?
+	var delegate:SymptomPanelDelegate?
 
 	override func layoutSubviews() {
 		super.layoutSubviews()
@@ -61,7 +61,7 @@ class ButtonPanelView: UIView {
 	
 	@objc func buttonHandler(sender:UIButton){
 		if let d = self.delegate{
-			d.didPressPanelButton(index: sender.tag)
+			d.didSelectSymptom(index: sender.tag)
 		}
 	}
 	

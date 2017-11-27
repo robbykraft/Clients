@@ -55,7 +55,24 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 		self.view.addSubview(self.scrollView)
 		
 		self.scrollView.backgroundColor = Style.shared.whiteSmoke
-		
+		if UIDevice().userInterfaceIdiom == .phone {
+			if UIScreen.main.nativeBounds.height == 2436{
+				self.view.backgroundColor = Style.shared.blue
+			}
+//			switch UIScreen.main.nativeBounds.height {
+//			case 1136:
+//				print("iPhone 5 or 5S or 5C")
+//			case 1334:
+//				print("iPhone 6/6S/7/8")
+//			case 2208:
+//				print("iPhone 6+/6S+/7+/8+")
+//			case 2436:
+//				self.view.backgroundColor = Style.shared.blue
+//			default:
+//				print("unknown")
+//			}
+		}
+
 		
 		let layer = CAShapeLayer()
 		let circle = UIBezierPath.init(arcCenter: circleCenter, radius: radius, startAngle: 0, endAngle: CGFloat(Double.pi * 2), clockwise: true)
@@ -79,8 +96,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 				            y: statusBarHeight+self.view.frame.size.width*0.05,
 				            width: self.view.frame.size.width*0.9,
 				            height: self.view.frame.size.width * 0.9))
-		} else{
-			radialChart = UIRadialChart.init(frame: CGRect.init(x: 0, y: statusBarHeight + (self.view.frame.size.width - 320.0) * 0.25, width: self.view.frame.size.width, height: self.view.frame.size.width))
+		} else if( UIDevice().userInterfaceIdiom == .phone && UIScreen.main.nativeBounds.height == 2436 ){
+			radialChart = UIRadialChart.init(frame: CGRect.init(x: 0, y: statusBarHeight + (self.view.frame.size.height - 320.0) * 0.22, width: self.view.frame.size.width, height: self.view.frame.size.width))
+		}
+		else{
+			radialChart = UIRadialChart.init(frame: CGRect.init(x: 0, y: statusBarHeight + (self.view.frame.size.height - 320.0) * 0.13, width: self.view.frame.size.width, height: self.view.frame.size.width))
 		}
 		self.scrollView.addSubview(radialChart)
 
@@ -115,14 +135,14 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 		
 		for i in 0..<3{
 			let touchTape = UIView()
-			touchTape.layer.cornerRadius = 1.5
-			touchTape.frame = CGRect(x: 0, y: 0, width: 30, height: 3)
-			touchTape.center = CGPoint(x: self.view.center.x, y: barChartTop + CGFloat(i)*6 - 30)
+			touchTape.layer.cornerRadius = 2
+			touchTape.frame = CGRect(x: 0, y: 0, width: 36, height: 4)
+			touchTape.center = CGPoint(x: self.view.center.x, y: barChartTop + CGFloat(i)*8 - 30)
 			touchTape.clipsToBounds = true
 			touchTape.layer.backgroundColor = UIColor.white.cgColor
-//			touchTape.alpha = 0.8
 			self.scrollView.addSubview(touchTape)
 		}
+		
 	}
 	
 	func downloadAndRefresh(){
@@ -141,7 +161,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 		// build bar chart again
 		var barValues:[Float] = []
 		for sample in self.samples{
-//				let keys = Array(sample.values.keys)
+//			let keys = Array(sample.values.keys)
 			let reports = sample.report()
 			var dailyHigh:Float = 0.0
 			for i in 0..<reports.count{
@@ -171,8 +191,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 			self.radialChart.data = self.samples[selected]
 		}
 	}
-		
-	
 	
 	func preferencesButtonPressed(){
 		let nav = UINavigationController()
@@ -200,25 +218,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 			self.present(nav, animated: true, completion: nil)
 		}
 	}
-	
-//	func makeCurvedAttributionText(size:CGSize, textRadius:CGFloat) -> UIImage{
-//		UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
-////		UIGraphicsBeginImageContextWithOptions(size, true, 0.0)
-//		let context = UIGraphicsGetCurrentContext()!
-//		// *******************************************************************
-//		// Scale & translate the context to have 0,0
-//		// at the centre of the screen maths convention
-//		// Obviously change your origin to suit...
-//		// *******************************************************************
-//		context.translateBy (x: size.width / 2, y: size.height / 2 )
-//		context.scaleBy (x: 1, y: -1)
-//
-//		Style.shared.centreArcPerpendicular(text: "provided by Allergy Free Austin", context: context, radius: textRadius, angle: -CGFloat.pi*0.5, colour: UIColor.white, font: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P12)!, clockwise: false)
-////		Style.shared.centreArcPerpendicular(text: name, context: context, radius: textRadius, angle: -textAngle, colour: UIColor.white, font: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P12)!, clockwise: true)
-//		let image = UIGraphicsGetImageFromCurrentImageContext()
-//		UIGraphicsEndImageContext()
-//		return image!
-//	}
 	
 	/////////////// SCROLL VIEW ///////////////////
 	

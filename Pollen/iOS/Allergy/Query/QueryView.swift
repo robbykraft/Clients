@@ -8,7 +8,7 @@
 
 import UIKit
 
-class QueryView: UIView, CategorySlideDelegate, ButtonPanelDelegate {
+class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePanelDelegate{
 	
 	let scrollView = MainScrollView()
 	
@@ -16,7 +16,8 @@ class QueryView: UIView, CategorySlideDelegate, ButtonPanelDelegate {
 	let topQuestionLabel = UILabel()
 	
 	let categorySlideView = CategorySlideView()
-	let buttonPanelView = ButtonPanelView()
+	let symptomPanelView = SymptomPanelView()
+	let degreePanelView = DegreePanelView()
 	
 	var selectedCategory:Int?
 	
@@ -41,32 +42,36 @@ class QueryView: UIView, CategorySlideDelegate, ButtonPanelDelegate {
 		fatalError("This class does not support NSCoding")
 	}
 	
-	func didSelectButton(index: Int) {
+	func didSelectCategory(index: Int) {
 		selectedCategory = index
-		buttonPanelView.showButtons()
+		symptomPanelView.showButtons()
 		guard index < self.panelText.count else { return }
 		let titles = self.panelText[index]
 		for i in 0..<titles.count{
-			buttonPanelView.buttons[i].setTitle(titles[i], for: .normal)
+			symptomPanelView.buttons[i].setTitle(titles[i], for: .normal)
 		}
 	}
 	
-	func didPressPanelButton(index: Int) {
+	func didSelectSymptom(index: Int) {
 		if let category = selectedCategory{
 //			self.categorySlideView.categoryHighlight[category] = !self.categorySlideView.categoryHighlight[category]
 			self.categorySlideView.categoryHighlight[category] = true
 			self.categorySlideView.setNeedsLayout()
 
-			buttonPanelView.buttons[index].setTitleColor(Style.shared.red, for: .normal)
-			buttonPanelView.buttons[index].layer.borderColor = Style.shared.red.cgColor
-
+//			symptomPanelView.buttons[index].setTitleColor(Style.shared.red, for: .normal)
+//			symptomPanelView.buttons[index].layer.borderColor = Style.shared.red.cgColor
+			degreePanelView.isHidden = false
 		}
+	}
+	
+	func didSelectDegree(sender: UIButton) {
+		degreePanelView.isHidden = true
 	}
 	
 	func initUI(){
 		
 		categorySlideView.delegate = self
-		buttonPanelView.delegate = self
+		symptomPanelView.delegate = self
 		
 		self.scrollView.isPagingEnabled = true
 		self.scrollView.delaysContentTouches = false
@@ -101,8 +106,9 @@ class QueryView: UIView, CategorySlideDelegate, ButtonPanelDelegate {
 		self.scrollView.addSubview(dateLabel)
 		self.scrollView.addSubview(topQuestionLabel)
 		self.scrollView.addSubview(categorySlideView)
-		self.scrollView.addSubview(buttonPanelView)
+		self.scrollView.addSubview(symptomPanelView)
 		self.scrollView.addSubview(queryDoneButton)
+		
 	}
 
 	override func layoutSubviews() {
@@ -135,7 +141,17 @@ class QueryView: UIView, CategorySlideDelegate, ButtonPanelDelegate {
 		
 		let bpPadW:CGFloat = w*0.05
 		let bpPadH:CGFloat = w*0.05
-		buttonPanelView.frame = CGRect(x: w + bpPadW, y: categorySlideView.frame.bottom + bpPadH, width: w - bpPadW*2, height: queryDoneButton.frame.origin.y - categorySlideView.frame.bottom - bpPadH*2)
+		symptomPanelView.frame = CGRect(x: w + bpPadW, y: categorySlideView.frame.bottom + bpPadH, width: w - bpPadW*2, height: queryDoneButton.frame.origin.y - categorySlideView.frame.bottom - bpPadH*2)
+		
+		if let appDelegate = UIApplication.shared.delegate as? AppDelegate{
+			if degreePanelView.superview == nil {
+				degreePanelView.isHidden = true
+				degreePanelView.delegate = self
+				appDelegate.rootViewController.view.addSubview(degreePanelView)
+				degreePanelView.frame = appDelegate.rootViewController.view.bounds
+			}
+		}
+
 	}
 	
 	func doneButtonHandler(){
