@@ -12,5 +12,6 @@ target 'Allergy' do
   pod 'Firebase/Storage'
   pod 'Firebase/Messaging'
   pod 'BRYXBanner', '~> 0.7'
+  pod 'SQLite.swift', '~> 0.11.4'
 
 end

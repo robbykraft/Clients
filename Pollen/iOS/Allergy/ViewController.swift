@@ -37,9 +37,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 	override var preferredStatusBarStyle: UIStatusBarStyle {
 		return .lightContent
 	}
-	
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		
+		Pollen.shared.sqliteThings();
 		
 		let statusBarHeight:CGFloat = 0//22
 		let barChartTop:CGFloat = self.view.frame.size.height - 200

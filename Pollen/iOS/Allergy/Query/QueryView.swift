@@ -14,13 +14,22 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 	
 	let dateLabel = UILabel()
 	let topQuestionLabel = UILabel()
-	
+	let selectedCategoryTitle = UILabel()
+
 	let categorySlideView = CategorySlideView()
 	let symptomPanelView = SymptomPanelView()
 	let degreePanelView = DegreePanelView()
 	
 	var selectedCategory:Int?
 	
+	
+	let panelTitles = [
+		"eyes",
+		"nose",
+		"sinus",
+		"throat"
+	]
+
 	let panelText = [
 		["itchy", "red", "watery", "bags"],    // eyes
 		["stuffy", "itchy", "runny", "blood"],  // nose
@@ -44,6 +53,10 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 	
 	func didSelectCategory(index: Int) {
 		selectedCategory = index
+		// show category title
+		selectedCategoryTitle.text = panelTitles[index].capitalized
+		selectedCategoryTitle.isHidden = false
+		// show symptom buttons
 		symptomPanelView.showButtons()
 		guard index < self.panelText.count else { return }
 		let titles = self.panelText[index]
@@ -65,6 +78,11 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 	}
 	
 	func didSelectDegree(sender: UIButton) {
+		let colors = [Style.shared.blue, Style.shared.colorNoPollen, Style.shared.colorMedium, Style.shared.colorVeryHeavy]
+
+		print(sender.tag)
+		guard let category = selectedCategory else { return }
+		categorySlideView.buttons[category].tintColor = colors[sender.tag]
 		degreePanelView.isHidden = true
 	}
 	
@@ -82,7 +100,10 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 		topQuestionLabel.textColor = Style.shared.blue
 		topQuestionLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P24)
 		topQuestionLabel.text = "What is bothering you today?"
-		
+		selectedCategoryTitle.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P30)
+		selectedCategoryTitle.textColor = Style.shared.blue
+		selectedCategoryTitle.textAlignment = .center
+
 		queryDoneButton.setTitle("Done", for: .normal)
 		queryDoneButton.titleLabel?.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P24)
 		queryDoneButton.setTitleColor(Style.shared.blue, for: .normal)
@@ -106,6 +127,7 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 		self.scrollView.addSubview(dateLabel)
 		self.scrollView.addSubview(topQuestionLabel)
 		self.scrollView.addSubview(categorySlideView)
+		self.scrollView.addSubview(selectedCategoryTitle)
 		self.scrollView.addSubview(symptomPanelView)
 		self.scrollView.addSubview(queryDoneButton)
 		
@@ -128,7 +150,9 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 
 		topQuestionLabel.sizeToFit()
 		topQuestionLabel.center = CGPoint(x: w + self.bounds.size.width*0.5, y: dateLabel.frame.origin.y + dateLabel.frame.size.height + topQuestionLabel.frame.size.height*0.5 + 10)
-		
+
+		queryDoneButton.center = CGPoint(x: w + self.bounds.size.width*0.5, y: self.bounds.size.height - queryDoneButton.frame.size.height*0.5 - 20)
+
 		let yTop:CGFloat = topQuestionLabel.frame.origin.y + topQuestionLabel.frame.size.height
 		let questionFrame = CGRect(x: 0, y: yTop + 15, width: self.bounds.size.width, height: self.bounds.size.height - yTop - queryDoneButton.frame.size.height - 15 - 20 - 10)
 		
@@ -137,11 +161,15 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 		categorySlideView.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: h)
 		categorySlideView.center = CGPoint(x: w + self.center.x, y: questionFrame.origin.y + h*0.5)
 
-		queryDoneButton.center = CGPoint(x: w + self.bounds.size.width*0.5, y: self.bounds.size.height - queryDoneButton.frame.size.height*0.5 - 20)
-		
+
+		let categoryTitleH:CGFloat = Style.shared.P30 * 1.13
+		selectedCategoryTitle.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: categoryTitleH)
+
 		let bpPadW:CGFloat = w*0.05
 		let bpPadH:CGFloat = w*0.05
-		symptomPanelView.frame = CGRect(x: w + bpPadW, y: categorySlideView.frame.bottom + bpPadH, width: w - bpPadW*2, height: queryDoneButton.frame.origin.y - categorySlideView.frame.bottom - bpPadH*2)
+		selectedCategoryTitle.center = CGPoint(x: w + self.bounds.size.width*0.5, y: categorySlideView.center.y + categorySlideView.frame.size.height*0.5 + selectedCategoryTitle.frame.size.height*0.5 + bpPadH)
+
+		symptomPanelView.frame = CGRect(x: w + bpPadW, y: selectedCategoryTitle.frame.bottom + bpPadH, width: w - bpPadW*2, height: queryDoneButton.frame.origin.y - selectedCategoryTitle.frame.bottom - bpPadH*2)
 		
 		if let appDelegate = UIApplication.shared.delegate as? AppDelegate{
 			if degreePanelView.superview == nil {

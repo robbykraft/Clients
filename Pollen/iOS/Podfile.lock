@@ -50,6 +50,9 @@ PODS:
   - GoogleToolboxForMac/NSString+URLArguments (2.1.1)
   - GTMSessionFetcher/Core (1.1.8)
   - Protobuf (3.2.0)
+  - SQLite.swift (0.11.4):
+    - SQLite.swift/standard (= 0.11.4)
+  - SQLite.swift/standard (0.11.4)
 
 DEPENDENCIES:
   - BRYXBanner (~> 0.7)
@@ -58,6 +61,7 @@ DEPENDENCIES:
   - Firebase/Database
   - Firebase/Messaging
   - Firebase/Storage
+  - SQLite.swift (~> 0.11.4)
 
 SPEC CHECKSUMS:
   BRYXBanner: 34eabf9c6c009f187948ca78a4f3bba3767d0f04
@@ -72,7 +76,8 @@ SPEC CHECKSUMS:
   GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
   GTMSessionFetcher: 6f8d8b28b7e345549ac471071608170b31cb4977
   Protobuf: 745f59e122e5de98d4d7ef291e264a0eef80f58e
+  SQLite.swift: 3e3bee21da701b5b9f87c4a672cb54f233505692
 
-PODFILE CHECKSUM: d6735d51c5bf59faa339e6d3d9b66950c5e1ba81
+PODFILE CHECKSUM: 062cc9b6faf188c8bc67de81d1a1c37cede3d1f9
 
 COCOAPODS: 1.1.1
