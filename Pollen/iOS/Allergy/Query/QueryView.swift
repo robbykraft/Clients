@@ -21,7 +21,8 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 	let degreePanelView = DegreePanelView()
 	
 	var selectedCategory:Int?
-	
+	var selectedSymptom:Int?
+
 	
 	let panelTitles = [
 		"eyes",
@@ -66,24 +67,24 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 	}
 	
 	func didSelectSymptom(index: Int) {
-		if let category = selectedCategory{
+		selectedSymptom = index
+		guard let category = selectedCategory else { return }
 //			self.categorySlideView.categoryHighlight[category] = !self.categorySlideView.categoryHighlight[category]
-			self.categorySlideView.categoryHighlight[category] = true
-			self.categorySlideView.setNeedsLayout()
-
+		
 //			symptomPanelView.buttons[index].setTitleColor(Style.shared.red, for: .normal)
 //			symptomPanelView.buttons[index].layer.borderColor = Style.shared.red.cgColor
 			degreePanelView.isHidden = false
-		}
 	}
 	
 	func didSelectDegree(sender: UIButton) {
 		let colors = [Style.shared.blue, Style.shared.colorNoPollen, Style.shared.colorMedium, Style.shared.colorVeryHeavy]
-
-		print(sender.tag)
 		guard let category = selectedCategory else { return }
 		categorySlideView.buttons[category].tintColor = colors[sender.tag]
 		degreePanelView.isHidden = true
+
+		self.categorySlideView.categoryEntryDegree[category] = sender.tag
+		self.categorySlideView.setNeedsLayout()
+
 	}
 	
 	func initUI(){

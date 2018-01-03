@@ -19,7 +19,7 @@ class CategorySlideView: UIView {
 	let imageNames = ["eye", "nose", "sinus", "throat"]
 	let buttons:[UIButton] = [UIButton(), UIButton(), UIButton(), UIButton(), UIButton(), UIButton(), UIButton(), UIButton(), UIButton(), UIButton(), UIButton(), UIButton()]
 	
-	var categoryHighlight:[Bool] = [false, false, false, false, false, false, false, false, false, false, false, false]
+	var categoryEntryDegree:[Int] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -63,11 +63,10 @@ class CategorySlideView: UIView {
 		let pct:CGFloat = 0.9
 		let btnH:CGFloat = self.bounds.height*pct
 		
+		let categoryColors = [Style.shared.blue, Style.shared.colorNoPollen, Style.shared.colorMedium, Style.shared.colorVeryHeavy ]
+
 		for i in 0 ..< self.buttons.count {
-			var buttonColor = Style.shared.blue
-			if self.categoryHighlight[i]{
-				buttonColor = Style.shared.red
-			}
+			let buttonColor = categoryColors[categoryEntryDegree[i]]
 			let page = CGFloat(Int(Double(i) / 4.0))
 			let iMod4 = CGFloat(i%4)
 			let startX:CGFloat = page*self.bounds.size.width + (self.bounds.size.width - btnH*4) * 0.5
