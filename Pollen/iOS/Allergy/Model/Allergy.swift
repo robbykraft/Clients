@@ -8,9 +8,42 @@
 
 import Foundation
 
-let AllergyConditionsKeys = ["eyes_itchy", "eyes_red", "eyes_watery", "eyes_bags", "sinus_pressure", "sinus_pain", "sinus_coloredDischarge", "sinus_toothPain", "nose_stuffy", "nose_itchy", "nose_runny", "nose_blood", "throat_clearing", "throat_sore", "throat_hoarseVoice", "throat_itchyScratchy", "lungs_wheeze", "lungs_cough", "lungs_tightChest", "lungs_shortBreath", "skin_itch", "skin_bumpsHives", "skin_eczema", "skin_swelling", "meds_pill", "meds_noseSpray", "meds_inhaler", "meds_topicalCream", "wokeUp_groggyHead", "wokeUp_stuffedUp", "wokeUp_CrustyEyes", "wokeUp_dryLips", "nightTime_stuffy", "nightTime_cough", "nightTime_throatDrainage", "nightTime_wheezeChest", "pet_dog", "pet_cat", "pet_rodent", "pet_horse", "mold_home", "mold_work", "mold_school", "mold_other", "dust_home", "dust_work", "dust_school", "dust_other", "outdoors_playingSports", "outdoors_airTravel", "outdoors_someoneSick", "outdoors_airPollution", "energyLevel_great", "energyLevel_medium", "energyLevel_low", "energyLevel_sick", "headache_forehead", "headache_sides", "headache_back", "headache_behindEyes"]
 
-let bodyParts = [
+class Allergies {
+	static let shared = Allergies()
+	
+	let records:[String:AllergyEntry] = [:]
+	
+	fileprivate init(){
+		boot()
+	}
+	
+	func boot(){
+		reloadFromDefaults()
+	}
+	
+//	func updateRecord(record)
+	
+	func reloadFromDefaults(){
+		if let allergies = UserDefaults.standard.object(forKey: "records"){
+			print("from ns user defaults")
+			print(allergies)
+		} else{
+			print("no user defaults found")
+		}
+	}
+	
+	func synchronize(){
+		let recordsDictionary = records.map { (arg) -> [String:[String:[String]]] in
+			let (key, value) = arg
+			return [key:value.dictionary()]
+		}
+		UserDefaults.standard.set(recordsDictionary, forKey: "records")
+		UserDefaults.standard.synchronize()
+	}
+}
+
+let SymptomCategories = [
 	"eyes",
 	"sinus",
 	"nose",
@@ -18,115 +51,88 @@ let bodyParts = [
 	"lungs",
 	"skin",
 	"meds",
-	"wokeUp",
-	"nightTime",
+	"woke up",
+	"night time",
 	"pet",
 	"mold",
 	"dust",
 	"outdoors",
-	"energyLevel",
+	"energy level",
 	"headache"
 ]
 
-let symptoms = [
-	["itchy", "red", "watery", "bags"],								// eyes
-	["pressure", "pain", "coloredDischarge", "toothPain"],			// sinus
-	["stuffy", "itchy", "runny", "blood"],							// nose
-	["clearing", "sore", "hoarseVoice", "itchyScratchy"],			// throat
-	["wheeze", "cough", "tightChest", "shortBreath"],				// lungs
-	["itch", "bumpsHives", "eczema", "swelling"],					// skin
-	["pill", "noseSpray", "inhaler", "topicalCream"],				// meds
-	["groggyHead", "stuffedUp", "CrustyEyes", "dryLips"],			// wokeUp
-	["stuffy", "cough", "throatDrainage", "wheezeChest"],			// nightTime
-	["dog", "cat", "rodent", "horse"],								// pet
-	["home", "work", "school", "other"],							// mold
-	["home", "work", "school", "other"],							// dust
-	["playingSports", "airTravel", "someoneSick", "airPollution"],	// outdoors
-	["great", "medium", "low", "sick"],								// energyLevel
-	["forehead", "sides", "back", "behindEyes"]						// headache
+let SymptomNames = [
+	"eyes" : ["itchy", "red", "watery", "bags"],
+	"sinus" : ["pressure", "pain", "colored discharge", "tooth pain"],
+	"nose" : ["stuffy", "itchy", "runny", "blood"],
+	"throat" : ["clearing", "sore", "hoarse voice", "itchy / scratchy"],
+	"lungs" : ["wheeze", "cough", "tight chest", "short breath"],
+	"skin" : ["itch", "bumps / hives", "eczema", "swelling"],
+	"meds" : ["pill", "nose spray", "inhaler", "topical cream"],
+	"woke up" : ["groggy head", "stuffed up", "crusty eyes", "dry lips"],
+	"night time" : ["stuffy", "cough", "throat drainage", "wheezy chest"],
+	"pet" : ["dog", "cat", "rodent", "horse"],
+	"mold" : ["home", "work", "school", "other"],
+	"dust" : ["home", "work", "school", "other"],
+	"outdoors" : ["playing sports", "air travel", "someone sick", "air pollution"],
+	"energy level" : ["great", "medium", "low", "sick"],
+	"headache" : ["forehead", "sides", "back", "behind eyes"]
 ]
 
-enum AllergyConditions:String {
-	case eyes_itchy
-	case eyes_red
-	case eyes_watery
-	case eyes_bags
-	case sinus_pressure
-	case sinus_pain
-	case sinus_coloredDischarge
-	case sinus_toothPain
-	case nose_stuffy
-	case nose_itchy
-	case nose_runny
-	case nose_blood
-	case throat_clearing
-	case throat_sore
-	case throat_hoarseVoice
-	case throat_itchyScratchy
-	case lungs_wheeze
-	case lungs_cough
-	case lungs_tightChest
-	case lungs_shortBreath
-	case skin_itch
-	case skin_bumpsHives
-	case skin_eczema
-	case skin_swelling
-	case meds_pill
-	case meds_noseSpray
-	case meds_inhaler
-	case meds_topicalCream
-	case wokeUp_groggyHead
-	case wokeUp_stuffedUp
-	case wokeUp_CrustyEyes
-	case wokeUp_dryLips
-	case nightTime_stuffy
-	case nightTime_cough
-	case nightTime_throatDrainage
-	case nightTime_wheezeChest
-	case pet_dog
-	case pet_cat
-	case pet_rodent
-	case pet_horse
-	case mold_home
-	case mold_work
-	case mold_school
-	case mold_other
-	case dust_home
-	case dust_work
-	case dust_school
-	case dust_other
-	case outdoors_playingSports
-	case outdoors_airTravel
-	case outdoors_someoneSick
-	case outdoors_airPollution
-	case energyLevel_great
-	case energyLevel_medium
-	case energyLevel_low
-	case energyLevel_sick
-	case headache_forehead
-	case headache_sides
-	case headache_back
-	case headache_behindEyes
-}
 
+//let symptomArray = [
+//	["itchy", "red", "watery", "bags"],									// eyes
+//	["pressure", "pain", "colored discharge", "tooth pain"],			// sinus
+//	["stuffy", "itchy", "runny", "blood"],								// nose
+//	["clearing", "sore", "hoarse voice", "itchy / scratchy"],			// throat
+//	["wheeze", "cough", "tight chest", "short breath"],					// lungs
+//	["itch", "bumps / hives", "eczema", "swelling"],					// skin
+//	["pill", "nose spray", "inhaler", "topical cream"],					// meds
+//	["groggy head", "stuffed up", "crusty eyes", "dry lips"],			// wokeUp
+//	["stuffy", "cough", "throat drainage", "wheezy chest"],				// nightTime
+//	["dog", "cat", "rodent", "horse"],									// pet
+//	["home", "work", "school", "other"],								// mold
+//	["home", "work", "school", "other"],								// dust
+//	["playing sports", "air travel", "someone sick", "air pollution"],	// outdoors
+//	["great", "medium", "low", "sick"],									// energyLevel
+//	["forehead", "sides", "back", "behind eyes"]						// headache
+//]
 
-enum eyes_allergies:String{ case itchy, red, watery, bags }
-enum sinus_allergies:String { case pressure, pain, colored_discharge, tooth_pain }
+enum eyes_allergies:String { case itchy, red, watery, bags }
+enum sinus_allergies:String { case pressure, pain, colored_discharge = "colored discharge", tooth_pain = "tooth pain" }
 enum nose_allergies:String { case stuffy, itchy, runny, blood }
-enum throat_allergies:String { case clearing, sore, hoarse_voice, itchy_scratchy }
-enum lungs_allergies:String { case wheeze, cough, tight_chest, short_breath }
-enum skin_allergies:String { case itch, bumps_hives, eczema, swelling }
-enum meds_allergies:String { case pill, nose_spray, inhaler, topical_cream }
-enum wokeUp_allergies:String { case groggy_head, stuffed_up, crusty_eyes, dry_lips }
-enum nightTime_allergies:String { case stuffy, cough, throat_drainage, wheeze_chest }
+enum throat_allergies:String { case clearing, sore, hoarse_voice = "hoarse voice", itchy_scratchy = "itchy / scratchy" }
+enum lungs_allergies:String { case wheeze, cough, tight_chest = "tight chest", short_breath = "short breath" }
+enum skin_allergies:String { case itch, bumps_hives = "bumps / hives", eczema, swelling }
+enum meds_allergies:String { case pill, nose_spray = "nose spray", inhaler, topical_cream = "topical cream" }
+enum wokeUp_allergies:String { case groggy_head = "groggy head", stuffed_up = "stuffed up", crusty_eyes = "crusty eyes", dry_lips = "dry lips" }
+enum nightTime_allergies:String { case stuffy, cough, throat_drainage = "throat drainage", wheezy_chest = "wheezy chest" }
 enum pet_allergies:String { case dog, cat, rodent, horse }
 enum mold_allergies:String { case home, work, school, other }
 enum dust_allergies:String { case home, work, school, other }
-enum outdoors_allergies:String { case playing_sports, air_travel, someone_sick, air_pollution }
+enum outdoors_allergies:String { case playing_sports = "playing sports", air_travel = "air travel", someone_sick = "someone sick", air_pollution = "air pollution" }
 enum energyLevel_allergies:String { case great, medium, low, sick }
-enum headache_allergies:String { case forehead, sides, back, behind_eyes }
+enum headache_allergies:String { case forehead, sides, back, behind_eyes = "behind eyes" }
 
-struct Allergies{
+let Symptoms = [
+	"eyes" : [ eyes_allergies.itchy, eyes_allergies.red, eyes_allergies.watery, eyes_allergies.bags ],
+	"sinus" : [ sinus_allergies.pressure, sinus_allergies.pain, sinus_allergies.colored_discharge, sinus_allergies.tooth_pain ],
+	"nose" : [ nose_allergies.stuffy, nose_allergies.itchy, nose_allergies.runny, nose_allergies.blood ],
+	"throat" : [ throat_allergies.clearing, throat_allergies.sore, throat_allergies.hoarse_voice, throat_allergies.itchy_scratchy ],
+	"lungs" : [ lungs_allergies.wheeze, lungs_allergies.cough, lungs_allergies.tight_chest, lungs_allergies.short_breath ],
+	"skin" : [ skin_allergies.itch, skin_allergies.bumps_hives, skin_allergies.eczema, skin_allergies.swelling ],
+	"meds" : [ meds_allergies.pill, meds_allergies.nose_spray, meds_allergies.inhaler, meds_allergies.topical_cream ],
+	"woke up" : [ wokeUp_allergies.groggy_head, wokeUp_allergies.stuffed_up, wokeUp_allergies.crusty_eyes, wokeUp_allergies.dry_lips ],
+	"night time" : [ nightTime_allergies.stuffy, nightTime_allergies.cough, nightTime_allergies.throat_drainage, nightTime_allergies.wheezy_chest ],
+	"pet" : [ pet_allergies.dog, pet_allergies.cat, pet_allergies.rodent, pet_allergies.horse ],
+	"mold" : [ mold_allergies.home, mold_allergies.work, mold_allergies.school, mold_allergies.other ],
+	"dust" : [ dust_allergies.home, dust_allergies.work, dust_allergies.school, dust_allergies.other ],
+	"outdoors" : [ outdoors_allergies.playing_sports, outdoors_allergies.air_travel, outdoors_allergies.someone_sick, outdoors_allergies.air_pollution ],
+	"energy level" : [ energyLevel_allergies.great, energyLevel_allergies.medium, energyLevel_allergies.low, energyLevel_allergies.sick ],
+	"headache" : [ headache_allergies.forehead, headache_allergies.sides, headache_allergies.back, headache_allergies.behind_eyes ]
+]
+
+struct AllergyResponse{
 	var eyes:[eyes_allergies]?
 	var sinus:[sinus_allergies]?
 	var nose:[nose_allergies]?
@@ -144,21 +150,11 @@ struct Allergies{
 	var headache:[headache_allergies]?
 }
 
-func allAllergyConditions() -> [AllergyConditions]{
-	return AllergyConditionsKeys.map({ AllergyConditions(rawValue: $0)! })
-	//	var results:[AllergyConditions] = []
-	//	var i = 0
-	//	while let allergy = AllergyConditions(rawValue: i) {
-	//		results.append(allergy)
-	//		i += 1
-	//	}
-	//	return results
-}
 
 class AllergyEntry: NSObject {
 
 	var date:Date
-	var allergies:Allergies?
+	var allergies:AllergyResponse?
 	
 	func dictionary() -> [String:[String]]{
 		var d:[String:[String]] = [:]
@@ -170,20 +166,21 @@ class AllergyEntry: NSObject {
 			if let y = a.lungs{ d["lungs"]=[String](); for z in y{d["lungs"]!.append(z.rawValue)} }
 			if let y = a.skin{ d["skin"]=[String](); for z in y{d["skin"]!.append(z.rawValue)} }
 			if let y = a.meds{ d["meds"]=[String](); for z in y{d["meds"]!.append(z.rawValue)} }
-			if let y = a.wokeUp{ d["wokeUp"]=[String](); for z in y{d["wokeUp"]!.append(z.rawValue)} }
-			if let y = a.nightTime{ d["nightTime"]=[String](); for z in y{d["nightTime"]!.append(z.rawValue)} }
+			if let y = a.wokeUp{ d["woke up"]=[String](); for z in y{d["woke up"]!.append(z.rawValue)} }
+			if let y = a.nightTime{ d["night time"]=[String](); for z in y{d["night time"]!.append(z.rawValue)} }
 			if let y = a.pet{ d["pet"]=[String](); for z in y{d["pet"]!.append(z.rawValue)} }
 			if let y = a.mold{ d["mold"]=[String](); for z in y{d["mold"]!.append(z.rawValue)} }
 			if let y = a.dust{ d["dust"]=[String](); for z in y{d["dust"]!.append(z.rawValue)} }
 			if let y = a.outdoors{ d["outdoors"]=[String](); for z in y{d["outdoors"]!.append(z.rawValue)} }
-			if let y = a.energyLevel{ d["energyLevel"]=[String](); for z in y{d["energyLevel"]!.append(z.rawValue)} }
+			if let y = a.energyLevel{ d["energy level"]=[String](); for z in y{d["energy level"]!.append(z.rawValue)} }
 			if let y = a.headache{ d["headache"]=[String](); for z in y{d["headache"]!.append(z.rawValue)} }
 		}
 		return d
 	}
 	
-	func setFromDictionary( d:[String:[String]] ) {
-		var a = Allergies()
+	func setFromDictionary( d:[String:[String]], date:Date ) {
+		self.date = date
+		var a = AllergyResponse()
 		for (key,value) in d{
 			switch key{
 			case "eyes": a.eyes=[]; for v in value{if let e=eyes_allergies.init(rawValue:v){a.eyes!.append(e)} }
@@ -193,13 +190,13 @@ class AllergyEntry: NSObject {
 			case "lungs": a.lungs=[]; for v in value{if let e=lungs_allergies.init(rawValue:v){a.lungs!.append(e)} }
 			case "skin": a.skin=[]; for v in value{if let e=skin_allergies.init(rawValue:v){a.skin!.append(e)} }
 			case "meds": a.meds=[]; for v in value{if let e=meds_allergies.init(rawValue:v){a.meds!.append(e)} }
-			case "wokeUp": a.wokeUp=[]; for v in value{if let e=wokeUp_allergies.init(rawValue:v){a.wokeUp!.append(e)} }
-			case "nightTime": a.nightTime=[]; for v in value{if let e=nightTime_allergies.init(rawValue:v){a.nightTime!.append(e)} }
+			case "woke up": a.wokeUp=[]; for v in value{if let e=wokeUp_allergies.init(rawValue:v){a.wokeUp!.append(e)} }
+			case "night time": a.nightTime=[]; for v in value{if let e=nightTime_allergies.init(rawValue:v){a.nightTime!.append(e)} }
 			case "pet": a.pet=[]; for v in value{if let e=pet_allergies.init(rawValue:v){a.pet!.append(e)} }
 			case "mold": a.mold=[]; for v in value{if let e=mold_allergies.init(rawValue:v){a.mold!.append(e)} }
 			case "dust": a.dust=[]; for v in value{if let e=dust_allergies.init(rawValue:v){a.dust!.append(e)} }
 			case "outdoors": a.outdoors=[]; for v in value{if let e=outdoors_allergies.init(rawValue:v){a.outdoors!.append(e)} }
-			case "energyLevel": a.energyLevel=[]; for v in value{if let e=energyLevel_allergies.init(rawValue:v){a.energyLevel!.append(e)} }
+			case "energy level": a.energyLevel=[]; for v in value{if let e=energyLevel_allergies.init(rawValue:v){a.energyLevel!.append(e)} }
 			case "headache": a.headache=[]; for v in value{if let e=headache_allergies.init(rawValue:v){a.headache!.append(e)} }
 			default: break
 			}
@@ -224,3 +221,5 @@ class AllergyEntry: NSObject {
 	}
 
 }
+
+

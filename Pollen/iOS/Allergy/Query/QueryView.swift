@@ -22,21 +22,20 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 	
 	var selectedCategory:Int?
 	var selectedSymptom:Int?
-
 	
-	let panelTitles = [
-		"eyes",
-		"nose",
-		"sinus",
-		"throat"
-	]
+//	let panelTitles = [
+//		"eyes",
+//		"nose",
+//		"sinus",
+//		"throat"
+//	]
 
-	let panelText = [
-		["itchy", "red", "watery", "bags"],    // eyes
-		["stuffy", "itchy", "runny", "blood"],  // nose
-		["pressure", "pain", "colored discharge", "tooth pain"],  // sinus
-		["clearing", "sore", "hoarse voice", "itchy / scratchy"]  // throat
-	]
+//	let panelText = [
+//		["itchy", "red", "watery", "bags"],    // eyes
+//		["stuffy", "itchy", "runny", "blood"],  // nose
+//		["pressure", "pain", "colored discharge", "tooth pain"],  // sinus
+//		["clearing", "sore", "hoarse voice", "itchy / scratchy"]  // throat
+//	]
 
 	let queryDoneButton = UIButton()
 
@@ -55,36 +54,42 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 	func didSelectCategory(index: Int) {
 		selectedCategory = index
 		// show category title
-		selectedCategoryTitle.text = panelTitles[index].capitalized
+		let categoryString = SymptomCategories[index]
+		selectedCategoryTitle.text = categoryString.capitalized
 		selectedCategoryTitle.isHidden = false
 		// show symptom buttons
 		symptomPanelView.showButtons()
-		guard index < self.panelText.count else { return }
-		let titles = self.panelText[index]
-		for i in 0..<titles.count{
-			symptomPanelView.buttons[i].setTitle(titles[i], for: .normal)
+		if let symptoms = SymptomNames[categoryString] {
+			for i in 0..<symptoms.count{
+				symptomPanelView.buttons[i].setTitle(symptoms[i], for: .normal)
+			}
 		}
+//		guard index < self.panelText.count else { return }
+//		let titles = self.panelText[index]
+//		for i in 0..<titles.count{
+//			symptomPanelView.buttons[i].setTitle(titles[i], for: .normal)
+//		}
 	}
-	
+
 	func didSelectSymptom(index: Int) {
 		selectedSymptom = index
 		guard let category = selectedCategory else { return }
 //			self.categorySlideView.categoryHighlight[category] = !self.categorySlideView.categoryHighlight[category]
-		
 //			symptomPanelView.buttons[index].setTitleColor(Style.shared.red, for: .normal)
 //			symptomPanelView.buttons[index].layer.borderColor = Style.shared.red.cgColor
 			degreePanelView.isHidden = false
 	}
-	
+
 	func didSelectDegree(sender: UIButton) {
 		let colors = [Style.shared.blue, Style.shared.colorNoPollen, Style.shared.colorMedium, Style.shared.colorVeryHeavy]
 		guard let category = selectedCategory else { return }
 		categorySlideView.buttons[category].tintColor = colors[sender.tag]
 		degreePanelView.isHidden = true
+		
+//		Allergies.shared.updateRecord()
 
 		self.categorySlideView.categoryEntryDegree[category] = sender.tag
 		self.categorySlideView.setNeedsLayout()
-
 	}
 	
 	func initUI(){

@@ -100,6 +100,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		_ = Fire.shared
 		_ = Pollen.shared
 		_ = Style.shared
+		_ = Allergies.shared
 		
 		
 		Pollen.shared.boot { (success) in

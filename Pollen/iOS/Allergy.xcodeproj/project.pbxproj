@@ -31,6 +31,8 @@
 		D5A997361E9BE71D00F37F52 /* MasterNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A997351E9BE71D00F37F52 /* MasterNavigationController.swift */; };
 		D5A9973E1E9BEC8600F37F52 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9973C1E9BEC8600F37F52 /* Cache.swift */; };
 		D5A9973F1E9BEC8600F37F52 /* Fire.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9973D1E9BEC8600F37F52 /* Fire.swift */; };
+		D5AE20C31FFE8F6E00ED9F73 /* ATX_PollenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AE20C21FFE8F6E00ED9F73 /* ATX_PollenTests.swift */; };
+		D5AE20CB1FFE937F00ED9F73 /* Allergy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B4D69D1FCC6F2600270404 /* Allergy.swift */; };
 		D5B4D69C1FCC591000270404 /* DegreePanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B4D69B1FCC591000270404 /* DegreePanelView.swift */; };
 		D5B4D69E1FCC6F2600270404 /* Allergy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B4D69D1FCC6F2600270404 /* Allergy.swift */; };
 		D5B4D6A01FCC75F500270404 /* db.sqlite3 in Resources */ = {isa = PBXBuildFile; fileRef = D5B4D69F1FCC75E200270404 /* db.sqlite3 */; };
@@ -42,6 +44,16 @@
 		D5F5EA3D1F96610C004FB5DE /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F5EA3C1F96610C004FB5DE /* LoginView.swift */; };
 		D5F5EA3F1F966851004FB5DE /* QuerySlide.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F5EA3E1F966851004FB5DE /* QuerySlide.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D5AE20C51FFE8F6E00ED9F73 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D51C229B1E92E5EB00887F42 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D51C22A21E92E5EB00887F42;
+			remoteInfo = Allergy;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		1DB2757E7D4527FDFF046321 /* Pods-Allergy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Allergy.release.xcconfig"; path = "Pods/Target Support Files/Pods-Allergy/Pods-Allergy.release.xcconfig"; sourceTree = "<group>"; };
@@ -73,6 +85,9 @@
 		D5A997351E9BE71D00F37F52 /* MasterNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterNavigationController.swift; sourceTree = "<group>"; };
 		D5A9973C1E9BEC8600F37F52 /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		D5A9973D1E9BEC8600F37F52 /* Fire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fire.swift; sourceTree = "<group>"; };
+		D5AE20C01FFE8F6E00ED9F73 /* ATX PollenTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ATX PollenTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D5AE20C21FFE8F6E00ED9F73 /* ATX_PollenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATX_PollenTests.swift; sourceTree = "<group>"; };
+		D5AE20C41FFE8F6E00ED9F73 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D5B4D69B1FCC591000270404 /* DegreePanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DegreePanelView.swift; sourceTree = "<group>"; };
 		D5B4D69D1FCC6F2600270404 /* Allergy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Allergy.swift; sourceTree = "<group>"; };
 		D5B4D69F1FCC75E200270404 /* db.sqlite3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = db.sqlite3; sourceTree = "<group>"; };
@@ -95,6 +110,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D5AE20BD1FFE8F6E00ED9F73 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -111,6 +133,7 @@
 			isa = PBXGroup;
 			children = (
 				D51C22A51E92E5EB00887F42 /* Allergy */,
+				D5AE20C11FFE8F6E00ED9F73 /* ATX PollenTests */,
 				D51C22A41E92E5EB00887F42 /* Products */,
 				D71FAD3989B127902A9C977F /* Pods */,
 				C924E1767FCBB2F991288F37 /* Frameworks */,
@@ -121,6 +144,7 @@
 			isa = PBXGroup;
 			children = (
 				D51C22A31E92E5EB00887F42 /* Allergy.app */,
+				D5AE20C01FFE8F6E00ED9F73 /* ATX PollenTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -213,6 +237,15 @@
 			path = Singletons;
 			sourceTree = "<group>";
 		};
+		D5AE20C11FFE8F6E00ED9F73 /* ATX PollenTests */ = {
+			isa = PBXGroup;
+			children = (
+				D5AE20C21FFE8F6E00ED9F73 /* ATX_PollenTests.swift */,
+				D5AE20C41FFE8F6E00ED9F73 /* Info.plist */,
+			);
+			path = "ATX PollenTests";
+			sourceTree = "<group>";
+		};
 		D5B8020A1FA3951F002C4048 /* Subclass */ = {
 			isa = PBXGroup;
 			children = (
@@ -263,13 +296,31 @@
 			productReference = D51C22A31E92E5EB00887F42 /* Allergy.app */;
 			productType = "com.apple.product-type.application";
 		};
+		D5AE20BF1FFE8F6E00ED9F73 /* ATX PollenTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D5AE20C91FFE8F6E00ED9F73 /* Build configuration list for PBXNativeTarget "ATX PollenTests" */;
+			buildPhases = (
+				D5AE20BC1FFE8F6E00ED9F73 /* Sources */,
+				D5AE20BD1FFE8F6E00ED9F73 /* Frameworks */,
+				D5AE20BE1FFE8F6E00ED9F73 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D5AE20C61FFE8F6E00ED9F73 /* PBXTargetDependency */,
+			);
+			name = "ATX PollenTests";
+			productName = "ATX PollenTests";
+			productReference = D5AE20C01FFE8F6E00ED9F73 /* ATX PollenTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		D51C229B1E92E5EB00887F42 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0830;
+				LastSwiftUpdateCheck = 0920;
 				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = "Robby Kraft";
 				TargetAttributes = {
@@ -282,6 +333,12 @@
 								enabled = 1;
 							};
 						};
+					};
+					D5AE20BF1FFE8F6E00ED9F73 = {
+						CreatedOnToolsVersion = 9.2;
+						DevelopmentTeam = 78C98TD784;
+						ProvisioningStyle = Automatic;
+						TestTargetID = D51C22A21E92E5EB00887F42;
 					};
 				};
 			};
@@ -299,6 +356,7 @@
 			projectRoot = "";
 			targets = (
 				D51C22A21E92E5EB00887F42 /* Allergy */,
+				D5AE20BF1FFE8F6E00ED9F73 /* ATX PollenTests */,
 			);
 		};
 /* End PBXProject section */
@@ -312,6 +370,13 @@
 				D51C22B11E92E5EB00887F42 /* LaunchScreen.storyboard in Resources */,
 				D51C22B91E92E5FB00887F42 /* GoogleService-Info.plist in Resources */,
 				D51C22AE1E92E5EB00887F42 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D5AE20BE1FFE8F6E00ED9F73 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -402,7 +467,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D5AE20BC1FFE8F6E00ED9F73 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D5AE20CB1FFE937F00ED9F73 /* Allergy.swift in Sources */,
+				D5AE20C31FFE8F6E00ED9F73 /* ATX_PollenTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D5AE20C61FFE8F6E00ED9F73 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D51C22A21E92E5EB00887F42 /* Allergy */;
+			targetProxy = D5AE20C51FFE8F6E00ED9F73 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		D51C22AF1E92E5EB00887F42 /* LaunchScreen.storyboard */ = {
@@ -567,6 +649,48 @@
 			};
 			name = Release;
 		};
+		D5AE20C71FFE8F6E00ED9F73 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 78C98TD784;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "ATX PollenTests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.robbykraft.ATX-PollenTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Allergy.app/Allergy";
+			};
+			name = Debug;
+		};
+		D5AE20C81FFE8F6E00ED9F73 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 78C98TD784;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "ATX PollenTests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.robbykraft.ATX-PollenTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Allergy.app/Allergy";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -584,6 +708,15 @@
 			buildConfigurations = (
 				D51C22B61E92E5EB00887F42 /* Debug */,
 				D51C22B71E92E5EB00887F42 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D5AE20C91FFE8F6E00ED9F73 /* Build configuration list for PBXNativeTarget "ATX PollenTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D5AE20C71FFE8F6E00ED9F73 /* Debug */,
+				D5AE20C81FFE8F6E00ED9F73 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

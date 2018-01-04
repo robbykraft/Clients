@@ -51,7 +51,7 @@ class Pollen {
 	}
 	
 	func sqliteThings(){
-		var databasePath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+/*		var databasePath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
 		databasePath.append("/db.sqlite3")
 		print(databasePath)
 		if let db = try? Connection(databasePath){
@@ -67,10 +67,10 @@ class Pollen {
 					t.column(year)
 					t.column(month)
 					t.column(day)
-					for key in AllergyConditionsKeys{
-						let allergyCondition = Expression<Int64>(key)
-						t.column(allergyCondition)
-					}
+//					for key in AllergyConditionsKeys{
+//						let allergyCondition = Expression<Int64>(key)
+//						t.column(allergyCondition)
+//					}
 				}))
 				
 //				let insert2 = dailies.insert(name <- "franklin", year <- )
@@ -103,7 +103,7 @@ class Pollen {
 			} catch{
 				print("update new entry fail")
 			}
-		}
+		}*/
 	}
 	
 	
