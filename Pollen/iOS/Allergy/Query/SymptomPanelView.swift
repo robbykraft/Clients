@@ -15,7 +15,7 @@ protocol SymptomPanelDelegate{
 class SymptomPanelView: UIView {
 	
 	let buttons = [UIButton(), UIButton(), UIButton(), UIButton()]
-	
+	var symptomColors:[UIColor] = [Style.shared.blue, Style.shared.blue, Style.shared.blue, Style.shared.blue]
 	var delegate:SymptomPanelDelegate?
 
 	override func layoutSubviews() {
@@ -29,6 +29,12 @@ class SymptomPanelView: UIView {
 		self.buttons[1].center = CGPoint(x: self.bounds.size.width*0.75, y: self.bounds.size.height*0.25)
 		self.buttons[2].center = CGPoint(x: self.bounds.size.width*0.25, y: self.bounds.size.height*0.75)
 		self.buttons[3].center = CGPoint(x: self.bounds.size.width*0.75, y: self.bounds.size.height*0.75)
+		
+		for i in 0 ..< self.buttons.count{
+			self.buttons[i].setTitleColor(symptomColors[i], for: .normal)
+			self.buttons[i].layer.borderColor = symptomColors[i].cgColor
+		}
+		
 	}
 	
 	override init(frame: CGRect) {

@@ -8,36 +8,101 @@
 
 import Foundation
 
+extension Date{
+	func toString() -> String{
+		let formatter = DateFormatter()
+		formatter.dateFormat = "yyyy-MM-dd"
+		return formatter.string(from: self)
+	}
+	mutating func from(string:String){
+		let formatter = DateFormatter()
+		formatter.dateFormat = "yyyy-MM-dd"
+//		formatter.timeZone = TimeZone(abbreviation: "GMT+0:00") //Current time zone
+		if let success = formatter.date(from: string){ self = success }
+	}
+}
+
+class AllergyEntry: NSObject {
+	var date:Date
+	var allergies:[ String:[String:Int] ] = [:]
+	func updateRecord(category:String, symptom:String, degree:Int){
+		if self.allergies[category] != nil{
+			//entry exists
+			self.allergies[category]![symptom] = degree
+		} else{
+			//entry doesn't exist, make first one
+			self.allergies[category] = [symptom:degree]
+		}
+	}
+	func dictionary() -> [String:[String:Int]]{
+		return self.allergies
+	}
+	override init() {
+		// dates are initialized to NOW time, in user's time zone
+		self.date = Date()
+		super.init()
+	}
+	init(date:Date, record:[String:[String:Int]]){
+		self.date = date
+		self.allergies = record
+	}
+}
 
 class Allergies {
 	static let shared = Allergies()
 	
-	let records:[String:AllergyEntry] = [:]
+	var records:[String:AllergyEntry] = [:]
 	
 	fileprivate init(){
 		boot()
 	}
 	
 	func boot(){
+//		UserDefaults.standard.set([String:String](), forKey: "records")
+//		UserDefaults.standard.synchronize()
 		reloadFromDefaults()
 	}
 	
-//	func updateRecord(record)
+	func updateRecord(date:Date, category:String, symptom:String, degree:Int){
+		let dateString = date.toString()
+		if self.records[dateString] == nil{
+			// create first entry in new record
+			self.records[dateString] = AllergyEntry()
+		}
+		self.records[dateString]!.updateRecord(category: category, symptom: symptom, degree: degree)
+		self.synchronize()
+	}
 	
 	func reloadFromDefaults(){
-		if let allergies = UserDefaults.standard.object(forKey: "records"){
+		if let records = UserDefaults.standard.object(forKey: "records") as? [String: [String:[String:Int]] ]{
 			print("from ns user defaults")
-			print(allergies)
+			print(records)
+			for (k,v) in records{
+				var date = Date()
+				date.from(string: k)
+				let record = AllergyEntry(date: date, record: v)
+				self.records[k] = record
+			}
 		} else{
 			print("no user defaults found")
 		}
 	}
 	
 	func synchronize(){
-		let recordsDictionary = records.map { (arg) -> [String:[String:[String]]] in
-			let (key, value) = arg
-			return [key:value.dictionary()]
+//		let recordsDictionary = records.map { (arg) -> [String:[String:[String]]] in
+//			let (key, value) = arg
+//			return [key:value.dictionary()]
+//		}
+//		let recordsDictionary = self.records.map { (arg) -> [String:[String:[String:Int]]] in
+//			let (key, value) = arg
+//			return key:value.dictionary()
+//		}
+		var recordsDictionary:[String:[String:[String:Int]]] = [:]
+		for (k,v) in self.records{
+			recordsDictionary[k] = v.dictionary()
 		}
+		print("synchronizing user defaults")
+		print(recordsDictionary)
 		UserDefaults.standard.set(recordsDictionary, forKey: "records")
 		UserDefaults.standard.synchronize()
 	}
@@ -79,25 +144,6 @@ let SymptomNames = [
 	"headache" : ["forehead", "sides", "back", "behind eyes"]
 ]
 
-
-//let symptomArray = [
-//	["itchy", "red", "watery", "bags"],									// eyes
-//	["pressure", "pain", "colored discharge", "tooth pain"],			// sinus
-//	["stuffy", "itchy", "runny", "blood"],								// nose
-//	["clearing", "sore", "hoarse voice", "itchy / scratchy"],			// throat
-//	["wheeze", "cough", "tight chest", "short breath"],					// lungs
-//	["itch", "bumps / hives", "eczema", "swelling"],					// skin
-//	["pill", "nose spray", "inhaler", "topical cream"],					// meds
-//	["groggy head", "stuffed up", "crusty eyes", "dry lips"],			// wokeUp
-//	["stuffy", "cough", "throat drainage", "wheezy chest"],				// nightTime
-//	["dog", "cat", "rodent", "horse"],									// pet
-//	["home", "work", "school", "other"],								// mold
-//	["home", "work", "school", "other"],								// dust
-//	["playing sports", "air travel", "someone sick", "air pollution"],	// outdoors
-//	["great", "medium", "low", "sick"],									// energyLevel
-//	["forehead", "sides", "back", "behind eyes"]						// headache
-//]
-
 enum eyes_allergies:String { case itchy, red, watery, bags }
 enum sinus_allergies:String { case pressure, pain, colored_discharge = "colored discharge", tooth_pain = "tooth pain" }
 enum nose_allergies:String { case stuffy, itchy, runny, blood }
@@ -132,6 +178,27 @@ let Symptoms = [
 	"headache" : [ headache_allergies.forehead, headache_allergies.sides, headache_allergies.back, headache_allergies.behind_eyes ]
 ]
 
+
+//let symptomArray = [
+//	["itchy", "red", "watery", "bags"],									// eyes
+//	["pressure", "pain", "colored discharge", "tooth pain"],			// sinus
+//	["stuffy", "itchy", "runny", "blood"],								// nose
+//	["clearing", "sore", "hoarse voice", "itchy / scratchy"],			// throat
+//	["wheeze", "cough", "tight chest", "short breath"],					// lungs
+//	["itch", "bumps / hives", "eczema", "swelling"],					// skin
+//	["pill", "nose spray", "inhaler", "topical cream"],					// meds
+//	["groggy head", "stuffed up", "crusty eyes", "dry lips"],			// wokeUp
+//	["stuffy", "cough", "throat drainage", "wheezy chest"],				// nightTime
+//	["dog", "cat", "rodent", "horse"],									// pet
+//	["home", "work", "school", "other"],								// mold
+//	["home", "work", "school", "other"],								// dust
+//	["playing sports", "air travel", "someone sick", "air pollution"],	// outdoors
+//	["great", "medium", "low", "sick"],									// energyLevel
+//	["forehead", "sides", "back", "behind eyes"]						// headache
+//]
+
+
+/*
 struct AllergyResponse{
 	var eyes:[eyes_allergies]?
 	var sinus:[sinus_allergies]?
@@ -149,32 +216,32 @@ struct AllergyResponse{
 	var energyLevel:[energyLevel_allergies]?
 	var headache:[headache_allergies]?
 }
+*/
 
 
+/*
 class AllergyEntry: NSObject {
 
 	var date:Date
-	var allergies:AllergyResponse?
+	var allergies:AllergyResponse
 	
 	func dictionary() -> [String:[String]]{
 		var d:[String:[String]] = [:]
-		if let a = allergies{
-			if let y = a.eyes{ d["eyes"]=[String](); for z in y{d["eyes"]!.append(z.rawValue)} }
-			if let y = a.sinus{ d["sinus"]=[String](); for z in y{d["sinus"]!.append(z.rawValue)} }
-			if let y = a.nose{ d["nose"]=[String](); for z in y{d["nose"]!.append(z.rawValue)} }
-			if let y = a.throat{ d["throat"]=[String](); for z in y{d["throat"]!.append(z.rawValue)} }
-			if let y = a.lungs{ d["lungs"]=[String](); for z in y{d["lungs"]!.append(z.rawValue)} }
-			if let y = a.skin{ d["skin"]=[String](); for z in y{d["skin"]!.append(z.rawValue)} }
-			if let y = a.meds{ d["meds"]=[String](); for z in y{d["meds"]!.append(z.rawValue)} }
-			if let y = a.wokeUp{ d["woke up"]=[String](); for z in y{d["woke up"]!.append(z.rawValue)} }
-			if let y = a.nightTime{ d["night time"]=[String](); for z in y{d["night time"]!.append(z.rawValue)} }
-			if let y = a.pet{ d["pet"]=[String](); for z in y{d["pet"]!.append(z.rawValue)} }
-			if let y = a.mold{ d["mold"]=[String](); for z in y{d["mold"]!.append(z.rawValue)} }
-			if let y = a.dust{ d["dust"]=[String](); for z in y{d["dust"]!.append(z.rawValue)} }
-			if let y = a.outdoors{ d["outdoors"]=[String](); for z in y{d["outdoors"]!.append(z.rawValue)} }
-			if let y = a.energyLevel{ d["energy level"]=[String](); for z in y{d["energy level"]!.append(z.rawValue)} }
-			if let y = a.headache{ d["headache"]=[String](); for z in y{d["headache"]!.append(z.rawValue)} }
-		}
+		if let y = allergies.eyes{ d["eyes"]=[String](); for z in y{d["eyes"]!.append(z.rawValue)} }
+		if let y = allergies.sinus{ d["sinus"]=[String](); for z in y{d["sinus"]!.append(z.rawValue)} }
+		if let y = allergies.nose{ d["nose"]=[String](); for z in y{d["nose"]!.append(z.rawValue)} }
+		if let y = allergies.throat{ d["throat"]=[String](); for z in y{d["throat"]!.append(z.rawValue)} }
+		if let y = allergies.lungs{ d["lungs"]=[String](); for z in y{d["lungs"]!.append(z.rawValue)} }
+		if let y = allergies.skin{ d["skin"]=[String](); for z in y{d["skin"]!.append(z.rawValue)} }
+		if let y = allergies.meds{ d["meds"]=[String](); for z in y{d["meds"]!.append(z.rawValue)} }
+		if let y = allergies.wokeUp{ d["woke up"]=[String](); for z in y{d["woke up"]!.append(z.rawValue)} }
+		if let y = allergies.nightTime{ d["night time"]=[String](); for z in y{d["night time"]!.append(z.rawValue)} }
+		if let y = allergies.pet{ d["pet"]=[String](); for z in y{d["pet"]!.append(z.rawValue)} }
+		if let y = allergies.mold{ d["mold"]=[String](); for z in y{d["mold"]!.append(z.rawValue)} }
+		if let y = allergies.dust{ d["dust"]=[String](); for z in y{d["dust"]!.append(z.rawValue)} }
+		if let y = allergies.outdoors{ d["outdoors"]=[String](); for z in y{d["outdoors"]!.append(z.rawValue)} }
+		if let y = allergies.energyLevel{ d["energy level"]=[String](); for z in y{d["energy level"]!.append(z.rawValue)} }
+		if let y = allergies.headache{ d["headache"]=[String](); for z in y{d["headache"]!.append(z.rawValue)} }
 		return d
 	}
 	
@@ -183,6 +250,14 @@ class AllergyEntry: NSObject {
 		var a = AllergyResponse()
 		for (key,value) in d{
 			switch key{
+			case "eyes":
+				if a.eyes==nil{a.eyes=[];}
+				for v in value{
+					if let e=eyes_allergies.init(rawValue:v){
+						a.eyes!.append(e)
+					}
+				}
+				
 			case "eyes": a.eyes=[]; for v in value{if let e=eyes_allergies.init(rawValue:v){a.eyes!.append(e)} }
 			case "sinus": a.sinus=[]; for v in value{if let e=sinus_allergies.init(rawValue:v){a.sinus!.append(e)} }
 			case "nose": a.nose=[]; for v in value{if let e=nose_allergies.init(rawValue:v){a.nose!.append(e)} }
@@ -203,23 +278,18 @@ class AllergyEntry: NSObject {
 		}
 	}
 
-	func getDateString() -> String{
-		let formatter = DateFormatter()
-		formatter.dateFormat = "yyyy-MM-dd"
-		return formatter.string(from: self.date)
-	}
-
 	override init() {
 		// dates are initialized to NOW time, in user's time zone
 		self.date = Date()
+		self.allergies = AllergyResponse()
 		super.init()
 	}
-
 
 	func log(){
 //		print(self.values)
 	}
 
 }
+*/
 
 

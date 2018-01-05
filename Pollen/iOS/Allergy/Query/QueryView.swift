@@ -23,6 +23,8 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 	var selectedCategory:Int?
 	var selectedSymptom:Int?
 	
+	var date:Date = Date()
+	
 //	let panelTitles = [
 //		"eyes",
 //		"nose",
@@ -42,6 +44,7 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		initUI()
+		self.updateColorsThroughout()
 	}
 	convenience init() {
 		self.init(frame: CGRect.zero)
@@ -64,32 +67,72 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 				symptomPanelView.buttons[i].setTitle(symptoms[i], for: .normal)
 			}
 		}
-//		guard index < self.panelText.count else { return }
-//		let titles = self.panelText[index]
-//		for i in 0..<titles.count{
-//			symptomPanelView.buttons[i].setTitle(titles[i], for: .normal)
-//		}
+		updateColorsThroughout()
 	}
 
 	func didSelectSymptom(index: Int) {
 		selectedSymptom = index
+		degreePanelView.isHidden = false
+	}
+	
+	func updateColorsThroughout(){
+		let colors = [Style.shared.blue, Style.shared.colorNoPollen, Style.shared.colorMedium, Style.shared.colorVeryHeavy]
+		
+		for i in 0..<SymptomCategories.count{
+			let categoryString = SymptomCategories[i]
+			var color = colors.first!
+			if let record = Allergies.shared.records[self.date.toString()]{
+				if let categoryRecord = record.allergies[categoryString]{
+					if let max = Array(categoryRecord.values).sorted().last{
+						color = colors[max]
+					}
+				}
+			}
+			self.categorySlideView.categoryColors[i] = color
+		}
+		self.categorySlideView.setNeedsLayout()
+
+		// presently selected ones
+		self.symptomPanelView.symptomColors = [colors.first!,colors.first!,colors.first!,colors.first!]
 		guard let category = selectedCategory else { return }
-//			self.categorySlideView.categoryHighlight[category] = !self.categorySlideView.categoryHighlight[category]
-//			symptomPanelView.buttons[index].setTitleColor(Style.shared.red, for: .normal)
-//			symptomPanelView.buttons[index].layer.borderColor = Style.shared.red.cgColor
-			degreePanelView.isHidden = false
+//		guard let symptom = selectedSymptom else { return }
+		let categoryString = SymptomCategories[ category ]
+		if let record = Allergies.shared.records[self.date.toString()]{
+			if let categoryRecord = record.allergies[categoryString]{
+				if let symptomsArray = SymptomNames[categoryString]{
+					for i in 0..<symptomsArray.count{
+						if let degree = categoryRecord[symptomsArray[i]]{
+							self.symptomPanelView.symptomColors[i] = colors[degree]
+						}
+					}
+				}
+			}
+		}
+		self.symptomPanelView.setNeedsLayout()
 	}
 
 	func didSelectDegree(sender: UIButton) {
-		let colors = [Style.shared.blue, Style.shared.colorNoPollen, Style.shared.colorMedium, Style.shared.colorVeryHeavy]
-		guard let category = selectedCategory else { return }
-		categorySlideView.buttons[category].tintColor = colors[sender.tag]
 		degreePanelView.isHidden = true
-		
-//		Allergies.shared.updateRecord()
 
-		self.categorySlideView.categoryEntryDegree[category] = sender.tag
-		self.categorySlideView.setNeedsLayout()
+		guard let category = selectedCategory else { return }
+		guard let symptom = selectedSymptom else { return }
+//		categorySlideView.buttons[category].tintColor = colors[sender.tag]
+		
+		let degree = sender.tag
+		if(degree == -1){
+			return
+		}
+		let categoryString:String = SymptomCategories[category]
+		guard let symptomArray = SymptomNames[categoryString] else { return }
+		let symptomString = symptomArray[symptom]
+//		print("selected new option")
+//		print(categoryString)
+//		print(symptomString)
+//		print(degree)
+		
+		Allergies.shared.updateRecord(date: self.date, category: categoryString, symptom: symptomString, degree: degree)
+
+		self.updateColorsThroughout()
 	}
 	
 	func initUI(){
@@ -150,7 +193,7 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 
 		let dateFormatter = DateFormatter()
 		dateFormatter.dateFormat = "MMM d, yyyy"
-		dateLabel.text = dateFormatter.string(from: Date())
+		dateLabel.text = dateFormatter.string(from: self.date)
 		dateLabel.sizeToFit()
 		dateLabel.center = CGPoint(x: w + self.bounds.size.width*0.5, y: dateLabel.frame.size.height*0.5)
 
