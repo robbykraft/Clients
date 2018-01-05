@@ -190,7 +190,7 @@ class Project{
 		
 		let bathrooms = Room(name: "Bathrooms", key: nil)
 		bathrooms.furniture = [
-			Furniture(name: "Art & Accessories", price: Voila.shared.priceForFurniture(name: "Art & Accessories"), room: bathrooms),
+			Furniture(name: "All Bathrooms", price: Voila.shared.priceForFurniture(name: "All Bathrooms"), room: bathrooms),
 		]
 		let diningRoom = Room(name: "Dining Room", key: nil)
 		let chairs = Furniture(name: "Dining Chairs", price: Voila.shared.priceForFurniture(name: "Dining Chairs"), room: diningRoom)
@@ -232,8 +232,18 @@ class Project{
 			Furniture(name: "Night Table", price: Voila.shared.priceForFurniture(name: "Night Table"), room: bedroom),
 			Furniture(name: "Queen Bed", price: Voila.shared.priceForFurniture(name: "Queen Bed"), room: bedroom),
 		]
-		self.rooms = [bathrooms, diningRoom, kitchen, livingRoom, bedroom];
-		
+		self.rooms = [bathrooms, diningRoom, kitchen, livingRoom, bedroom].sorted{ (a, b) -> Bool in
+			var aRank:Int = 0
+			var bRank:Int = 0
+			if let aR = Voila.shared.roomSort[a.name]{
+				aRank = aR
+			}
+			if let bR = Voila.shared.roomSort[b.name]{
+				bRank = bR
+			}
+			return aRank < bRank
+		}
+
 		self.synchronize(completionHandler: {
 			if let completion = completionHandler{
 				completion()
@@ -258,7 +268,7 @@ class Project{
 		]
 		let bathrooms = Room(name: "Bathrooms", key: nil)
 		bathrooms.furniture = [
-			Furniture(name: "Art & Accessories", price: Voila.shared.priceForFurniture(name: "Art & Accessories"), room: bathrooms),
+			Furniture(name: "All Bathrooms", price: Voila.shared.priceForFurniture(name: "All Bathrooms"), room: bathrooms),
 		]
 		let diningRoom = Room(name: "Dining Room", key: nil)
 		let chairs = Furniture(name: "Dining Chairs", price: Voila.shared.priceForFurniture(name: "Dining Chairs"), room: diningRoom)
@@ -342,7 +352,17 @@ class Project{
 			Furniture(name: "Night Table", price: Voila.shared.priceForFurniture(name: "Night Table"), room: bedroom),
 			Furniture(name: "Queen Bed", price: Voila.shared.priceForFurniture(name: "Queen Bed"), room: bedroom),
 		]
-		self.rooms = [bathrooms, diningRoom, kitchen, livingRoom, familyRoom, masterBedroom, bedroom];
+		self.rooms = [bathrooms, diningRoom, kitchen, livingRoom, familyRoom, masterBedroom, bedroom].sorted{ (a, b) -> Bool in
+			var aRank:Int = 0
+			var bRank:Int = 0
+			if let aR = Voila.shared.roomSort[a.name]{
+				aRank = aR
+			}
+			if let bR = Voila.shared.roomSort[b.name]{
+				bRank = bR
+			}
+			return aRank < bRank
+		};
 		
 		self.synchronize(completionHandler: {
 			if let completion = completionHandler{

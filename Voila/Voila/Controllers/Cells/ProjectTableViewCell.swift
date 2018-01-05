@@ -16,10 +16,10 @@ class ProjectTableViewCell: UITableViewCell {
 				self.infoText.text = "\(project.rooms.count) rooms\n\(project.furnitureCount()) items"
 				self.textLabel?.text = project.name
 				if(project.rooms.count == 1) { self.infoText.text = "\(project.rooms.count) room" }
-				var emailString = "✗ Email"
+				var emailString = "✗ Client's Email"
 				var proposalString = "✗ Proposal Sent"
 				if project.email != nil && project.email! != ""{
-					emailString = "✓ Email"
+					emailString = "✓ Client's Email"
 				}
 				if let sent = project.proposalSent{
 					let date = Date(timeIntervalSince1970: TimeInterval(sent))
