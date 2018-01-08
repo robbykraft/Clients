@@ -16,10 +16,15 @@ class CategorySlideView: UIView {
 	var delegate:CategorySlideDelegate?
 
 	let scrollView = UIScrollView()
-	let imageNames = ["eye", "nose", "sinus", "throat"]
-	let buttons:[UIButton] = [UIButton(), UIButton(), UIButton(), UIButton(), UIButton(), UIButton(), UIButton(), UIButton(), UIButton(), UIButton(), UIButton(), UIButton()]
+	let imageNames = ["eye", "nose", "sinus", "throat",
+					  "eye", "nose", "sinus", "throat",
+					  "eye", "nose", "sinus", "throat",
+					  "eye", "nose", "sinus", "throat"]
+	var buttons:[UIButton] = Array(repeating: UIButton(), count: SymptomCategories.count)
+	var categoryColors:[UIColor] = Array(repeating: Style.shared.blue, count: SymptomCategories.count)
 	
-	var categoryColors:[UIColor] = [Style.shared.blue, Style.shared.blue, Style.shared.blue, Style.shared.blue, Style.shared.blue, Style.shared.blue, Style.shared.blue, Style.shared.blue, Style.shared.blue, Style.shared.blue, Style.shared.blue, Style.shared.blue, Style.shared.blue, Style.shared.blue, Style.shared.blue, Style.shared.blue]
+	let nextPageButton = UIButton()
+	let prevPageButton = UIButton()
 
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -36,11 +41,29 @@ class CategorySlideView: UIView {
 	func initUI() {
 		
 		scrollView.showsHorizontalScrollIndicator = false
-//		scrollView.isScrollEnabled = false
+		scrollView.isScrollEnabled = false
 		scrollView.isPagingEnabled = true
 		self.addSubview(scrollView)
 		
+		nextPageButton.setTitleColor(Style.shared.blue, for: .normal)
+		prevPageButton.setTitleColor(Style.shared.blue, for: .normal)
+		nextPageButton.titleLabel?.font = UIFont.systemFont(ofSize: Style.shared.P30)
+		prevPageButton.titleLabel?.font = UIFont.systemFont(ofSize: Style.shared.P30)
+		nextPageButton.setTitle("▶︎", for: .normal)
+		prevPageButton.setTitle("◀︎", for: .normal)
+		nextPageButton.sizeToFit()
+		prevPageButton.sizeToFit()
+		nextPageButton.addTarget(self, action: #selector(nextPageButtonHandler), for: .touchUpInside)
+		prevPageButton.addTarget(self, action: #selector(prevPageButtonHandler), for: .touchUpInside)
+		self.addSubview(nextPageButton)
+		self.addSubview(prevPageButton)
+		
+		for i in 0 ..< self.categoryColors.count {
+			self.categoryColors[i] = Style.shared.blue
+		}
+
 		for i in 0 ..< self.buttons.count {
+			self.buttons[i] = UIButton()
 			if i < imageNames.count{
 				let buttonImage = UIImage(named:imageNames[i])?.maskWithColor(color: Style.shared.blue)
 				self.buttons[i].setImage(buttonImage, for: .normal)
@@ -57,19 +80,22 @@ class CategorySlideView: UIView {
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		
-		scrollView.contentSize = CGSize(width: self.bounds.size.width*2, height: self.bounds.size.height)
+		scrollView.contentSize = CGSize(width: self.bounds.size.width*4, height: self.bounds.size.height)
 		scrollView.frame = self.bounds
 		
-		let pct:CGFloat = 0.9
-		let btnH:CGFloat = self.bounds.height*pct
+		let pct:CGFloat = 1.0/6
+		let btnH:CGFloat = self.bounds.width*pct
 		
+		prevPageButton.center = CGPoint(x: btnH * 0.5, y: self.bounds.size.height*0.5)
+		nextPageButton.center = CGPoint(x: self.bounds.size.width - btnH * 0.5, y: self.bounds.size.height*0.5)
+
 		for i in 0 ..< self.buttons.count {
 			let buttonColor = categoryColors[i]
 			let page = CGFloat(Int(Double(i) / 4.0))
 			let iMod4 = CGFloat(i%4)
 			let startX:CGFloat = page*self.bounds.size.width + (self.bounds.size.width - btnH*4) * 0.5
-			self.buttons[i].frame = CGRect(x: 0, y: 0, width: self.bounds.height*pct, height: self.bounds.height*pct)
-			self.buttons[i].layer.cornerRadius = self.bounds.height*pct*0.5
+			self.buttons[i].frame = CGRect(x: 0, y: 0, width: btnH, height: btnH)
+			self.buttons[i].layer.cornerRadius = btnH*0.5
 			if i < imageNames.count{
 				let buttonImage = UIImage(named:imageNames[i])?.maskWithColor(color: buttonColor)
 				self.buttons[i].setImage(buttonImage, for: .normal)
@@ -80,10 +106,19 @@ class CategorySlideView: UIView {
 	}
 	
 	@objc func responseButtonHandler(sender:UIButton){
-		self.scrollView.scrollRectToVisible(CGRect(x: 0, y: 0, width: self.bounds.width, height: self.bounds.height), animated: true)
 		if let delegate = self.delegate{
 			delegate.didSelectCategory(index: sender.tag)
 		}
+	}
+	
+	@objc func nextPageButtonHandler(){
+		let currentOffset = self.scrollView.contentOffset
+		self.scrollView.scrollRectToVisible(CGRect(x:currentOffset.x + self.bounds.size.width, y:currentOffset.y, width:self.bounds.size.width, height:self.bounds.size.height), animated: true)
+	}
+	
+	@objc func prevPageButtonHandler(){
+		let currentOffset = self.scrollView.contentOffset
+		self.scrollView.scrollRectToVisible(CGRect(x:currentOffset.x - self.bounds.size.width, y:currentOffset.y, width:self.bounds.size.width, height:self.bounds.size.height), animated: true)
 	}
 	
 //	@objc func coverButtonHandler(){

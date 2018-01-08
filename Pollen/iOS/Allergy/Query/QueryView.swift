@@ -24,20 +24,8 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 	var selectedSymptom:Int?
 	
 	var date:Date = Date()
-	
-//	let panelTitles = [
-//		"eyes",
-//		"nose",
-//		"sinus",
-//		"throat"
-//	]
-
-//	let panelText = [
-//		["itchy", "red", "watery", "bags"],    // eyes
-//		["stuffy", "itchy", "runny", "blood"],  // nose
-//		["pressure", "pain", "colored discharge", "tooth pain"],  // sinus
-//		["clearing", "sore", "hoarse voice", "itchy / scratchy"]  // throat
-//	]
+	let dateNextButton = UIButton()
+	let datePrevButton = UIButton()
 
 	let queryDoneButton = UIButton()
 
@@ -118,6 +106,7 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 		guard let symptom = selectedSymptom else { return }
 //		categorySlideView.buttons[category].tintColor = colors[sender.tag]
 		
+		
 		let degree = sender.tag
 		if(degree == -1){
 			return
@@ -125,10 +114,6 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 		let categoryString:String = SymptomCategories[category]
 		guard let symptomArray = SymptomNames[categoryString] else { return }
 		let symptomString = symptomArray[symptom]
-//		print("selected new option")
-//		print(categoryString)
-//		print(symptomString)
-//		print(degree)
 		
 		Allergies.shared.updateRecord(date: self.date, category: categoryString, symptom: symptomString, degree: degree)
 
@@ -146,6 +131,12 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 		
 		dateLabel.textColor = Style.shared.blue
 		dateLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P30)
+		dateNextButton.setTitleColor(Style.shared.blue, for: .normal)
+		datePrevButton.setTitleColor(Style.shared.blue, for: .normal)
+		dateNextButton.titleLabel?.font = UIFont.systemFont(ofSize: Style.shared.P30)
+		datePrevButton.titleLabel?.font = UIFont.systemFont(ofSize: Style.shared.P30)
+		dateNextButton.setTitle("▶︎", for: .normal)
+		datePrevButton.setTitle("◀︎", for: .normal)
 		topQuestionLabel.textColor = Style.shared.blue
 		topQuestionLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P24)
 		topQuestionLabel.text = "What is bothering you today?"
@@ -174,6 +165,8 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 
 		self.addSubview(self.scrollView)
 		self.scrollView.addSubview(dateLabel)
+		self.scrollView.addSubview(datePrevButton)
+		self.scrollView.addSubview(dateNextButton)
 		self.scrollView.addSubview(topQuestionLabel)
 		self.scrollView.addSubview(categorySlideView)
 		self.scrollView.addSubview(selectedCategoryTitle)
@@ -196,6 +189,10 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 		dateLabel.text = dateFormatter.string(from: self.date)
 		dateLabel.sizeToFit()
 		dateLabel.center = CGPoint(x: w + self.bounds.size.width*0.5, y: dateLabel.frame.size.height*0.5)
+		datePrevButton.sizeToFit()
+		dateNextButton.sizeToFit()
+		datePrevButton.center = CGPoint(x: dateLabel.center.x - dateLabel.frame.size.width*0.5-30, y: dateLabel.center.y)
+		dateNextButton.center = CGPoint(x: dateLabel.center.x + dateLabel.frame.size.width*0.5+30, y: dateLabel.center.y)
 
 		topQuestionLabel.sizeToFit()
 		topQuestionLabel.center = CGPoint(x: w + self.bounds.size.width*0.5, y: dateLabel.frame.origin.y + dateLabel.frame.size.height + topQuestionLabel.frame.size.height*0.5 + 10)
@@ -209,8 +206,7 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 		let h:CGFloat = self.bounds.width * 0.23
 		categorySlideView.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: h)
 		categorySlideView.center = CGPoint(x: w + self.center.x, y: questionFrame.origin.y + h*0.5)
-
-
+		
 		let categoryTitleH:CGFloat = Style.shared.P30 * 1.13
 		selectedCategoryTitle.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: categoryTitleH)
 
