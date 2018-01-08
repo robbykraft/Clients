@@ -16,10 +16,10 @@ class CategorySlideView: UIView {
 	var delegate:CategorySlideDelegate?
 
 	let scrollView = UIScrollView()
-	let imageNames = ["eye", "nose", "sinus", "throat",
-					  "eye", "nose", "sinus", "throat",
-					  "eye", "nose", "sinus", "throat",
-					  "eye", "nose", "sinus", "throat"]
+	let imageNames = ["eye", "sinus", "nose", "throat",
+					  "eye", "sinus", "nose", "throat",
+					  "eye", "sinus", "nose", "throat",
+					  "eye", "sinus", "nose", "throat"]
 	var buttons:[UIButton] = Array(repeating: UIButton(), count: SymptomCategories.count)
 	var categoryColors:[UIColor] = Array(repeating: Style.shared.blue, count: SymptomCategories.count)
 	

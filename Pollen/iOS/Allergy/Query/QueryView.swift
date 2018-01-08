@@ -106,7 +106,6 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 		guard let symptom = selectedSymptom else { return }
 //		categorySlideView.buttons[category].tintColor = colors[sender.tag]
 		
-		
 		let degree = sender.tag
 		if(degree == -1){
 			return
@@ -137,9 +136,10 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 		datePrevButton.titleLabel?.font = UIFont.systemFont(ofSize: Style.shared.P30)
 		dateNextButton.setTitle("▶︎", for: .normal)
 		datePrevButton.setTitle("◀︎", for: .normal)
+		dateNextButton.addTarget(self, action: #selector(dateNextButtonHandler), for: .touchUpInside)
+		datePrevButton.addTarget(self, action: #selector(datePrevButtonHandler), for: .touchUpInside)
 		topQuestionLabel.textColor = Style.shared.blue
-		topQuestionLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P24)
-		topQuestionLabel.text = "What is bothering you today?"
+		topQuestionLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P21)
 		selectedCategoryTitle.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P30)
 		selectedCategoryTitle.textColor = Style.shared.blue
 		selectedCategoryTitle.textAlignment = .center
@@ -172,7 +172,6 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 		self.scrollView.addSubview(selectedCategoryTitle)
 		self.scrollView.addSubview(symptomPanelView)
 		self.scrollView.addSubview(queryDoneButton)
-		
 	}
 
 	override func layoutSubviews() {
@@ -194,6 +193,17 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 		datePrevButton.center = CGPoint(x: dateLabel.center.x - dateLabel.frame.size.width*0.5-30, y: dateLabel.center.y)
 		dateNextButton.center = CGPoint(x: dateLabel.center.x + dateLabel.frame.size.width*0.5+30, y: dateLabel.center.y)
 
+		if Calendar.current.isDateInToday(self.date){
+			topQuestionLabel.text = "What is bothering you today?"
+		} else if Calendar.current.isDateInYesterday(self.date){
+			topQuestionLabel.text = "What was bothering you yesterday?"
+		} else if self.date.timeIntervalSinceNow < Date().timeIntervalSinceNow{
+			// date in the past
+			topQuestionLabel.text = "What was bothering you?"
+		} else{
+			// date in the future
+			topQuestionLabel.text = "What will be bothering you?"
+		}
 		topQuestionLabel.sizeToFit()
 		topQuestionLabel.center = CGPoint(x: w + self.bounds.size.width*0.5, y: dateLabel.frame.origin.y + dateLabel.frame.size.height + topQuestionLabel.frame.size.height*0.5 + 10)
 
@@ -225,6 +235,26 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 			}
 		}
 
+	}
+	
+	@objc func dateNextButtonHandler(){
+		var components = DateComponents()
+		components.setValue(1, for: .day)
+		if let newDate = Calendar.current.date(byAdding: components, to: self.date){
+			self.date = newDate
+		}
+		self.setNeedsLayout()
+		self.updateColorsThroughout()
+	}
+	
+	@objc func datePrevButtonHandler(){
+		var components = DateComponents()
+		components.setValue(-1, for: .day)
+		if let newDate = Calendar.current.date(byAdding: components, to: self.date){
+			self.date = newDate
+		}
+		self.setNeedsLayout()
+		self.updateColorsThroughout()
 	}
 	
 	func doneButtonHandler(){
