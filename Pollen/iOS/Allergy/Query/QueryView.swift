@@ -30,7 +30,8 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 	let queryDoneButton = UIButton()
 	
 	// visualize view
-
+	let lineChartScrollView = UIScrollView()
+	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		initUI()
@@ -129,7 +130,7 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 		self.scrollView.isPagingEnabled = true
 		self.scrollView.delaysContentTouches = false
 		self.scrollView.showsHorizontalScrollIndicator = false
-		
+		self.scrollView.isScrollEnabled = false
 
 		
 		dateLabel.textColor = Style.shared.blue
@@ -177,8 +178,12 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 		self.scrollView.addSubview(symptomPanelView)
 		self.scrollView.addSubview(queryDoneButton)
 		
+		// welcome view
 		welcomeView.delegate = self
 		self.scrollView.addSubview(welcomeView)
+		
+		// chart views
+		self.scrollView.addSubview(lineChartScrollView)
 	}
 	
 	func welcomeViewIntroScreen(){
@@ -197,10 +202,18 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 
 		self.scrollView.frame = self.bounds
 		self.scrollView.contentSize = CGSize(width: self.bounds.width*3, height: self.bounds.height)
+		
+		
+		// welcome view
 		welcomeViewIntroScreen()
-
 		welcomeView.frame = self.bounds
 		
+		// chart views
+		
+		lineChartScrollView.frame = CGRect(x: self.bounds.width*2, y: 0, width: self.bounds.width, height: self.bounds.height)
+		
+		
+		// query views
 		let dateFormatter = DateFormatter()
 		dateFormatter.dateFormat = "MMM d, yyyy"
 		dateLabel.text = dateFormatter.string(from: self.date)
@@ -276,7 +289,8 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 	}
 	
 	func doneButtonHandler(){
-		
+		generateCharts()
+		self.scrollView.setContentOffset(CGPoint(x:self.bounds.size.width*2, y:0), animated: true)
 	}
 	
 	func doneButtonSetSelected(){
@@ -290,6 +304,12 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 	
 	func welcomeViewDoneButtonDidPress() {
 		self.scrollView.scrollRectToVisible(CGRect(x:self.bounds.size.width, y:0, width:self.bounds.size.width, height:self.bounds.size.height), animated: true)
+	}
+	
+	func generateCharts(){
+		let lineChartView = UILineChartView()
+		lineChartView.frame = CGRect(x: self.bounds.size.width*0.1, y: 0, width: self.bounds.size.width*0.8, height: self.bounds.size.width*0.4)
+		lineChartScrollView.addSubview(lineChartView)
 	}
 
 }
