@@ -324,7 +324,6 @@ class Voila{
 	}
 	
 
-	
 	func tableForProject()->String{
 		var table = ""
 		// header row
