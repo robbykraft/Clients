@@ -39,6 +39,8 @@
 		D5B8020C1FA39539002C4048 /* MainScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B8020B1FA39539002C4048 /* MainScrollView.swift */; };
 		D5C12BB41FBC8B40007EE678 /* CategorySlideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C12BB31FBC8B40007EE678 /* CategorySlideView.swift */; };
 		D5C12BB61FBC97EF007EE678 /* SymptomPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C12BB51FBC97EF007EE678 /* SymptomPanelView.swift */; };
+		D5C7CC34200514DF00BD7FF8 /* UILineChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C7CC33200514DF00BD7FF8 /* UILineChartView.swift */; };
+		D5C7CC37200519D200BD7FF8 /* WelcomeToQueryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C7CC36200519D200BD7FF8 /* WelcomeToQueryView.swift */; };
 		D5D014DB1E9E71DA00BF7374 /* DetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D014D91E9E71DA00BF7374 /* DetailTableViewController.swift */; };
 		D5D014DC1E9E71DA00BF7374 /* LineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D014DA1E9E71DA00BF7374 /* LineTableViewCell.swift */; };
 		D5F5EA3D1F96610C004FB5DE /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F5EA3C1F96610C004FB5DE /* LoginView.swift */; };
@@ -94,6 +96,8 @@
 		D5B8020B1FA39539002C4048 /* MainScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScrollView.swift; sourceTree = "<group>"; };
 		D5C12BB31FBC8B40007EE678 /* CategorySlideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySlideView.swift; sourceTree = "<group>"; };
 		D5C12BB51FBC97EF007EE678 /* SymptomPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymptomPanelView.swift; sourceTree = "<group>"; };
+		D5C7CC33200514DF00BD7FF8 /* UILineChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILineChartView.swift; sourceTree = "<group>"; };
+		D5C7CC36200519D200BD7FF8 /* WelcomeToQueryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeToQueryView.swift; sourceTree = "<group>"; };
 		D5D014D91E9E71DA00BF7374 /* DetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailTableViewController.swift; sourceTree = "<group>"; };
 		D5D014DA1E9E71DA00BF7374 /* LineTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineTableViewCell.swift; sourceTree = "<group>"; };
 		D5F33C681EAA5D3000DB01C3 /* Allergy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Allergy.entitlements; sourceTree = "<group>"; };
@@ -191,6 +195,7 @@
 				D5B4D69B1FCC591000270404 /* DegreePanelView.swift */,
 				D5F5EA3E1F966851004FB5DE /* QuerySlide.swift */,
 				D5F5EA3C1F96610C004FB5DE /* LoginView.swift */,
+				D5C7CC352005197400BD7FF8 /* QueryVisualize */,
 			);
 			path = Query;
 			sourceTree = "<group>";
@@ -199,6 +204,7 @@
 			isa = PBXGroup;
 			children = (
 				D532B3271E9D4F700090FC7A /* UIRadialChart.swift */,
+				D5C7CC33200514DF00BD7FF8 /* UILineChartView.swift */,
 				D55D06931E9C2161000AB9D9 /* UIBarChartView.swift */,
 			);
 			path = Charts;
@@ -252,6 +258,14 @@
 				D5B8020B1FA39539002C4048 /* MainScrollView.swift */,
 			);
 			path = Subclass;
+			sourceTree = "<group>";
+		};
+		D5C7CC352005197400BD7FF8 /* QueryVisualize */ = {
+			isa = PBXGroup;
+			children = (
+				D5C7CC36200519D200BD7FF8 /* WelcomeToQueryView.swift */,
+			);
+			path = QueryVisualize;
 			sourceTree = "<group>";
 		};
 		D5D014D81E9E71DA00BF7374 /* Detail */ = {
@@ -440,6 +454,7 @@
 				D5A9973E1E9BEC8600F37F52 /* Cache.swift in Sources */,
 				D54B97421E9DD8610064EAED /* Preferences.swift in Sources */,
 				D532B3281E9D4F700090FC7A /* UIRadialChart.swift in Sources */,
+				D5C7CC34200514DF00BD7FF8 /* UILineChartView.swift in Sources */,
 				D5099BE61ECDFDC30095905F /* UILightNavigationController.swift in Sources */,
 				D5300EB91E9EC46900874C18 /* SliderTableViewCell.swift in Sources */,
 				D5B4D69C1FCC591000270404 /* DegreePanelView.swift in Sources */,
@@ -451,6 +466,7 @@
 				D54B973D1E9DD32E0064EAED /* Extensions.swift in Sources */,
 				D5F5EA3F1F966851004FB5DE /* QuerySlide.swift in Sources */,
 				D5B4D69E1FCC6F2600270404 /* Allergy.swift in Sources */,
+				D5C7CC37200519D200BD7FF8 /* WelcomeToQueryView.swift in Sources */,
 				D55D06941E9C2161000AB9D9 /* UIBarChartView.swift in Sources */,
 				D532B3211E9C82240090FC7A /* Style.swift in Sources */,
 				D5B8020C1FA39539002C4048 /* MainScrollView.swift in Sources */,

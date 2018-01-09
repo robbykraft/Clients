@@ -133,6 +133,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 		queryView.frame = CGRect(x: 0, y: barChartTop + 15, width: self.view.frame.size.width, height: self.scrollView.contentSize.height - barChartTop - 15)
 		self.scrollView.addSubview(queryView)
 		
+		// SET QUERY VIEW WELCOME SCREEN
+//		welcomeViewIntroScreen()
+
 		///////////////
 		
 		for i in 0..<3{
@@ -146,6 +149,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 		}
 		
 	}
+	
 	
 	func downloadAndRefresh(){
 		Pollen.shared.loadRecentData(numberOfDays: 1) { (sample) in
@@ -234,6 +238,13 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 		self.barChart.alpha = alpha
 		self.barChart.center = CGPoint(x:self.barChartCenter.x, y:self.barChartCenter.y + pct*self.view.frame.size.height)
 		self.queryView.alpha = pct
+		if pct >= 1.0 {
+			if UserDefaults.standard.bool(forKey: "welcomeScreenHasSeen") == false{
+				print("synchronizing welcome screen has been seen")
+				UserDefaults.standard.set(true, forKey: "welcomeScreenHasSeen")
+				UserDefaults.standard.synchronize()
+			}
+		}
 	}
 
 	override func didReceiveMemoryWarning() {

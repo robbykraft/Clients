@@ -8,26 +8,28 @@
 
 import UIKit
 
-class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePanelDelegate{
+class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePanelDelegate, WelcomeViewProtocol{
 	
 	let scrollView = MainScrollView()
 	
+	// welcome view
+	let welcomeView = WelcomeToQueryView()
+	
+	// query view
 	let dateLabel = UILabel()
 	let topQuestionLabel = UILabel()
 	let selectedCategoryTitle = UILabel()
-
 	let categorySlideView = CategorySlideView()
 	let symptomPanelView = SymptomPanelView()
 	let degreePanelView = DegreePanelView()
-	
 	var selectedCategory:Int?
 	var selectedSymptom:Int?
-	
 	var date:Date = Date()
 	let dateNextButton = UIButton()
 	let datePrevButton = UIButton()
-
 	let queryDoneButton = UIButton()
+	
+	// visualize view
 
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -128,6 +130,8 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 		self.scrollView.delaysContentTouches = false
 		self.scrollView.showsHorizontalScrollIndicator = false
 		
+
+		
 		dateLabel.textColor = Style.shared.blue
 		dateLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P30)
 		dateNextButton.setTitleColor(Style.shared.blue, for: .normal)
@@ -172,7 +176,19 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 		self.scrollView.addSubview(selectedCategoryTitle)
 		self.scrollView.addSubview(symptomPanelView)
 		self.scrollView.addSubview(queryDoneButton)
+		
+		welcomeView.delegate = self
+		self.scrollView.addSubview(welcomeView)
 	}
+	
+	func welcomeViewIntroScreen(){
+		if UserDefaults.standard.bool(forKey: "welcomeScreenHasSeen") == true{
+			self.scrollView.contentOffset = CGPoint(x: self.frame.size.width, y: 0)
+		} else{
+			self.scrollView.contentOffset = CGPoint(x: 0, y: 0)
+		}
+	}
+
 
 	override func layoutSubviews() {
 		super.layoutSubviews()
@@ -181,8 +197,10 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 
 		self.scrollView.frame = self.bounds
 		self.scrollView.contentSize = CGSize(width: self.bounds.width*3, height: self.bounds.height)
-		self.scrollView.contentOffset = CGPoint(x: w, y: 0)
+		welcomeViewIntroScreen()
 
+		welcomeView.frame = self.bounds
+		
 		let dateFormatter = DateFormatter()
 		dateFormatter.dateFormat = "MMM d, yyyy"
 		dateLabel.text = dateFormatter.string(from: self.date)
@@ -268,6 +286,10 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 	func doneButtonSetUnselected(){
 		self.queryDoneButton.layer.backgroundColor = UIColor.white.cgColor
 		queryDoneButton.setTitleColor(Style.shared.blue, for: .normal)
+	}
+	
+	func welcomeViewDoneButtonDidPress() {
+		self.scrollView.scrollRectToVisible(CGRect(x:self.bounds.size.width, y:0, width:self.bounds.size.width, height:self.bounds.size.height), animated: true)
 	}
 
 }

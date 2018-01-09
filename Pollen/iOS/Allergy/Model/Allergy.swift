@@ -17,7 +17,6 @@ extension Date{
 	mutating func from(string:String){
 		let formatter = DateFormatter()
 		formatter.dateFormat = "yyyy-MM-dd"
-//		formatter.timeZone = TimeZone(abbreviation: "GMT+0:00") //Current time zone
 		if let success = formatter.date(from: string){ self = success }
 	}
 }
@@ -89,20 +88,12 @@ class Allergies {
 	}
 	
 	func synchronize(){
-//		let recordsDictionary = records.map { (arg) -> [String:[String:[String]]] in
-//			let (key, value) = arg
-//			return [key:value.dictionary()]
-//		}
-//		let recordsDictionary = self.records.map { (arg) -> [String:[String:[String:Int]]] in
-//			let (key, value) = arg
-//			return key:value.dictionary()
-//		}
 		var recordsDictionary:[String:[String:[String:Int]]] = [:]
 		for (k,v) in self.records{
 			recordsDictionary[k] = v.dictionary()
 		}
-		print("synchronizing user defaults")
-		print(recordsDictionary)
+//		print("synchronizing user defaults")
+//		print(recordsDictionary)
 		UserDefaults.standard.set(recordsDictionary, forKey: "records")
 		UserDefaults.standard.synchronize()
 	}
