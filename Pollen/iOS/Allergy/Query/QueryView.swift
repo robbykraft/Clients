@@ -31,6 +31,8 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 	
 	// visualize view
 	let lineChartScrollView = UIScrollView()
+	let chartViewBackButton = UIButton()
+	let hrChartView = UIView()
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -209,8 +211,19 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 		welcomeView.frame = self.bounds
 		
 		// chart views
-		
-		lineChartScrollView.frame = CGRect(x: self.bounds.width*2, y: 0, width: self.bounds.width, height: self.bounds.height)
+		hrChartView.frame = CGRect(x: self.bounds.width*2 + 20, y: 40, width: self.bounds.width - 40, height: 4)
+		hrChartView.backgroundColor = Style.shared.blue
+		self.scrollView.addSubview(hrChartView)
+
+		chartViewBackButton.setTitle("← Data", for: .normal)
+		chartViewBackButton.titleLabel?.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P24)
+		chartViewBackButton.setTitleColor(Style.shared.blue, for: .normal)
+		chartViewBackButton.addTarget(self, action: #selector(chartViewBackButtonHandler), for: .touchUpInside)
+		chartViewBackButton.sizeToFit()
+		chartViewBackButton.frame = CGRect(x: self.bounds.width*2 + 20, y: 40 - chartViewBackButton.frame.size.height, width: chartViewBackButton.frame.size.width, height: chartViewBackButton.frame.size.height)
+		self.scrollView.addSubview(chartViewBackButton)
+
+		lineChartScrollView.frame = CGRect(x: self.bounds.width*2, y: 40, width: self.bounds.width, height: self.bounds.height - 40)
 		
 		
 		// query views
@@ -293,6 +306,10 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 		self.scrollView.setContentOffset(CGPoint(x:self.bounds.size.width*2, y:0), animated: true)
 	}
 	
+	func chartViewBackButtonHandler(){
+		self.scrollView.setContentOffset(CGPoint(x:self.bounds.size.width, y:0), animated: true)
+	}
+	
 	func doneButtonSetSelected(){
 		self.queryDoneButton.layer.backgroundColor = Style.shared.blue.cgColor
 		queryDoneButton.setTitleColor(UIColor.white, for: .normal)
@@ -307,9 +324,30 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 	}
 	
 	func generateCharts(){
-		let lineChartView = UILineChartView()
-		lineChartView.frame = CGRect(x: self.bounds.size.width*0.1, y: 0, width: self.bounds.size.width*0.8, height: self.bounds.size.width*0.4)
-		lineChartScrollView.addSubview(lineChartView)
+		for subview in lineChartScrollView.subviews{
+			subview.removeFromSuperview()
+		}
+		var finalH:CGFloat = 0
+		for i in 0..<5{
+			let padH:CGFloat = self.bounds.size.width*0.2
+			let padW:CGFloat = self.bounds.size.width*0.1
+			let w = self.bounds.size.width - padW*2
+			let h = self.bounds.size.width*0.35
+			// label
+			let label = UILabel()
+			label.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P24)
+			label.textColor = Style.shared.blue
+			label.text = SymptomCategories[i].capitalized
+			label.sizeToFit()
+			label.frame = CGRect(x: padW, y: padH*CGFloat(i+1) + h*CGFloat(i) - label.frame.size.height - 4, width: label.frame.size.width, height: label.frame.size.height)
+			lineChartScrollView.addSubview(label)
+			// chart
+			let lineChartView = UILineChartView()
+			lineChartView.frame = CGRect(x: padW, y: padH*CGFloat(i+1) + h*CGFloat(i), width: w, height: h)
+			finalH = lineChartView.frame.bottom
+			lineChartScrollView.addSubview(lineChartView)
+		}
+		lineChartScrollView.contentSize = CGSize(width: lineChartScrollView.bounds.size.width, height: finalH + 30)
 	}
 
 }
