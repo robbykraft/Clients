@@ -53,7 +53,8 @@ class RoomTableViewController: UITableViewController, MFMailComposeViewControlle
 		titleButton.setTitleColor(UIColor.black, for: .normal)
 		if let project = Voila.shared.project{
 //			self.title = project.name
-			titleButton.setTitle(project.name, for: .normal)
+//			titleButton.setTitle(project.name, for: .normal)
+			titleButton.setTitle(Voila.shared.currentRoomName(), for: .normal)
 		}
 		titleButton.addTarget(self, action: #selector(self.clickOnButton), for: .touchUpInside)
 		self.navigationItem.titleView = titleButton

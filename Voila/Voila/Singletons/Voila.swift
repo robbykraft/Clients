@@ -282,8 +282,8 @@ class Voila{
 	}
 
 	func htmlProposal(confirmKey:String)->String{
-		print(pageHeader + self.titleForProject() + self.tableOfCosts() + self.tableForProject() + termsAndConditionsText + firebaseButton(key: confirmKey) + pageFooter)
-		return pageHeader + self.titleForProject() + self.tableOfCosts() + self.tableForProject() + termsAndConditionsText + firebaseButton(key: confirmKey) + pageFooter
+		print(pageHeader + self.titleForProject() + self.tableForProject() + self.tableOfCosts() + termsAndConditionsText + firebaseButton(key: confirmKey) + pageFooter)
+		return pageHeader + self.titleForProject() + self.tableForProject() + self.tableOfCosts() +  termsAndConditionsText + firebaseButton(key: confirmKey) + pageFooter
 	}
 	
 	func tableOfCosts()->String{
@@ -314,11 +314,11 @@ class Voila{
 			let grandTotalRounded:Int = Int(round(Float(grandTotal)/100)*100)
 			let renewalsTotalRounded:Int = Int(round(Float(renewalsTotal)/100)*100)
 
-			table.append("<table style=\"margin:auto\">")
+			table.append("<br><br><hr><br><table style=\"margin:auto\">")
 			if discountTotal != 0{
 				table.append("<tr style=\"font-weight: bold;\"><td>Total Before Discount</td><td></td><td>$\(total)</td></tr><tr><td></td><td></td><td></td></tr><tr style=\"font-weight: bold;\"><td>Discount</td><td></td><td></td></tr><tr><td style=\"text-align: right\">\(discountText)</td><td>\(discountPct)%</td><td>($\(discountTotalRounded))</td></tr><tr><td></td><td></td><td></td></tr>")
 			}
-			table.append("<tr style=\"font-weight: bold;\"><td>Total Before Taxes</td><td></td><td>$\(totalAfterDiscountRounded)</td></tr><tr><td></td><td></td><td></td></tr><tr style=\"font-weight: bold;\"><td>Sales Tax</td><td>\(Int(taxPct*100.0))%</td><td>$\(taxTotalRounded)</td></tr><tr><td></td><td></td><td></td></tr><tr style=\"font-weight: bold;\"><td style=\"background-color:#EEE\">Grand Total</td><td></td><td style=\"background-color:#EEE\">$\(grandTotalRounded)</td></tr><tr><td></td><td></td><td></td></tr><tr><td>Monthly Renewals</td><td></td><td>$\(renewalsTotalRounded)</td></tr></table><hr>")
+			table.append("<tr style=\"font-weight: bold;\"><td>Total Before Taxes</td><td></td><td>$\(totalAfterDiscountRounded)</td></tr><tr><td></td><td></td><td></td></tr><tr style=\"font-weight: bold;\"><td>Sales Tax</td><td>\(Int(taxPct*100.0))%</td><td>$\(taxTotalRounded)</td></tr><tr><td></td><td></td><td></td></tr><tr style=\"font-weight: bold;\"><td style=\"background-color:#EEE\">Grand Total</td><td></td><td style=\"background-color:#EEE\">$\(grandTotalRounded)</td></tr><tr><td></td><td></td><td></td></tr><tr><td>Monthly Renewals</td><td></td><td>$\(renewalsTotalRounded)</td></tr></table><br>")
 		}
 		return table
 	}
@@ -351,9 +351,6 @@ class Voila{
 		table.append("</table>")
 		return table
 	}
-	
-	
-	var fakeTable = "<table><tr style=\"background-color:#555\"><td style=\"color:#FFF;\"><strong>Description</strong></td><td style=\"color:#FFF;\"><strong>Quantity</strong></td><td style=\"color:#FFF;\"><strong>Cost</strong></td></tr><tr style=\"background-color:#EEE\"><td><strong>Bathroom</strong></td><td></td><td></td></tr><tr><td>Accessories</td><td>1</td><td></td></tr><tr><td>Art</td><td>1</td><td></td></tr><tr><td>Bench</td><td>1</td><td></td></tr><tr><td>Console</td><td>1</td><td></td></tr><tr><td>Laundry Basket</td><td>1</td><td></td></tr><tr><td>Poof</td><td>1</td><td></td></tr><tr><td>Rug</td><td>1</td><td></td></tr><tr><td>Towels</td><td>1</td><td></td></tr><tr><td></td><td></td><td><strong>$500</strong></td></tr><tr style=\"background-color:#EEE\"><td><strong>Dining Room</strong></td><td></td><td></td></tr><tr><td>Accessories</td><td>1</td><td></td></tr><tr><td>Art</td><td>1</td><td></td></tr><tr><td>Dining Chairs</td><td>4</td><td></td></tr><tr><td>Dining Table</td><td>1</td><td></td></tr><tr><td></td><td></td><td><strong>$500</strong></td></tr><tr style=\"background-color:#EEE\"><td><strong>Kitchen</strong></td><td></td><td></td></tr><tr><td>Accessories</td><td>1</td><td></td></tr><tr><td>Art</td><td>1</td><td></td></tr><tr><td>Counter Stools</td><td>2</td><td></td></tr><tr><td></td><td></td><td><strong>$500</strong></td></tr><tr style=\"background-color:#EEE\"><td><strong>Living Room</strong></td><td></td><td></td></tr><tr><td>Accent Chair</td><td>1</td><td></td></tr><tr><td>Accessories</td><td>1</td><td></td></tr><tr><td>Area Rug</td><td>1</td><td></td></tr><tr><td>Art</td><td>1</td><td></td></tr><tr><td>Coffee Table</td><td>1</td><td></td></tr><tr><td>Floor Lamp</td><td>1</td><td></td></tr><tr><td>Side Table</td><td>1</td><td></td></tr><tr><td>Sofa</td><td>1</td><td></td></tr><tr><td></td><td></td><td><strong>$500</strong></td></tr><tr style=\"background-color:#EEE\"><td><strong>Master Bedroom</strong></td><td></td><td></td></tr><tr><td>Accent Chair</td><td>1</td><td></td></tr><tr><td>Accessories</td><td>1</td><td></td></tr><tr><td>Area Rug</td><td>1</td><td></td></tr><tr><td>Art</td><td>1</td><td></td></tr><tr><td>Bed Frame</td><td>1</td><td></td></tr><tr><td>Box Spring</td><td>1</td><td></td></tr><tr><td>Lamp</td><td>1</td><td></td></tr><tr><td>Night Table</td><td>1</td><td></td></tr><tr><td>Queen Bed</td><td>1</td><td></td></tr><tr><td></td><td></td><td><strong>$500</strong></td></tr><tr style=\"background-color:#555\"><td style=\"color:#FFF;\"><strong>Total</strong></td><td style=\"color:#FFF;\"></td><td style=\"color:#FFF;\"><strong>$2500</strong></td></tr></table>"
 	
 	var pageHeader = "<!DOCTYPE html><html><body style=\"background-color: #EEE; padding:2em; font-size:.4em;\"><div style=\"background-color: #FFF; padding:2em;\"><div id=\"custom-note-section\" style=\"text-align:left\"><p>&nbsp;</p></div><div style=\"text-align:center\"><img style=\"max-height:11em;\" src=\"https://firebasestorage.googleapis.com/v0/b/voila-a01f0.appspot.com/o/logo.png?alt=media&token=b84934bf-2584-48e5-9e9c-900c24b782d3\"></div><div style=\"text-align:center\"><p style=\"color:#888;font-size: 1.3em;\">" +
 		"Home Staging • Re-Styling • Interior Design • Developer Services • Painting" +
