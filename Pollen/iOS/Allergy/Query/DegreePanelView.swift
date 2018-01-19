@@ -32,7 +32,7 @@ class DegreePanelView: UIView {
 	
 	func initUI(){
 		var i = 0
-		let colors = [Style.shared.colorVeryHeavy, Style.shared.colorMedium, Style.shared.colorNoPollen,  Style.shared.blue, .lightGray ]
+		let colors = [Style.shared.colorVeryHeavy, Style.shared.colorMedium, Style.shared.colorNoPollen,  Style.shared.blue, Style.shared.colorNoEntry ]
 		for button in buttons{
 			self.addSubview(button)
 			button.titleLabel?.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P30)
@@ -48,8 +48,9 @@ class DegreePanelView: UIView {
 		}
 		// style last button differently
 		if let button = buttons.last{
-			button.setTitleColor(Style.shared.blue, for: .normal)
-			button.layer.borderColor = Style.shared.blue.cgColor
+			let color = colors.last!
+			button.setTitleColor(color, for: .normal)
+			button.layer.borderColor = color.cgColor
 			button.layer.backgroundColor = UIColor.white.cgColor
 			button.layer.cornerRadius = 20
 			button.layer.borderWidth = 4
@@ -66,7 +67,7 @@ class DegreePanelView: UIView {
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		var i:Int = 0
-		let descriptions = ["severe", "medium", "light", "nothing", "remove entry"]
+		let descriptions = ["severe", "medium", "light", "none", "remove entry"]
 		let buttonH_Pad = self.bounds.size.height / 7.0
 		
 		for button in self.buttons{

@@ -16,6 +16,14 @@ class UILineChartView: UIView {
 //		}
 //	}
 	
+	let colors:[CGColor] = [
+		Style.shared.colorNoPollen.cgColor,
+		Style.shared.colorLow.cgColor,
+		Style.shared.colorMedium.cgColor,
+		Style.shared.colorHeavy.cgColor,
+		Style.shared.colorVeryHeavy.cgColor
+	]
+	
 	// fake data
 	var values:[String:Int] = [
 			Date().toString() : 3,
@@ -47,8 +55,8 @@ class UILineChartView: UIView {
 		
 		lastDateLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
 		firstDateLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
-		lastDateLabel.textColor = Style.shared.blue
-		firstDateLabel.textColor = Style.shared.blue
+		lastDateLabel.textColor = UIColor.black
+		firstDateLabel.textColor = UIColor.black
 		lastDateLabel.textAlignment = .right
 
 		self.addSubview(lastDateLabel)
@@ -57,7 +65,7 @@ class UILineChartView: UIView {
 		self.layer.addSublayer(watermarkLayer)
 		self.layer.addSublayer(barLayer)
 
-		self.layer.borderColor = Style.shared.blue.cgColor
+		self.layer.borderColor = UIColor.black.cgColor
 		self.layer.borderWidth = 4
 
 		redrawLayer()
@@ -72,18 +80,16 @@ class UILineChartView: UIView {
 		// date labels
 		// PREPARE DATA
 		let sortedDates = Array(values.keys).sorted{
-			var a = Date()
-			a.from(string: $0)
-			var b = Date()
-			b.from(string: $1)
-			return a < b
+			if let a = Date(fromString: $0), let b = Date(fromString: $1){
+				return a < b
+			}
+			return false
 		}
 		guard let firstDateString = sortedDates.first else { return }
 		guard let lastDateString = sortedDates.last else { return }
-		var lastDate = Date()
-		lastDate.from(string: lastDateString)
-		var firstDate = Date()
-		firstDate.from(string: firstDateString)
+		
+		guard let lastDate = Date(fromString: lastDateString) else { return }
+		guard let firstDate = Date(fromString: firstDateString) else { return }
 		
 		let formatter = DateFormatter()
 		formatter.dateFormat = "MMM d"
@@ -103,19 +109,16 @@ class UILineChartView: UIView {
 		
 		// PREPARE DATA
 		let sortedDates = Array(values.keys).sorted{
-			var a = Date()
-			a.from(string: $0)
-			var b = Date()
-			b.from(string: $1)
-			return a < b
+			if let a = Date(fromString: $0), let b = Date(fromString: $1){
+				return a < b
+			}
+			return false
 		}
 		guard let firstDateString = sortedDates.first else { return }
 		guard let lastDateString = sortedDates.last else { return }
-		var lastDate = Date()
-		lastDate.from(string: lastDateString)
+		guard let lastDate = Date(fromString: lastDateString) else { return }
 		var fullDateArray:[String] = []
-		var dateI = Date()
-		dateI.from(string: firstDateString)
+		guard var dateI = Date(fromString: firstDateString) else { return }
 		while !Calendar.current.isDate(dateI, inSameDayAs: lastDate){
 			fullDateArray.append(dateI.toString())
 			dateI = Calendar.current.date(byAdding: .day, value: 1, to: dateI)!

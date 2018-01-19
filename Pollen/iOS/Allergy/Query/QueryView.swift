@@ -60,6 +60,7 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 				symptomPanelView.buttons[i].setTitle(symptoms[i], for: .normal)
 			}
 		}
+		categorySlideView.selected = index
 		updateColorsThroughout()
 	}
 
@@ -73,7 +74,7 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 		
 		for i in 0..<SymptomCategories.count{
 			let categoryString = SymptomCategories[i]
-			var color = colors.first!
+			var color = Style.shared.colorNoEntry
 			if let record = Allergies.shared.records[self.date.toString()]{
 				if let categoryRecord = record.allergies[categoryString]{
 					if let max = Array(categoryRecord.values).sorted().last{
@@ -86,7 +87,8 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 		self.categorySlideView.setNeedsLayout()
 
 		// presently selected ones
-		self.symptomPanelView.symptomColors = [colors.first!,colors.first!,colors.first!,colors.first!]
+//		self.symptomPanelView.symptomColors = [UIColor.black, UIColor.black, UIColor.black, UIColor.black]
+		self.symptomPanelView.symptomColors = [Style.shared.colorNoEntry, Style.shared.colorNoEntry, Style.shared.colorNoEntry, Style.shared.colorNoEntry]
 		guard let category = selectedCategory else { return }
 //		guard let symptom = selectedSymptom else { return }
 		let categoryString = SymptomCategories[ category ]
@@ -112,15 +114,16 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 //		categorySlideView.buttons[category].tintColor = colors[sender.tag]
 		
 		let degree = sender.tag
-		if(degree == -1){
-			return
-		}
 		let categoryString:String = SymptomCategories[category]
 		guard let symptomArray = SymptomNames[categoryString] else { return }
 		let symptomString = symptomArray[symptom]
-		
-		Allergies.shared.updateRecord(date: self.date, category: categoryString, symptom: symptomString, degree: degree)
 
+		if(degree == -1){
+			// remove entry
+			Allergies.shared.updateRecord(date: self.date, category: categoryString, removeSymptom: symptomString)
+		}else{
+			Allergies.shared.updateRecord(date: self.date, category: categoryString, symptom: symptomString, degree: degree)
+		}
 		self.updateColorsThroughout()
 	}
 	
@@ -134,27 +137,26 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 		self.scrollView.showsHorizontalScrollIndicator = false
 		self.scrollView.isScrollEnabled = false
 
-		
-		dateLabel.textColor = Style.shared.blue
-		dateLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P30)
-		dateNextButton.setTitleColor(Style.shared.blue, for: .normal)
-		datePrevButton.setTitleColor(Style.shared.blue, for: .normal)
+		dateLabel.textColor = UIColor.black
+		dateLabel.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P30)
+		dateNextButton.setTitleColor(UIColor.black, for: .normal)
+		datePrevButton.setTitleColor(UIColor.black, for: .normal)
 		dateNextButton.titleLabel?.font = UIFont.systemFont(ofSize: Style.shared.P30)
 		datePrevButton.titleLabel?.font = UIFont.systemFont(ofSize: Style.shared.P30)
 		dateNextButton.setTitle("▶︎", for: .normal)
 		datePrevButton.setTitle("◀︎", for: .normal)
 		dateNextButton.addTarget(self, action: #selector(dateNextButtonHandler), for: .touchUpInside)
 		datePrevButton.addTarget(self, action: #selector(datePrevButtonHandler), for: .touchUpInside)
-		topQuestionLabel.textColor = Style.shared.blue
+		topQuestionLabel.textColor = UIColor.gray
 		topQuestionLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P21)
-		selectedCategoryTitle.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P30)
-		selectedCategoryTitle.textColor = Style.shared.blue
+		selectedCategoryTitle.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P30)
+		selectedCategoryTitle.textColor = UIColor.black
 		selectedCategoryTitle.textAlignment = .center
-
+		
 		queryDoneButton.setTitle("Done", for: .normal)
 		queryDoneButton.titleLabel?.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P24)
-		queryDoneButton.setTitleColor(Style.shared.blue, for: .normal)
-		queryDoneButton.layer.borderColor = Style.shared.blue.cgColor
+		queryDoneButton.setTitleColor(UIColor.black, for: .normal)
+		queryDoneButton.layer.borderColor = UIColor.black.cgColor
 		queryDoneButton.layer.backgroundColor = UIColor.white.cgColor
 		queryDoneButton.layer.cornerRadius = 20
 		queryDoneButton.layer.borderWidth = 4
@@ -186,6 +188,8 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 		
 		// chart views
 		self.scrollView.addSubview(lineChartScrollView)
+		
+		self.didSelectCategory(index: 0)
 	}
 	
 	func welcomeViewIntroScreen(){
@@ -212,15 +216,16 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 		
 		// chart views
 		hrChartView.frame = CGRect(x: self.bounds.width*2 + 20, y: 40, width: self.bounds.width - 40, height: 4)
-		hrChartView.backgroundColor = Style.shared.blue
+		hrChartView.backgroundColor = .black
 		self.scrollView.addSubview(hrChartView)
 
-		chartViewBackButton.setTitle("← Data", for: .normal)
+		chartViewBackButton.setTitle("← My Allergies", for: .normal)
 		chartViewBackButton.titleLabel?.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P24)
-		chartViewBackButton.setTitleColor(Style.shared.blue, for: .normal)
+		chartViewBackButton.setTitleColor(.black, for: .normal)
 		chartViewBackButton.addTarget(self, action: #selector(chartViewBackButtonHandler), for: .touchUpInside)
 		chartViewBackButton.sizeToFit()
-		chartViewBackButton.frame = CGRect(x: self.bounds.width*2 + 20, y: 40 - chartViewBackButton.frame.size.height, width: chartViewBackButton.frame.size.width, height: chartViewBackButton.frame.size.height)
+		let ipadAdjust:CGFloat = IS_IPAD ? 12 : 0
+		chartViewBackButton.frame = CGRect(x: self.bounds.width*2 + 20, y: 40 - chartViewBackButton.frame.size.height + ipadAdjust, width: chartViewBackButton.frame.size.width, height: chartViewBackButton.frame.size.height)
 		self.scrollView.addSubview(chartViewBackButton)
 
 		lineChartScrollView.frame = CGRect(x: self.bounds.width*2, y: 40, width: self.bounds.width, height: self.bounds.height - 40)
@@ -311,12 +316,12 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 	}
 	
 	func doneButtonSetSelected(){
-		self.queryDoneButton.layer.backgroundColor = Style.shared.blue.cgColor
+		self.queryDoneButton.layer.backgroundColor = UIColor.black.cgColor
 		queryDoneButton.setTitleColor(UIColor.white, for: .normal)
 	}
 	func doneButtonSetUnselected(){
 		self.queryDoneButton.layer.backgroundColor = UIColor.white.cgColor
-		queryDoneButton.setTitleColor(Style.shared.blue, for: .normal)
+		queryDoneButton.setTitleColor(UIColor.black, for: .normal)
 	}
 	
 	func welcomeViewDoneButtonDidPress() {
@@ -327,26 +332,53 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 		for subview in lineChartScrollView.subviews{
 			subview.removeFromSuperview()
 		}
+		let chartData = Allergies.shared.chartData()
+		print(chartData)
+		
 		var finalH:CGFloat = 0
-		for i in 0..<5{
+		var i = 0
+		for (symptomName,value) in chartData{
 			let padH:CGFloat = self.bounds.size.width*0.2
 			let padW:CGFloat = self.bounds.size.width*0.1
 			let w = self.bounds.size.width - padW*2
 			let h = self.bounds.size.width*0.35
 			// label
 			let label = UILabel()
-			label.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P24)
-			label.textColor = Style.shared.blue
-			label.text = SymptomCategories[i].capitalized
+			label.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P24)
+			label.textColor = .black
+			label.text = symptomName
 			label.sizeToFit()
 			label.frame = CGRect(x: padW, y: padH*CGFloat(i+1) + h*CGFloat(i) - label.frame.size.height - 4, width: label.frame.size.width, height: label.frame.size.height)
 			lineChartScrollView.addSubview(label)
 			// chart
 			let lineChartView = UILineChartView()
+			lineChartView.values = value
 			lineChartView.frame = CGRect(x: padW, y: padH*CGFloat(i+1) + h*CGFloat(i), width: w, height: h)
 			finalH = lineChartView.frame.bottom
 			lineChartScrollView.addSubview(lineChartView)
+			i += 1
 		}
+		
+//		var finalH:CGFloat = 0
+//		for i in 0..<5{
+//			let padH:CGFloat = self.bounds.size.width*0.2
+//			let padW:CGFloat = self.bounds.size.width*0.1
+//			let w = self.bounds.size.width - padW*2
+//			let h = self.bounds.size.width*0.35
+//			// label
+//			let label = UILabel()
+//			label.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P24)
+//			label.textColor = .black
+//			label.text = SymptomCategories[i].capitalized
+//			label.sizeToFit()
+//			label.frame = CGRect(x: padW, y: padH*CGFloat(i+1) + h*CGFloat(i) - label.frame.size.height - 4, width: label.frame.size.width, height: label.frame.size.height)
+//			lineChartScrollView.addSubview(label)
+//			// chart
+//			let lineChartView = UILineChartView()
+//			lineChartView.frame = CGRect(x: padW, y: padH*CGFloat(i+1) + h*CGFloat(i), width: w, height: h)
+//			finalH = lineChartView.frame.bottom
+//			lineChartScrollView.addSubview(lineChartView)
+//		}
 		lineChartScrollView.contentSize = CGSize(width: lineChartScrollView.bounds.size.width, height: finalH + 30)
 	}
 

@@ -15,7 +15,7 @@ protocol SymptomPanelDelegate{
 class SymptomPanelView: UIView {
 	
 	var buttons:[UIButton] = Array(repeating:UIButton(), count:4)
-	var symptomColors:[UIColor] = Array(repeating:Style.shared.blue, count:4)
+	var symptomColors:[UIColor] = Array(repeating:Style.shared.colorNoEntry, count:4)
 	var delegate:SymptomPanelDelegate?
 
 	override func layoutSubviews() {
@@ -53,14 +53,15 @@ class SymptomPanelView: UIView {
 			self.buttons[i] = UIButton()
 		}
 		for i in 0..<self.symptomColors.count{
-			self.symptomColors[i] = Style.shared.blue
+			self.symptomColors[i] = Style.shared.colorNoEntry
 		}
 		for button in self.buttons{
 			button.titleLabel?.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P24)
 			button.titleLabel?.textAlignment = .center
 			button.titleLabel?.numberOfLines = 3
-			button.setTitleColor(Style.shared.blue, for: .normal)
-			button.layer.borderColor = Style.shared.blue.cgColor
+			button.titleEdgeInsets = UIEdgeInsetsMake(10,10,10,10)
+			button.setTitleColor(Style.shared.colorNoEntry, for: .normal)
+			button.layer.borderColor = Style.shared.colorNoEntry.cgColor
 			button.layer.backgroundColor = UIColor.white.cgColor
 			button.layer.cornerRadius = 20
 			button.layer.borderWidth = 4

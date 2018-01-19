@@ -14,14 +14,20 @@ protocol CategorySlideDelegate: class {
 class CategorySlideView: UIView {
 
 	var delegate:CategorySlideDelegate?
+	
+	var selected:Int?{
+		didSet{
+			self.setNeedsLayout()
+		}
+	}
 
 	let scrollView = UIScrollView()
 	let imageNames = ["eye", "sinus", "nose", "throat",
-					  "eye", "sinus", "nose", "throat",
-					  "eye", "sinus", "nose", "throat",
-					  "eye", "sinus", "nose", "throat"]
+					  "lungs", "skin", "meds", "wokeup",
+					  "nighttime", "pet", "mold", "dust",
+					  "outdoors", "energylevel", "headache", "eye"]
 	var buttons:[UIButton] = Array(repeating: UIButton(), count: SymptomCategories.count)
-	var categoryColors:[UIColor] = Array(repeating: Style.shared.blue, count: SymptomCategories.count)
+	var categoryColors:[UIColor] = Array(repeating: UIColor.black, count: SymptomCategories.count)
 	
 	let nextPageButton = UIButton()
 	let prevPageButton = UIButton()
@@ -45,8 +51,8 @@ class CategorySlideView: UIView {
 		scrollView.isPagingEnabled = true
 		self.addSubview(scrollView)
 		
-		nextPageButton.setTitleColor(Style.shared.blue, for: .normal)
-		prevPageButton.setTitleColor(Style.shared.blue, for: .normal)
+		nextPageButton.setTitleColor(UIColor(white: 0.0, alpha: 1.0), for: .normal)
+		prevPageButton.setTitleColor(UIColor(white: 0.0, alpha: 1.0), for: .normal)
 		nextPageButton.titleLabel?.font = UIFont.systemFont(ofSize: Style.shared.P30)
 		prevPageButton.titleLabel?.font = UIFont.systemFont(ofSize: Style.shared.P30)
 		nextPageButton.setTitle("▶︎", for: .normal)
@@ -59,13 +65,13 @@ class CategorySlideView: UIView {
 		self.addSubview(prevPageButton)
 		
 		for i in 0 ..< self.categoryColors.count {
-			self.categoryColors[i] = Style.shared.blue
+			self.categoryColors[i] = UIColor.gray
 		}
 
 		for i in 0 ..< self.buttons.count {
 			self.buttons[i] = UIButton()
 			if i < imageNames.count{
-				let buttonImage = UIImage(named:imageNames[i])?.maskWithColor(color: Style.shared.blue)
+				let buttonImage = UIImage(named:imageNames[i])?.maskWithColor(color: categoryColors[i])
 				self.buttons[i].setImage(buttonImage, for: .normal)
 			}
 			self.buttons[i].titleLabel?.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P21)
@@ -74,6 +80,7 @@ class CategorySlideView: UIView {
 			self.buttons[i].tag = i
 			self.buttons[i].addTarget(self, action: #selector(responseButtonHandler(sender:)), for: .touchUpInside)
 			self.scrollView.addSubview(self.buttons[i])
+			
 		}
 	}
 	
@@ -102,6 +109,14 @@ class CategorySlideView: UIView {
 			}
 			self.buttons[i].layer.borderColor = buttonColor.cgColor
 			self.buttons[i].center = CGPoint(x:btnH*0.5 + startX + btnH*iMod4, y:self.bounds.size.height*0.5)
+			// reset all selected colors
+			self.buttons[i].layer.shadowRadius = 0
+			self.buttons[i].layer.shadowOpacity = 0.0
+		}
+		if let index = selected{
+			self.buttons[index].layer.shadowRadius = Style.shared.P15*0.5
+			self.buttons[index].layer.shadowOpacity = 0.33
+			self.buttons[index].layer.shadowColor = categoryColors[index].cgColor
 		}
 	}
 	

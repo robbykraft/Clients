@@ -32,11 +32,13 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 		
 		radialChart.refreshViewData()
 		self.refreshBarChart()
+		self.radialChart.center = radialChartOrigin
 	}
 	
 	override var preferredStatusBarStyle: UIStatusBarStyle {
 		return .lightContent
 	}
+	
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -44,13 +46,26 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 		Pollen.shared.sqliteThings();
 		
 		let statusBarHeight:CGFloat = 0//22
-		let barChartTop:CGFloat = self.view.frame.size.height - 200
-		let radius:CGFloat = self.view.frame.size.height * 1.25
-		let circleCenter = CGPoint.init(x: self.view.center.x, y: barChartTop - radius)
+		var barChartTop:CGFloat = self.view.frame.size.height - 200
+		var radius:CGFloat = self.view.frame.size.height * 1.25
+		var circleCenter = CGPoint(x: self.view.center.x, y: barChartTop - radius)
+		
+		if( UIDevice().userInterfaceIdiom == .phone && UIScreen.main.nativeBounds.height == 2436 ){
+			// iphone x
+			barChartTop = self.view.frame.size.height - 230
+			radius = self.view.frame.size.height * 1
+			circleCenter = CGPoint(x: self.view.center.x, y: barChartTop - radius)
+		}
+
 		
 		self.scrollView.frame = CGRect(x: 0, y: 22, width: self.view.frame.size.width, height: self.view.frame.size.height-22)
 		self.scrollView.delegate = self
 		self.scrollView.contentSize = CGSize(width: self.view.bounds.width, height: self.view.bounds.height + barChartTop - 80)
+		if( UIDevice().userInterfaceIdiom == .phone && UIScreen.main.nativeBounds.height == 2436 ){
+			// iphone x
+			self.scrollView.contentSize = CGSize(width: self.view.bounds.width, height: self.view.bounds.height + barChartTop - 80 - 80)
+		}
+
 		self.scrollView.showsVerticalScrollIndicator = false
 		self.scrollView.isPagingEnabled = true
 		self.scrollView.delaysContentTouches = false
@@ -98,15 +113,20 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 				            y: statusBarHeight+self.view.frame.size.width*0.05,
 				            width: self.view.frame.size.width*0.9,
 				            height: self.view.frame.size.width * 0.9))
+			radialChartOrigin = CGPoint(x: self.view.bounds.size.width*0.5, y: statusBarHeight + self.view.frame.size.width*0.5 )
+
 		} else if( UIDevice().userInterfaceIdiom == .phone && UIScreen.main.nativeBounds.height == 2436 ){
 			radialChart = UIRadialChart.init(frame: CGRect.init(x: 0, y: statusBarHeight + (self.view.frame.size.height - 320.0) * 0.22, width: self.view.frame.size.width, height: self.view.frame.size.width))
+			radialChartOrigin = CGPoint(x: self.view.bounds.size.width*0.5, y: statusBarHeight + (self.view.frame.size.width - 320.0) * 0.8 + self.view.frame.size.width*0.5 )
+		
 		}
 		else{
 			radialChart = UIRadialChart.init(frame: CGRect.init(x: 0, y: statusBarHeight + (self.view.frame.size.height - 320.0) * 0.13, width: self.view.frame.size.width, height: self.view.frame.size.width))
+			radialChartOrigin = CGPoint(x: self.view.bounds.size.width*0.5, y: statusBarHeight + (self.view.frame.size.width - 320.0) * 0.4 + self.view.frame.size.width*0.5 )
+		
 		}
 		self.scrollView.addSubview(radialChart)
 
-		radialChartOrigin = CGPoint(x: self.view.bounds.size.width*0.5, y: statusBarHeight + (self.view.frame.size.width - 320.0) * 0.25 + self.view.frame.size.width*0.5 )
 
 		barChart = UIBarChartView.init(frame: CGRect.init(x: 0, y: barChartTop, width: self.view.frame.size.width, height: 200))
 		barChart.delegate = self
