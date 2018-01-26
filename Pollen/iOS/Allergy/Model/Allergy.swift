@@ -123,6 +123,18 @@ class Allergies {
 		self.synchronize()
 	}
 	
+	func getRecord(date:Date, category:String, symptom:String)->Int?{
+		let dateString = date.toString()
+		if self.records[dateString] == nil{
+			return nil
+		}
+		if let entry = self.records[dateString]{
+			if let cat = entry.allergies[category]{
+				return cat[symptom]
+			} else{ return nil }
+		} else{ return nil }
+	}
+	
 	func reloadFromDefaults(){
 		if let records = UserDefaults.standard.object(forKey: "records") as? [String: [String:[String:Int]] ]{
 			print("from ns user defaults")
@@ -159,17 +171,56 @@ let SymptomCategories = [
 	"nose",
 	"throat",
 	"lungs",
+	"headache",
 	"skin",
-	"meds",
-	"woke up",
-	"night time",
 	"pet",
 	"mold",
 	"dust",
 	"outdoors",
-	"energy level",
-	"headache"
+	"meds",
+	"woke up",
+	"night time",
+	"energy level"
 ]
+
+// these are the images in the iOS application image directory
+let SymptomImageNames = [
+	"eyes" : "eye",
+	"sinus" : "sinus",
+	"nose" : "nose",
+	"throat" : "throat",
+	"lungs" : "lungs",
+	"headache" : "headache",
+	"skin" : "skin",
+	"pet" : "pet",
+	"mold" : "mold",
+	"dust" : "dust",
+	"outdoors" : "outdoors",
+	"meds" : "meds",
+	"woke up" : "wokeup",
+	"night time" : "nighttime",
+	"energy level" : "energylevel"
+]
+
+
+let BinaryCategories = [
+	"eyes" : false,
+	"sinus" : false,
+	"nose" : false,
+	"throat" : false,
+	"lungs" : false,
+	"headache" : false,
+	"skin" : false,
+	"pet" : true,
+	"mold" : true,
+	"dust" : true,
+	"outdoors" : true,
+	"meds" : true,
+	"woke up" : true,
+	"night time" : true,
+	"energy level" : true
+]
+
 
 let SymptomNames = [
 	"eyes" : ["itchy", "red", "watery", "bags"],
@@ -178,14 +229,14 @@ let SymptomNames = [
 	"throat" : ["clearing", "sore", "hoarse voice", "itchy / scratchy"],
 	"lungs" : ["wheeze", "cough", "tight chest", "short breath"],
 	"skin" : ["itch", "bumps / hives", "eczema", "swelling"],
-	"meds" : ["pill", "nose spray", "inhaler", "topical cream"],
+	"meds" : ["decongestant", "expectorant", "antihistamine", "nose spray"],
 	"woke up" : ["groggy head", "stuffed up", "crusty eyes", "dry lips"],
 	"night time" : ["stuffy", "cough", "throat drainage", "wheezy chest"],
 	"pet" : ["dog", "cat", "rodent", "horse"],
 	"mold" : ["home", "work", "school", "other"],
 	"dust" : ["home", "work", "school", "other"],
 	"outdoors" : ["playing sports", "air travel", "someone sick", "air pollution"],
-	"energy level" : ["great", "medium", "low", "sick"],
+	"energy level" : ["great", "foggy", "tired", "can't focus"],
 	"headache" : ["forehead", "sides", "back", "behind eyes"]
 ]
 

@@ -66,46 +66,28 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 
 	func didSelectSymptom(index: Int) {
 		selectedSymptom = index
-		degreePanelView.isHidden = false
+
+		guard let category = selectedCategory else { return }
+		let categoryString = SymptomCategories[category]
+
+		if BinaryCategories[categoryString]!{
+			// set color of button
+			guard let symptom = selectedSymptom else { return }
+			guard let symptomArray = SymptomNames[categoryString] else { return }
+			let symptomString = symptomArray[symptom]
+//			if Allergies.shared.records
+			if Allergies.shared.getRecord(date: self.date, category: categoryString, symptom: symptomString) != nil{
+				Allergies.shared.updateRecord(date: self.date, category: categoryString, removeSymptom: symptomString)
+			} else{
+				Allergies.shared.updateRecord(date: self.date, category: categoryString, symptom: symptomString, degree: 3)
+			}
+			self.updateColorsThroughout()
+		} else{
+			// open degree panel
+			degreePanelView.isHidden = false
+		}
 	}
 	
-	func updateColorsThroughout(){
-		let colors = [Style.shared.blue, Style.shared.colorNoPollen, Style.shared.colorMedium, Style.shared.colorVeryHeavy]
-		
-		for i in 0..<SymptomCategories.count{
-			let categoryString = SymptomCategories[i]
-			var color = Style.shared.colorNoEntry
-			if let record = Allergies.shared.records[self.date.toString()]{
-				if let categoryRecord = record.allergies[categoryString]{
-					if let max = Array(categoryRecord.values).sorted().last{
-						color = colors[max]
-					}
-				}
-			}
-			self.categorySlideView.categoryColors[i] = color
-		}
-		self.categorySlideView.setNeedsLayout()
-
-		// presently selected ones
-//		self.symptomPanelView.symptomColors = [UIColor.black, UIColor.black, UIColor.black, UIColor.black]
-		self.symptomPanelView.symptomColors = [Style.shared.colorNoEntry, Style.shared.colorNoEntry, Style.shared.colorNoEntry, Style.shared.colorNoEntry]
-		guard let category = selectedCategory else { return }
-//		guard let symptom = selectedSymptom else { return }
-		let categoryString = SymptomCategories[ category ]
-		if let record = Allergies.shared.records[self.date.toString()]{
-			if let categoryRecord = record.allergies[categoryString]{
-				if let symptomsArray = SymptomNames[categoryString]{
-					for i in 0..<symptomsArray.count{
-						if let degree = categoryRecord[symptomsArray[i]]{
-							self.symptomPanelView.symptomColors[i] = colors[degree]
-						}
-					}
-				}
-			}
-		}
-		self.symptomPanelView.setNeedsLayout()
-	}
-
 	func didSelectDegree(sender: UIButton) {
 		degreePanelView.isHidden = true
 
@@ -126,7 +108,44 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 		}
 		self.updateColorsThroughout()
 	}
-	
+
+	func updateColorsThroughout(){
+		let colors = [Style.shared.blue, Style.shared.colorNoPollen, Style.shared.colorMedium, Style.shared.colorVeryHeavy]
+		
+		for i in 0..<SymptomCategories.count{
+			let categoryString = SymptomCategories[i]
+			var color = Style.shared.colorNoEntry
+			if let record = Allergies.shared.records[self.date.toString()]{
+				if let categoryRecord = record.allergies[categoryString]{
+					if let max = Array(categoryRecord.values).sorted().last{
+						color = colors[max]
+					}
+				}
+			}
+			self.categorySlideView.categoryColors[i] = color
+		}
+		self.categorySlideView.setNeedsLayout()
+		
+		// presently selected ones
+		//		self.symptomPanelView.symptomColors = [UIColor.black, UIColor.black, UIColor.black, UIColor.black]
+		self.symptomPanelView.symptomColors = [Style.shared.colorNoEntry, Style.shared.colorNoEntry, Style.shared.colorNoEntry, Style.shared.colorNoEntry]
+		guard let category = selectedCategory else { return }
+		//		guard let symptom = selectedSymptom else { return }
+		let categoryString = SymptomCategories[ category ]
+		if let record = Allergies.shared.records[self.date.toString()]{
+			if let categoryRecord = record.allergies[categoryString]{
+				if let symptomsArray = SymptomNames[categoryString]{
+					for i in 0..<symptomsArray.count{
+						if let degree = categoryRecord[symptomsArray[i]]{
+							self.symptomPanelView.symptomColors[i] = colors[degree]
+						}
+					}
+				}
+			}
+		}
+		self.symptomPanelView.setNeedsLayout()
+	}
+
 	func initUI(){
 		
 		categorySlideView.delegate = self
@@ -262,7 +281,7 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 		let questionFrame = CGRect(x: 0, y: yTop + 15, width: self.bounds.size.width, height: self.bounds.size.height - yTop - queryDoneButton.frame.size.height - 15 - 20 - 10)
 		
 //		let pad:CGFloat = 5.0
-		let h:CGFloat = self.bounds.width * 0.23
+		let h:CGFloat = self.bounds.width * 0.3
 		categorySlideView.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: h)
 		categorySlideView.center = CGPoint(x: w + self.center.x, y: questionFrame.origin.y + h*0.5)
 		
@@ -283,7 +302,6 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 				degreePanelView.frame = appDelegate.rootViewController.view.bounds
 			}
 		}
-
 	}
 	
 	@objc func dateNextButtonHandler(){

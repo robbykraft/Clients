@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import SQLite
 
 enum Rating {
 	case none
@@ -49,63 +48,7 @@ class Pollen {
 			defaults.setValue(self.sortAllergiesBy, forKey: "sortAllergiesBy")
 		}
 	}
-	
-	func sqliteThings(){
-/*		var databasePath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-		databasePath.append("/db.sqlite3")
-		print(databasePath)
-		if let db = try? Connection(databasePath){
-			let dailies = Table("dalies")
-			do{
-				let id = Expression<Int64>("id")
-				let year = Expression<Int64>("year")
-				let month = Expression<Int64>("month")
-				let day = Expression<Int64>("day")
-				
-				try db.run(dailies.create(block: { (t) in
-					t.column(id, primaryKey: true)
-					t.column(year)
-					t.column(month)
-					t.column(day)
-//					for key in AllergyConditionsKeys{
-//						let allergyCondition = Expression<Int64>(key)
-//						t.column(allergyCondition)
-//					}
-				}))
-				
-//				let insert2 = dailies.insert(name <- "franklin", year <- )
-				
-				// UPDATE "users" SET "email" = replace("email", 'mac.com', 'me.com')
-				// WHERE ("id" = 1)
-				print("success creating db")
-				// INSERT INTO "users" ("name", "email") VALUES ('Alice', 'alice@mac.com')
-				
-				
-			} catch{
-				print("catch fail")
-			}
-			
-			do{
-				let year = Expression<Int64>("year")
-				let month = Expression<Int64>("month")
-				let day = Expression<Int64>("day")
-				let insert = dailies.insert(year <- 2017, month <- 12, day <- 15)
-				let rowid = try db.run(insert)
-				
-//				let alice = users.filter(id == rowid)
-				for key in AllergyConditionsKeys{
-					let allergyCondition = Expression<Int64>(key)
-					let value:Int64 = 2
-					try db.run(dailies.update(allergyCondition <- value))
-				}
-				print("update new entry success")
-				print(rowid)
-			} catch{
-				print("update new entry fail")
-			}
-		}*/
-	}
-	
+		
 	
 	func boot(completionHandler: ((_ success:Bool) -> ())? ){
 		self.getPollenTypes { (success) in

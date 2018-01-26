@@ -42,9 +42,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
-		Pollen.shared.sqliteThings();
-		
+				
 		let statusBarHeight:CGFloat = 0//22
 		var barChartTop:CGFloat = self.view.frame.size.height - 200
 		var radius:CGFloat = self.view.frame.size.height * 1.25

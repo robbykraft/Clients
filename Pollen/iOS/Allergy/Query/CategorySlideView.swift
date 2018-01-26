@@ -22,10 +22,7 @@ class CategorySlideView: UIView {
 	}
 
 	let scrollView = UIScrollView()
-	let imageNames = ["eye", "sinus", "nose", "throat",
-					  "lungs", "skin", "meds", "wokeup",
-					  "nighttime", "pet", "mold", "dust",
-					  "outdoors", "energylevel", "headache", "eye"]
+	
 	var buttons:[UIButton] = Array(repeating: UIButton(), count: SymptomCategories.count)
 	var categoryColors:[UIColor] = Array(repeating: UIColor.black, count: SymptomCategories.count)
 	
@@ -70,10 +67,9 @@ class CategorySlideView: UIView {
 
 		for i in 0 ..< self.buttons.count {
 			self.buttons[i] = UIButton()
-			if i < imageNames.count{
-				let buttonImage = UIImage(named:imageNames[i])?.maskWithColor(color: categoryColors[i])
-				self.buttons[i].setImage(buttonImage, for: .normal)
-			}
+			guard let imageName = SymptomImageNames[ SymptomCategories[i] ] else {return}
+			let buttonImage = UIImage(named:imageName)?.maskWithColor(color: categoryColors[i])
+			self.buttons[i].setImage(buttonImage, for: .normal)
 			self.buttons[i].titleLabel?.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P21)
 			self.buttons[i].layer.borderWidth = 4
 			self.buttons[i].layer.masksToBounds = true
@@ -96,19 +92,52 @@ class CategorySlideView: UIView {
 		prevPageButton.center = CGPoint(x: btnH * 0.5, y: self.bounds.size.height*0.5)
 		nextPageButton.center = CGPoint(x: self.bounds.size.width - btnH * 0.5, y: self.bounds.size.height*0.5)
 
+//		let startX:CGFloat = (self.bounds.size.width-btnH*4)*0.5
+		let xPos:[CGFloat] = [
+			btnH*0.5 + (self.bounds.size.width-btnH*4)*0.5 + 0*self.bounds.size.width + 0,
+			btnH*0.5 + (self.bounds.size.width-btnH*4)*0.5 + 0*self.bounds.size.width + btnH*1,
+			btnH*0.5 + (self.bounds.size.width-btnH*4)*0.5 + 0*self.bounds.size.width + btnH*2,
+			btnH*0.5 + (self.bounds.size.width-btnH*4)*0.5 + 0*self.bounds.size.width + btnH*3,
+			btnH*0.5 + (self.bounds.size.width-btnH*4)*0.5 + 0*self.bounds.size.width + btnH*0.5,
+			btnH*0.5 + (self.bounds.size.width-btnH*4)*0.5 + 0*self.bounds.size.width + btnH*1.5,
+			btnH*0.5 + (self.bounds.size.width-btnH*4)*0.5 + 0*self.bounds.size.width + btnH*2.5,
+			btnH*0.5 + (self.bounds.size.width-btnH*4)*0.5 + 1*self.bounds.size.width + btnH*0,
+			btnH*0.5 + (self.bounds.size.width-btnH*4)*0.5 + 1*self.bounds.size.width + btnH*1,
+			btnH*0.5 + (self.bounds.size.width-btnH*4)*0.5 + 1*self.bounds.size.width + btnH*2,
+			btnH*0.5 + (self.bounds.size.width-btnH*4)*0.5 + 1*self.bounds.size.width + btnH*3,
+			btnH*0.5 + (self.bounds.size.width-btnH*4)*0.5 + 2*self.bounds.size.width + btnH*0,
+			btnH*0.5 + (self.bounds.size.width-btnH*4)*0.5 + 2*self.bounds.size.width + btnH*1,
+			btnH*0.5 + (self.bounds.size.width-btnH*4)*0.5 + 2*self.bounds.size.width + btnH*2,
+			btnH*0.5 + (self.bounds.size.width-btnH*4)*0.5 + 2*self.bounds.size.width + btnH*3,
+		]
+		
+		let yPos:[CGFloat] = [
+			self.bounds.size.height*0.33,
+			self.bounds.size.height*0.33,
+			self.bounds.size.height*0.33,
+			self.bounds.size.height*0.33,
+			self.bounds.size.height*0.66,
+			self.bounds.size.height*0.66,
+			self.bounds.size.height*0.66,
+			self.bounds.size.height*0.5,
+			self.bounds.size.height*0.5,
+			self.bounds.size.height*0.5,
+			self.bounds.size.height*0.5,
+			self.bounds.size.height*0.5,
+			self.bounds.size.height*0.5,
+			self.bounds.size.height*0.5,
+			self.bounds.size.height*0.5
+		]
+		
 		for i in 0 ..< self.buttons.count {
 			let buttonColor = categoryColors[i]
-			let page = CGFloat(Int(Double(i) / 4.0))
-			let iMod4 = CGFloat(i%4)
-			let startX:CGFloat = page*self.bounds.size.width + (self.bounds.size.width - btnH*4) * 0.5
 			self.buttons[i].frame = CGRect(x: 0, y: 0, width: btnH, height: btnH)
 			self.buttons[i].layer.cornerRadius = btnH*0.5
-			if i < imageNames.count{
-				let buttonImage = UIImage(named:imageNames[i])?.maskWithColor(color: buttonColor)
-				self.buttons[i].setImage(buttonImage, for: .normal)
-			}
+			guard let imageName = SymptomImageNames[ SymptomCategories[i] ] else {return}
+			let buttonImage = UIImage(named:imageName)?.maskWithColor(color: categoryColors[i])
+			self.buttons[i].setImage(buttonImage, for: .normal)
 			self.buttons[i].layer.borderColor = buttonColor.cgColor
-			self.buttons[i].center = CGPoint(x:btnH*0.5 + startX + btnH*iMod4, y:self.bounds.size.height*0.5)
+			self.buttons[i].center = CGPoint(x:xPos[i], y:yPos[i])
 			// reset all selected colors
 			self.buttons[i].layer.shadowRadius = 0
 			self.buttons[i].layer.shadowOpacity = 0.0
