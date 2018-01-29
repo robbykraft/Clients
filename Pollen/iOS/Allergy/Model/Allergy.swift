@@ -236,7 +236,7 @@ let SymptomNames = [
 	"mold" : ["home", "work", "school", "other"],
 	"dust" : ["home", "work", "school", "other"],
 	"outdoors" : ["playing sports", "air travel", "someone sick", "air pollution"],
-	"energy level" : ["great", "foggy", "tired", "can't focus"],
+	"energy level" : ["great", "foggy", "tired", "sick"],
 	"headache" : ["forehead", "sides", "back", "behind eyes"]
 ]
 

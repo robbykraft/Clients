@@ -100,26 +100,27 @@ class CategorySlideView: UIView, UIScrollViewDelegate {
 		prevPageButton.center = CGPoint(x: btnH * 0.5, y: self.bounds.size.height*0.5)
 		nextPageButton.center = CGPoint(x: self.bounds.size.width - btnH * 0.5, y: self.bounds.size.height*0.5)
 
-		let a:CGFloat = btnH*0.5 + (self.bounds.size.width-btnH*4)*0.5
+		let xPad:CGFloat = self.bounds.width*0.01
+		let a:CGFloat = btnH*0.5 + (self.bounds.size.width-btnH*4-xPad*4)*0.5
 		let b:CGFloat = self.bounds.size.width
 
 //		let startX:CGFloat = (self.bounds.size.width-btnH*4)*0.5
 		let xPos:[CGFloat] = [
-			a + 0 * b + 0,
-			a + 0 * b + btnH*1,
-			a + 0 * b + btnH*2,
-			a + 0 * b + btnH*3,
-			a + 0 * b + btnH*0.5,
-			a + 0 * b + btnH*1.5,
-			a + 0 * b + btnH*2.5,
-			a + 1 * b + btnH*0,
-			a + 1 * b + btnH*1,
-			a + 1 * b + btnH*2,
-			a + 1 * b + btnH*3,
-			a + 2 * b + btnH*0,
-			a + 2 * b + btnH*1,
-			a + 2 * b + btnH*2,
-			a + 2 * b + btnH*3,
+			a + 0 * b + 0 + xPad*0,
+			a + 0 * b + btnH*1 + xPad*1,
+			a + 0 * b + btnH*2 + xPad*2,
+			a + 0 * b + btnH*3 + xPad*3,
+			a + 0 * b + btnH*0.5 + xPad*0.5,
+			a + 0 * b + btnH*1.5 + xPad*1.5,
+			a + 0 * b + btnH*2.5 + xPad*2.5,
+			a + 1 * b + btnH*0 + xPad*0,
+			a + 1 * b + btnH*1 + xPad*1,
+			a + 1 * b + btnH*2 + xPad*2,
+			a + 1 * b + btnH*3 + xPad*3,
+			a + 2 * b + btnH*0 + xPad*0,
+			a + 2 * b + btnH*1 + xPad*1,
+			a + 2 * b + btnH*2 + xPad*2,
+			a + 2 * b + btnH*3 + xPad*3,
 			]
 
 		let yPos:[CGFloat] = [
@@ -140,9 +141,9 @@ class CategorySlideView: UIView, UIScrollViewDelegate {
 			self.bounds.size.height*0.5
 		]
 		
-		selectionCircle.frame = CGRect(x: 0, y: 0, width: btnH, height: btnH)
-		selectionCircle.layer.cornerRadius = btnH*0.5
-		selectionCircle.layer.shadowRadius = 2
+		selectionCircle.frame = CGRect(x: 0, y: 0, width: btnH*1.05, height: btnH*1.05)
+		selectionCircle.layer.cornerRadius = btnH*1.05*0.5
+		selectionCircle.layer.shadowRadius = btnH * 0.033
 		selectionCircle.layer.shadowOpacity = 1.0
 		selectionCircle.layer.shadowOffset = CGSize(width: 0, height: 0)
 		if let index = selected{
@@ -166,6 +167,8 @@ class CategorySlideView: UIView, UIScrollViewDelegate {
 			self.buttons[i].backgroundColor = UIColor.white
 		}
 		if let index = selected{
+			self.scrollView.bringSubview(toFront: selectionCircle)
+			self.scrollView.bringSubview(toFront: self.buttons[index])
 			selectionCircle.center = self.buttons[index].center
 		}
 	}
@@ -178,11 +181,31 @@ class CategorySlideView: UIView, UIScrollViewDelegate {
 	
 	@objc func nextPageButtonHandler(){
 		let currentOffset = self.scrollView.contentOffset
+		
+		let page = Int(currentOffset.x / self.bounds.size.width)
+		if let delegate = self.delegate{
+			switch page{
+			case 0: delegate.didSelectCategory(index: 7)
+			case 1: delegate.didSelectCategory(index: 11)
+			default: delegate.didSelectCategory(index: 11)
+			}
+		}
+
 		self.scrollView.scrollRectToVisible(CGRect(x:currentOffset.x + self.bounds.size.width, y:currentOffset.y, width:self.bounds.size.width, height:self.bounds.size.height), animated: true)
 	}
 	
 	@objc func prevPageButtonHandler(){
 		let currentOffset = self.scrollView.contentOffset
+
+		let page = Int(currentOffset.x / self.bounds.size.width)
+		if let delegate = self.delegate{
+			switch page{
+			case 1: delegate.didSelectCategory(index: 0)
+			case 2: delegate.didSelectCategory(index: 7)
+			default: delegate.didSelectCategory(index: 0)
+			}
+		}
+
 		self.scrollView.scrollRectToVisible(CGRect(x:currentOffset.x - self.bounds.size.width, y:currentOffset.y, width:self.bounds.size.width, height:self.bounds.size.height), animated: true)
 	}
 	

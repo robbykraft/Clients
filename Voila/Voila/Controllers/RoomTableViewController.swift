@@ -30,6 +30,12 @@ class RoomTableViewController: UITableViewController, MFMailComposeViewControlle
 	}
 	
 	let titleButton = UIButton(type: .custom)
+	
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		self.tableView.reloadData()
+	}
 
 	
     override func viewDidLoad() {
@@ -119,14 +125,21 @@ class RoomTableViewController: UITableViewController, MFMailComposeViewControlle
 	}
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+//        return 2
+		return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return Voila.shared.currentRoomAllFurniture().count
+		if section == 0{
+			return Voila.shared.currentRoomAllFurniture().count
+		}
+		return 1
 	}
 
 	override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+		if section == 1{
+			return "All Furniture"
+		}
 		var roomName = ""
 		if let name = Voila.shared.currentRoomName(){
 			roomName = name
@@ -141,8 +154,13 @@ class RoomTableViewController: UITableViewController, MFMailComposeViewControlle
 	}
 	
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
 		let cell = TableViewCell.init(style: .value1, reuseIdentifier: "RoomCell")
+		
+		if indexPath.section == 1{
+			cell.textLabel?.text = "Add Furniture Type"
+			return cell
+		}
+		
 
 		let allFurnitureArray = Voila.shared.currentRoomAllFurniture()
 		let myFurnitureArray = Voila.shared.currentRoomCurrentFurniture()
@@ -173,6 +191,13 @@ class RoomTableViewController: UITableViewController, MFMailComposeViewControlle
     }
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		if indexPath.section == 1{
+			let nav = UINavigationController()
+			nav.viewControllers = [AllFurnitureViewController()]
+			self.present(nav, animated: true, completion: nil)
+			return
+		}
+		
 		let furnitureArray = Voila.shared.currentRoomAllFurniture()
 		let furniture = furnitureArray[indexPath.row]
 		

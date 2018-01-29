@@ -101,6 +101,8 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 //		creationDateField.leftViewMode = .always
 //		detailField.leftViewMode = .always
 		
+		emailField.keyboardType = .emailAddress
+		
 		self.scrollView.addSubview(profileImageView)
 		self.scrollView.addSubview(profileImageButton)
 		self.scrollView.addSubview(nameField)
