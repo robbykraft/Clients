@@ -64,6 +64,7 @@ class Style {
 	var P30:CGFloat = 30
 	var P24:CGFloat = 24
 	var P21:CGFloat = 21
+	var P20:CGFloat = 20
 	var P18:CGFloat = 18
 	var P15:CGFloat = 15
 	var P12:CGFloat = 12
@@ -80,6 +81,7 @@ class Style {
 			s.P30 = 50
 			s.P24 = 36
 			s.P21 = 32
+			s.P20 = 31
 			s.P18 = 27
 			s.P15 = 26
 			s.P12 = 24

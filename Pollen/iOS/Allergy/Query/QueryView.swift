@@ -79,7 +79,7 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 			if Allergies.shared.getRecord(date: self.date, category: categoryString, symptom: symptomString) != nil{
 				Allergies.shared.updateRecord(date: self.date, category: categoryString, removeSymptom: symptomString)
 			} else{
-				Allergies.shared.updateRecord(date: self.date, category: categoryString, symptom: symptomString, degree: 3)
+				Allergies.shared.updateRecord(date: self.date, category: categoryString, symptom: symptomString, degree: 1)
 			}
 			self.updateColorsThroughout()
 		} else{
@@ -281,7 +281,7 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 		let questionFrame = CGRect(x: 0, y: yTop + 15, width: self.bounds.size.width, height: self.bounds.size.height - yTop - queryDoneButton.frame.size.height - 15 - 20 - 10)
 		
 //		let pad:CGFloat = 5.0
-		let h:CGFloat = self.bounds.width * 0.3
+		let h:CGFloat = self.bounds.width * 0.33
 		categorySlideView.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: h)
 		categorySlideView.center = CGPoint(x: w + self.center.x, y: questionFrame.origin.y + h*0.5)
 		

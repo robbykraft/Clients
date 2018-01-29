@@ -11,9 +11,11 @@ import UIKit
 protocol CategorySlideDelegate: class {
 	func didSelectCategory(index: Int)
 }
-class CategorySlideView: UIView {
+class CategorySlideView: UIView, UIScrollViewDelegate {
 
 	var delegate:CategorySlideDelegate?
+	
+	var selectionCircle = UIView()
 	
 	var selected:Int?{
 		didSet{
@@ -46,6 +48,7 @@ class CategorySlideView: UIView {
 		scrollView.showsHorizontalScrollIndicator = false
 		scrollView.isScrollEnabled = false
 		scrollView.isPagingEnabled = true
+		scrollView.delegate = self
 		self.addSubview(scrollView)
 		
 		nextPageButton.setTitleColor(UIColor(white: 0.0, alpha: 1.0), for: .normal)
@@ -60,6 +63,11 @@ class CategorySlideView: UIView {
 		prevPageButton.addTarget(self, action: #selector(prevPageButtonHandler), for: .touchUpInside)
 		self.addSubview(nextPageButton)
 		self.addSubview(prevPageButton)
+
+		// set initial scroll to the far left
+		prevPageButton.alpha = 0.0
+
+		self.scrollView.addSubview(selectionCircle)
 		
 		for i in 0 ..< self.categoryColors.count {
 			self.categoryColors[i] = UIColor.gray
@@ -83,7 +91,7 @@ class CategorySlideView: UIView {
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		
-		scrollView.contentSize = CGSize(width: self.bounds.size.width*4, height: self.bounds.size.height)
+		scrollView.contentSize = CGSize(width: self.bounds.size.width*3, height: self.bounds.size.height)
 		scrollView.frame = self.bounds
 		
 		let pct:CGFloat = 1.0/6
@@ -92,33 +100,36 @@ class CategorySlideView: UIView {
 		prevPageButton.center = CGPoint(x: btnH * 0.5, y: self.bounds.size.height*0.5)
 		nextPageButton.center = CGPoint(x: self.bounds.size.width - btnH * 0.5, y: self.bounds.size.height*0.5)
 
+		let a:CGFloat = btnH*0.5 + (self.bounds.size.width-btnH*4)*0.5
+		let b:CGFloat = self.bounds.size.width
+
 //		let startX:CGFloat = (self.bounds.size.width-btnH*4)*0.5
 		let xPos:[CGFloat] = [
-			btnH*0.5 + (self.bounds.size.width-btnH*4)*0.5 + 0*self.bounds.size.width + 0,
-			btnH*0.5 + (self.bounds.size.width-btnH*4)*0.5 + 0*self.bounds.size.width + btnH*1,
-			btnH*0.5 + (self.bounds.size.width-btnH*4)*0.5 + 0*self.bounds.size.width + btnH*2,
-			btnH*0.5 + (self.bounds.size.width-btnH*4)*0.5 + 0*self.bounds.size.width + btnH*3,
-			btnH*0.5 + (self.bounds.size.width-btnH*4)*0.5 + 0*self.bounds.size.width + btnH*0.5,
-			btnH*0.5 + (self.bounds.size.width-btnH*4)*0.5 + 0*self.bounds.size.width + btnH*1.5,
-			btnH*0.5 + (self.bounds.size.width-btnH*4)*0.5 + 0*self.bounds.size.width + btnH*2.5,
-			btnH*0.5 + (self.bounds.size.width-btnH*4)*0.5 + 1*self.bounds.size.width + btnH*0,
-			btnH*0.5 + (self.bounds.size.width-btnH*4)*0.5 + 1*self.bounds.size.width + btnH*1,
-			btnH*0.5 + (self.bounds.size.width-btnH*4)*0.5 + 1*self.bounds.size.width + btnH*2,
-			btnH*0.5 + (self.bounds.size.width-btnH*4)*0.5 + 1*self.bounds.size.width + btnH*3,
-			btnH*0.5 + (self.bounds.size.width-btnH*4)*0.5 + 2*self.bounds.size.width + btnH*0,
-			btnH*0.5 + (self.bounds.size.width-btnH*4)*0.5 + 2*self.bounds.size.width + btnH*1,
-			btnH*0.5 + (self.bounds.size.width-btnH*4)*0.5 + 2*self.bounds.size.width + btnH*2,
-			btnH*0.5 + (self.bounds.size.width-btnH*4)*0.5 + 2*self.bounds.size.width + btnH*3,
-		]
-		
+			a + 0 * b + 0,
+			a + 0 * b + btnH*1,
+			a + 0 * b + btnH*2,
+			a + 0 * b + btnH*3,
+			a + 0 * b + btnH*0.5,
+			a + 0 * b + btnH*1.5,
+			a + 0 * b + btnH*2.5,
+			a + 1 * b + btnH*0,
+			a + 1 * b + btnH*1,
+			a + 1 * b + btnH*2,
+			a + 1 * b + btnH*3,
+			a + 2 * b + btnH*0,
+			a + 2 * b + btnH*1,
+			a + 2 * b + btnH*2,
+			a + 2 * b + btnH*3,
+			]
+
 		let yPos:[CGFloat] = [
-			self.bounds.size.height*0.33,
-			self.bounds.size.height*0.33,
-			self.bounds.size.height*0.33,
-			self.bounds.size.height*0.33,
-			self.bounds.size.height*0.66,
-			self.bounds.size.height*0.66,
-			self.bounds.size.height*0.66,
+			self.bounds.size.height*0.275,
+			self.bounds.size.height*0.275,
+			self.bounds.size.height*0.275,
+			self.bounds.size.height*0.275,
+			self.bounds.size.height*0.725,
+			self.bounds.size.height*0.725,
+			self.bounds.size.height*0.725,
 			self.bounds.size.height*0.5,
 			self.bounds.size.height*0.5,
 			self.bounds.size.height*0.5,
@@ -128,6 +139,19 @@ class CategorySlideView: UIView {
 			self.bounds.size.height*0.5,
 			self.bounds.size.height*0.5
 		]
+		
+		selectionCircle.frame = CGRect(x: 0, y: 0, width: btnH, height: btnH)
+		selectionCircle.layer.cornerRadius = btnH*0.5
+		selectionCircle.layer.shadowRadius = 2
+		selectionCircle.layer.shadowOpacity = 1.0
+		selectionCircle.layer.shadowOffset = CGSize(width: 0, height: 0)
+		if let index = selected{
+			selectionCircle.backgroundColor = categoryColors[index]
+			selectionCircle.layer.shadowColor = categoryColors[index].cgColor
+		} else{
+			selectionCircle.backgroundColor = UIColor.clear
+			selectionCircle.layer.shadowColor = UIColor.clear.cgColor
+		}
 		
 		for i in 0 ..< self.buttons.count {
 			let buttonColor = categoryColors[i]
@@ -139,13 +163,10 @@ class CategorySlideView: UIView {
 			self.buttons[i].layer.borderColor = buttonColor.cgColor
 			self.buttons[i].center = CGPoint(x:xPos[i], y:yPos[i])
 			// reset all selected colors
-			self.buttons[i].layer.shadowRadius = 0
-			self.buttons[i].layer.shadowOpacity = 0.0
+			self.buttons[i].backgroundColor = UIColor.white
 		}
 		if let index = selected{
-			self.buttons[index].layer.shadowRadius = Style.shared.P15*0.5
-			self.buttons[index].layer.shadowOpacity = 0.33
-			self.buttons[index].layer.shadowColor = categoryColors[index].cgColor
+			selectionCircle.center = self.buttons[index].center
 		}
 	}
 	
@@ -163,6 +184,19 @@ class CategorySlideView: UIView {
 	@objc func prevPageButtonHandler(){
 		let currentOffset = self.scrollView.contentOffset
 		self.scrollView.scrollRectToVisible(CGRect(x:currentOffset.x - self.bounds.size.width, y:currentOffset.y, width:self.bounds.size.width, height:self.bounds.size.height), animated: true)
+	}
+	
+	func scrollViewDidScroll(_ scrollView: UIScrollView) {
+		if scrollView.contentOffset.x <= 0{
+			prevPageButton.alpha = 0.0
+		} else{
+			prevPageButton.alpha = 1.0
+		}
+		if scrollView.contentOffset.x >= self.bounds.size.width*2{
+			nextPageButton.alpha = 0.0
+		} else{
+			nextPageButton.alpha = 1.0
+		}
 	}
 	
 //	@objc func coverButtonHandler(){

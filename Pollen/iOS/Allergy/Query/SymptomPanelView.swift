@@ -56,9 +56,9 @@ class SymptomPanelView: UIView {
 			self.symptomColors[i] = Style.shared.colorNoEntry
 		}
 		for button in self.buttons{
-			button.titleLabel?.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P24)
+			button.titleLabel?.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P20)
 			button.titleLabel?.textAlignment = .center
-			button.titleLabel?.numberOfLines = 3
+			button.titleLabel?.numberOfLines = 0
 			button.titleEdgeInsets = UIEdgeInsetsMake(10,10,10,10)
 			button.setTitleColor(Style.shared.colorNoEntry, for: .normal)
 			button.layer.borderColor = Style.shared.colorNoEntry.cgColor
