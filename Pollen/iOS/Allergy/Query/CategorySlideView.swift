@@ -10,6 +10,7 @@ import UIKit
 
 protocol CategorySlideDelegate: class {
 	func didSelectCategory(index: Int)
+	func categoryViewDidChangePage(page:Int)
 }
 class CategorySlideView: UIView, UIScrollViewDelegate {
 
@@ -22,6 +23,8 @@ class CategorySlideView: UIView, UIScrollViewDelegate {
 			self.setNeedsLayout()
 		}
 	}
+	
+	var currentCategoryPage:Int = 0
 
 	let scrollView = UIScrollView()
 	
@@ -210,6 +213,8 @@ class CategorySlideView: UIView, UIScrollViewDelegate {
 	}
 	
 	func scrollViewDidScroll(_ scrollView: UIScrollView) {
+		currentCategoryPage = Int(self.scrollView.contentOffset.x / self.bounds.size.width)
+
 		if scrollView.contentOffset.x <= 0{
 			prevPageButton.alpha = 0.0
 		} else{
@@ -220,6 +225,10 @@ class CategorySlideView: UIView, UIScrollViewDelegate {
 		} else{
 			nextPageButton.alpha = 1.0
 		}
+	}
+	
+	func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+		self.delegate?.categoryViewDidChangePage(page: currentCategoryPage)
 	}
 	
 //	@objc func coverButtonHandler(){

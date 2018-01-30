@@ -108,6 +108,10 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 		}
 		self.updateColorsThroughout()
 	}
+	
+	func categoryViewDidChangePage(page:Int){
+		formatQuestion()
+	}
 
 	func updateColorsThroughout(){
 		let colors = [Style.shared.blue, Style.shared.colorNoPollen, Style.shared.colorMedium, Style.shared.colorVeryHeavy]
@@ -218,6 +222,45 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 			self.scrollView.contentOffset = CGPoint(x: 0, y: 0)
 		}
 	}
+	
+	func formatQuestion(){
+		switch categorySlideView.currentCategoryPage{
+		case 0:
+			if Calendar.current.isDateInToday(self.date){
+				topQuestionLabel.text = "What is bothering you today?"
+			} else if Calendar.current.isDateInYesterday(self.date){
+				topQuestionLabel.text = "What was bothering you yesterday?"
+			} else if self.date.timeIntervalSinceNow < Date().timeIntervalSinceNow{
+				// date in the past
+				topQuestionLabel.text = "What was bothering you?"
+			} else{
+				// date in the future
+				topQuestionLabel.text = "What will be bothering you?"
+			}
+
+		case 1:
+			topQuestionLabel.text = "Exposures"
+
+		case 2:
+			if Calendar.current.isDateInToday(self.date){
+				topQuestionLabel.text = "How are you feeling today?"
+			} else if Calendar.current.isDateInYesterday(self.date){
+				topQuestionLabel.text = "How were you feeling yesterday?"
+			} else if self.date.timeIntervalSinceNow < Date().timeIntervalSinceNow{
+				// date in the past
+				topQuestionLabel.text = "How were you feeling?"
+			} else{
+				// date in the future
+				topQuestionLabel.text = "How will you be feeling?"
+			}
+		default:
+			topQuestionLabel.text = ""
+		}
+		
+		topQuestionLabel.sizeToFit()
+		topQuestionLabel.center = CGPoint(x: self.frame.size.width + self.bounds.size.width*0.5, y: dateLabel.frame.origin.y + dateLabel.frame.size.height + topQuestionLabel.frame.size.height*0.5 + 10)
+
+	}
 
 
 	override func layoutSubviews() {
@@ -261,35 +304,24 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 		datePrevButton.center = CGPoint(x: dateLabel.center.x - dateLabel.frame.size.width*0.5-30, y: dateLabel.center.y)
 		dateNextButton.center = CGPoint(x: dateLabel.center.x + dateLabel.frame.size.width*0.5+30, y: dateLabel.center.y)
 
-		if Calendar.current.isDateInToday(self.date){
-			topQuestionLabel.text = "What is bothering you today?"
-		} else if Calendar.current.isDateInYesterday(self.date){
-			topQuestionLabel.text = "What was bothering you yesterday?"
-		} else if self.date.timeIntervalSinceNow < Date().timeIntervalSinceNow{
-			// date in the past
-			topQuestionLabel.text = "What was bothering you?"
-		} else{
-			// date in the future
-			topQuestionLabel.text = "What will be bothering you?"
-		}
-		topQuestionLabel.sizeToFit()
-		topQuestionLabel.center = CGPoint(x: w + self.bounds.size.width*0.5, y: dateLabel.frame.origin.y + dateLabel.frame.size.height + topQuestionLabel.frame.size.height*0.5 + 10)
-
+		// set text of the question box
+		formatQuestion()
+		
 		queryDoneButton.center = CGPoint(x: w + self.bounds.size.width*0.5, y: self.bounds.size.height - queryDoneButton.frame.size.height*0.5 - 20)
 
-		let yTop:CGFloat = topQuestionLabel.frame.origin.y + topQuestionLabel.frame.size.height
-		let questionFrame = CGRect(x: 0, y: yTop + 15, width: self.bounds.size.width, height: self.bounds.size.height - yTop - queryDoneButton.frame.size.height - 15 - 20 - 10)
+		let questionBottomY:CGFloat = topQuestionLabel.frame.origin.y + topQuestionLabel.frame.size.height
+//		let questionFrame = CGRect(x: 0, y: yTop + 15, width: self.bounds.size.width, height: self.bounds.size.height - yTop - queryDoneButton.frame.size.height - 15 - 20 - 10)
 		
-//		let pad:CGFloat = 5.0
-		let h:CGFloat = self.bounds.width * 0.36
-		categorySlideView.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: h)
-		categorySlideView.center = CGPoint(x: w + self.center.x, y: questionFrame.origin.y + h*0.5)
+		let bpPadW:CGFloat = w*0.025
+		let bpPadH:CGFloat = w*0.025
+
+		let slideH:CGFloat = self.bounds.width * 0.36
+		categorySlideView.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: slideH)
+		categorySlideView.center = CGPoint(x: w + self.center.x, y: questionBottomY + slideH*0.5 + bpPadH*0.5)
 		
 		let categoryTitleH:CGFloat = Style.shared.P30 * 1.13
 		selectedCategoryTitle.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: categoryTitleH)
 
-		let bpPadW:CGFloat = w*0.05
-		let bpPadH:CGFloat = w*0.05
 		selectedCategoryTitle.center = CGPoint(x: w + self.bounds.size.width*0.5, y: categorySlideView.center.y + categorySlideView.frame.size.height*0.5 + selectedCategoryTitle.frame.size.height*0.5 + bpPadH)
 
 		symptomPanelView.frame = CGRect(x: w + bpPadW, y: selectedCategoryTitle.frame.bottom + bpPadH, width: w - bpPadW*2, height: queryDoneButton.frame.origin.y - selectedCategoryTitle.frame.bottom - bpPadH*2)
