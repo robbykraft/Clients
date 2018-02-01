@@ -8,7 +8,13 @@
 
 import UIKit
 
+protocol QueryViewDelegate{
+	func queryViewDateDidChange(date:Date)
+}
+
 class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePanelDelegate, WelcomeViewProtocol{
+	
+	var delegate:QueryViewDelegate?
 	
 	let scrollView = MainScrollView()
 	
@@ -342,6 +348,7 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 		if let newDate = Calendar.current.date(byAdding: components, to: self.date){
 			self.date = newDate
 		}
+		self.delegate?.queryViewDateDidChange(date:self.date)
 		self.setNeedsLayout()
 		self.updateColorsThroughout()
 	}
@@ -352,6 +359,7 @@ class QueryView: UIView, CategorySlideDelegate, SymptomPanelDelegate, DegreePane
 		if let newDate = Calendar.current.date(byAdding: components, to: self.date){
 			self.date = newDate
 		}
+		self.delegate?.queryViewDateDidChange(date:self.date)
 		self.setNeedsLayout()
 		self.updateColorsThroughout()
 	}

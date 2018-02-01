@@ -177,10 +177,10 @@ let SymptomCategories = [
 	"mold",
 	"dust",
 	"outdoors",
-	"meds",
 	"woke up",
 	"night time",
-	"energy level"
+	"energy level",
+	"meds"
 ]
 
 // these are the images in the iOS application image directory
@@ -196,10 +196,10 @@ let SymptomImageNames = [
 	"mold" : "mold",
 	"dust" : "dust",
 	"outdoors" : "outdoors",
-	"meds" : "meds",
 	"woke up" : "wokeup",
 	"night time" : "nighttime",
-	"energy level" : "energylevel"
+	"energy level" : "energylevel",
+	"meds" : "meds"
 ]
 
 
@@ -215,10 +215,10 @@ let BinaryCategories = [
 	"mold" : true,
 	"dust" : true,
 	"outdoors" : true,
-	"meds" : true,
 	"woke up" : true,
 	"night time" : true,
-	"energy level" : true
+	"energy level" : true,
+	"meds" : true
 ]
 
 

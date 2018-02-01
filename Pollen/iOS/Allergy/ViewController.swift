@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class ViewController: UIViewController, UINavigationControllerDelegate, BarChartDelegate, UIScrollViewDelegate{
+class ViewController: UIViewController, UINavigationControllerDelegate, BarChartDelegate, UIScrollViewDelegate, QueryViewDelegate{
 	
 	let scrollView = MainScrollView()
 	
@@ -148,6 +148,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 		self.scrollView.addSubview(preferencesButton)
 		
 		queryView.alpha = 0.0
+		queryView.delegate = self
 		queryView.frame = CGRect(x: 0, y: barChartTop + 15, width: self.view.frame.size.width, height: self.scrollView.contentSize.height - barChartTop - 15)
 		self.scrollView.addSubview(queryView)
 		
@@ -207,6 +208,24 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 			}
 		}
 		self.barChart.labels = dateStrings
+	}
+	
+	func queryViewDateDidChange(date:Date){
+		self.updateTopSectionDate(closestMatch: date)
+	}
+	
+	func updateTopSectionDate(closestMatch:Date){
+		var closestI = 0
+		for i in 1..<self.samples.count{
+			let dDate = abs(closestMatch.timeIntervalSince1970 - (self.samples[i].date?.timeIntervalSince1970)!)
+			let closestSoFar = abs(closestMatch.timeIntervalSince1970 - (self.samples[closestI].date?.timeIntervalSince1970)!)
+			if dDate < closestSoFar{
+				closestI = i
+			}
+		}
+		// this calls the delegate back to here, barChartDidUpdateSelection
+		self.barChart.didTouchIn(number: closestI)
+		
 	}
 	
 	func barChartDidUpdateSelection(sender: UIBarChartView) {
