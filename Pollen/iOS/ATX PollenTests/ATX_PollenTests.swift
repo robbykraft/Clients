@@ -23,8 +23,8 @@ class ATX_PollenTests: XCTestCase {
     func testExample() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
-		print(throat_allergies.itchy_scratchy.rawValue)
-		print(throat_allergies.hoarse_voice.rawValue)
+//		print(throat_allergies.itchy_scratchy.rawValue)
+//		print(throat_allergies.hoarse_voice.rawValue)
 //		let enum1 = throat_allergies.init(rawValue: "itchy_scratchy")
 //		let enum2 = throat_allergies.init(rawValue: "itchy / scratchy")
 //		print(enum1)

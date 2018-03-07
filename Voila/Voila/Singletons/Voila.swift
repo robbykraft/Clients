@@ -238,6 +238,11 @@ class Voila{
 			if let project = Voila.shared.project{
 				project.proposalSent = Int(Date().timeIntervalSince1970)
 				project.synchronize(completionHandler:nil)
+				
+				Fire.shared.addData(project.databaseForm(), asChildAt: "proposals", completionHandler: { (success, newKey, ref) in
+
+				});
+				
 			}
 //			UIScreen.navigationController.popToRootViewController()
 		case .saved:
@@ -247,31 +252,28 @@ class Voila{
 		case .cancelled:
 			print("canceled")
 		}
-		
 	}
 	
 	func sendProposal(_ viewController:UIViewController){
 		if let project = Voila.shared.project{
 			if project.email != nil && project.email! != "" {
 //				project.proposalSent = Int(Date().timeIntervalSince1970)
-				Fire.shared.addData(project.databaseForm(), asChildAt: "proposals", completionHandler: { (success, newKey, ref) in
 					// added to confirm database
-					if !MFMailComposeViewController.canSendMail() {
-						let alert = UIAlertController(title: "Email", message: "This app uses your iOS email account. Setup email in your iOS settings.", preferredStyle: .alert)
-						let action1 = UIAlertAction.init(title: "Okay", style: .default, handler: nil)
-						alert.addAction(action1)
-						viewController.present(alert, animated: true, completion: nil)
-						return;
-					}
-					let sendEmail = project.email!
-					
-					let mailComposerVC = MFMailComposeViewController()
-					mailComposerVC.mailComposeDelegate = viewController as? MFMailComposeViewControllerDelegate
-					mailComposerVC.setToRecipients([sendEmail])
-					mailComposerVC.setSubject(project.name + " - Voila Design Home - Staging Proposal")
-					mailComposerVC.setMessageBody(Voila.shared.htmlProposal(confirmKey:newKey!), isHTML: true)
-					viewController.present(mailComposerVC, animated: true, completion: nil)
-				})
+				if !MFMailComposeViewController.canSendMail() {
+					let alert = UIAlertController(title: "Email", message: "This app uses your iOS email account. Setup email in your iOS settings.", preferredStyle: .alert)
+					let action1 = UIAlertAction.init(title: "Okay", style: .default, handler: nil)
+					alert.addAction(action1)
+					viewController.present(alert, animated: true, completion: nil)
+					return;
+				}
+				let sendEmail = project.email!
+				
+				let mailComposerVC = MFMailComposeViewController()
+				mailComposerVC.mailComposeDelegate = viewController as? MFMailComposeViewControllerDelegate
+				mailComposerVC.setToRecipients([sendEmail])
+				mailComposerVC.setSubject(project.name + " - Voila Design Home - Staging Proposal")
+				mailComposerVC.setMessageBody(Voila.shared.htmlProposal(confirmKey:""), isHTML: true)
+				viewController.present(mailComposerVC, animated: true, completion: nil)
 			} else{
 				let alert = UIAlertController(title: "Email Missing", message: "Enter client's email in 'Project Details'", preferredStyle: .alert)
 				let action1 = UIAlertAction.init(title: "Okay", style: .default, handler: nil)
@@ -280,6 +282,37 @@ class Voila{
 			}
 		}
 	}
+
+//	func sendProposal(_ viewController:UIViewController){
+//		if let project = Voila.shared.project{
+//			if project.email != nil && project.email! != "" {
+////				project.proposalSent = Int(Date().timeIntervalSince1970)
+//				Fire.shared.addData(project.databaseForm(), asChildAt: "proposals", completionHandler: { (success, newKey, ref) in
+//					// added to confirm database
+//					if !MFMailComposeViewController.canSendMail() {
+//						let alert = UIAlertController(title: "Email", message: "This app uses your iOS email account. Setup email in your iOS settings.", preferredStyle: .alert)
+//						let action1 = UIAlertAction.init(title: "Okay", style: .default, handler: nil)
+//						alert.addAction(action1)
+//						viewController.present(alert, animated: true, completion: nil)
+//						return;
+//					}
+//					let sendEmail = project.email!
+//
+//					let mailComposerVC = MFMailComposeViewController()
+//					mailComposerVC.mailComposeDelegate = viewController as? MFMailComposeViewControllerDelegate
+//					mailComposerVC.setToRecipients([sendEmail])
+//					mailComposerVC.setSubject(project.name + " - Voila Design Home - Staging Proposal")
+//					mailComposerVC.setMessageBody(Voila.shared.htmlProposal(confirmKey:newKey!), isHTML: true)
+//					viewController.present(mailComposerVC, animated: true, completion: nil)
+//				})
+//			} else{
+//				let alert = UIAlertController(title: "Email Missing", message: "Enter client's email in 'Project Details'", preferredStyle: .alert)
+//				let action1 = UIAlertAction.init(title: "Okay", style: .default, handler: nil)
+//				alert.addAction(action1)
+//				viewController.present(alert, animated: true, completion: nil)
+//			}
+//		}
+//	}
 
 	func htmlProposal(confirmKey:String)->String{
 		print(pageHeader + self.titleForProject() + self.tableForProject() + self.tableOfCosts() + termsAndConditionsText + firebaseButton(key: confirmKey) + pageFooter)
@@ -308,11 +341,17 @@ class Voila{
 			let totalAfterDiscount = total - discountTotal
 			let grandTotal:Int = totalAfterDiscount + taxTotal
 
-			let discountTotalRounded = Int(round(Float(discountTotal)/100)*100)
-			let totalAfterDiscountRounded:Int = Int(round(Float(totalAfterDiscount)/100)*100)
-			let taxTotalRounded:Int = Int(round(Float(taxTotal)/100)*100)
-			let grandTotalRounded:Int = Int(round(Float(grandTotal)/100)*100)
-			let renewalsTotalRounded:Int = Int(round(Float(renewalsTotal)/100)*100)
+//			let discountTotalRounded = Int(round(Float(discountTotal)/100)*100)
+//			let totalAfterDiscountRounded:Int = Int(round(Float(totalAfterDiscount)/100)*100)
+//			let taxTotalRounded:Int = Int(round(Float(taxTotal)/100)*100)
+//			let grandTotalRounded:Int = Int(round(Float(grandTotal)/100)*100)
+//			let renewalsTotalRounded:Int = Int(round(Float(renewalsTotal)/100)*100)
+
+			let discountTotalRounded = Int(round(Float(discountTotal)))
+			let totalAfterDiscountRounded:Int = Int(round(Float(totalAfterDiscount)))
+			let taxTotalRounded:Int = Int(round(Float(taxTotal)))
+			let grandTotalRounded:Int = Int(round(Float(grandTotal)))
+			let renewalsTotalRounded:Int = Int(round(Float(renewalsTotal)))
 
 			table.append("<br><br><hr><br><table style=\"margin:auto\">")
 			if discountTotal != 0{

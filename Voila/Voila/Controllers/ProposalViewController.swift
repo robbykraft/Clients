@@ -144,6 +144,31 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 			hr.backgroundColor = .black
 			self.scrollView.addSubview(hr)
 			
+			if project.discountTotal != nil{
+				self._1discountTextField.text = String(describing:project.discountTotal!)
+			}
+			if project.discountPct != nil{
+				_2discountField.text = String(describing: project.discountPct!)
+			}
+			if project.discountText != nil{
+				_1discountTextField.text = project.discountText!
+			}
+			if project.taxPct != nil{
+				switch project.taxPct!{
+				case 0.08: _5salesTaxField.text = taxItems[0]
+				case 0.06: _5salesTaxField.text = taxItems[1]
+				case 0.07: _5salesTaxField.text = taxItems[2]
+				case 0.0: _5salesTaxField.text = taxItems[3]
+				default: _5salesTaxField.text = taxItems[0];
+				}
+			}
+//			if project.taxTotal != nil{
+//				project.taxTotal = salesTaxSum
+//			}
+//			if project.renewalsTotal != nil {
+//				project.renewalsTotal = renewalCost
+//			}
+			
 			for i in 0..<project.rooms.count{
 				let room = project.rooms[i]
 				
@@ -327,7 +352,8 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 			let totalBefore2:Int = rawCost - discountAmount
 			let salesTaxSum:Int = Int(Float(totalBefore2) * salesTax)
 			let grandTotal:Int = totalBefore2 + salesTaxSum
-			let grandTotalRounded:Int = Int(Float(grandTotal)*0.01)*100
+//			let grandTotalRounded:Int = Int(Float(grandTotal)*0.01)*100
+			let grandTotalRounded:Int = grandTotal
 			let renewalCost:Int = Int(Float(grandTotal) * renewal * 0.01)
 			
 			project.discountTotal = discountAmount
@@ -364,7 +390,9 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 		self._5salesTaxField.resignFirstResponder()
 		self._8renewalField.resignFirstResponder()
 		self.scrollView.contentSize = CGSize(width: self.view.bounds.width, height: contentHeight)
-		self.updateTotals()
+		self.updateCustomCosts {
+			self.updateTotals()
+		}
 	}
 	
 	func numberDone(){
@@ -425,6 +453,52 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 					}
 				}
 			}
+	
+			
+			let rawCost = project.cost()
+//			let taxItems = ["Phila 8%", "PA 6%", "NJ 7%"]
+			var salesTax:Float = 0.08
+			switch _5salesTaxField.text!{
+			case taxItems[0]: salesTax = 0.08
+			case taxItems[1]: salesTax = 0.06
+			case taxItems[2]: salesTax = 0.07
+			case taxItems[3]: salesTax = 0.0
+			default: salesTax = 0.08
+			}
+			let discount:Float = Float(_2discountField.text!)!
+			let renewal:Float = Float(_8renewalField.text!)!  // percent number
+			let discountAmount:Int = Int(discount * 0.01 * Float(rawCost))
+			let totalBefore2:Int = rawCost - discountAmount
+			let salesTaxSum:Int = Int(Float(totalBefore2) * salesTax)
+			let grandTotal:Int = totalBefore2 + salesTaxSum
+			let renewalCost:Int = Int(Float(grandTotal) * renewal * 0.01)
+			
+			if project.discountTotal != nil || project.discountTotal != discountAmount{
+				project.discountTotal = discountAmount
+				change = true
+			}
+			if project.discountPct == nil || project.discountPct != Int(discount){
+				project.discountPct = Int(discount)
+				change = true
+			}
+			if project.discountText != nil || project.discountText != _1discountTextField.text{
+				project.discountText = _1discountTextField.text
+				change = true
+			}
+			if project.taxPct != nil || project.taxPct != salesTax{
+				project.taxPct = salesTax
+				change = true
+			}
+			if project.taxTotal != nil || project.taxTotal != salesTaxSum{
+				project.taxTotal = salesTaxSum
+				change = true
+			}
+			if project.renewalsTotal != nil || project.renewalsTotal != renewalCost{
+				project.renewalsTotal = renewalCost
+				change = true
+			}
+
+			
 			if change == true{
 				project.synchronize(completionHandler: {
 					if let completion = updateCompletion{
@@ -438,6 +512,7 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 			}
 		}
 	}
+	
 	
 	func textFieldDidChange(textField: UITextField){
 		if(updateTimer != nil){
@@ -522,7 +597,6 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 			newSize.height += 300
 			self.scrollView.contentSize = newSize
 			let fieldFromBottom = (self.scrollView.bounds.size.height-activeField.frame.origin.y)
-			print(fieldFromBottom)
 			let scrollToY = newSize.height - 1 - fieldFromBottom
 			self.scrollView.scrollRectToVisible(CGRect.init(x: 0, y: scrollToY, width: 1, height: 1), animated: true)
 		}
