@@ -30,7 +30,8 @@ class Project{
 	var taxPct:Float?
 	var taxTotal:Int?
 	var renewalsTotal:Int?
-	
+	var renewalsPct:Int?
+
 	// contains furniture inside each room
 	var rooms:[Room] = []
 	
@@ -80,6 +81,7 @@ class Project{
 		if let taxPct = data["taxPct"] as? Float? { self.taxPct = taxPct }
 		if let taxTotal = data["taxTotal"] as? Int? { self.taxTotal = taxTotal }
 		if let renewalsTotal = data["renewalsTotal"] as? Int? { self.renewalsTotal = renewalsTotal }
+		if let renewalsPct = data["renewalsPct"] as? Int? { self.renewalsPct = renewalsPct }
 		// room data
 		if let rooms = data["rooms"] as? [String:Any] {
 			var roomArray:[Room] = []
@@ -136,6 +138,7 @@ class Project{
 		if let taxPct = self.taxPct{ dictionary["taxPct"] = taxPct}
 		if let taxTotal = self.taxTotal{ dictionary["taxTotal"] = taxTotal}
 		if let renewalsTotal = self.renewalsTotal{ dictionary["renewalsTotal"] = renewalsTotal}
+		if let renewalsPct = self.renewalsPct{ dictionary["renewalsPct"] = renewalsPct}
 
 		// rooms
 		var roomDictionary:[String:Any] = [:]

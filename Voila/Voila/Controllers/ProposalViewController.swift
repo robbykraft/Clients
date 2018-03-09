@@ -165,9 +165,9 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 //			if project.taxTotal != nil{
 //				project.taxTotal = salesTaxSum
 //			}
-//			if project.renewalsTotal != nil {
-//				project.renewalsTotal = renewalCost
-//			}
+			if project.renewalsPct != nil {
+				self._8renewalField.text = String(describing:project.renewalsPct!)
+			}
 			
 			for i in 0..<project.rooms.count{
 				let room = project.rooms[i]
@@ -466,12 +466,12 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 			default: salesTax = 0.08
 			}
 			let discount:Float = Float(_2discountField.text!)!
-			let renewal:Float = Float(_8renewalField.text!)!  // percent number
+			let renewal:Int = Int(_8renewalField.text!)!  // percent number
 			let discountAmount:Int = Int(discount * 0.01 * Float(rawCost))
 			let totalBefore2:Int = rawCost - discountAmount
 			let salesTaxSum:Int = Int(Float(totalBefore2) * salesTax)
 			let grandTotal:Int = totalBefore2 + salesTaxSum
-			let renewalCost:Int = Int(Float(grandTotal) * renewal * 0.01)
+			let renewalCost:Int = Int(Float(grandTotal) * Float(renewal) * 0.01)
 			
 			if project.discountTotal != nil || project.discountTotal != discountAmount{
 				project.discountTotal = discountAmount
@@ -495,6 +495,10 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 			}
 			if project.renewalsTotal != nil || project.renewalsTotal != renewalCost{
 				project.renewalsTotal = renewalCost
+				change = true
+			}
+			if project.renewalsPct != nil || project.renewalsPct != renewal{
+				project.renewalsPct = renewal
 				change = true
 			}
 
