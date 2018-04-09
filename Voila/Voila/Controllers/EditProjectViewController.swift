@@ -120,8 +120,8 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		let navBarHeight:CGFloat = self.navigationController!.navigationBar.frame.height
-		let statusHeight:CGFloat = statusBarHeight()
+//		let navBarHeight:CGFloat = self.navigationController!.navigationBar.frame.height
+//		let statusHeight:CGFloat = statusBarHeight()
 		
 //		let header = navBarHeight + statusHeight
 		

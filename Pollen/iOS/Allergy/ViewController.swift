@@ -43,7 +43,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 	override func viewDidLoad() {
 		super.viewDidLoad()
 				
-		let statusBarHeight:CGFloat = 0//22
+		let statusBarHeight:CGFloat = 22
 		var barChartTop:CGFloat = self.view.frame.size.height - 200
 		var radius:CGFloat = self.view.frame.size.height * 1.25
 		var circleCenter = CGPoint(x: self.view.center.x, y: barChartTop - radius)
@@ -143,7 +143,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 		
 		preferencesButton.frame = CGRect.init(x: 0, y: 0, width: 40, height: 40)
 		preferencesButton.setImage(UIImage.init(named: "cogs")?.imageWithTint(UIColor.white), for: .normal)
-		preferencesButton.center = CGPoint.init(x: self.view.frame.size.width - 22-5, y: statusBarHeight+22+5)
+		preferencesButton.center = CGPoint.init(x: self.view.frame.size.width - 22-5, y: statusBarHeight+5)
 		preferencesButton.addTarget(self, action: #selector(preferencesButtonPressed), for: .touchUpInside)
 		self.scrollView.addSubview(preferencesButton)
 		
@@ -157,15 +157,17 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 
 		///////////////
 		
-		for i in 0..<3{
-			let touchTape = UIView()
-			touchTape.layer.cornerRadius = 2
-			touchTape.frame = CGRect(x: 0, y: 0, width: 36, height: 4)
-			touchTape.center = CGPoint(x: self.view.center.x, y: barChartTop + CGFloat(i)*8 - 30)
-			touchTape.clipsToBounds = true
-			touchTape.layer.backgroundColor = UIColor.white.cgColor
-			self.scrollView.addSubview(touchTape)
-		}
+		self.scrollView.isScrollEnabled = false
+		
+//		for i in 0..<3{
+//			let touchTape = UIView()
+//			touchTape.layer.cornerRadius = 2
+//			touchTape.frame = CGRect(x: 0, y: 0, width: 36, height: 4)
+//			touchTape.center = CGPoint(x: self.view.center.x, y: barChartTop + CGFloat(i)*8 - 30)
+//			touchTape.clipsToBounds = true
+//			touchTape.layer.backgroundColor = UIColor.white.cgColor
+//			self.scrollView.addSubview(touchTape)
+//		}
 		
 	}
 	

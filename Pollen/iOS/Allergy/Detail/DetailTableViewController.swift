@@ -24,6 +24,8 @@ class DetailTableViewController: UITableViewController {
 		}
 	}
 	
+	let labelImageView = UIImageView()
+
 	var report:[(String, Int, Float, Rating)]? // name, value, 0.0-1.0 value, Rating
 	
 	let gridView = UIView()
@@ -102,7 +104,6 @@ class DetailTableViewController: UITableViewController {
 		}
 		let image = UIGraphicsGetImageFromCurrentImageContext()
 		UIGraphicsEndImageContext()
-		let labelImageView = UIImageView()
 		labelImageView.image = image
 //		labelImageView.backgroundColor = UIColor.purple
 		labelImageView.frame = CGRect(x: 0, y: self.view.frame.size.height - size.height, width: size.width, height: size.height)
@@ -117,6 +118,7 @@ class DetailTableViewController: UITableViewController {
 	}
 	
 	override func viewDidLayoutSubviews() {
+		self.view.sendSubview(toBack: self.labelImageView)
 		self.view.sendSubview(toBack: self.gridView)
 	}
 	

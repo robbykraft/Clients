@@ -161,24 +161,42 @@ class Style {
 	
 	/////////////////////////////////////////////////////////////////////////
 	
-	func centreArcPerpendicular(text str: String, context: CGContext, radius r: CGFloat, angle theta: CGFloat, colour c: UIColor, font: UIFont, clockwise: Bool){
+	func centreArcPerpendicular(text str: String, context: CGContext, radius r: CGFloat, angle theta: CGFloat, colour c: UIColor, font: UIFont, clockwise: Bool, maxAngle: CGFloat?){
 		// *******************************************************
 		// This draws the String str around an arc of radius r,
 		// with the text centred at polar angle theta
 		// *******************************************************
 		
 		let l = str.characters.count
-		let attributes = [NSFontAttributeName: font]
+		var curveFont = font
+		let attributes = [NSFontAttributeName: curveFont]
 		
 		let characters: [String] = str.characters.map { String($0) } // An array of single character strings, each character in str
 		var arcs: [CGFloat] = [] // This will be the arcs subtended by each character
 		var totalArc: CGFloat = 0 // ... and the total arc subtended by the string
-		
+
 		// Calculate the arc subtended by each letter and their total
 		for i in 0 ..< l {
 			arcs += [chordToArc(characters[i].size(attributes: attributes).width, radius: r)]
 			totalArc += arcs[i]
 		}
+
+		if let maxA = maxAngle{
+			var newPointSize:CGFloat = curveFont.pointSize
+			while(totalArc > maxA && newPointSize > 5){
+				newPointSize -= 2
+				curveFont = curveFont.withSize(newPointSize)
+				let newAttributes = [NSFontAttributeName: curveFont]
+				arcs = []
+				totalArc = 0
+				// Calculate the arc subtended by each letter and their total
+				for i in 0 ..< l {
+					arcs += [chordToArc(characters[i].size(attributes: newAttributes).width, radius: r)]
+					totalArc += arcs[i]
+				}
+			}
+		}
+	
 		
 		// Are we writing clockwise (right way up at 12 o'clock, upside down at 6 o'clock)
 		// or anti-clockwise (right way up at 6 o'clock)?
@@ -195,7 +213,7 @@ class Style {
 			// Call centerText with each character in turn.
 			// Remember to add +/-90º to the slantAngle otherwise
 			// the characters will "stack" round the arc rather than "text flow"
-			centre(text: characters[i], context: context, radius: r, angle: thetaI, colour: c, font: font, slantAngle: thetaI + slantCorrection)
+			centre(text: characters[i], context: context, radius: r, angle: thetaI, colour: c, font: curveFont, slantAngle: thetaI + slantCorrection)
 			// The centre of the next character will then be at
 			// thetaI = thetaI + arcs[i] / 2 + arcs[i + 1] / 2
 			// but again we leave the last term to the start of the next loop...

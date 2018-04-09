@@ -39,6 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		_ = Fire.shared
 		_ = Voila.shared
 		_ = Style.shared
+		_ = ProposalMaker.shared
 		
 		if (Auth.auth().currentUser) == nil{
 			self.launchApp(true)

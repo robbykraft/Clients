@@ -116,14 +116,14 @@ class Style {
 			let calendar = Calendar.current
 			let hour = calendar.component(.hour, from: date)
 			let minutes = calendar.component(.minute, from: date)
-			return "Today \(hour):\(minutes)"
+			return "Today \(hour):" + String(format: "%02d", minutes)
 //			return "Today"
 		}
 		if(NSCalendar.current.isDateInYesterday(date)){
 			let calendar = Calendar.current
 			let hour = calendar.component(.hour, from: date)
 			let minutes = calendar.component(.minute, from: date)
-			return "Yesterday \(hour):\(minutes)"
+			return "Yesterday \(hour):" + String(format: "%02d", minutes)
 //			return "Yesterday"
 		}
 		if(abs(date.timeIntervalSinceNow) < 432000){

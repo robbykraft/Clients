@@ -197,9 +197,9 @@ class UIRadialChart: UIView {
 				let textAngle = angle*CGFloat(Float(i)+0.5) - CGFloat(Double.pi*0.5)
 				let textRadius = radius + arcHeight*0.5
 				if textAngle > 0 && textAngle < CGFloat.pi{
-					Style.shared.centreArcPerpendicular(text: name, context: context, radius: textRadius, angle: -textAngle, colour: UIColor.white, font: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P24)!, clockwise: false)
+					Style.shared.centreArcPerpendicular(text: name, context: context, radius: textRadius, angle: -textAngle, colour: UIColor.white, font: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P24)!, clockwise: false, maxAngle:angle-0.1)
 				} else{
-					Style.shared.centreArcPerpendicular(text: name, context: context, radius: textRadius, angle: -textAngle, colour: UIColor.white, font: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P24)!, clockwise: true)
+					Style.shared.centreArcPerpendicular(text: name, context: context, radius: textRadius, angle: -textAngle, colour: UIColor.white, font: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P24)!, clockwise: true, maxAngle:angle-0.1)
 				}
 			}
 			let image = UIGraphicsGetImageFromCurrentImageContext()
@@ -234,7 +234,7 @@ class UIRadialChart: UIView {
 		context.translateBy (x: size.width / 2, y: size.height / 2 )
 		context.scaleBy (x: 1, y: -1)
 		
-		Style.shared.centreArcPerpendicular(text: "provided by Allergy Free Austin", context: context, radius: textRadius, angle: -CGFloat.pi*0.5, colour: UIColor.gray, font: UIFont(name: SYSTEM_FONT, size: Style.shared.P12)!, clockwise: false)
+		Style.shared.centreArcPerpendicular(text: "provided by Allergy Free Austin", context: context, radius: textRadius, angle: -CGFloat.pi*0.5, colour: UIColor.gray, font: UIFont(name: SYSTEM_FONT, size: Style.shared.P12)!, clockwise: false, maxAngle:nil)
 		//		Style.shared.centreArcPerpendicular(text: name, context: context, radius: textRadius, angle: -textAngle, colour: UIColor.white, font: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P12)!, clockwise: true)
 		let image = UIGraphicsGetImageFromCurrentImageContext()
 		UIGraphicsEndImageContext()

@@ -10,18 +10,19 @@ import Foundation
 
 class Project{
 	
-//	var clientName:String?
-	
+	// the key in the database under "projects"
+	var key:String = ""
+
+	// required meta
+	var name:String = ""
+	var archived:Bool = false
+
+	// optional meta
 	var email:String?
 	var lockbox:String?
 	var clientName:String?
 	var realtorName:String?
 	var proposalSent:Int? // the unix timestamp of the date sent
-	
-	var key:String = "" // the key in the database under "projects"
-
-	var name:String = ""
-	var archived:Bool = false
 	
 	// stuff that gets filled when filling the proposal
 	var discountTotal:Int?
@@ -35,10 +36,12 @@ class Project{
 	// contains furniture inside each room
 	var rooms:[Room] = []
 	
+	// total cost. sum of the cost of all furniture in all rooms
 	func cost() -> Int{
 		return rooms.map({ return $0.getCost() }).reduce(0,+)
 	}
 	
+	// returns all rooms in this project (keys) and quantity of each one (value)
 	func roomTypesAndCounts() -> [String:Int] {
 		var dictionary:[String:Int] = [:]
 		for i in 0..<self.rooms.count{
@@ -52,6 +55,7 @@ class Project{
 		return dictionary
 	}
 	
+	// an integer count of all furniture in all rooms
 	func furnitureCount() -> Int{
 		var count = 0
 		for room in rooms{
@@ -149,39 +153,7 @@ class Project{
 		return dictionary
 	}
 	
-//	func synchronize(target:[String:Int], completionHandler:(()->())?){
-//		let current = self.roomTypesAndCounts()
-//		for (roomKey,count) in target{
-//			// iterate over all target ROOMS
-//			if let currentCount = current[roomKey]{
-//				// if room currently also exists, but number is different
-//				if currentCount < count{
-//					for _ in currentCount..<count{
-//						Voila.shared.createRoom(roomType: roomKey, completionHandler: nil)
-//					}
-//				}
-//				else if currentCount > count{
-//					// remove room from everything really
-//					
-//				}
-//			} else{
-//				// ROOM does not currently exist
-//				for i in 0..<count{
-////					Voila.shared.addRoomToProject(roomKey)
-//				}
-//			}
-//		}
-//		// remove all ROOM in current if doesn't exist in target
-//		for (key,_) in current{
-//			if target[key] == nil{
-//				self.rooms = self.rooms.filter({ $0.name != key })
-//			}
-//		}
-//	}
-	
 	func synchronize(completionHandler:(() -> ())?){
-//		print("synchronizing")
-//		print(self.databaseForm())
 		Fire.shared.setData(self.databaseForm(), at: "projects/" + self.key) { (success, ref) in
 			if let completion = completionHandler{
 				completion()

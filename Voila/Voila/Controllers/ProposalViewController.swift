@@ -556,7 +556,8 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 	func sendProposal(){
 		self.view.endEditing(true)
 		self.updateCustomCosts {
-			Voila.shared.sendProposal(self)
+			ProposalMaker.shared.sendProposal(self)
+//			Voila.shared.sendProposal(self)
 		}
 	}
 	
@@ -593,8 +594,8 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 //			self.keyboardSize = CGSize(width: self.view.bounds.size.width, height: 300)//keySize
 //		}
 		if let activeField = self.activeField {
-			let navBarHeight:CGFloat = self.navigationController!.navigationBar.frame.height
-			let statusHeight:CGFloat = statusBarHeight()
+//			let navBarHeight:CGFloat = self.navigationController!.navigationBar.frame.height
+//			let statusHeight:CGFloat = statusBarHeight()
 //			let header = navBarHeight + statusHeight
 			var newSize = self.scrollView.contentSize
 //			newSize.height += abs((self.keyboardSize?.height)!) + 300
@@ -629,7 +630,8 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
     */
 	
 	func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-		Voila.shared.mailDidFinish(result)
+//		Voila.shared.mailDidFinish(result)
+		ProposalMaker.shared.mailDidFinish(result)
 		self.dismiss(animated: true, completion: nil)
 	}
 

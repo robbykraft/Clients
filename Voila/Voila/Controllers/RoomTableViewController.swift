@@ -7,9 +7,9 @@
 //
 
 import UIKit
-import MessageUI
+//import MessageUI
 
-class RoomTableViewController: UITableViewController, MFMailComposeViewControllerDelegate {
+class RoomTableViewController: UITableViewController { //}, MFMailComposeViewControllerDelegate {
 	
 //	var data:Room?{
 //		didSet{
@@ -57,10 +57,8 @@ class RoomTableViewController: UITableViewController, MFMailComposeViewControlle
 //		titleButton.backgroundColor = UIColor.red
 		titleButton.titleLabel?.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)
 		titleButton.setTitleColor(UIColor.black, for: .normal)
-		if let project = Voila.shared.project{
-//			self.title = project.name
-//			titleButton.setTitle(project.name, for: .normal)
-			titleButton.setTitle(Voila.shared.currentRoomName(), for: .normal)
+		if let thisRoomName = Voila.shared.currentRoomName(){
+			titleButton.setTitle(thisRoomName, for: .normal)
 		}
 		titleButton.addTarget(self, action: #selector(self.clickOnButton), for: .touchUpInside)
 		self.navigationItem.titleView = titleButton
@@ -279,10 +277,10 @@ class RoomTableViewController: UITableViewController, MFMailComposeViewControlle
 	
 	
 	
-	func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-		Voila.shared.mailDidFinish(result)
-		self.dismiss(animated: true, completion: nil)
-	}
+//	func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+//		Voila.shared.mailDidFinish(result)
+//		self.dismiss(animated: true, completion: nil)
+//	}
 	
 
 

@@ -7,9 +7,9 @@
 //
 
 import UIKit
-import MessageUI
+//import MessageUI
 
-class ProjectTableViewController: UITableViewController, MFMailComposeViewControllerDelegate {
+class ProjectTableViewController: UITableViewController {//}, MFMailComposeViewControllerDelegate {
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
@@ -181,10 +181,10 @@ class ProjectTableViewController: UITableViewController, MFMailComposeViewContro
 	
 	
 	
-	func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-		Voila.shared.mailDidFinish(result)
-		self.dismiss(animated: true, completion: nil)
-	}
+//	func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+//		Voila.shared.mailDidFinish(result)
+//		self.dismiss(animated: true, completion: nil)
+//	}
 
 
 }
