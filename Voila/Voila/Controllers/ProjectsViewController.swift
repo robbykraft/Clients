@@ -170,13 +170,13 @@ class ProjectsViewController: UITableViewController {
 	func fillTemplate(){
 		let alertController = UIAlertController(title: "Begin from a template?", message: nil, preferredStyle: .alert)
 		let template1Action = UIAlertAction(title: "Small 1 Bedroom", style: .default) { (result : UIAlertAction) -> Void in
-			Voila.shared.project?.setFromSmallTemplate(completionHandler: {
+			Voila.shared.project?.setFromTemplate(type: .small, completionHandler: {
 				let vc = ProjectTableViewController()
 				self.navigationController?.pushViewController(vc, animated: true)
 			})
 		}
 		let template2Action = UIAlertAction(title: "Large 2 Bedroom", style: .default) { (result : UIAlertAction) -> Void in
-			Voila.shared.project?.setFromLargeTemplate(completionHandler: {
+			Voila.shared.project?.setFromTemplate(type: .large, completionHandler: {
 				let vc = ProjectTableViewController()
 				self.navigationController?.pushViewController(vc, animated: true)
 			})
@@ -184,7 +184,6 @@ class ProjectsViewController: UITableViewController {
 		let skipAction = UIAlertAction(title: "Skip", style: .cancel) { (result : UIAlertAction) -> Void in
 			let vc = ProjectTableViewController()
 			self.navigationController?.pushViewController(vc, animated: true)
-
 		}
 		alertController.addAction(template1Action)
 		alertController.addAction(template2Action)

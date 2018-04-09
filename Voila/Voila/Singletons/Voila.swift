@@ -1,4 +1,12 @@
 
+
+// these should match the keys in database at /data/templates/
+enum TemplateTypes : String{
+	case large
+	case small
+}
+
+
 class Voila{
 	static let shared = Voila()
 	fileprivate init(){ }

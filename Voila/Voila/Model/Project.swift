@@ -161,188 +161,38 @@ class Project{
 		}
 	}
 	
-	func setFromSmallTemplate(completionHandler:(() -> ())?){
+	func setFromTemplate(type:TemplateTypes, completionHandler:(() -> ())?){
 		
-		let bathrooms = Room(name: "Bathrooms", key: nil)
-		bathrooms.furniture = [
-			Furniture(name: "All Bathrooms", price: Voila.shared.priceForFurniture(name: "All Bathrooms"), room: bathrooms),
-		]
-		let diningRoom = Room(name: "Dining Room", key: nil)
-		let chairs = Furniture(name: "Dining Chairs", price: Voila.shared.priceForFurniture(name: "Dining Chairs"), room: diningRoom)
-		chairs.copies = 4
-		diningRoom.furniture = [
-			Furniture(name: "Accessories", price: Voila.shared.priceForFurniture(name: "Accessories"), room: diningRoom),
-			Furniture(name: "Art", price: Voila.shared.priceForFurniture(name: "Art"), room: diningRoom),
-			chairs,
-			Furniture(name: "Dining Table", price: Voila.shared.priceForFurniture(name: "Dining Table"), room: diningRoom)
-		]
-		let kitchen = Room(name: "Kitchen", key: nil)
-		let stools = Furniture(name: "Counter Stools", price: Voila.shared.priceForFurniture(name: "Counter Stools"), room: kitchen)
-		stools.copies = 2
-		kitchen.furniture = [
-			Furniture(name: "Accessories", price: Voila.shared.priceForFurniture(name: "Accessories"), room: kitchen),
-			Furniture(name: "Art", price: Voila.shared.priceForFurniture(name: "Art"), room: kitchen),
-			stools
-		]
-		let livingRoom = Room(name: "Living Room", key: nil)
-		livingRoom.furniture = [
-			Furniture(name: "Accent Chair", price: Voila.shared.priceForFurniture(name: "Accent Chair"), room: livingRoom),
-			Furniture(name: "Accessories", price: Voila.shared.priceForFurniture(name: "Accessories"), room: livingRoom),
-			Furniture(name: "Area Rug", price: Voila.shared.priceForFurniture(name: "Area Rug"), room: livingRoom),
-			Furniture(name: "Art", price: Voila.shared.priceForFurniture(name: "Art"), room: livingRoom),
-			Furniture(name: "Coffee Table", price: Voila.shared.priceForFurniture(name: "Coffee Table"), room: livingRoom),
-			Furniture(name: "Floor Lamp", price: Voila.shared.priceForFurniture(name: "Floor Lamp"), room: livingRoom),
-			Furniture(name: "Side Table", price: Voila.shared.priceForFurniture(name: "Side Table"), room: livingRoom),
-			Furniture(name: "Sofa", price: Voila.shared.priceForFurniture(name: "Sofa"), room: livingRoom)
-		]
-		let bedroom = Room(name: "Master Bedroom", key: nil)
-		bedroom.furniture = [
-			Furniture(name: "Accent Chair", price: Voila.shared.priceForFurniture(name: "Accent Chair"), room: bedroom),
-			Furniture(name: "Accessories", price: Voila.shared.priceForFurniture(name: "Accessories"), room: bedroom),
-			Furniture(name: "Area Rug", price: Voila.shared.priceForFurniture(name: "Area Rug"), room: bedroom),
-			Furniture(name: "Art", price: Voila.shared.priceForFurniture(name: "Art"), room: bedroom),
-			Furniture(name: "Bed Frame", price: Voila.shared.priceForFurniture(name: "Bed Frame"), room: bedroom),
-			Furniture(name: "Box Spring", price: Voila.shared.priceForFurniture(name: "Box Spring"), room: bedroom),
-			Furniture(name: "Lamp", price: Voila.shared.priceForFurniture(name: "Lamp"), room: bedroom),
-			Furniture(name: "Night Table", price: Voila.shared.priceForFurniture(name: "Night Table"), room: bedroom),
-			Furniture(name: "Queen Bed", price: Voila.shared.priceForFurniture(name: "Queen Bed"), room: bedroom),
-		]
-		self.rooms = [bathrooms, diningRoom, kitchen, livingRoom, bedroom].sorted{ (a, b) -> Bool in
-			var aRank:Int = 0
-			var bRank:Int = 0
-			if let aR = Voila.shared.roomSort[a.name]{
-				aRank = aR
+		if let selectedTemplate = Voila.shared.templates[type.rawValue]{
+			var roomArray:[Room] = []
+			for (roomName, furnitureList) in selectedTemplate{
+				let thisRoom = Room(name: roomName, key: nil)
+				var furnitureArray:[Furniture] = []
+				for (furnitureName, furnitureCount) in furnitureList{
+					let thisFurniture = Furniture(name: furnitureName, price: Voila.shared.priceForFurniture(name:furnitureName), room: thisRoom)
+					thisFurniture.copies = furnitureCount
+					furnitureArray.append(thisFurniture)
+				}
+				thisRoom.furniture = furnitureArray
+				roomArray.append(thisRoom)
 			}
-			if let bR = Voila.shared.roomSort[b.name]{
-				bRank = bR
+			self.rooms = roomArray.sorted{ (a, b) -> Bool in
+				var aRank:Int = 0
+				var bRank:Int = 0
+				if let aR = Voila.shared.roomSort[a.name]{
+					aRank = aR
+				}
+				if let bR = Voila.shared.roomSort[b.name]{
+					bRank = bR
+				}
+				return aRank < bRank
 			}
-			return aRank < bRank
+			self.synchronize(completionHandler: {
+				if let completion = completionHandler{
+					completion()
+				}
+			})
 		}
+	}
 
-		self.synchronize(completionHandler: {
-			if let completion = completionHandler{
-				completion()
-			}
-		})
-	}
-	
-	
-	
-	func setFromLargeTemplate(completionHandler:(() -> ())?){
-		
-		let masterBathroom = Room(name: "Master Bathroom", key: nil)
-		masterBathroom.furniture = [
-			Furniture(name: "Accessories", price: Voila.shared.priceForFurniture(name: "Accessories"), room: masterBathroom),
-			Furniture(name: "Art", price: Voila.shared.priceForFurniture(name: "Art"), room: masterBathroom),
-			Furniture(name: "Bench", price: Voila.shared.priceForFurniture(name: "Bench"), room: masterBathroom),
-			Furniture(name: "Console", price: Voila.shared.priceForFurniture(name: "Console"), room: masterBathroom),
-			Furniture(name: "Laundry Basket", price: Voila.shared.priceForFurniture(name: "Laundry Basket"), room: masterBathroom),
-			Furniture(name: "Poof", price: Voila.shared.priceForFurniture(name: "Poof"), room: masterBathroom),
-			Furniture(name: "Rug", price: Voila.shared.priceForFurniture(name: "Rug"), room: masterBathroom),
-			Furniture(name: "Towels", price: Voila.shared.priceForFurniture(name: "Towels"), room: masterBathroom)
-		]
-		let bathrooms = Room(name: "Bathrooms", key: nil)
-		bathrooms.furniture = [
-			Furniture(name: "All Bathrooms", price: Voila.shared.priceForFurniture(name: "All Bathrooms"), room: bathrooms),
-		]
-		let diningRoom = Room(name: "Dining Room", key: nil)
-		let chairs = Furniture(name: "Dining Chairs", price: Voila.shared.priceForFurniture(name: "Dining Chairs"), room: diningRoom)
-		chairs.copies = 4
-		diningRoom.furniture = [
-			Furniture(name: "Accessories", price: Voila.shared.priceForFurniture(name: "Accessories"), room: diningRoom),
-			Furniture(name: "Art", price: Voila.shared.priceForFurniture(name: "Art"), room: diningRoom),
-			chairs,
-			Furniture(name: "Dining Table", price: Voila.shared.priceForFurniture(name: "Dining Table"), room: diningRoom)
-		]
-		let kitchen = Room(name: "Kitchen", key: nil)
-		let stools = Furniture(name: "Counter Stools", price: Voila.shared.priceForFurniture(name: "Counter Stools"), room: kitchen)
-		stools.copies = 3
-		kitchen.furniture = [
-			Furniture(name: "Accessories", price: Voila.shared.priceForFurniture(name: "Accessories"), room: kitchen),
-			Furniture(name: "Art", price: Voila.shared.priceForFurniture(name: "Art"), room: kitchen),
-			stools
-		]
-		let familyRoom = Room(name: "Family Room", key: nil)
-		let familyAccentChair = Furniture(name: "Accent Chair", price: Voila.shared.priceForFurniture(name: "Accent Chair"), room: familyRoom)
-		let familyLamp = Furniture(name: "Floor Lamp", price: Voila.shared.priceForFurniture(name: "Floor Lamp"), room: familyRoom)
-		let familySideTable = Furniture(name: "Side Table", price: Voila.shared.priceForFurniture(name: "Side Table"), room: familyRoom)
-		familyAccentChair.copies = 2
-		familyLamp.copies = 2
-		familySideTable.copies = 2
-		familyRoom.furniture = [
-			familyAccentChair,
-			Furniture(name: "Accessories", price: Voila.shared.priceForFurniture(name: "Accessories"), room: familyRoom),
-			Furniture(name: "Area Rug", price: Voila.shared.priceForFurniture(name: "Area Rug"), room: familyRoom),
-			Furniture(name: "Art", price: Voila.shared.priceForFurniture(name: "Art"), room: familyRoom),
-			Furniture(name: "Coffee Table", price: Voila.shared.priceForFurniture(name: "Coffee Table"), room: familyRoom),
-			Furniture(name: "Sectional", price: Voila.shared.priceForFurniture(name: "Sectional"), room: familyRoom),
-			familyLamp,
-			familySideTable
-		]
-		let livingRoom = Room(name: "Living Room", key: nil)
-		let livingAccentChair = Furniture(name: "Accent Chair", price: Voila.shared.priceForFurniture(name: "Accent Chair"), room: livingRoom)
-		let livingLamp = Furniture(name: "Floor Lamp", price: Voila.shared.priceForFurniture(name: "Floor Lamp"), room: livingRoom)
-		let livingSideTable = Furniture(name: "Side Table", price: Voila.shared.priceForFurniture(name: "Side Table"), room: livingRoom)
-		let livingSofa = Furniture(name: "Sofa", price: Voila.shared.priceForFurniture(name: "Sofa"), room: livingRoom)
-		livingAccentChair.copies = 2
-		livingLamp.copies = 2
-		livingSideTable.copies = 2
-		livingSofa.copies = 2
-		livingRoom.furniture = [
-			livingAccentChair,
-			Furniture(name: "Accessories", price: Voila.shared.priceForFurniture(name: "Accessories"), room: livingRoom),
-			Furniture(name: "Area Rug", price: Voila.shared.priceForFurniture(name: "Area Rug"), room: livingRoom),
-			Furniture(name: "Art", price: Voila.shared.priceForFurniture(name: "Art"), room: livingRoom),
-			Furniture(name: "Coffee Table", price: Voila.shared.priceForFurniture(name: "Coffee Table"), room: livingRoom),
-			livingLamp,
-			livingSideTable,
-			livingSofa
-		]
-		let masterBedroom = Room(name: "Master Bedroom", key: nil)
-		let masterLamp = Furniture(name: "Lamp", price: Voila.shared.priceForFurniture(name: "Lamp"), room: masterBedroom)
-		let masterNightTable = Furniture(name: "Night Table", price: Voila.shared.priceForFurniture(name: "Night Table"), room: masterBedroom)
-		masterLamp.copies = 2
-		masterNightTable.copies = 2
-		masterBedroom.furniture = [
-			Furniture(name: "Accent Chair", price: Voila.shared.priceForFurniture(name: "Accent Chair"), room: masterBedroom),
-			Furniture(name: "Accessories", price: Voila.shared.priceForFurniture(name: "Accessories"), room: masterBedroom),
-			Furniture(name: "Area Rug", price: Voila.shared.priceForFurniture(name: "Area Rug"), room: masterBedroom),
-			Furniture(name: "Art", price: Voila.shared.priceForFurniture(name: "Art"), room: masterBedroom),
-			Furniture(name: "Large Console", price: Voila.shared.priceForFurniture(name: "Large Console"), room: masterBedroom),
-			Furniture(name: "Bed Frame", price: Voila.shared.priceForFurniture(name: "Bed Frame"), room: masterBedroom),
-			Furniture(name: "Box Spring", price: Voila.shared.priceForFurniture(name: "Box Spring"), room: masterBedroom),
-			masterLamp,
-			masterNightTable,
-			Furniture(name: "King Bed", price: Voila.shared.priceForFurniture(name: "King Bed"), room: masterBedroom),
-		]
-		let bedroom = Room(name: "Bedroom", key: nil)
-		bedroom.furniture = [
-			Furniture(name: "Accent Chair", price: Voila.shared.priceForFurniture(name: "Accent Chair"), room: bedroom),
-			Furniture(name: "Accessories", price: Voila.shared.priceForFurniture(name: "Accessories"), room: bedroom),
-			Furniture(name: "Area Rug", price: Voila.shared.priceForFurniture(name: "Area Rug"), room: bedroom),
-			Furniture(name: "Art", price: Voila.shared.priceForFurniture(name: "Art"), room: bedroom),
-			Furniture(name: "Bed Frame", price: Voila.shared.priceForFurniture(name: "Bed Frame"), room: bedroom),
-			Furniture(name: "Box Spring", price: Voila.shared.priceForFurniture(name: "Box Spring"), room: bedroom),
-			Furniture(name: "Lamp", price: Voila.shared.priceForFurniture(name: "Lamp"), room: bedroom),
-			Furniture(name: "Night Table", price: Voila.shared.priceForFurniture(name: "Night Table"), room: bedroom),
-			Furniture(name: "Queen Bed", price: Voila.shared.priceForFurniture(name: "Queen Bed"), room: bedroom),
-		]
-		self.rooms = [bathrooms, diningRoom, kitchen, livingRoom, familyRoom, masterBedroom, bedroom].sorted{ (a, b) -> Bool in
-			var aRank:Int = 0
-			var bRank:Int = 0
-			if let aR = Voila.shared.roomSort[a.name]{
-				aRank = aR
-			}
-			if let bR = Voila.shared.roomSort[b.name]{
-				bRank = bR
-			}
-			return aRank < bRank
-		};
-		
-		self.synchronize(completionHandler: {
-			if let completion = completionHandler{
-				completion()
-			}
-		})
-	}
 }
