@@ -47,7 +47,7 @@ class Voila{
 		}
 	}
 	
-	var roomKey:String?{ // currently editing room, the key of the room in the [Room] arary in self.project
+	var roomKey:String?{ // currently editing room, the key of the room in the [Room] array in self.project
 		// NO////the index of [Room] array in self.project
 		didSet{
 			
@@ -79,7 +79,30 @@ class Voila{
 			}
 		}
 	}
-
+	
+	func currentRoom() -> Room?{
+		if let p = self.project{
+			if let index = self.currentRoomIndex(){
+				if index < p.rooms.count{
+					return p.rooms[index]
+				}
+			}
+		}
+		return nil
+	}
+	
+	func currentRoomCustomFurniture() -> [Furniture]{
+		let allFurnitureNames = Array(self.furnitureCost.keys)
+		if let p = self.project{
+			if let index = self.currentRoomIndex(){
+				let room = p.rooms[index]
+				return room.furniture.filter({ (furniture) -> Bool in
+					return !allFurnitureNames.contains(furniture.name)
+				})
+			}
+		}
+		return []
+	}
 	
 	func currentRoomAllFurniture()->[Furniture]{
 		if let p = self.project{

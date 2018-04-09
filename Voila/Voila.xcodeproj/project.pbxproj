@@ -25,7 +25,6 @@
 		D589EF191F9A54A700166597 /* ProposalsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D589EF181F9A54A700166597 /* ProposalsTableViewController.swift */; };
 		D58BE7F81FA8D00A004FB07C /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58BE7F71FA8D00A004FB07C /* TableViewCell.swift */; };
 		D58BE7FA1FA8D834004FB07C /* DetailDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D58BE7F91FA8D834004FB07C /* DetailDetailTableViewCell.swift */; };
-		D5963F6B201F6E5700DD9ED1 /* AllFurnitureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5963F6A201F6E5700DD9ED1 /* AllFurnitureViewController.swift */; };
 		D5B8000E1F4F1B91008470A3 /* ProjectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B8000D1F4F1B91008470A3 /* ProjectTableViewCell.swift */; };
 		D5BEB7291F13D1B4000C724A /* RoomTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BEB7281F13D1B4000C724A /* RoomTableViewController.swift */; };
 		D5BEB72B1F13D6B8000C724A /* AllRoomsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BEB72A1F13D6B8000C724A /* AllRoomsTableViewController.swift */; };
@@ -81,7 +80,6 @@
 		D589EF181F9A54A700166597 /* ProposalsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProposalsTableViewController.swift; sourceTree = "<group>"; };
 		D58BE7F71FA8D00A004FB07C /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		D58BE7F91FA8D834004FB07C /* DetailDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailDetailTableViewCell.swift; sourceTree = "<group>"; };
-		D5963F6A201F6E5700DD9ED1 /* AllFurnitureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllFurnitureViewController.swift; sourceTree = "<group>"; };
 		D5B8000D1F4F1B91008470A3 /* ProjectTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectTableViewCell.swift; sourceTree = "<group>"; };
 		D5BEB7281F13D1B4000C724A /* RoomTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomTableViewController.swift; sourceTree = "<group>"; };
 		D5BEB72A1F13D6B8000C724A /* AllRoomsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllRoomsTableViewController.swift; sourceTree = "<group>"; };
@@ -205,7 +203,6 @@
 				D5DE2D251F1528650071955D /* ProjectTableViewController.swift */,
 				D5B8000C1F4F1B91008470A3 /* Cells */,
 				D5BEB7281F13D1B4000C724A /* RoomTableViewController.swift */,
-				D5963F6A201F6E5700DD9ED1 /* AllFurnitureViewController.swift */,
 				D5BEB72A1F13D6B8000C724A /* AllRoomsTableViewController.swift */,
 				D56805FB1F4E0E9700328586 /* ProposalViewController.swift */,
 				D589EF181F9A54A700166597 /* ProposalsTableViewController.swift */,
@@ -451,7 +448,6 @@
 				D5BEB72B1F13D6B8000C724A /* AllRoomsTableViewController.swift in Sources */,
 				D5836C231F19183F006064E7 /* Style.swift in Sources */,
 				D511F06C1F0D574C005AB196 /* Fire.swift in Sources */,
-				D5963F6B201F6E5700DD9ED1 /* AllFurnitureViewController.swift in Sources */,
 				D5DE2D2F1F15302E0071955D /* Room.swift in Sources */,
 				D5DE2D2B1F1529CE0071955D /* ProfileViewController.swift in Sources */,
 				D511F06E1F0D5870005AB196 /* MasterNavigationController.swift in Sources */,
