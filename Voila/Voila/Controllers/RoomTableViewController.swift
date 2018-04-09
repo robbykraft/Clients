@@ -123,46 +123,72 @@ class RoomTableViewController: UITableViewController { //}, MFMailComposeViewCon
 	}
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-//        return 2
-		return 1
+        return 3
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		if section == 0{
-			return Voila.shared.currentRoomAllFurniture().count
+		switch section {
+		case 0: return 1
+		case 1: return Voila.shared.currentRoomAllFurniture().count
+		case 2: return Voila.shared.currentRoomXORAllFurniture().count
+		default: return 1
 		}
-		return 1
 	}
 
 	override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-		if section == 1{
-			return "All Furniture"
+		switch section {
+		case 0:
+			let roomName = Voila.shared.currentRoomName() ?? ""
+			let myFurnitureArray = Voila.shared.currentRoomCurrentFurniture()
+			var count = 0
+			for item in myFurnitureArray{
+				count += item.copies
+			}
+			if count == 1 {return roomName + ": \(count) Item"}
+			return roomName + ": \(count) Items"
+		case 1: return "Typical \(Voila.shared.currentRoomName() ?? "") Furniture"
+		case 2: return "Remaining Furniture"
+		default: return ""
 		}
-		var roomName = ""
-		if let name = Voila.shared.currentRoomName(){
-			roomName = name
-		}
-		let myFurnitureArray = Voila.shared.currentRoomCurrentFurniture()
-		var count = 0
-		for item in myFurnitureArray{
-			count += item.copies
-		}
-		if count == 1 {return roomName + ": \(count) Item"}
-		return roomName + ": \(count) Items"
 	}
 	
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = TableViewCell.init(style: .value1, reuseIdentifier: "RoomCell")
 		
-		if indexPath.section == 1{
-			cell.textLabel?.text = "Add Furniture Type"
+		switch indexPath.section {
+		case 0:
+			cell.textLabel?.text = "Custom Furniture Item"
 			return cell
+		case 1:
+			let allFurnitureArray = Voila.shared.currentRoomAllFurniture()
+			let myFurnitureArray = Voila.shared.currentRoomCurrentFurniture()
+			let furniture = allFurnitureArray[indexPath.row]
+			cell.textLabel?.text = furniture.name
+			for myFurniture in myFurnitureArray{
+				if furniture.name == myFurniture.name{
+					cell.textLabel?.font = UIFont(name: SYSTEM_FONT_B, size: (cell.textLabel?.font.pointSize)!)
+					cell.textLabel?.textColor = Style.shared.highlight
+					cell.detailTextLabel?.textColor = Style.shared.highlight
+					cell.detailTextLabel?.text = "\(myFurniture.copies)"
+				}
+			}
+		case 2:
+			let allFurnitureArray = Voila.shared.currentRoomXORAllFurniture()
+			let myFurnitureArray = Voila.shared.currentRoomCurrentFurniture()
+			let furniture = allFurnitureArray[indexPath.row]
+			cell.textLabel?.text = furniture.name
+			for myFurniture in myFurnitureArray{
+				if furniture.name == myFurniture.name{
+					cell.textLabel?.font = UIFont(name: SYSTEM_FONT_B, size: (cell.textLabel?.font.pointSize)!)
+					cell.textLabel?.textColor = Style.shared.highlight
+					cell.detailTextLabel?.textColor = Style.shared.highlight
+					cell.detailTextLabel?.text = "\(myFurniture.copies)"
+				}
+			}
+		default: break
 		}
-		
+		return cell
 
-		let allFurnitureArray = Voila.shared.currentRoomAllFurniture()
-		let myFurnitureArray = Voila.shared.currentRoomCurrentFurniture()
-		let furniture = allFurnitureArray[indexPath.row]
 //		cell.textLabel?.text = furniture.name
 //		
 //		for myFurniture in furnitureArray{
@@ -175,59 +201,77 @@ class RoomTableViewController: UITableViewController { //}, MFMailComposeViewCon
 //		}
 //		if let myRoom = 
 
-		cell.textLabel?.text = furniture.name
-		
-		for myFurniture in myFurnitureArray{
-			if furniture.name == myFurniture.name{
-				cell.textLabel?.font = UIFont(name: SYSTEM_FONT_B, size: (cell.textLabel?.font.pointSize)!)
-				cell.textLabel?.textColor = Style.shared.highlight
-				cell.detailTextLabel?.textColor = Style.shared.highlight
-				cell.detailTextLabel?.text = "\(myFurniture.copies)"
-			}
-		}
-        return cell
     }
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		if indexPath.section == 1{
+		switch indexPath.section {
+		case 0:
 			let nav = UINavigationController()
 			nav.viewControllers = [AllFurnitureViewController()]
 			self.present(nav, animated: true, completion: nil)
 			return
+		case 1:
+			let furnitureArray = Voila.shared.currentRoomAllFurniture()
+			let furniture = furnitureArray[indexPath.row]
+			
+			let myFurnitureArray = Voila.shared.currentRoomCurrentFurniture()
+			for myFurniture in myFurnitureArray{
+				print("built arrays")
+				if furniture.name == myFurniture.name{
+					print("found name match \(furniture.name)")
+					let copies = myFurniture.copies
+					print("currently \(copies) copies")
+					Voila.shared.setFurnitureCopies(furnitureName: furniture.name, copies: copies+1, completionHandler: {
+						print("set furniture copies done")
+						if let project = Voila.shared.project{
+							project.synchronize(completionHandler: {
+								print("project synchronized")
+								self.tableView.reloadData()
+							})
+						}
+					})
+					return
+				}
+			}
+			// furniture doesn't exist yet
+			Voila.shared.setFurnitureCopies(furnitureName: furniture.name, copies: 1, completionHandler: {
+				print("set furniture copies done")
+				if let project = Voila.shared.project{
+					project.synchronize(completionHandler: {
+						print("project synchronized")
+						self.tableView.reloadData()
+					})
+				}
+			})
+		case 2:
+			let furnitureArray = Voila.shared.currentRoomXORAllFurniture()
+			let furniture = furnitureArray[indexPath.row]
+			let myFurnitureArray = Voila.shared.currentRoomCurrentFurniture()
+			for myFurniture in myFurnitureArray{
+				if furniture.name == myFurniture.name{
+					let copies = myFurniture.copies
+					Voila.shared.setFurnitureCopies(furnitureName: furniture.name, copies: copies+1, completionHandler: {
+						if let project = Voila.shared.project{
+							project.synchronize(completionHandler: {
+								self.tableView.reloadData()
+							})
+						}
+					})
+					return
+				}
+			}
+			// furniture doesn't exist yet
+			Voila.shared.setFurnitureCopies(furnitureName: furniture.name, copies: 1, completionHandler: {
+				if let project = Voila.shared.project{
+					project.synchronize(completionHandler: {
+						self.tableView.reloadData()
+					})
+				}
+			})
+
+		default: break
 		}
 		
-		let furnitureArray = Voila.shared.currentRoomAllFurniture()
-		let furniture = furnitureArray[indexPath.row]
-		
-		let myFurnitureArray = Voila.shared.currentRoomCurrentFurniture()
-		for myFurniture in myFurnitureArray{
-			print("built arrays")
-			if furniture.name == myFurniture.name{
-				print("found name match \(furniture.name)")
-				let copies = myFurniture.copies
-				print("currently \(copies) copies")
-				Voila.shared.setFurnitureCopies(furnitureName: furniture.name, copies: copies+1, completionHandler: {
-					print("set furniture copies done")
-					if let project = Voila.shared.project{
-						project.synchronize(completionHandler: { 
-							print("project synchronized")
-							self.tableView.reloadData()
-						})
-					}
-				})
-				return
-			}
-		}
-		// furniture doesn't exist yet
-		Voila.shared.setFurnitureCopies(furnitureName: furniture.name, copies: 1, completionHandler: {
-			print("set furniture copies done")
-			if let project = Voila.shared.project{
-				project.synchronize(completionHandler: {
-					print("project synchronized")
-					self.tableView.reloadData()
-				})
-			}
-		})
 		
 	}
 
@@ -235,7 +279,10 @@ class RoomTableViewController: UITableViewController { //}, MFMailComposeViewCon
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
-        return true
+		switch indexPath.section {
+		case 0: return false
+		default: return true
+		}
     }
 	
 	override func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {

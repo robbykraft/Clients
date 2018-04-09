@@ -95,6 +95,18 @@ class Voila{
 		}
 		return []
 	}
+	func currentRoomXORAllFurniture() -> [Furniture]{
+		let currentRoomAllFurnitureNames = currentRoomAllFurniture().map { (f) -> String in
+			return f.name
+		}
+		let allFurniture = Array(self.furnitureCost.keys).filter { (name) -> Bool in
+			return !currentRoomAllFurnitureNames.contains(name)
+		}
+		return allFurniture.map({ (name) -> Furniture in
+			return Furniture(name: name, price: self.priceForFurniture(name: name), room: nil)
+		})
+	}
+	
 	func currentRoomCurrentFurniture()->[Furniture]{
 		if let p = self.project{
 			if let key = self.roomKey{
