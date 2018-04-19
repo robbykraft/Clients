@@ -11,18 +11,6 @@ import UIKit
 
 class RoomTableViewController: UITableViewController { //}, MFMailComposeViewControllerDelegate {
 	
-//	var data:Room?{
-//		didSet{
-//			if let room = self.data{
-//				self.title = room.name
-//				if let customName = room.customName{
-//					self.title = customName
-//				}
-//			}
-//			self.tableView.reloadData()
-//		}
-//	}
-	
 	var data:[Furniture]?{
 		didSet{
 			
@@ -31,13 +19,11 @@ class RoomTableViewController: UITableViewController { //}, MFMailComposeViewCon
 	
 	let titleButton = UIButton(type: .custom)
 	
-	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		self.tableView.reloadData()
 	}
 
-	
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -54,7 +40,6 @@ class RoomTableViewController: UITableViewController { //}, MFMailComposeViewCon
 		
 		
 		titleButton.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
-//		titleButton.backgroundColor = UIColor.red
 		titleButton.titleLabel?.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)
 		titleButton.setTitleColor(UIColor.black, for: .normal)
 		if let thisRoomName = Voila.shared.currentRoomName(){
@@ -62,18 +47,8 @@ class RoomTableViewController: UITableViewController { //}, MFMailComposeViewCon
 		}
 		titleButton.addTarget(self, action: #selector(self.clickOnButton), for: .touchUpInside)
 		self.navigationItem.titleView = titleButton
-
-		
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
 	
-//	func clickOnButton(button: UIButton) {
-//		let alert = UIAlertController(title: "Custom Name", message: "Give this room a custom name?", preferredStyle: .alert)
-//	}
 	func clickOnButton(button: UIButton) {
 		let alertController = UIAlertController(title: "Custom Name", message: "Give this room a custom name?", preferredStyle: .alert)
 		alertController.addTextField { (textField : UITextField) -> Void in
@@ -96,12 +71,7 @@ class RoomTableViewController: UITableViewController { //}, MFMailComposeViewCon
 		self.present(alertController, animated: true, completion: nil)
 	}
 	
-//	override func viewWillAppear(_ animated: Bool) {
-//		super.viewWillAppear(animated)
-//	}
-	
 	func makeProposalHandler(){
-//		Voila.shared.sendProposal(self)
 		self.navigationController?.pushViewController(ProposalViewController(), animated: true)
 	}
 	
@@ -203,19 +173,6 @@ class RoomTableViewController: UITableViewController { //}, MFMailComposeViewCon
 		default: break
 		}
 		return cell
-
-//		cell.textLabel?.text = furniture.name
-//		
-//		for myFurniture in furnitureArray{
-//			if furniture.name == myFurniture.name{
-//				cell.textLabel?.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)
-//				cell.textLabel?.textColor = Style.shared.blue
-//				cell.detailTextLabel?.textColor = Style.shared.blue
-//				cell.detailTextLabel?.text = "\(myFurniture.copies)"
-//			}
-//		}
-//		if let myRoom = 
-
     }
 	
 	func createNewFurniturePopover(){
@@ -256,10 +213,8 @@ class RoomTableViewController: UITableViewController { //}, MFMailComposeViewCon
 				let furniture = customFurnitureArray[adjustedRow]
 				let copies = furniture.copies
 				Voila.shared.setFurnitureCopies(furnitureName: furniture.name, copies: copies+1, completionHandler: {
-					print("set furniture copies done")
 					if let project = Voila.shared.project{
 						project.synchronize(completionHandler: {
-							print("project synchronized")
 							self.tableView.reloadData()
 						})
 					}
@@ -275,16 +230,11 @@ class RoomTableViewController: UITableViewController { //}, MFMailComposeViewCon
 			
 			let myFurnitureArray = Voila.shared.currentRoomCurrentFurniture()
 			for myFurniture in myFurnitureArray{
-				print("built arrays")
 				if furniture.name == myFurniture.name{
-					print("found name match \(furniture.name)")
 					let copies = myFurniture.copies
-					print("currently \(copies) copies")
 					Voila.shared.setFurnitureCopies(furnitureName: furniture.name, copies: copies+1, completionHandler: {
-						print("set furniture copies done")
 						if let project = Voila.shared.project{
 							project.synchronize(completionHandler: {
-								print("project synchronized")
 								self.tableView.reloadData()
 							})
 						}
@@ -294,10 +244,8 @@ class RoomTableViewController: UITableViewController { //}, MFMailComposeViewCon
 			}
 			// furniture doesn't exist yet
 			Voila.shared.setFurnitureCopies(furnitureName: furniture.name, copies: 1, completionHandler: {
-				print("set furniture copies done")
 				if let project = Voila.shared.project{
 					project.synchronize(completionHandler: {
-						print("project synchronized")
 						self.tableView.reloadData()
 					})
 				}
@@ -334,8 +282,6 @@ class RoomTableViewController: UITableViewController { //}, MFMailComposeViewCon
 		
 	}
 
-	
-    // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
 		switch indexPath.section {
@@ -355,8 +301,6 @@ class RoomTableViewController: UITableViewController { //}, MFMailComposeViewCon
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            // Delete the row from the data source
-//            tableView.deleteRows(at: [indexPath], with: .fade)
 			switch indexPath.section{
 			case 0:
 				let adjustedRow = indexPath.row - 1
@@ -375,7 +319,6 @@ class RoomTableViewController: UITableViewController { //}, MFMailComposeViewCon
 				let myFurnitureArray = Voila.shared.currentRoomCurrentFurniture()
 				for myFurniture in myFurnitureArray{
 					if furniture.name == myFurniture.name{
-//						let copies = myFurniture.copies
 						Voila.shared.setFurnitureCopies(furnitureName: furniture.name, copies: 0, completionHandler: {
 							if let project = Voila.shared.project{
 								project.synchronize(completionHandler: {
@@ -392,7 +335,6 @@ class RoomTableViewController: UITableViewController { //}, MFMailComposeViewCon
 				let furniture = allFurnitureArray[indexPath.row]
 				for myFurniture in myFurnitureArray{
 					if furniture.name == myFurniture.name{
-						//						let copies = myFurniture.copies
 						Voila.shared.setFurnitureCopies(furnitureName: furniture.name, copies: 0, completionHandler: {
 							if let project = Voila.shared.project{
 								project.synchronize(completionHandler: {
@@ -406,18 +348,7 @@ class RoomTableViewController: UITableViewController { //}, MFMailComposeViewCon
 			default: break
 			}
 			
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+        } else if editingStyle == .insert { }
     }
-	
-	
-	
-//	func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-//		Voila.shared.mailDidFinish(result)
-//		self.dismiss(animated: true, completion: nil)
-//	}
-	
-
 
 }

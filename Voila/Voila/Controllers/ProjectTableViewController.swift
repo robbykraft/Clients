@@ -27,13 +27,6 @@ class ProjectTableViewController: UITableViewController {//}, MFMailComposeViewC
 		let addButton = UIBarButtonItem.init(title: "Proposal", style: .done, target: self, action: #selector(makeProposalHandler))
 		self.navigationItem.rightBarButtonItem = addButton
 		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)!, NSForegroundColorAttributeName: Style.shared.highlight], for:.normal)
-//		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont.systemFont(ofSize: 25), NSForegroundColorAttributeName: UIColor.black], for:.normal)
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -67,7 +60,6 @@ class ProjectTableViewController: UITableViewController {//}, MFMailComposeViewC
 		switch section {
 		case 0:
 			return nil
-//			return "Project Settings"
 		default:
 			return "Rooms"
 		}
@@ -96,7 +88,6 @@ class ProjectTableViewController: UITableViewController {//}, MFMailComposeViewC
 
 	
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
 		let cell = TableViewCell.init(style: .value1, reuseIdentifier: "ProjectCell")
 
 		switch indexPath.section {
@@ -146,45 +137,14 @@ class ProjectTableViewController: UITableViewController {//}, MFMailComposeViewC
 				case project.rooms.count:
 					self.addRoomHandler()
 				default:
-//					let room = project.rooms[indexPath.row]
-//					Voila.shared.room = indexPath.row
 					if let project = Voila.shared.project{
 						Voila.shared.roomKey = project.rooms[indexPath.row].key
 					}
 					let vc = RoomTableViewController()
-//					vc.data = room
 					self.navigationController?.pushViewController(vc, animated: true)
 				}
 			}
 		}
 	}
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-	
-	
-	
-//	func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-//		Voila.shared.mailDidFinish(result)
-//		self.dismiss(animated: true, completion: nil)
-//	}
-
 
 }

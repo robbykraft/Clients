@@ -16,7 +16,6 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 	var keyboardSize: CGSize?
 	
 	let projectTitle = UILabel()
-//	let projectDescription = UILabel()
 
 	let _0totalBeforeField = UITextField()
 	let _1discountTextField = UITextField()
@@ -57,10 +56,7 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 
 	var contentHeight:CGFloat = 0
 	
-	
 	var updateTimer:Timer?  // live updates to profile entries, prevents updating too frequently
-
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,10 +84,6 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 			self.projectTitle.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P40)
 			self.scrollView.addSubview(self.projectTitle)
 			
-//			self.projectDescription.font = UIFont(name:SYSTEM_FONT, size:Style.shared.P24)
-//			self.projectDescription.text = "Total: $\(project.cost())"
-//			self.scrollView.addSubview(self.projectDescription)
-			
 			for label in [_0totalBeforeLabel, _1discountLabel, _2discountPctLabel, _4totalBeforeLabel, _5salesTaxLabel, _7grandTotalLabel, _8renewalLabel]{
 				label.font = UIFont(name:SYSTEM_FONT, size:Style.shared.P18)
 				label.textAlignment = .right
@@ -117,7 +109,6 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 			self._1discountTextField.text = discountTextItems.first
 			self._2discountField.text = String(describing:discountItems.first!)
 			self._5salesTaxField.text = taxItems.first
-//			self._8renewalField.text = String(describing:renewalItems.first!)
 			self._8renewalField.text = "33"
 			self._1discountTextField.backgroundColor = .white
 			self._2discountField.backgroundColor = .white
@@ -162,9 +153,6 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 				default: _5salesTaxField.text = taxItems[0];
 				}
 			}
-//			if project.taxTotal != nil{
-//				project.taxTotal = salesTaxSum
-//			}
 			if project.renewalsPct != nil {
 				self._8renewalField.text = String(describing:project.renewalsPct!)
 			}
@@ -215,7 +203,6 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 		
 		
 		pickerToolbar.barStyle = .default
-//		pickerToolbar.isTranslucent = true
 		pickerToolbar.tintColor = Style.shared.highlight
 		pickerToolbar.sizeToFit()
 		let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(pickerDone))
@@ -223,7 +210,6 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 		pickerToolbar.isUserInteractionEnabled = true
 
 		numberToolbar.barStyle = .default
-//		numberToolbar = true
 		numberToolbar.tintColor = Style.shared.highlight
 		numberToolbar.sizeToFit()
 		let doneButton2 = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(numberDone))
@@ -517,7 +503,6 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 		}
 	}
 	
-	
 	func textFieldDidChange(textField: UITextField){
 		if(updateTimer != nil){
 			updateTimer?.invalidate()
@@ -537,22 +522,6 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 		}
 	}
 	
-
-	
-//	func textFieldDidEndEditing(_ textField: UITextField) {
-//		let i = textField.tag
-//		if let fieldText = textField.text{
-//			if let newCost = Int(fieldText){
-//				print(newCost)
-//				if let project = Voila.shared.project{
-//					let room = project.rooms[i]
-//					room.cost = newCost
-//					project.synchronize(completionHandler: nil)
-//				}
-//			}
-//		}
-//	}
-	
 	func sendProposal(){
 		self.view.endEditing(true)
 		self.updateCustomCosts {
@@ -561,17 +530,10 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 		}
 	}
 	
-
-	
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
-	
-	
-	
 	
 	func registerForKeyboardNotifications(){
 		//Adding notifies on keyboard appearing
@@ -617,17 +579,8 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 	
 	func textFieldDidBeginEditing(_ textField: UITextField){
 		activeField = textField
+		textField.selectAll(self)
 	}
-	
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 	
 	func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
 //		Voila.shared.mailDidFinish(result)

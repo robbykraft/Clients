@@ -13,29 +13,28 @@ class ProjectTableViewCell: UITableViewCell {
 	var data:Project?{
 		didSet{
 			if let project = self.data{
-				self.infoText.text = "\(project.rooms.count) rooms\n\(project.furnitureCount()) items"
+				self.infoText.text = "\(project.furnitureCount()) items in \(project.rooms.count) rooms"
 				self.textLabel?.text = project.name
 				if(project.rooms.count == 1) { self.infoText.text = "\(project.rooms.count) room" }
-				var emailString = "✗ Client's Email"
-				var proposalString = "✗ Proposal Sent"
-				if project.email != nil && project.email! != ""{
-					emailString = "✓ Client's Email"
-				}
+				var proposalString = "not sent"
+				self.proposalSentIndicator.backgroundColor = Style.shared.red
+				self.proposalSentText.textColor = UIColor.white
 				if let sent = project.proposalSent{
 					let date = Date(timeIntervalSince1970: TimeInterval(sent))
-					proposalString = "✓ Sent " + Style.shared.dayStringForDate(date)
+					proposalString = Style.shared.dayStringForDateNoYear(date)
+					self.proposalSentIndicator.backgroundColor = Style.shared.athensGray
+					self.proposalSentText.textColor = UIColor.black
 				}
-//				if project.email != nil && project.email! != ""{
-//					emailString = "✓ Email"
-//				}
-				self.tasksText.text = emailString + "\n" + proposalString
+				self.proposalSentText.text = proposalString
 			}
 		}
 	}
 	let infoText = UILabel()
-	let tasksText = UILabel()
+	let proposalSentText = UILabel()
 	
 	let separator = UIView()
+	
+	let proposalSentIndicator = UIView()
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -57,20 +56,22 @@ class ProjectTableViewCell: UITableViewCell {
 		self.textLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P24)
 		self.detailTextLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15)
 		
+		self.proposalSentIndicator.backgroundColor = UIColor.lightGray
+		
 		self.infoText.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15)
 		self.infoText.numberOfLines = 2
 		self.infoText.textColor = UIColor.gray
 
-		self.tasksText.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P12)
-		self.tasksText.numberOfLines = 3
-		self.tasksText.textColor = UIColor.gray
-		
+		self.proposalSentText.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P12)
+		self.proposalSentText.textColor = UIColor.black
+
 		self.backgroundColor = .white
 
 		self.separator.backgroundColor = UIColor.lightGray
+		self.addSubview(self.proposalSentIndicator)
 		self.addSubview(self.infoText)
 		self.addSubview(self.separator)
-		self.addSubview(self.tasksText)
+		self.addSubview(self.proposalSentText)
 		
 		let bgColorView = UIView()
 		bgColorView.backgroundColor = Style.shared.cellSelectionColor
@@ -86,32 +87,26 @@ class ProjectTableViewCell: UITableViewCell {
 			textLabel.frame = CGRect(x: PAD, y: PAD*0.5, width: textLabel.frame.size.width, height: textLabel.frame.size.height)
 		}
 
+		self.proposalSentIndicator.frame = CGRect(x: self.frame.size.width-30, y: 0, width: 30, height: self.frame.size.height)
+		
 		self.infoText.sizeToFit()
 		self.infoText.frame = CGRect(x: PAD*2, y:  PAD*0.5 + self.textLabel!.frame.size.height, width: self.infoText.frame.size.width, height: self.infoText.frame.size.height)
 		
-		self.tasksText.sizeToFit()
-		self.tasksText.frame = CGRect(x: size.width*0.5, y: PAD*0.5 + self.textLabel!.frame.size.height, width: size.width*0.5-PAD, height: self.tasksText.frame.size.height)
-		
-		self.separator.frame = CGRect(x: PAD, y: size.height-1, width: size.width-PAD*2, height: 1)
+		self.proposalSentText.sizeToFit()
+		self.proposalSentText.layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+		self.proposalSentText.transform = CGAffineTransform.init(rotationAngle: -1.5708)
+		self.proposalSentText.center = self.proposalSentIndicator.center
+
+		self.separator.frame = CGRect(x: 0, y: size.height-1, width: size.width, height: 1)
 	}
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 		self.separator.backgroundColor = UIColor.lightGray
-//		let color = yourView.backgroundColor
-//		
-//		if(selected) {
-//			yourView.backgroundColor = color
-//		}
 	}
 	
 	override func setHighlighted(_ highlighted: Bool, animated: Bool) {
-//		let color = yourView.backgroundColor
 		super.setHighlighted(highlighted, animated: animated)
 		self.separator.backgroundColor = UIColor.lightGray
-		
-//		if(highlighted) {
-//			yourView.backgroundColor = color
-//		}
 	}
 }

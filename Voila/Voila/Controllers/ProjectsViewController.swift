@@ -41,7 +41,6 @@ class ProjectsViewController: UITableViewController {
 		self.navigationItem.rightBarButtonItem = addButton
 		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P24)!, NSForegroundColorAttributeName: Style.shared.highlight], for:.normal)
 
-        // Do any additional setup after loading the view.
 		self.reloadData(nil)
     }
 	
@@ -69,73 +68,35 @@ class ProjectsViewController: UITableViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//		switch indexPath.section{
-//		case 0: return 44
-//		default: return 90
-//		}
-		return 90
+		return 65
 	}
 
 	override func numberOfSections(in tableView: UITableView) -> Int {
-//		return 2
 		return 1
 	}
 
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//		switch section {
-//		case 0:
-//			return 1
-//		default:
-			return self.projects.count
-//		}
+		return self.projects.count
 	}
 	
 	override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//		switch section {
-//		case 0:
-//			return nil
-//		default:
-			return "Current"
-//		}
+		return "Active Projects"
 	}
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
-//		switch indexPath.section{
-//		case 0:
-//			let cell = UITableViewCell.init(style: .default, reuseIdentifier: "CreateProjectCell")
-//			cell.textLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
-//			cell.detailTextLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
-//			cell.textLabel?.text = "Create Project"
-//			// selection color
-//			let bgColorView = UIView()
-//			bgColorView.backgroundColor = Style.shared.cellSelectionColor
-//			cell.selectedBackgroundView = bgColorView
-//			return cell
-//		default:
-			let cell = ProjectTableViewCell()
-			let project = self.projects[indexPath.row]
-			cell.data = project;
-			return cell
-//		}
+		let cell = ProjectTableViewCell()
+		let project = self.projects[indexPath.row]
+		cell.data = project;
+		return cell
 	}
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//		switch indexPath.section{
-//		case 0:
-//			self.newProjectHandler()
-//			tableView.deselectRow(at: indexPath, animated: true)
-//		default:
-			Voila.shared.project = self.projects[indexPath.row]
-			let vc = ProjectTableViewController()
-			self.navigationController?.pushViewController(vc, animated: true)
-//		}
+		Voila.shared.project = self.projects[indexPath.row]
+		let vc = ProjectTableViewController()
+		self.navigationController?.pushViewController(vc, animated: true)
 	}
 	
-	
-	// Override to support conditional editing of the table view.
-	override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-		// Return false if you do not want the specified item to be editable.
+		override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
 		return true
 	}
 	
@@ -143,18 +104,13 @@ class ProjectsViewController: UITableViewController {
 		return "Delete"
 	}
 	
-	// Override to support editing the table view.
 	override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
 		if editingStyle == .delete {
-			// Delete the row from the data source
-//            tableView.deleteRows(at: [indexPath], with: .fade)
 			let project = self.projects[indexPath.row]
 			Voila.shared.deleteProject(project: project, completionHandler: {
 				self.reloadData(nil)
 			})
-		} else if editingStyle == .insert {
-			// Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-		}
+		} else if editingStyle == .insert { }
 	}
 	
 	

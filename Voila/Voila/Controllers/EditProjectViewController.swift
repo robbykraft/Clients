@@ -22,8 +22,6 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 	let lockboxField: UITextField = UITextField()
 	let clientField: UITextField = UITextField()
 	let realtorField: UITextField = UITextField()
-//	let creationDateField: UITextField = UITextField()
-//	let detailField: UITextField = UITextField()
 	let deleteButton: UIButton = UIButton()
 	
 	var updateTimer:Timer?  // live updates to profile entries, prevents updating too frequently
@@ -31,21 +29,16 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		
 		self.scrollView.frame = self.view.bounds
 		self.scrollView.contentSize = CGSize(width: self.view.bounds.size.width, height: self.view.bounds.size.height)
-		self.view.addSubview(scrollView)
-		
-
 		self.scrollView.backgroundColor = Style.shared.whiteSmoke
-
 		self.scrollView.isScrollEnabled = false
+		self.view.addSubview(scrollView)
 
 		self.title = "DETAILS"
 		
 		// buttons
 		deleteButton.setTitle("Delete", for: UIControlState())
-//		profileImageButton.addTarget(self, action: #selector(profilePictureButtonHandler), for: .touchUpInside)
 		deleteButton.addTarget(self, action: #selector(deleteProject), for: UIControlEvents.touchUpInside)
 		
 		// ui custom
@@ -54,8 +47,6 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 		lockboxField.delegate = self
 		clientField.delegate = self
 		realtorField.delegate = self
-//		creationDateField.delegate = self
-//		detailField.delegate = self
 		profileImageView.contentMode = .scaleAspectFill
 		profileImageView.backgroundColor = UIColor.white
 		profileImageView.clipsToBounds = true
@@ -64,21 +55,12 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 		lockboxField.backgroundColor = .white
 		clientField.backgroundColor = .white
 		realtorField.backgroundColor = .white
-//		creationDateField.backgroundColor = .white
-//		detailField.backgroundColor = .white
 		deleteButton.backgroundColor = Style.shared.highlight
 		nameField.placeholder = "Name"
 		emailField.placeholder = "Email"
 		lockboxField.placeholder = "Lockbox Info"
 		clientField.placeholder = "Client Name"
 		realtorField.placeholder = "Realtor Info"
-//		creationDateField.placeholder = "Creation Date"
-//		detailField.placeholder = "Detail Text"
-		
-//		lockboxField.isEnabled = false
-//		creationDateField.isEnabled = false
-//		lockboxField.textColor = gray
-//		creationDateField.textColor = gray
 		
 		// text field padding
 		let paddingName = UIView.init(frame: CGRect(x: 0, y: 0, width: 10, height: 40))
@@ -91,15 +73,11 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 		lockboxField.leftView = paddingLockbox
 		clientField.leftView = paddingClient
 		realtorField.leftView = paddingRealtor
-//		creationDateField.leftView = paddingCreationDate
-//		detailField.leftView = paddingDetail
 		nameField.leftViewMode = .always
 		emailField.leftViewMode = .always
 		lockboxField.leftViewMode = .always
 		clientField.leftViewMode = .always
 		realtorField.leftViewMode = .always
-//		creationDateField.leftViewMode = .always
-//		detailField.leftViewMode = .always
 		
 		emailField.keyboardType = .emailAddress
 		
@@ -110,7 +88,6 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 		self.scrollView.addSubview(lockboxField)
 		self.scrollView.addSubview(clientField)
 		self.scrollView.addSubview(realtorField)
-//		self.scrollView.addSubview(detailField)
 		self.scrollView.addSubview(deleteButton)
 		
 		self.registerForKeyboardNotifications()
@@ -119,12 +96,7 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		
-//		let navBarHeight:CGFloat = self.navigationController!.navigationBar.frame.height
-//		let statusHeight:CGFloat = statusBarHeight()
-		
-//		let header = navBarHeight + statusHeight
-		
+
 		// frames
 		let imgSize:CGFloat = self.view.bounds.size.width * 0.4
 		let imgArea:CGFloat = self.view.bounds.size.width * 0.5
@@ -137,8 +109,6 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 		clientField.frame = CGRect(x: 0, y: imgArea + 10*3 + 44*2, width: self.view.bounds.size.width, height: 44)
 		lockboxField.frame = CGRect(x: 0, y: imgArea + 10*4 + 44*3, width: self.view.bounds.size.width, height: 44)
 		realtorField.frame = CGRect(x: 0, y: imgArea + 10*5 + 44*4, width: self.view.bounds.size.width, height: 44)
-//		creationDateField.frame = CGRect(x: 0, y: header + imgArea + 10*3 + 44*2, width: self.view.bounds.size.width, height: 44)
-//		detailField.frame = CGRect(x: 0, y: header + imgArea + 10*4 + 44*3, width: self.view.bounds.size.width, height: 44)
 		deleteButton.frame = CGRect(x: 0, y: imgArea + 10*6 + 44*5, width: self.view.bounds.size.width, height: 44)
 		
 		// populate screen
@@ -192,14 +162,6 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 //			// blank profile image
 //			profileImageView.image = nil
 //		}
-//		
-//		let dateString = dateStringForUnixTime(userData["createdAt"] as! Double)
-//		let timeString = timeStringForUnixTime(userData["createdAt"] as! Double)
-//		
-//		lockboxField.text = userData["email"] as? String
-//		nameField.text = userData["displayName"] as? String
-//		creationDateField.text = dateString + " " + timeString
-//		detailField.text = userData["detail"] as? String
 	}
 	
 	func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -253,18 +215,6 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-	
 	
 	func registerForKeyboardNotifications(){
 		//Adding notifies on keyboard appearing

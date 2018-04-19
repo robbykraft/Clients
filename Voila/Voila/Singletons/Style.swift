@@ -54,7 +54,8 @@ class Style {
 	var P18:CGFloat = 18
 	var P15:CGFloat = 15
 	var P12:CGFloat = 12
-	
+	var P09:CGFloat = 9
+
 	static let shared = Style()
 	
 	fileprivate init() {
@@ -68,45 +69,17 @@ class Style {
 			P18 = 32
 			P15 = 26
 			P12 = 24
+			P09 = 18
 		}
 		styleUIAppearance()
 	}
-	
-//	func heading1Attributes() -> [String:NSObject] {
-//		var fontSize:CGFloat = 22
-//		if(IS_IPAD){
-//			fontSize = 36
-//		}
-//		let titleParagraphStyle = NSMutableParagraphStyle()
-//		titleParagraphStyle.alignment = .center
-//		return [NSFontAttributeName : UIFont(name: SYSTEM_FONT, size: fontSize)!,
-//		        NSKernAttributeName : CGFloat(2.4) as NSObject,
-//		        NSParagraphStyleAttributeName: titleParagraphStyle,
-//		        NSForegroundColorAttributeName : Style.shared.darkGray];
-//	}
 	
 	func styleUIAppearance(){
 		let navigationBarAppearace = UINavigationBar.appearance()
 		navigationBarAppearace.titleTextAttributes = [NSFontAttributeName : UIFont(name: SYSTEM_FONT_B, size: self.P18)!,
 		                                              NSForegroundColorAttributeName : UIColor.black]
 		
-//		UINavigationBar.appearance().translucent = false
-//		UINavigationBar.appearance().barTintColor = self.ecruWhite
 		UINavigationBar.appearance().tintColor = self.highlight
-//		UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName:self.highlight]
-
-		
-//		navigationBarAppearace.tintColor = UIColor.white
-//		navigationBarAppearace.setBackgroundImage(UIImage.init(named: "darkGray"), for: .default)
-//		navigationBarAppearace.barStyle = UIBarStyle.blackTranslucent
-//		navigationBarAppearace.titleTextAttributes = [NSFontAttributeName : UIFont(name: SYSTEM_FONT, size: 22)!,
-//		                                              NSForegroundColorAttributeName : UIColor.white]
-//			                                              NSKernAttributeName : CGFloat(-4.0)]
-//		UITabBarItem.appearance().setTitleTextAttributes([NSFontAttributeName: UIFont(name: SYSTEM_FONT, size: 16)!,
-//			NSForegroundColorAttributeName: UIColor.white], for: UIControlState())
-//		UITabBar.appearance().shadowImage = UIImage()
-//		UITabBar.appearance().backgroundImage = UIImage(named: "gray")
-//		UITabBar.appearance().tintColor = UIColor.white
 		
 	}
 	
@@ -136,6 +109,31 @@ class Style {
 		return dateFormatter.string(from: date)
 	}
 	
+	func dayStringForDateNoYear(_ date:Date) -> String{
+		if(NSCalendar.current.isDateInToday(date)){
+//            let calendar = Calendar.current
+//            let hour = calendar.component(.hour, from: date)
+//            let minutes = calendar.component(.minute, from: date)
+			return "Today"// \(hour):" + String(format: "%02d", minutes)
+			//			return "Today"
+		}
+		if(NSCalendar.current.isDateInYesterday(date)){
+//            let calendar = Calendar.current
+//            let hour = calendar.component(.hour, from: date)
+//            let minutes = calendar.component(.minute, from: date)
+			return "Yesterday"// \(hour):" + String(format: "%02d", minutes)
+			//			return "Yesterday"
+		}
+		if(abs(date.timeIntervalSinceNow) < 432000){
+			let dateFormatter = DateFormatter()
+			dateFormatter.dateFormat = "EEEE"
+			return dateFormatter.string(from: date)
+		}
+		let dateFormatter = DateFormatter()
+		dateFormatter.dateFormat = "MMM d"
+		return dateFormatter.string(from: date)
+	}
+
 }
 
 func statusBarHeight() -> CGFloat {

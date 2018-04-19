@@ -31,13 +31,7 @@ class AllRoomsTableViewController: UITableViewController {
 		let newBackButton = UIBarButtonItem.init(title: "Done", style: .done, target: self, action: #selector(doneHandler))
 		self.navigationItem.rightBarButtonItem = newBackButton
 		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)!, NSForegroundColorAttributeName: Style.shared.highlight], for:.normal)
-		
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-    }
+}
 	
 	func doneHandler(){
 		// update
@@ -66,7 +60,6 @@ class AllRoomsTableViewController: UITableViewController {
 
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
 		let cell = TableViewCell.init(style: .value1, reuseIdentifier: "RoomCell")
 
 		let roomNameString = Voila.shared.roomNames[indexPath.row]
@@ -93,15 +86,7 @@ class AllRoomsTableViewController: UITableViewController {
 				self.tableView.reloadData()
 			})
 		}
-//		if let types = self.roomTypesAndCounts{
-//			if let count = types[roomNameString]{
-//				self.roomTypesAndCounts![roomNameString] = count + 1
-//			} else{
-//				self.roomTypesAndCounts![roomNameString] = 1
-//			}
-//		}
 		tableView.reloadData()
-//		tableView.deselectRow(at: indexPath, animated: true)
 	}
 
 	
@@ -118,48 +103,14 @@ class AllRoomsTableViewController: UITableViewController {
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            // Delete the row from the data source
-//            tableView.deleteRows(at: [indexPath], with: .fade)
-			
 			let roomNameString = Voila.shared.roomNames[indexPath.row]
-			
 			if Voila.shared.removeRoomFromProject(roomName: roomNameString) == true{
 				Voila.shared.project!.synchronize(completionHandler: {
 					self.roomTypesAndCounts = Voila.shared.project!.roomTypesAndCounts()
 					self.tableView.reloadData()
 				})
-
 			}
-
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+        } else if editingStyle == .insert { }
     }
-	
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
