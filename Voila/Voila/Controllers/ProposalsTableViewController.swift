@@ -24,18 +24,16 @@ class ProposalsTableViewController: UITableViewController {
 		self.view.backgroundColor = Style.shared.whiteSmoke
 
 		Fire.shared.getData("proposals") { (data) in
-			Fire.shared.getData("confirmations") { (confirmData) in
-				var proposalArray:[Project] = []
-				if let d = data as? [String:Any]{
-					for (key,value) in d{
-						let project = Project(key: key, data: value as! [String : Any])
-						proposalArray.append(project)
-					}
-				}
-				self.data = proposalArray.sorted(by: { (a, b) -> Bool in
-					return a.name < b.name
-				})
-			}
+            var proposalArray:[Project] = []
+            if let d = data as? [String:Any]{
+                for (key,value) in d{
+                    let project = Project(key: key, data: value as! [String : Any])
+                    proposalArray.append(project)
+                }
+            }
+            self.data = proposalArray.sorted(by: { (a, b) -> Bool in
+                return a.name < b.name
+            })
 		}
     }
 
