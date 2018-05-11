@@ -22,7 +22,7 @@ class QueryView: UIView{
 	var date:Date = Date()
 	let dateNextButton = UIButton()
 	let datePrevButton = UIButton()
-	let segmentedControl = UISegmentedControl(items: ["My Allergies","My Charts"])
+	let segmentedControl = SegmentedControl(items: ["My Allergies","My Charts"])
 	let segmentedHR = UIView()
 	
 	let responseButtons = [UIBorderedButton(), UIBorderedButton(), UIBorderedButton(), UIBorderedButton()]
@@ -61,7 +61,7 @@ class QueryView: UIView{
 		for i in 0 ..< responseButtons.count {
 			let button = responseButtons[i]
 			button.setTitle(labels[i], for: .normal)
-			button.titleLabel?.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)
+			button.titleLabel?.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P21)
 			button.color = colors[i]
 		}
 		

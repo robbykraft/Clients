@@ -40,6 +40,7 @@
 		D5D014DB1E9E71DA00BF7374 /* DetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D014D91E9E71DA00BF7374 /* DetailTableViewController.swift */; };
 		D5D014DC1E9E71DA00BF7374 /* LineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D014DA1E9E71DA00BF7374 /* LineTableViewCell.swift */; };
 		D5F8895820A5D645002CA142 /* UIBorderedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F8895720A5D645002CA142 /* UIBorderedButton.swift */; };
+		D5F8895A20A604B2002CA142 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F8895920A604B2002CA142 /* SegmentedControl.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,6 +94,7 @@
 		D5D014DA1E9E71DA00BF7374 /* LineTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineTableViewCell.swift; sourceTree = "<group>"; };
 		D5F33C681EAA5D3000DB01C3 /* Allergy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Allergy.entitlements; sourceTree = "<group>"; };
 		D5F8895720A5D645002CA142 /* UIBorderedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UIBorderedButton.swift; path = Allergy/Subclass/UIBorderedButton.swift; sourceTree = SOURCE_ROOT; };
+		D5F8895920A604B2002CA142 /* SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -241,6 +243,7 @@
 			children = (
 				D5B8020B1FA39539002C4048 /* MainScrollView.swift */,
 				D5F8895720A5D645002CA142 /* UIBorderedButton.swift */,
+				D5F8895920A604B2002CA142 /* SegmentedControl.swift */,
 			);
 			path = Subclass;
 			sourceTree = "<group>";
@@ -423,6 +426,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D59BB17C1EB28910004D5849 /* AboutPage.swift in Sources */,
+				D5F8895A20A604B2002CA142 /* SegmentedControl.swift in Sources */,
 				D532B3261E9C86360090FC7A /* Sample.swift in Sources */,
 				D5A9973E1E9BEC8600F37F52 /* Cache.swift in Sources */,
 				D54B97421E9DD8610064EAED /* Preferences.swift in Sources */,
