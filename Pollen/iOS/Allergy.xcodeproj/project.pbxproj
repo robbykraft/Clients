@@ -33,18 +33,13 @@
 		D5A9973F1E9BEC8600F37F52 /* Fire.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9973D1E9BEC8600F37F52 /* Fire.swift */; };
 		D5AE20C31FFE8F6E00ED9F73 /* ATX_PollenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AE20C21FFE8F6E00ED9F73 /* ATX_PollenTests.swift */; };
 		D5AE20CB1FFE937F00ED9F73 /* Allergy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B4D69D1FCC6F2600270404 /* Allergy.swift */; };
-		D5B4D69C1FCC591000270404 /* DegreePanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B4D69B1FCC591000270404 /* DegreePanelView.swift */; };
 		D5B4D69E1FCC6F2600270404 /* Allergy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B4D69D1FCC6F2600270404 /* Allergy.swift */; };
 		D5B4D6A01FCC75F500270404 /* db.sqlite3 in Resources */ = {isa = PBXBuildFile; fileRef = D5B4D69F1FCC75E200270404 /* db.sqlite3 */; };
 		D5B8020C1FA39539002C4048 /* MainScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B8020B1FA39539002C4048 /* MainScrollView.swift */; };
-		D5C12BB41FBC8B40007EE678 /* CategorySlideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C12BB31FBC8B40007EE678 /* CategorySlideView.swift */; };
-		D5C12BB61FBC97EF007EE678 /* SymptomPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C12BB51FBC97EF007EE678 /* SymptomPanelView.swift */; };
 		D5C7CC34200514DF00BD7FF8 /* UILineChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C7CC33200514DF00BD7FF8 /* UILineChartView.swift */; };
-		D5C7CC37200519D200BD7FF8 /* WelcomeToQueryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C7CC36200519D200BD7FF8 /* WelcomeToQueryView.swift */; };
 		D5D014DB1E9E71DA00BF7374 /* DetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D014D91E9E71DA00BF7374 /* DetailTableViewController.swift */; };
 		D5D014DC1E9E71DA00BF7374 /* LineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D014DA1E9E71DA00BF7374 /* LineTableViewCell.swift */; };
-		D5F5EA3D1F96610C004FB5DE /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F5EA3C1F96610C004FB5DE /* LoginView.swift */; };
-		D5F5EA3F1F966851004FB5DE /* QuerySlide.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F5EA3E1F966851004FB5DE /* QuerySlide.swift */; };
+		D5F8895820A5D645002CA142 /* UIBorderedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F8895720A5D645002CA142 /* UIBorderedButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,19 +85,14 @@
 		D5AE20C01FFE8F6E00ED9F73 /* ATX PollenTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ATX PollenTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5AE20C21FFE8F6E00ED9F73 /* ATX_PollenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATX_PollenTests.swift; sourceTree = "<group>"; };
 		D5AE20C41FFE8F6E00ED9F73 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D5B4D69B1FCC591000270404 /* DegreePanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DegreePanelView.swift; sourceTree = "<group>"; };
 		D5B4D69D1FCC6F2600270404 /* Allergy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Allergy.swift; sourceTree = "<group>"; };
 		D5B4D69F1FCC75E200270404 /* db.sqlite3 */ = {isa = PBXFileReference; lastKnownFileType = file; path = db.sqlite3; sourceTree = "<group>"; };
 		D5B8020B1FA39539002C4048 /* MainScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScrollView.swift; sourceTree = "<group>"; };
-		D5C12BB31FBC8B40007EE678 /* CategorySlideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySlideView.swift; sourceTree = "<group>"; };
-		D5C12BB51FBC97EF007EE678 /* SymptomPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymptomPanelView.swift; sourceTree = "<group>"; };
 		D5C7CC33200514DF00BD7FF8 /* UILineChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILineChartView.swift; sourceTree = "<group>"; };
-		D5C7CC36200519D200BD7FF8 /* WelcomeToQueryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeToQueryView.swift; sourceTree = "<group>"; };
 		D5D014D91E9E71DA00BF7374 /* DetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailTableViewController.swift; sourceTree = "<group>"; };
 		D5D014DA1E9E71DA00BF7374 /* LineTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineTableViewCell.swift; sourceTree = "<group>"; };
 		D5F33C681EAA5D3000DB01C3 /* Allergy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Allergy.entitlements; sourceTree = "<group>"; };
-		D5F5EA3C1F96610C004FB5DE /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
-		D5F5EA3E1F966851004FB5DE /* QuerySlide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuerySlide.swift; sourceTree = "<group>"; };
+		D5F8895720A5D645002CA142 /* UIBorderedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UIBorderedButton.swift; path = Allergy/Subclass/UIBorderedButton.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -190,12 +180,6 @@
 			isa = PBXGroup;
 			children = (
 				D53343ED1F97A58C00313B18 /* QueryView.swift */,
-				D5C12BB31FBC8B40007EE678 /* CategorySlideView.swift */,
-				D5C12BB51FBC97EF007EE678 /* SymptomPanelView.swift */,
-				D5B4D69B1FCC591000270404 /* DegreePanelView.swift */,
-				D5F5EA3E1F966851004FB5DE /* QuerySlide.swift */,
-				D5F5EA3C1F96610C004FB5DE /* LoginView.swift */,
-				D5C7CC352005197400BD7FF8 /* QueryVisualize */,
 			);
 			path = Query;
 			sourceTree = "<group>";
@@ -256,16 +240,9 @@
 			isa = PBXGroup;
 			children = (
 				D5B8020B1FA39539002C4048 /* MainScrollView.swift */,
+				D5F8895720A5D645002CA142 /* UIBorderedButton.swift */,
 			);
 			path = Subclass;
-			sourceTree = "<group>";
-		};
-		D5C7CC352005197400BD7FF8 /* QueryVisualize */ = {
-			isa = PBXGroup;
-			children = (
-				D5C7CC36200519D200BD7FF8 /* WelcomeToQueryView.swift */,
-			);
-			path = QueryVisualize;
 			sourceTree = "<group>";
 		};
 		D5D014D81E9E71DA00BF7374 /* Detail */ = {
@@ -299,7 +276,6 @@
 				D51C22A01E92E5EB00887F42 /* Frameworks */,
 				D51C22A11E92E5EB00887F42 /* Resources */,
 				F4BA60E4F4A707766D7AB322 /* [CP] Embed Pods Frameworks */,
-				41ED90E90C30C3DA80E0163E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -397,34 +373,22 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		41ED90E90C30C3DA80E0163E /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Allergy/Pods-Allergy-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		48216931784CDA32894A4520 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Allergy-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F4BA60E4F4A707766D7AB322 /* [CP] Embed Pods Frameworks */ = {
@@ -433,9 +397,18 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Allergy/Pods-Allergy-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/BRYXBanner/BRYXBanner.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BRYXBanner.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -457,16 +430,12 @@
 				D5C7CC34200514DF00BD7FF8 /* UILineChartView.swift in Sources */,
 				D5099BE61ECDFDC30095905F /* UILightNavigationController.swift in Sources */,
 				D5300EB91E9EC46900874C18 /* SliderTableViewCell.swift in Sources */,
-				D5B4D69C1FCC591000270404 /* DegreePanelView.swift in Sources */,
+				D5F8895820A5D645002CA142 /* UIBorderedButton.swift in Sources */,
 				D5D014DB1E9E71DA00BF7374 /* DetailTableViewController.swift in Sources */,
-				D5F5EA3D1F96610C004FB5DE /* LoginView.swift in Sources */,
 				D563489A1EBA89A00025A73C /* CenteredTableViewCell.swift in Sources */,
-				D5C12BB61FBC97EF007EE678 /* SymptomPanelView.swift in Sources */,
 				D5A997341E9BE71200F37F52 /* ProfileViewController.swift in Sources */,
 				D54B973D1E9DD32E0064EAED /* Extensions.swift in Sources */,
-				D5F5EA3F1F966851004FB5DE /* QuerySlide.swift in Sources */,
 				D5B4D69E1FCC6F2600270404 /* Allergy.swift in Sources */,
-				D5C7CC37200519D200BD7FF8 /* WelcomeToQueryView.swift in Sources */,
 				D55D06941E9C2161000AB9D9 /* UIBarChartView.swift in Sources */,
 				D532B3211E9C82240090FC7A /* Style.swift in Sources */,
 				D5B8020C1FA39539002C4048 /* MainScrollView.swift in Sources */,
@@ -474,7 +443,6 @@
 				D51C22A91E92E5EB00887F42 /* ViewController.swift in Sources */,
 				D5D014DC1E9E71DA00BF7374 /* LineTableViewCell.swift in Sources */,
 				D5A9973F1E9BEC8600F37F52 /* Fire.swift in Sources */,
-				D5C12BB41FBC8B40007EE678 /* CategorySlideView.swift in Sources */,
 				D53343EE1F97A58C00313B18 /* QueryView.swift in Sources */,
 				D5A997361E9BE71D00F37F52 /* MasterNavigationController.swift in Sources */,
 				D5A997331E9BE71200F37F52 /* LoginViewController.swift in Sources */,

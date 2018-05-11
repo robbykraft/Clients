@@ -78,7 +78,10 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 		lockboxField.leftViewMode = .always
 		clientField.leftViewMode = .always
 		realtorField.leftViewMode = .always
-		
+		clientField.autocapitalizationType = .words
+		realtorField.autocapitalizationType = .words
+		nameField.autocapitalizationType = .words
+
 		emailField.keyboardType = .emailAddress
 		
 		self.scrollView.addSubview(profileImageView)

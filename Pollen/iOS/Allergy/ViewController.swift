@@ -68,8 +68,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 		self.scrollView.isPagingEnabled = true
 		self.scrollView.delaysContentTouches = false
 		self.view.addSubview(self.scrollView)
+		self.view.backgroundColor = Style.shared.whiteSmoke
 		
-		self.scrollView.backgroundColor = Style.shared.whiteSmoke
+		self.scrollView.backgroundColor = UIColor.clear
 		if UIDevice().userInterfaceIdiom == .phone {
 			if UIScreen.main.nativeBounds.height == 2436{
 				self.view.backgroundColor = Style.shared.blue
@@ -147,30 +148,38 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 		preferencesButton.addTarget(self, action: #selector(preferencesButtonPressed), for: .touchUpInside)
 		self.scrollView.addSubview(preferencesButton)
 		
+		queryView.layer.anchorPoint = CGPoint(x:0.5, y:0.5)
 		queryView.alpha = 0.0
 		queryView.delegate = self
-		queryView.frame = CGRect(x: 0, y: barChartTop + 15, width: self.view.frame.size.width, height: self.scrollView.contentSize.height - barChartTop - 15)
-		self.scrollView.addSubview(queryView)
+		queryView.frame = CGRect(x: 0, y: 15 + 100, width: self.view.frame.size.width, height: self.view.frame.size.height - 15 - 100)
+//		queryView.frame = CGRect(x: 0, y: barChartTop + 15, width: self.view.frame.size.width, height: self.scrollView.contentSize.height - barChartTop - 15)
+		self.view.addSubview(queryView)
+		self.view.sendSubview(toBack:queryView)
 		
 		// SET QUERY VIEW WELCOME SCREEN
 //		welcomeViewIntroScreen()
 
 		///////////////
 		
-		self.scrollView.isScrollEnabled = false
+//		self.scrollView.isScrollEnabled = false
 		
-//		for i in 0..<3{
-//			let touchTape = UIView()
-//			touchTape.layer.cornerRadius = 2
-//			touchTape.frame = CGRect(x: 0, y: 0, width: 36, height: 4)
-//			touchTape.center = CGPoint(x: self.view.center.x, y: barChartTop + CGFloat(i)*8 - 30)
-//			touchTape.clipsToBounds = true
-//			touchTape.layer.backgroundColor = UIColor.white.cgColor
-//			self.scrollView.addSubview(touchTape)
-//		}
+		
+		let touchTapeBack = UIView()
+		touchTapeBack.backgroundColor = Style.shared.blue
+		touchTapeBack.frame = CGRect(x:self.view.center.x-25, y:barChartTop - 30-10, width:50, height:3*8+20)
+		self.scrollView.addSubview(touchTapeBack)
+		
+		for i in 0..<3{
+			let touchTape = UIView()
+			touchTape.layer.cornerRadius = 2
+			touchTape.frame = CGRect(x: 0, y: 0, width: 36, height: 4)
+			touchTape.center = CGPoint(x: self.view.center.x, y: barChartTop + CGFloat(i)*8 - 30)
+			touchTape.clipsToBounds = true
+			touchTape.layer.backgroundColor = UIColor.white.cgColor
+			self.scrollView.addSubview(touchTape)
+		}
 		
 	}
-	
 	
 	func downloadAndRefresh(){
 		Pollen.shared.loadRecentData(numberOfDays: 1) { (sample) in
@@ -271,12 +280,13 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 		var pct = scrollView.contentOffset.y / (scrollView.contentSize.height - self.view.bounds.height)
 		if pct < 0.0 { pct = 0.0}
 		if pct > 1.0 { pct = 1.0}
-		let alpha = 1.0 - sqrt(pct)
+//		let alpha = 1.0 - sqrt(pct)
 //		self.radialChart.alpha = alpha
 		self.radialChart.center = CGPoint(x: radialChartOrigin.x, y: radialChartOrigin.y - pct * 100)
-		self.barChart.alpha = alpha
+//		self.barChart.alpha = alpha
 		self.barChart.center = CGPoint(x:self.barChartCenter.x, y:self.barChartCenter.y + pct*self.view.frame.size.height)
 		self.queryView.alpha = pct
+		self.queryView.transform = CGAffineTransform.init(scaleX: pct*0.15+0.85, y: pct*0.15+0.85)
 		if pct >= 1.0 {
 			if UserDefaults.standard.bool(forKey: "welcomeScreenHasSeen") == false{
 				print("synchronizing welcome screen has been seen")

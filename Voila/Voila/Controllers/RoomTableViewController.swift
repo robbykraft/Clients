@@ -53,6 +53,7 @@ class RoomTableViewController: UITableViewController { //}, MFMailComposeViewCon
 		let alertController = UIAlertController(title: "Custom Name", message: "Give this room a custom name?", preferredStyle: .alert)
 		alertController.addTextField { (textField : UITextField) -> Void in
 			textField.placeholder = "Room Name"
+			textField.autocapitalizationType = .words
 		}
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (result : UIAlertAction) -> Void in
 		}

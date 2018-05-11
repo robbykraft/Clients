@@ -148,7 +148,7 @@ input:checked + .slider:before {
                         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i><span id="user-email-span"></span></a>
+                        <li><a href="#" onclick="logoutUser()">Logout <i class="fa fa-user fa-fw"></i><span id="user-email-span"></span></a>
                         </li>
                         <!-- <li class="divider"></li>
                         <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
@@ -261,8 +261,15 @@ input:checked + .slider:before {
                                             <label>Date and Time of Sample</label>
                                             <input type="text" class="form-control" id="date-field">
                                         </div>
-                                        <button type="button" class="btn btn-default" onclick="submitEntry()">Submit</button>
+                                        <button type="button" class="btn btn-primary" onclick="submitEntry()">Submit</button>
                                         <button type="reset" class="btn btn-default" onclick="reset()">Reset</button>
+
+                                        <div class="form-check" style="padding-top:2em;">
+                                          <input type="checkbox" value="" id="send-email-input" checked>
+                                          <label for="send-email-input">
+                                            Create Email
+                                          </label>
+                                        </div>
                                     </form>
                                 </div>
                             </div>
@@ -305,9 +312,10 @@ input:checked + .slider:before {
 <script>
 function isBlank(str) { return (!str || /^\s*$/.test(str)); }
 
-
 var pollenKeys = [];
 var userEmail = "";
+var pollenNamesForKeys = {};
+var types = undefined;
 
 function getDateKey(){
     var string = $('#date-field').val();
@@ -325,6 +333,13 @@ function humanReadableDate(){
     return String(month) + "-" + String(day) + "-" + String(year);
 }
 
+function dateFormatMonthDay(){
+    var string = $('#date-field').val();
+    var month = parseInt(string.substr(0,2)) - 1;
+    var day = parseInt(string.substr(3,2));
+    return ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][month] + " " + day
+}
+
 function getTimestamp(){
     var string = $('#date-field').val();
     // var timestamp = moment(string,'MM/DD/YYYY HH:mm a').utc().unix();
@@ -332,14 +347,48 @@ function getTimestamp(){
     return moment(string,'MM-DD-YYYY hh:mm A').unix();
 }
 
-function submitEntry(){
-    var utcTime = getTimestamp();
-    var dateKey = getDateKey();
-    var data = {};
-    data["counts"] = {};
-    data["date"] = utcTime;
-    data["user"] = userEmail;
+function ratingFor(pollenKey, value){
+    if(value == 't'){ return "t"; }
+    var levels = types[pollenKey].levels;
+    if(value > levels.vh){ return "vh"; }
+    if(value > levels.h){ return "h"; }
+    if(value > levels.m){ return "m"; }
+    if(value > levels.l){ return "l"; }
+    return "t";
+}
 
+function bundleData(){
+    var data = {};
+    data["counts"] = {vh:[], h:[], m:[], l:[], t:[]}
+    data["date"] = getTimestamp();
+    data["user"] = userEmail;  // global variable
+    for (var i = 0; i < pollenKeys.length; i++){
+        var key = pollenKeys[i];
+        // get number values from fields
+        var entry = $("#" + key).val();
+        if(!isBlank(entry)){
+            var intEntry = parseInt(entry);
+            if(!isNaN(intEntry)){
+                var newEntry = {};
+                newEntry[key] = intEntry;
+                data["counts"][ratingFor(key,intEntry)].push(newEntry);
+            }
+        }
+        // check if TRACE is switched
+        if( $("#check-" + key).is(":checked") ){
+            var newEntry = {};
+            newEntry[key] = "t";
+            data["counts"]["t"].push(newEntry);
+        }
+    }
+    return data;
+}
+
+function bundleDataForFirebase(){
+    var data = {};
+    data["counts"] = {}
+    data["date"] = getTimestamp();
+    data["user"] = userEmail;  // global variable
     for (var i = 0; i < pollenKeys.length; i++){
         var key = pollenKeys[i];
         // get number values from fields
@@ -355,19 +404,119 @@ function submitEntry(){
             data["counts"][key] = "t";
         }
     }
-    var numberOfEntries = (Object.keys(data["counts"])).length;
+    return data;
+}
+
+function submitEntry(){
+    var data = bundleData();
+    var firebaseData = bundleDataForFirebase();
+
+    // update to firebase
     var updates = {};
-    updates['/collections/' + dateKey] = data;
-    firebase.database().ref().update(updates);
-    alert("" + numberOfEntries + " Entries for " + humanReadableDate() + " uploaded");
+    updates['/collections/' + getDateKey()] = firebaseData;
+    var result = firebase.database().ref().update(updates);
+
+    // send email
+    var emailBody = "Pollen count for " + dateFormatMonthDay() + "\n\n" + formatCountsList(data);
+    var sendEmailChecked = document.getElementById("send-email-input").checked
+    if(sendEmailChecked){
+        // populate email:
+        var toAddresses = "chikage@keyetv.com, weather@keyetv.com";
+        var bccAddresses = "dl-news-tx-aus-weather@charter.com, jcarlton@atlantic.net, mtpollen@earthlink.net, weather@kxan.com, news@kut.org, txnewsdesk@charter.com, ktbcweather@foxtv.com";
+        var subject = "Austin pollen count";
+        var footer = "Allergy and Asthma Associates, PLLC\n3410 Far West Blvd, Ste 146\nAustin, TX 78731\nPh:  512-349-0777 Fax:  512-349-9111\n";
+        window.location.href = "mailto:" + toAddresses + "?bcc=" + bccAddresses + "&subject=" + subject + "&body=" + encodeURI(emailBody + "\n\n" + footer);
+    }
+
+    // tweet
+    var readableString = "Pollen count for " + dateFormatMonthDay() + "\n\n" + formatCountsReadable(data);
+    openTweetInNewTab(encodeURI(readableString));
+
+    // window alert the user
+    var numberOfEntries = (Object.keys(firebaseData["counts"])).length;
+    alert("" + numberOfEntries + " Entries for " + dateFormatMonthDay() + " uploaded");
+}
+
+function nameForRating(rating){
+    if(rating == "vh"){ return "very heavy"; }
+    if(rating == "h"){ return "heavy"; }
+    if(rating == "m"){ return "medium"; }
+    if(rating == "l"){ return "light"; }
+    if(rating == "t"){ return "trace"; }
+}
+
+function formatCountsReadable(data){
+    var counts = data.counts;
+    var string = "";
+    ["vh", "h", "m", "l"].forEach(function(rating){
+        if(counts[rating].length > 0){
+            string += counts[rating].map(function(el){
+                var key = Object.keys(el)[0];
+                return pollenNamesForKeys[key] + " (" + el[key] + ")";
+            }).join(", ");
+            if(counts[rating].length == 1){ string += " is "; }
+            if(counts[rating].length > 1){ string += " are "; }
+            string += nameForRating(rating);
+            string += "\n";
+        }
+    });
+    ["t"].forEach(function(rating){
+        if(counts[rating].length > 0){
+            string += "\nand trace amounts of ";
+            string += counts[rating].map(function(el){
+                return pollenNamesForKeys[ Object.keys(el)[0] ];
+            }).join(", ");
+            string += "\n";
+        }
+    });
+    return string;
+}
+
+
+function formatCountsList(data){
+    var counts = data.counts;
+    var string = "";
+    ["vh", "h", "m", "l"].forEach(function(rating){
+        if(counts[rating].length > 0){
+            string += counts[rating].map(function(el){
+                var key = Object.keys(el)[0];
+                return pollenNamesForKeys[key] + " - " + el[key] + " (" + nameForRating(rating) + ")";
+            }).join("\n");
+            string += "\n";
+        }
+    });
+    ["t"].forEach(function(rating){
+        if(counts[rating].length > 0){
+            string += "\nand trace amounts of ";
+            string += counts[rating].map(function(el){
+                return pollenNamesForKeys[ Object.keys(el)[0] ];
+            }).join(", ");
+            string += "\n";
+        }
+    });
+    return string;
+}
+
+function openTweetInNewTab(tweetbody) {
+    var win = window.open("tweet.php?tweet=" + tweetbody, '_blank');
+    win.focus();
+}
+
+function logoutUser(){
+    firebase.auth().signOut().then(function() {
+      // Sign-out successful.
+      console.log("logout success");
+    }, function(error) {
+      // An error happened.
+      console.log("logout error");
+      console.log(error);
+    });
 }
 
 $( document ).ready(function() {
-
     $("#date-field").datetimepicker();
-
     $('#date-field').val( moment().format('MM/DD/YYYY h:mm A') );
-
+    // $('#email-addresses-field').val("dougbarstow@yahoo.com, robbykraft@gmail.com");
     firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
           // User is signed in.
@@ -375,6 +524,7 @@ $( document ).ready(function() {
           $("#user-email-span").html(" " + user.email);
         } else {
           // No user is signed in.
+          window.location.href = "login.html";
         }
     });
 
@@ -389,14 +539,15 @@ $( document ).ready(function() {
 
 });
 
-function buildDom(types){
+function buildDom(typesData){
     var seasons = [ [], [], [], [] ];
-    if(types == undefined){
-        console.log('error: error reading database, possibly corrupted');
+    if(typesData == undefined){
+        alert('error: error reading database, possibly corrupted');
         return;
     }
-    for(var key in types) {
-        var type = types[key];
+    types = typesData;
+    for(var key in typesData) {
+        var type = typesData[key];
         var season = type["season"];
         type["key"] = key;
         pollenKeys.push(key); // add to the global variable
@@ -408,6 +559,7 @@ function buildDom(types){
             pollen = seasons[s][i];
             var name = pollen["name"];
             var key = pollen["key"];
+            pollenNamesForKeys[key] = name;
             var newFormField = "<div class='form-group'><div class='row'><div class='col-xs-6'><label>" + name + "</label><input class='form-control' id='" + key + "'></div><div class='col-xs-6'><label>Trace Amount</label><br><label class='switch'><input type='checkbox' id='check-" + key + "'><div class='slider'></div></label></div></div></div>";
             $("#form-group-pollen-input-" + s).append(newFormField);
         }

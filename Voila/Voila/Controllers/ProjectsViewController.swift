@@ -151,6 +151,7 @@ class ProjectsViewController: UITableViewController {
 		let alertController = UIAlertController(title: "New Project Name", message: nil, preferredStyle: .alert)
 		alertController.addTextField { (textField : UITextField) -> Void in
 			textField.placeholder = "Project Name"
+			textField.autocapitalizationType = UITextAutocapitalizationType.words
 		}
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (result : UIAlertAction) -> Void in
 		}
