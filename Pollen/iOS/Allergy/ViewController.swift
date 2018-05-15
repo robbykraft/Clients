@@ -36,7 +36,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 	}
 	
 	override var preferredStatusBarStyle: UIStatusBarStyle {
-		return .lightContent
+		return .default
 	}
 	
 

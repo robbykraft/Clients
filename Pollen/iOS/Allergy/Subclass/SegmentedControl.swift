@@ -10,7 +10,7 @@ import UIKit
 
 class SegmentedControl: UISegmentedControl {
 	
-	let selectedBackgroundColor = UIColor(red: 19/255, green: 59/255, blue: 85/255, alpha: 0.5)
+	let selectedBackgroundColor = Style.shared.blue
 	var sortedViews: [UIView]!
 	var currentIndex: Int = 0
 	
@@ -32,20 +32,36 @@ class SegmentedControl: UISegmentedControl {
 	private func configure() {
 		sortedViews = self.subviews.sorted(by:{$0.frame.origin.x < $1.frame.origin.x})
 		changeSelectedIndex(to: currentIndex)
-		self.tintColor = UIColor.white
+		self.tintColor = Style.shared.blue
 		self.layer.cornerRadius = 4
 		self.clipsToBounds = true
-		let unselectedAttributes = [NSForegroundColorAttributeName: UIColor.white,
-									NSFontAttributeName:  UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)]
+		let font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P24) ?? UIFont.boldSystemFont(ofSize: Style.shared.P18)
+		let unselectedAttributes:[AnyHashable:Any] = [NSForegroundColorAttributeName: Style.shared.blue,
+													  NSFontAttributeName: font]
+		let selectedAttributes:[AnyHashable:Any] = [NSForegroundColorAttributeName: UIColor.white,
+													NSFontAttributeName: font]
 		self.setTitleTextAttributes(unselectedAttributes, for: .normal)
-		self.setTitleTextAttributes(unselectedAttributes, for: .selected)
+		self.setTitleTextAttributes(selectedAttributes, for: .selected)
+	}
+	
+	override func layoutSubviews() {
+		super.layoutSubviews()
+//		self.subviews.forEach({ (view) in
+////			view.frame = CGRect(x: view.frame.origin.x, y: view.frame.origin.y, width: 140, height: 80)
+//			view.subviews.filter { (view) -> Bool in
+//				print(type(of: view))
+//				print(UILabel.self)
+//				return type(of: view) == UILabel.self
+//			}
+//		})
+
 	}
 	
 	func changeSelectedIndex(to newIndex: Int) {
-		if currentIndex >= sortedViews.count { return; }
-		sortedViews[currentIndex].backgroundColor = UIColor.clear
+//		if currentIndex >= sortedViews.count { return; }
+//		sortedViews[currentIndex].backgroundColor = UIColor.clear
 		currentIndex = newIndex
-		self.selectedSegmentIndex = UISegmentedControlNoSegment
-		sortedViews[currentIndex].backgroundColor = selectedBackgroundColor
+//		self.selectedSegmentIndex = UISegmentedControlNoSegment
+//		sortedViews[currentIndex].backgroundColor = selectedBackgroundColor
 	}
 }

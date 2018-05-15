@@ -131,9 +131,9 @@ class DetailTableViewController: UITableViewController {
 //
 	}
 	
-	override var preferredStatusBarStyle: UIStatusBarStyle {
-		return .default
-	}
+//	override var preferredStatusBarStyle: UIStatusBarStyle {
+//		return .lightContent
+//	}
 
 	func doneButtonPressed(){
 		self.dismiss(animated: true, completion: nil)

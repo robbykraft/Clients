@@ -39,6 +39,8 @@
 		D5C7CC34200514DF00BD7FF8 /* UILineChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C7CC33200514DF00BD7FF8 /* UILineChartView.swift */; };
 		D5D014DB1E9E71DA00BF7374 /* DetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D014D91E9E71DA00BF7374 /* DetailTableViewController.swift */; };
 		D5D014DC1E9E71DA00BF7374 /* LineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D014DA1E9E71DA00BF7374 /* LineTableViewCell.swift */; };
+		D5E8E0B020AB2305009FD232 /* ExposureQueryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E8E0AF20AB2305009FD232 /* ExposureQueryView.swift */; };
+		D5E8E0B220AB4052009FD232 /* AllergyQueryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E8E0B120AB4052009FD232 /* AllergyQueryView.swift */; };
 		D5F8895820A5D645002CA142 /* UIBorderedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F8895720A5D645002CA142 /* UIBorderedButton.swift */; };
 		D5F8895A20A604B2002CA142 /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5F8895920A604B2002CA142 /* SegmentedControl.swift */; };
 /* End PBXBuildFile section */
@@ -92,6 +94,8 @@
 		D5C7CC33200514DF00BD7FF8 /* UILineChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILineChartView.swift; sourceTree = "<group>"; };
 		D5D014D91E9E71DA00BF7374 /* DetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailTableViewController.swift; sourceTree = "<group>"; };
 		D5D014DA1E9E71DA00BF7374 /* LineTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineTableViewCell.swift; sourceTree = "<group>"; };
+		D5E8E0AF20AB2305009FD232 /* ExposureQueryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExposureQueryView.swift; sourceTree = "<group>"; };
+		D5E8E0B120AB4052009FD232 /* AllergyQueryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllergyQueryView.swift; sourceTree = "<group>"; };
 		D5F33C681EAA5D3000DB01C3 /* Allergy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Allergy.entitlements; sourceTree = "<group>"; };
 		D5F8895720A5D645002CA142 /* UIBorderedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UIBorderedButton.swift; path = Allergy/Subclass/UIBorderedButton.swift; sourceTree = SOURCE_ROOT; };
 		D5F8895920A604B2002CA142 /* SegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
@@ -182,6 +186,8 @@
 			isa = PBXGroup;
 			children = (
 				D53343ED1F97A58C00313B18 /* QueryView.swift */,
+				D5E8E0B120AB4052009FD232 /* AllergyQueryView.swift */,
+				D5E8E0AF20AB2305009FD232 /* ExposureQueryView.swift */,
 			);
 			path = Query;
 			sourceTree = "<group>";
@@ -426,6 +432,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D59BB17C1EB28910004D5849 /* AboutPage.swift in Sources */,
+				D5E8E0B220AB4052009FD232 /* AllergyQueryView.swift in Sources */,
 				D5F8895A20A604B2002CA142 /* SegmentedControl.swift in Sources */,
 				D532B3261E9C86360090FC7A /* Sample.swift in Sources */,
 				D5A9973E1E9BEC8600F37F52 /* Cache.swift in Sources */,
@@ -451,6 +458,7 @@
 				D5A997361E9BE71D00F37F52 /* MasterNavigationController.swift in Sources */,
 				D5A997331E9BE71200F37F52 /* LoginViewController.swift in Sources */,
 				D51C22A71E92E5EB00887F42 /* AppDelegate.swift in Sources */,
+				D5E8E0B020AB2305009FD232 /* ExposureQueryView.swift in Sources */,
 				D54B97401E9DD83B0064EAED /* MyAllergies.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
