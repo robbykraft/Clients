@@ -48,11 +48,11 @@ class UIBorderedButton: UIButton {
 		self.sizeToFit()
 	}
 	
-	func buttonSetSelected(){
+	@objc func buttonSetSelected(){
 		self.layer.backgroundColor = self.color.cgColor
 		self.setTitleColor(UIColor.white, for: .normal)
 	}
-	func buttonSetUnselected(){
+	@objc func buttonSetUnselected(){
 		self.layer.backgroundColor = UIColor.white.cgColor
 		self.setTitleColor(self.color, for: .normal)
 	}

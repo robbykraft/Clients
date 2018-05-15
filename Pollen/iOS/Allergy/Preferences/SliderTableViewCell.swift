@@ -44,7 +44,7 @@ class SliderTableViewCell: UITableViewCell {
 		slider.center = CGPoint(x: self.frame.size.width*0.5, y: self.frame.size.height*0.5)
 	}
 	
-	func didMoveSlider(){
+	@objc func didMoveSlider(){
 		if(delegate != nil){
 			delegate?.didMoveSlider(sender: self.slider)
 		}

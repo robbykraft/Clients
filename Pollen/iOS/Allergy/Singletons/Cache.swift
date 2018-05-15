@@ -21,7 +21,7 @@ let IMG_SIZE_MAX:Int64 = 15  // megabytes
 
 class Cache {
 	static let shared = Cache()
-	fileprivate init() { }
+	private init() { }
 	
 	// Key is userUID
 	var profileImage : Dictionary<String, UIImage> = Dictionary()
@@ -36,10 +36,10 @@ class Cache {
 			return
 		}
 		
-		let storage = FIRStorage.storage().reference()
+		let storage = Storage.storage().reference()
 		let imageRef = storage.child("images/" + filename)
 		
-		imageRef.data(withMaxSize: IMG_SIZE_MAX * 1024 * 1024) { (data, error) in
+		imageRef.getData(maxSize: IMG_SIZE_MAX * 1024 * 1024) { (data, error) in
 			if(data != nil){
 				if let imageData = data as Data? {
 					Cache.shared.storageBucket[filename] = UIImage(data: imageData)
@@ -129,10 +129,10 @@ extension UIImageView {
 			return
 		}
 
-		let storage = FIRStorage.storage().reference()
+		let storage = Storage.storage().reference()
 		let imageRef = storage.child("images/" + filename)
 
-		imageRef.data(withMaxSize: IMG_SIZE_MAX * 1024 * 1024) { (data, error) in
+		imageRef.getData(maxSize: IMG_SIZE_MAX * 1024 * 1024) { (data, error) in
 			print("we have data!")
 			if(data != nil){
 				if let imageData = data as Data? {

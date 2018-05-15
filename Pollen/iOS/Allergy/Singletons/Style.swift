@@ -21,8 +21,9 @@ import UIKit
 //let SYSTEM_FONT_B:String = "AppleSDGothicNeo-Bold"
 //let SYSTEM_FONT:String = "Thonburi-Light"
 //let SYSTEM_FONT_B:String = "Thonburi-Bold"
-let SYSTEM_FONT = "AvenirNext-Medium"
+
 let SYSTEM_FONT_B = "AvenirNext-Bold"
+let SYSTEM_FONT = "AvenirNext-Medium"
 
 
 let IS_IPAD:Bool = UIDevice.current.userInterfaceIdiom == UIUserInterfaceIdiom.pad
@@ -30,6 +31,9 @@ let IS_IPHONE:Bool = UIDevice.current.userInterfaceIdiom == UIUserInterfaceIdiom
 
 
 class Style {
+
+	static let shared = Style()
+	
 	
 	// for the allergy color scheme
 	var colorNoPollen = UIColor()
@@ -40,7 +44,6 @@ class Style {
 	
 	var colorNoEntry = UIColor()
 
-	
 	let gray = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
 	let darkGray = UIColor(red:0.22, green:0.22, blue:0.22, alpha:1.00)
 	let whiteSmoke = UIColor(red:0.96, green:0.96, blue:0.96, alpha:1.00)
@@ -70,52 +73,97 @@ class Style {
 	var P12:CGFloat = 12
 	var P11:CGFloat = 11
 	
-	static let shared:Style = {
-		let s = Style()
 
+	
+	private init() {
 		// custom initialize
 		if(IS_IPAD){
-			s.P64 = 92
-			s.P48 = 72
-			s.P40 = 60
-			s.P30 = 50
-			s.P24 = 36
-			s.P21 = 32
-			s.P20 = 31
-			s.P18 = 27
-			s.P15 = 26
-			s.P12 = 24
-			s.P11 = 16
+			P64 = 92
+			P48 = 72
+			P40 = 60
+			P30 = 50
+			P24 = 36
+			P21 = 32
+			P20 = 31
+			P18 = 27
+			P15 = 26
+			P12 = 24
+			P11 = 16
 		}
 		
 		//iphone 7 2.0 2.0
 		//iphone 7plus 3.0 3.0
 		// myphone 2.34375 2.0
-		s.zoomScale = UIScreen.main.nativeScale / UIScreen.main.scale
+		zoomScale = UIScreen.main.nativeScale / UIScreen.main.scale
 		
-		s.P64 /= s.zoomScale
-		s.P48 /= s.zoomScale
-		s.P40 /= s.zoomScale
-		s.P30 /= s.zoomScale
-		s.P24 /= s.zoomScale
-		s.P21 /= s.zoomScale
-		s.P18 /= s.zoomScale
-		s.P15 /= s.zoomScale
-		s.P12 /= s.zoomScale
-		s.P11 /= s.zoomScale
-
-		s.colorNoPollen = s.green
-		s.colorLow = UIColor(red: 0.0, green: 200/255.0, blue: 50/255.0, alpha: 1.0)
-		s.colorMedium = UIColor(red: 1.0, green: 156/255.0, blue: 14/255.0, alpha: 1.0)
-		s.colorHeavy = UIColor(red: 1.0, green: 97/255.0, blue: 28/255.0, alpha: 1.0)
-		s.colorVeryHeavy = s.red
+		P64 /= zoomScale
+		P48 /= zoomScale
+		P40 /= zoomScale
+		P30 /= zoomScale
+		P24 /= zoomScale
+		P21 /= zoomScale
+		P18 /= zoomScale
+		P15 /= zoomScale
+		P12 /= zoomScale
+		P11 /= zoomScale
 		
-		s.colorNoEntry = UIColor.black
+		colorNoPollen = green
+		colorLow = UIColor(red: 0.0, green: 200/255.0, blue: 50/255.0, alpha: 1.0)
+		colorMedium = UIColor(red: 1.0, green: 156/255.0, blue: 14/255.0, alpha: 1.0)
+		colorHeavy = UIColor(red: 1.0, green: 97/255.0, blue: 28/255.0, alpha: 1.0)
+		colorVeryHeavy = red
 		
-		s.styleUIAppearance()
-
-		return s
-	}()
+		colorNoEntry = UIColor.black
+		
+		styleUIAppearance()
+	}
+	
+//	static let shared:Style = {
+//		let s = Style()
+//
+//		// custom initialize
+//		if(IS_IPAD){
+//			s.P64 = 92
+//			s.P48 = 72
+//			s.P40 = 60
+//			s.P30 = 50
+//			s.P24 = 36
+//			s.P21 = 32
+//			s.P20 = 31
+//			s.P18 = 27
+//			s.P15 = 26
+//			s.P12 = 24
+//			s.P11 = 16
+//		}
+//
+//		//iphone 7 2.0 2.0
+//		//iphone 7plus 3.0 3.0
+//		// myphone 2.34375 2.0
+//		s.zoomScale = UIScreen.main.nativeScale / UIScreen.main.scale
+//
+//		s.P64 /= s.zoomScale
+//		s.P48 /= s.zoomScale
+//		s.P40 /= s.zoomScale
+//		s.P30 /= s.zoomScale
+//		s.P24 /= s.zoomScale
+//		s.P21 /= s.zoomScale
+//		s.P18 /= s.zoomScale
+//		s.P15 /= s.zoomScale
+//		s.P12 /= s.zoomScale
+//		s.P11 /= s.zoomScale
+//
+//		s.colorNoPollen = s.green
+//		s.colorLow = UIColor(red: 0.0, green: 200/255.0, blue: 50/255.0, alpha: 1.0)
+//		s.colorMedium = UIColor(red: 1.0, green: 156/255.0, blue: 14/255.0, alpha: 1.0)
+//		s.colorHeavy = UIColor(red: 1.0, green: 97/255.0, blue: 28/255.0, alpha: 1.0)
+//		s.colorVeryHeavy = s.red
+//
+//		s.colorNoEntry = UIColor.black
+//
+//		s.styleUIAppearance()
+//
+//		return s
+//	}()
 	
 	func heading1Attributes() -> [String:NSObject] {
 		var fontSize:CGFloat = 22
@@ -124,10 +172,11 @@ class Style {
 		}
 		let titleParagraphStyle = NSMutableParagraphStyle()
 		titleParagraphStyle.alignment = .center
-		return [NSFontAttributeName : UIFont(name: SYSTEM_FONT, size: fontSize)!,
-		        NSKernAttributeName : CGFloat(2.4) as NSObject,
-		        NSParagraphStyleAttributeName: titleParagraphStyle,
-		        NSForegroundColorAttributeName : Style.shared.darkGray];
+		let font = UIFont(name: SYSTEM_FONT, size: fontSize) ?? UIFont.systemFont(ofSize: fontSize)
+		return [NSAttributedStringKey.font.rawValue : font,
+		        NSAttributedStringKey.kern.rawValue : CGFloat(2.4) as NSObject,
+		        NSAttributedStringKey.paragraphStyle.rawValue: titleParagraphStyle,
+		        NSAttributedStringKey.foregroundColor.rawValue : UIColor(red:0.22, green:0.22, blue:0.22, alpha:1.00)];
 	}
 	
 	func styleUIAppearance(){
@@ -135,8 +184,9 @@ class Style {
 //		navigationBarAppearace.tintColor = UIColor.white
 //		navigationBarAppearace.setBackgroundImage(UIImage.init(named: "darkGray"), for: .default)
 //		navigationBarAppearace.barStyle = UIBarStyle.blackTranslucent
-		navigationBarAppearace.titleTextAttributes = [NSFontAttributeName : UIFont(name: SYSTEM_FONT_B, size: self.P24)!,
-		                                              NSForegroundColorAttributeName : UIColor.black]
+		let font = UIFont(name: SYSTEM_FONT_B, size: P24) ?? UIFont.boldSystemFont(ofSize: P24)
+		navigationBarAppearace.titleTextAttributes = [NSAttributedStringKey.font : font,
+		                                              NSAttributedStringKey.foregroundColor : UIColor.black]
 //		NSKernAttributeName : CGFloat(-4.0)]
 	}
 	
@@ -167,17 +217,17 @@ class Style {
 		// with the text centred at polar angle theta
 		// *******************************************************
 		
-		let l = str.characters.count
+		let l = str.count
 		var curveFont = font
-		let attributes = [NSFontAttributeName: curveFont]
+		let attributes = [NSAttributedStringKey.font: curveFont]
 		
-		let characters: [String] = str.characters.map { String($0) } // An array of single character strings, each character in str
+		let characters: [String] = str.map { String($0) } // An array of single character strings, each character in str
 		var arcs: [CGFloat] = [] // This will be the arcs subtended by each character
 		var totalArc: CGFloat = 0 // ... and the total arc subtended by the string
 
 		// Calculate the arc subtended by each letter and their total
 		for i in 0 ..< l {
-			arcs += [chordToArc(characters[i].size(attributes: attributes).width, radius: r)]
+			arcs += [chordToArc(characters[i].size(withAttributes: attributes).width, radius: r)]
 			totalArc += arcs[i]
 		}
 
@@ -186,12 +236,12 @@ class Style {
 			while(totalArc > maxA && newPointSize > 5){
 				newPointSize -= 2
 				curveFont = curveFont.withSize(newPointSize)
-				let newAttributes = [NSFontAttributeName: curveFont]
+				let newAttributes = [NSAttributedStringKey.font: curveFont]
 				arcs = []
 				totalArc = 0
 				// Calculate the arc subtended by each letter and their total
 				for i in 0 ..< l {
-					arcs += [chordToArc(characters[i].size(attributes: newAttributes).width, radius: r)]
+					arcs += [chordToArc(characters[i].size(withAttributes: newAttributes).width, radius: r)]
 					totalArc += arcs[i]
 				}
 			}
@@ -237,7 +287,7 @@ class Style {
 		// *******************************************************
 		
 		// Set the text attributes
-		let attributes = [NSForegroundColorAttributeName: c, NSFontAttributeName: font]
+		let attributes = [NSAttributedStringKey.foregroundColor: c, NSAttributedStringKey.font: font]
 		// Save the context
 		context.saveGState()
 		// Undo the inversion of the Y-axis (or the text goes backwards!)
@@ -247,7 +297,7 @@ class Style {
 		// Rotate the coordinate system
 		context.rotate(by: -slantAngle)
 		// Calculate the width of the text
-		let offset = str.size(attributes: attributes)
+		let offset = str.size(withAttributes: attributes)
 		// Move the origin by half the size of the text
 		context.translateBy (x: -offset.width / 2, y: -offset.height / 2) // Move the origin to the centre of the text (negating the y-axis manually)
 		// Draw the text

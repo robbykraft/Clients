@@ -21,34 +21,30 @@
 
 
 import Firebase
-import BRYXBanner
+//import BRYXBanner
 
 let IMAGE_DIRECTORY:String = "images/"
 let DOCUMENT_DIRECTORY:String = "documents/"
 
-enum StorageFileType {
-	case image_JPG, image_PNG, document_PDF
-}
-
 class Fire {
 	static let shared = Fire()
 	
-	let database: FIRDatabaseReference = FIRDatabase.database().reference()
-	let storage = FIRStorage.storage().reference()
+	let database: DatabaseReference = Database.database().reference()
+	let storage = Storage.storage().reference()
 	
 	// this is up to you to manage - but cache database calls here if you want.
 	var databaseCache: AnyObject?
 	
 	// can monitor, pause, resume the current upload task
-	var currentUpload:FIRStorageUploadTask?
+	var currentUpload:StorageUploadTask?
 	
 	var myUID:String?
 	
 	let startTime:Date = Date()
 	
-	fileprivate init() {
+	private init() {
 		// setup USER listener
-		FIRAuth.auth()?.addStateDidChangeListener { auth, userData in
+		Auth.auth().addStateDidChangeListener { auth, userData in
 			if let user = userData{
 				print("   AUTH LISTENER: user \(user.email ?? "") signed in")
 				self.myUID = user.uid
@@ -65,27 +61,27 @@ class Fire {
 			}
 		}
 		
-		let connectedRef = FIRDatabase.database().reference(withPath: ".info/connected")
+		let connectedRef = Database.database().reference(withPath: ".info/connected")
 		connectedRef.observe(.value, with: { snapshot in
 			if let connected = snapshot.value as? Bool , connected {
 //				print("INTERNET CONNECTION ESTABLISHED")
 				if(abs(self.startTime.timeIntervalSinceNow) > 2.0){
-					let banner = Banner(title: "Internet", subtitle: "Connection Established", image: UIImage(named: "Icon"), backgroundColor: Style.shared.green)
-					banner.dismissesOnTap = true
-					banner.show(duration: 2.0)
+//					let banner = Banner(title: "Internet", subtitle: "Connection Established", image: UIImage(named: "Icon"), backgroundColor: Style.shared.green)
+//					banner.dismissesOnTap = true
+//					banner.show(duration: 2.0)
 				}
 			} else {
 //				print("INTERNET CONNECTION DOWN")
 				if(abs(self.startTime.timeIntervalSinceNow) > 2.0){
-					let banner = Banner(title: "Internet", subtitle: "Not Connected", image: UIImage(named: "Icon"), backgroundColor: Style.shared.red)
-					banner.dismissesOnTap = true
-					banner.show(duration: 2.0)
+//					let banner = Banner(title: "Internet", subtitle: "Not Connected", image: UIImage(named: "Icon"), backgroundColor: Style.shared.red)
+//					banner.dismissesOnTap = true
+//					banner.show(duration: 2.0)
 				}
 			}
 		})
 		
 //		setup ref for the daily reading, if it changes tell the app to update itself:
-		let collectionsRef = FIRDatabase.database().reference(withPath: "/collections")
+		let collectionsRef = Database.database().reference(withPath: "/collections")
 		collectionsRef.observe(.value, with: { snapshot in
 			let appDelegate:AppDelegate = UIApplication.shared.delegate as! AppDelegate
 			appDelegate.rootViewController.downloadAndRefresh()
@@ -105,7 +101,7 @@ class Fire {
 		if(childURL != nil){
 			reference = database.child(childURL!)
 		}
-		reference.observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in
+		reference.observeSingleEvent(of: .value) { (snapshot: DataSnapshot) in
 			if snapshot.value is NSNull {
 				completionHandler(nil)
 			} else {
@@ -114,7 +110,7 @@ class Fire {
 		}
 	}
 	
-	func newUniqueObjectAtPath(_ childURL:String, object:AnyObject, completionHandler: ((Error?, FIRDatabaseReference) -> ())?) {
+	func newUniqueObjectAtPath(_ childURL:String, object:AnyObject, completionHandler: ((Error?, DatabaseReference) -> ())?) {
 		database.child(childURL).childByAutoId().setValue(object) { (error, ref) in
 			if(completionHandler != nil){
 				completionHandler!(error, ref)
@@ -128,8 +124,8 @@ class Fire {
 	//  USER
 	
 	func getUser(_ completionHandler: @escaping (String?, [String:AnyObject]?) -> ()) {
-		let user = FIRAuth.auth()?.currentUser
-		database.child("users").child(user!.uid).observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in
+		let user = Auth.auth().currentUser
+		database.child("users").child(user!.uid).observeSingleEvent(of: .value) { (snapshot: DataSnapshot) in
 			if snapshot.value is NSNull {
 				completionHandler(nil, nil)
 			} else {
@@ -139,8 +135,8 @@ class Fire {
 		}
 	}
 	
-	func checkIfUserExists(_ user: FIRUser, completionHandler: @escaping (Bool) -> ()) {
-		database.child("users").child(user.uid).observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in
+	func checkIfUserExists(_ user: User, completionHandler: @escaping (Bool) -> ()) {
+		database.child("users").child(user.uid).observeSingleEvent(of: .value) { (snapshot: DataSnapshot) in
 			if snapshot.value is NSNull {
 				completionHandler(false)
 			} else {
@@ -156,7 +152,7 @@ class Fire {
 	
 	func updateUserWithKeyAndValue(_ key:String, value:AnyObject, completionHandler: ((_ success:Bool) -> ())? ) {
 		print("saving \(value) into \(key)")
-		let user = FIRAuth.auth()?.currentUser
+		let user = Auth.auth().currentUser
 		database.child("users").child(user!.uid).updateChildValues([key:value]) { (error, ref) in
 			if (error == nil){
 				if(completionHandler != nil){
@@ -170,7 +166,7 @@ class Fire {
 		}
 	}
 	
-	func createNewUserEntry(_ user:FIRUser, completionHandler: ((_ success:Bool) -> ())? ) {
+	func createNewUserEntry(_ user:User, completionHandler: ((_ success:Bool) -> ())? ) {
 		// copy user data over from AUTH
 		let emailString:String = user.email!
 		let newUser:[String:AnyObject] = [
@@ -192,86 +188,8 @@ class Fire {
 		}
 	}
 	
-	func user() -> FIRUser {
-		return (FIRAuth.auth()?.currentUser)!
+	func user() -> User {
+		return (Auth.auth().currentUser)!
 	}
 	
-	
-	
-	////////////////////////////////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////////////////////////////
-	//
-	//  STORAGE
-	
-	// specify a UUIDFilename, or it will generate one for you
-	func uploadFileAndMakeRecord(_ data:Data, folder:String?, fileType:StorageFileType, description:String?, completionHandler: @escaping (_ downloadURL:URL?) -> ()) {
-		
-		// prep file info
-		var filename:String = UUID.init().uuidString
-		var storagePath:String
-		var databaseDirectory:String
-		var dir:String = ""
-		switch fileType {
-		case .image_JPG:
-			filename = filename + ".jpg"
-			dir = IMAGE_DIRECTORY
-			break
-		case .image_PNG:
-			filename = filename + ".png"
-			dir = IMAGE_DIRECTORY
-			break
-		case .document_PDF:
-			filename = filename + ".pdf"
-			dir = DOCUMENT_DIRECTORY
-			break
-		}
-		// WAIT: if they specify a directory folder, use that instead
-		// if user-specified directory, make sure it ends with /
-		if let f:String = folder{
-			// make sure string isn't empty, OR, string is "/" -- cannot save at root, will save at "files/" instead
-			if(!f.isEmpty && !(f.characters.count == 1 && f.characters.first == "/") ){
-				dir = f
-				if(dir.characters.last != "/"){
-					dir.append("/")
-				}
-			}
-		}
-		
-		storagePath = dir + filename
-		databaseDirectory = "files/" + dir
-		
-		// STEP 1 - upload file to storage
-		currentUpload = storage.child(storagePath).put(data, metadata: nil) { metadata, error in
-			// TODO: make currentUpload an array, if upload in progress add this to array
-			if (error != nil) {
-				print(error?.localizedDescription ?? "")
-				completionHandler(nil)
-			} else {
-				// STEP 2 - record new file in database
-				let downloadURL = metadata!.downloadURL()!
-				let key = self.database.child(databaseDirectory).childByAutoId().key
-				var descriptionString:String = ""
-				if(description != nil){
-					descriptionString = description!
-				}
-				let entry:Dictionary = ["file":storagePath,
-				                        "type":stringForStorageFileType(fileType),
-				                        "size":data.count,
-				                        "description":descriptionString,
-				                        "url":downloadURL.absoluteString] as [String : Any]
-				self.database.child(databaseDirectory).updateChildValues([key:entry]) { (error, ref) in
-					completionHandler(downloadURL)
-				}
-			}
-		}
-	}
 }
-
-func stringForStorageFileType(_ fileType:StorageFileType) -> String {
-	switch fileType {
-	case .image_JPG:    return "JPG"
-	case .image_PNG:    return "PNG"
-	case .document_PDF: return "PDF"
-	}
-}
-

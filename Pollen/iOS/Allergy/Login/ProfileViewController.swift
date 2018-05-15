@@ -152,16 +152,16 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 		detailField.text = userData["detail"] as? String
 	}
 	
-	func logOut(){
+	@objc func logOut(){
 		do{
-			try FIRAuth.auth()?.signOut()
+			try Auth.auth().signOut()
 			self.navigationController?.dismiss(animated: true, completion: nil)
 		}catch{
 			
 		}
 	}
 	
-	func profilePictureButtonHandler(_ sender:UIButton){
+	@objc func profilePictureButtonHandler(_ sender:UIButton){
 		let alert = UIAlertController.init(title: "Change Profile Image", message: nil, preferredStyle: .actionSheet)
 		let action1 = UIAlertAction.init(title: "Camera", style: .default) { (action) in
 			self.openImagePicker(.camera)
@@ -185,7 +185,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 		self.view.endEditing(true)
 		return false
 	}
-	func textFieldDidChange(_ notif: Notification) {
+	@objc func textFieldDidChange(_ notif: Notification) {
 		if(updateTimer != nil){
 			updateTimer?.invalidate()
 			updateTimer = nil
@@ -193,7 +193,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 		updateTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateWithDelay), userInfo: nil, repeats: false)
 	}
 	
-	func updateWithDelay() {
+	@objc func updateWithDelay() {
 		// TODO: list all UITextFields here
 		if let nameText = nameField.text{
 			Fire.shared.updateUserWithKeyAndValue("displayName", value: nameText as AnyObject, completionHandler: nil)
@@ -230,19 +230,19 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 		let image = info[UIImagePickerControllerOriginalImage] as! UIImage
 		let data = UIImageJPEGRepresentation(image, 0.5)
 		if(data != nil){
-			Fire.shared.uploadFileAndMakeRecord(data!, folder: nil, fileType: .image_JPG, description: nil, completionHandler: { (downloadURL) in
-				if(downloadURL != nil){
-					Fire.shared.updateUserWithKeyAndValue("image", value: downloadURL!.absoluteString as AnyObject, completionHandler: { (success) in
-						if(success){
-							Cache.shared.profileImage[Fire.shared.myUID!] = image
-							self.profileImageView.image = image
-						}
-						else{
-							
-						}
-					})
-				}
-			})
+//			Fire.shared.uploadFileAndMakeRecord(data!, folder: nil, fileType: .image_JPG, description: nil, completionHandler: { (downloadURL) in
+//				if(downloadURL != nil){
+//					Fire.shared.updateUserWithKeyAndValue("image", value: downloadURL!.absoluteString as AnyObject, completionHandler: { (success) in
+//						if(success){
+//							Cache.shared.profileImage[Fire.shared.myUID!] = image
+//							self.profileImageView.image = image
+//						}
+//						else{
+//							
+//						}
+//					})
+//				}
+//			})
 		}
 		if(data == nil){
 			print("image picker data is nil")

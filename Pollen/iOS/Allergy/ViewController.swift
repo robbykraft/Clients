@@ -9,22 +9,26 @@
 import UIKit
 import Firebase
 
+//class ViewController: UIViewController, UINavigationControllerDelegate {
+//	func downloadAndRefresh(){}
+
 class ViewController: UIViewController, UINavigationControllerDelegate, BarChartDelegate, UIScrollViewDelegate, QueryViewDelegate{
-	
+
 	let scrollView = MainScrollView()
-	
+
 	var radialChart = UIRadialChart()
 	var barChart = UIBarChartView()
 	var radialChartOrigin = CGPoint.zero
-	
+
 	let preferencesButton = UIButton()
 	let radialButton = UIButton()
-	
+
 	var samples:[Sample] = []
-	
+
 	let queryView = QueryView()
-	
+
 	var barChartCenter:CGPoint = .zero
+	
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
@@ -83,7 +87,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 //			case 2208:
 //				print("iPhone 6+/6S+/7+/8+")
 //			case 2436:
-//				self.view.backgroundColor = Style.shared.blue
+//				self.view.backgroundColor = UIColor.white
 //			default:
 //				print("unknown")
 //			}
@@ -246,21 +250,21 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 		}
 	}
 	
-	func preferencesButtonPressed(){
+	@objc func preferencesButtonPressed(){
 		let nav = UINavigationController()
 		nav.viewControllers = [Preferences.init(style: .grouped)]
 		self.present(nav, animated: true, completion: nil)
 	}
 	
-	func radialTouchDown(){
+	@objc func radialTouchDown(){
 		radialChart.pressed = true
 	}
 	
-	func radialTouchCancel(){
+	@objc func radialTouchCancel(){
 		radialChart.pressed = false
 	}
 
-	func radialTouchUpInside(){
+	@objc func radialTouchUpInside(){
 		radialChart.pressed = false
 		if samples.count > 0{
 			let nav = UILightNavigationController()
@@ -276,14 +280,10 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 	/////////////// SCROLL VIEW ///////////////////
 	
 	func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//		print(scrollView.contentOffset.y);
 		var pct = scrollView.contentOffset.y / (scrollView.contentSize.height - self.view.bounds.height)
 		if pct < 0.0 { pct = 0.0}
 		if pct > 1.0 { pct = 1.0}
-//		let alpha = 1.0 - sqrt(pct)
-//		self.radialChart.alpha = alpha
 		self.radialChart.center = CGPoint(x: radialChartOrigin.x, y: radialChartOrigin.y - pct * 100)
-//		self.barChart.alpha = alpha
 		self.barChart.center = CGPoint(x:self.barChartCenter.x, y:self.barChartCenter.y + pct*self.view.frame.size.height)
 		self.queryView.alpha = pct
 		self.queryView.transform = CGAffineTransform.init(scaleX: pct*0.15+0.85, y: pct*0.15+0.85)
@@ -296,9 +296,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, BarChart
 		}
 	}
 
-	override func didReceiveMemoryWarning() {
-		super.didReceiveMemoryWarning()
-		// Dispose of any resources that can be recreated.
-	}
+	
 
 }

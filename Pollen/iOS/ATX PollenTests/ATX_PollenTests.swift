@@ -30,15 +30,15 @@ class ATX_PollenTests: XCTestCase {
 //		print(enum1)
 //		print(enum2)
 		
-		for category in symptomCategories{
-			if let things = symptoms[category]{
-				print("  +++  ")
-				print(category)
-				for thing in things{
-					print(thing)
-				}
-			}
-		}
+//		for category in symptomCategories{
+//			if let things = symptoms[category]{
+//				print("  +++  ")
+//				print(category)
+//				for thing in things{
+//					print(thing)
+//				}
+//			}
+//		}
     }
     
     func testPerformanceExample() {

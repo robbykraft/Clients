@@ -79,7 +79,7 @@ class UIBarChartView: UIView {
 		super.layoutSubviews()
 		let lineWidth:CGFloat = 18
 		let spacer:CGFloat = 2
-		let padLabel:CGFloat = 20
+//		let padLabel:CGFloat = 20
 		let padW:CGFloat = 0.5 * (self.frame.size.width - CGFloat((count-1) * (lineWidth+spacer)))
 		let padH:CGFloat = 20 + lineWidth
 

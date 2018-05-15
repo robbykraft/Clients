@@ -22,7 +22,8 @@ class Preferences: UITableViewController, SliderCellDelegate {
 
 		self.navigationItem.rightBarButtonItem = newBackButton
 
-		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)!, NSForegroundColorAttributeName: Style.shared.blue], for:.normal)
+		let font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18) ?? UIFont.boldSystemFont(ofSize: Style.shared.P18)
+		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedStringKey.font: font, NSAttributedStringKey.foregroundColor: Style.shared.blue], for:.normal)
 
     }
 	
@@ -177,7 +178,7 @@ class Preferences: UITableViewController, SliderCellDelegate {
 		self.tableView.reloadRows(at: [IndexPath.init(row: 1, section: 1)], with: .none)
 	}
 	
-	func doneButtonPressed(){
+	@objc func doneButtonPressed(){
 		self.dismiss(animated: true, completion: nil)
 	}
 

@@ -37,7 +37,8 @@ class DetailTableViewController: UITableViewController {
 		let newBackButton = UIBarButtonItem.init(title: "Done", style: .done, target: self, action: #selector(doneButtonPressed))
 		self.navigationItem.rightBarButtonItem = newBackButton
 
-		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)!, NSForegroundColorAttributeName: Style.shared.blue], for:.normal)
+		let font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18) ?? UIFont.boldSystemFont(ofSize: Style.shared.P18)
+		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedStringKey.font: font, NSAttributedStringKey.foregroundColor: Style.shared.blue], for:.normal)
 
 		self.tableView.separatorStyle = .none
 		
@@ -79,8 +80,9 @@ class DetailTableViewController: UITableViewController {
 		for rating in ratingArray{
 			
 			// Set the text attributes
-			let attributes = [NSForegroundColorAttributeName: Style.shared.lightGray,
-			                  NSFontAttributeName: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P30)]
+			let font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P30) ?? UIFont.boldSystemFont(ofSize: Style.shared.P30)
+			let attributes = [NSAttributedStringKey.foregroundColor: Style.shared.lightGray,
+			                  NSAttributedStringKey.font: font]
 			// Save the context
 			context.saveGState()
 			// Undo the inversion of the Y-axis (or the text goes backwards!)
@@ -91,7 +93,7 @@ class DetailTableViewController: UITableViewController {
 			context.rotate(by: CGFloat.pi / 2.0)
 			// Calculate the width of the text
 			let str = Pollen.shared.stringForRating(rating)
-			let offset = str.size(attributes: attributes)
+			let offset = str.size(withAttributes: attributes)
 			// Move the origin by half the size of the text
 
 			let logValue = Pollen.shared.logValueFor(key: "cot", value: Pollen.shared.getValueFor(key: "cot", atRating: rating))
@@ -135,7 +137,7 @@ class DetailTableViewController: UITableViewController {
 //		return .lightContent
 //	}
 
-	func doneButtonPressed(){
+	@objc func doneButtonPressed(){
 		self.dismiss(animated: true, completion: nil)
 	}
 
@@ -184,6 +186,13 @@ class DetailTableViewController: UITableViewController {
 		
         return cell
     }
+
+
+
+
+
+
+
 
     /*
     // Override to support conditional editing of the table view.

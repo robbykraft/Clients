@@ -30,8 +30,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		self.window = UIWindow()
 		self.window?.frame = UIScreen.main.bounds
 		let loginVC : LoginViewController = LoginViewController()
-		if(FIRAuth.auth()?.currentUser != nil){
-			loginVC.emailField.text = FIRAuth.auth()?.currentUser?.email
+		if(Auth.auth().currentUser != nil){
+			loginVC.emailField.text = Auth.auth().currentUser?.email
 		}
 		self.window?.rootViewController = loginVC
 		self.window?.makeKeyAndVisible()
@@ -51,6 +51,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 		// Override point for customization after application launch.
 		
+//		_ = Style.shared
+//		_ = Fire.shared
+//		_ = Pollen.shared
+//		_ = Allergies.shared
+		
 		// Register for remote notifications. This shows a permission dialog on first run, to
 		// show the dialog at a more appropriate time move this registration accordingly.
 		// [START register_for_notifications]
@@ -64,7 +69,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			// For iOS 10 display notification (sent via APNS)
 			UNUserNotificationCenter.current().delegate = self
 			// For iOS 10 data message (sent via FCM)
-			FIRMessaging.messaging().remoteMessageDelegate = self
+			Messaging.messaging().delegate = self
+//			Messaging.messaging().remoteMessageDelegate = self
 			
 		} else {
 			let settings: UIUserNotificationSettings =
@@ -76,7 +82,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		
 		// [END register_for_notifications]
 		
-		FIRApp.configure()
+		FirebaseApp.configure()
 		
 		// Check if launched from notification
 		// 1
@@ -94,14 +100,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		// Add observer for InstanceID token refresh callback.
 		NotificationCenter.default.addObserver(self,
 		                                       selector: #selector(self.tokenRefreshNotification),
-		                                       name: .firInstanceIDTokenRefresh,
+		                                       name: NSNotification.Name.InstanceIDTokenRefresh,
 		                                       object: nil)
 		// [END add_token_refresh_observer]
-		
-		_ = Fire.shared
-		_ = Pollen.shared
-		_ = Style.shared
-		_ = Allergies.shared
 		
 		
 		Pollen.shared.boot { (success) in
@@ -177,8 +178,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	// [END receive_message]
 	
 	// [START refresh_token]
-	func tokenRefreshNotification(_ notification: Notification) {
-		if let refreshedToken = FIRInstanceID.instanceID().token() {
+	@objc func tokenRefreshNotification(_ notification: Notification) {
+		if let refreshedToken = InstanceID.instanceID().token() {
 			print("InstanceID token: \(refreshedToken)")
 		}
 		
@@ -190,20 +191,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	// [START connect_to_fcm]
 	func connectToFcm() {
 		// Won't connect since there is no token
-		guard FIRInstanceID.instanceID().token() != nil else {
+		guard InstanceID.instanceID().token() != nil else {
 			return
 		}
 		
 		// Disconnect previous FCM connection if it exists.
-		FIRMessaging.messaging().disconnect()
+//		Messaging.messaging().disconnect()
 		
-		FIRMessaging.messaging().connect { (error) in
-			if error != nil {
-				print("Unable to connect with FCM. \(error?.localizedDescription ?? "")")
-			} else {
-				print("Connected to FCM.")
-			}
-		}
+//		Messaging.messaging().shouldEstablishDirectChannel = false
+		Messaging.messaging().shouldEstablishDirectChannel = true
+		
+//		Messaging.messaging().connect { (error) in
+//			if error != nil {
+//				print("Unable to connect with FCM. \(error?.localizedDescription ?? "")")
+//			} else {
+//				print("Connected to FCM.")
+//			}
+//		}
 	}
 	// [END connect_to_fcm]
 	
@@ -233,7 +237,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	
 	// [START disconnect_from_fcm]
 	func applicationDidEnterBackground(_ application: UIApplication) {
-		FIRMessaging.messaging().disconnect()
+//		Messaging.messaging().disconnect()
+		Messaging.messaging().shouldEstablishDirectChannel = false
 		print("Disconnected from FCM.")
 	}
 	// [END disconnect_from_fcm]
@@ -288,9 +293,9 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
 
 
 // [START ios_10_data_message_handling]
-extension AppDelegate : FIRMessagingDelegate {
+extension AppDelegate : MessagingDelegate {
 	// Receive data message on iOS 10 devices while app is in the foreground.
-	func applicationReceivedRemoteMessage(_ remoteMessage: FIRMessagingRemoteMessage) {
+	func applicationReceivedRemoteMessage(_ remoteMessage: MessagingRemoteMessage) {
 		print(remoteMessage.appData)
 	}
 }

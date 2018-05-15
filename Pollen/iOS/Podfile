@@ -11,6 +11,5 @@ target 'Allergy' do
   pod 'Firebase/Auth'
   pod 'Firebase/Storage'
   pod 'Firebase/Messaging'
-  pod 'BRYXBanner', '~> 0.7'
 
 end
