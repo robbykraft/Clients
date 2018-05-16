@@ -38,6 +38,7 @@ class QueryView: UIView{
 	
 	func initUI(){
 		segmentedHR.backgroundColor = Style.shared.blue
+		segmentedControl.changeSelectedIndex(to: 0)
 		self.addSubview(segmentedControl)
 		self.addSubview(segmentedHR)
 		self.addSubview(allergyView)

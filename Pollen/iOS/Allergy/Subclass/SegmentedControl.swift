@@ -35,7 +35,7 @@ class SegmentedControl: UISegmentedControl {
 		self.tintColor = Style.shared.blue
 		self.layer.cornerRadius = 4
 		self.clipsToBounds = true
-		let font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P24) ?? UIFont.boldSystemFont(ofSize: Style.shared.P24)
+		let font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18) ?? UIFont.boldSystemFont(ofSize: Style.shared.P18)
 		let unselectedAttributes:[AnyHashable:Any] = [NSAttributedStringKey.foregroundColor: Style.shared.blue,
 													  NSAttributedStringKey.font: font]
 		let selectedAttributes:[AnyHashable:Any] = [NSAttributedStringKey.foregroundColor: UIColor.white,

@@ -143,6 +143,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 	}
 	
+	func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
+		print("messaging didReceiveRegistrationToken")
+// fxxLawLjq90:APA91bEp7ah38jLpu3yLSSYaFhQpvo1Jvqsbhl_s65XJ2AUzTW8wUO8HBGYAIR2Ul8H43p5707rRoW9E5lG8phS7bJOVT8r4SutNhX3tu2xXQIUi-vJnTrszyBTpINZCaGExn4spLVwV
+		print(fcmToken)
+	}
 	
 	func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any],
 	                 fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {

@@ -47,7 +47,7 @@ class AllergyQueryView: UIView {
 		for i in 0 ..< responseButtons.count {
 			let button = responseButtons[i]
 			button.setTitle(labels[i], for: .normal)
-			button.titleLabel?.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P21)
+			button.titleLabel?.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P24)
 			button.color = colors[i]
 		}
 		
@@ -57,23 +57,6 @@ class AllergyQueryView: UIView {
 		self.addSubview(topQuestionLabel)
 		for button in responseButtons { self.addSubview(button) }
 	}
-	
-	func formatQuestion(){
-		if Calendar.current.isDateInToday(self.date){
-			topQuestionLabel.text = "How are your allergies today?"
-		} else if Calendar.current.isDateInYesterday(self.date){
-			topQuestionLabel.text = "How were your allergies yesterday?"
-		} else if self.date.timeIntervalSinceNow < Date().timeIntervalSinceNow{
-			// date in the past
-			topQuestionLabel.text = "How were your allergies?"
-		} else{
-			// date in the future
-			topQuestionLabel.text = "How will your allergies be?"
-		}
-		topQuestionLabel.sizeToFit()
-	}
-
-	
 	
 	override func layoutSubviews() {
 		super.layoutSubviews()
@@ -96,12 +79,12 @@ class AllergyQueryView: UIView {
 		
 		let topPadding:CGFloat = 20
 		let belowQuestionPad:CGFloat = 15
-		let buttonPad:CGFloat = 4
+		let buttonPad:CGFloat = 2
 
 		topQuestionLabel.center = CGPoint(x: self.bounds.size.width*0.5, y: topPadding + dateLabel.frame.size.height*0.5)
 		let buttonContent = CGRect(x: 0, y: topQuestionLabel.frame.bottom + belowQuestionPad, width: self.bounds.size.width, height: self.bounds.size.height - topQuestionLabel.frame.bottom - belowQuestionPad)
-		let buttonX:CGFloat = self.bounds.size.width*0.25
-		let buttonW:CGFloat = self.bounds.size.width*0.5
+		let buttonX:CGFloat = self.bounds.size.width*0.16666
+		let buttonW:CGFloat = self.bounds.size.width*0.6666
 		let buttonH:CGFloat = buttonContent.size.height / CGFloat(responseButtons.count) - buttonPad
 		var i:CGFloat = 0
 		for button in responseButtons{
@@ -111,6 +94,22 @@ class AllergyQueryView: UIView {
 	}
 	
 
+	func formatQuestion(){
+		if Calendar.current.isDateInToday(self.date){
+			topQuestionLabel.text = "How are your allergies today?"
+		} else if Calendar.current.isDateInYesterday(self.date){
+			topQuestionLabel.text = "How were your allergies yesterday?"
+		} else if self.date.timeIntervalSinceNow < Date().timeIntervalSinceNow{
+			// date in the past
+			topQuestionLabel.text = "How were your allergies?"
+		} else{
+			// date in the future
+			topQuestionLabel.text = "How will your allergies be?"
+		}
+		topQuestionLabel.sizeToFit()
+	}
+	
+	
 	@objc func dateNextButtonHandler(){
 		var components = DateComponents()
 		components.setValue(1, for: .day)

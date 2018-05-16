@@ -11,5 +11,6 @@ target 'Allergy' do
   pod 'Firebase/Auth'
   pod 'Firebase/Storage'
   pod 'Firebase/Messaging'
+  pod 'Charts'
 
 end
