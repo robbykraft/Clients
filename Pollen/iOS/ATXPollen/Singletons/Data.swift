@@ -3,30 +3,31 @@ import Firebase
 import FirebaseDatabase
 
 extension Notification.Name {
-	static let pollenUpdate = Notification.Name("POLLEN_SAMPLES_DID_UPDATE")
+	static let pollenDidUpdate = Notification.Name("POLLEN_SAMPLES_DID_UPDATE")
 }
 
 class Data {
 	static let shared = Data()
 	
-	let pollenSamples:[String:PollenSample] = [:]
+	var pollenSamples:[PollenSample] = []
 	
-//	let startTime:Date = Date()
+//	let bootTime:Date = Date()
 	
 	private init(){
+		FirebaseApp.configure()
 		// if a new pollen count is taken while the app is open, reload data in app
 		Database.database().reference(withPath: "/collections").observe(.value, with: { snapshot in
-			NotificationCenter.default.post(name: .pollenUpdate, object: nil)
+			NotificationCenter.default.post(name: .pollenDidUpdate, object: nil)
 		})
 
 //		let connectedRef = Database.database().reference(withPath: ".info/connected")
 //		connectedRef.observe(.value, with: { snapshot in
 //			if let connected = snapshot.value as? Bool , connected {
-//				if(abs(self.startTime.timeIntervalSinceNow) > 2.0){
+//				if(abs(self.bootTime.timeIntervalSinceNow) > 2.0){
 //					// show banner: internet connected
 //				}
 //			} else {
-//				if(abs(self.startTime.timeIntervalSinceNow) > 2.0){
+//				if(abs(self.bootTime.timeIntervalSinceNow) > 2.0){
 //					// show banner: internet down
 //				}
 //			}
@@ -65,7 +66,8 @@ class Data {
 				if let d = data.value as? [String:Any]{
 					let sample = PollenSample()
 					sample.setFromDatabase(d)
-					NotificationCenter.default.post(name: .pollenUpdate, object: nil)
+					self.pollenSamples.append(sample)
+					NotificationCenter.default.post(name: .pollenDidUpdate, object: nil)
 					successes += 1
 				} else{
 					print("no entry for " + dateString + ". trying again")

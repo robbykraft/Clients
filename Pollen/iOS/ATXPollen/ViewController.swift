@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import CoreLocation
 
-class ViewController: UIViewController, UINavigationControllerDelegate, QueryViewDelegate, UIScrollViewDelegate, HomeSlideViewDelegate{
+class ViewController: UIViewController, UINavigationControllerDelegate, QueryViewDelegate, HomeSlideViewDelegate{
 	
 	let preferencesButton = UIButton()
 
@@ -35,7 +35,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, QueryVie
 
 		homeSlideView.frame = CGRect(x: 0, y: 22, width: self.view.frame.size.width, height: self.view.frame.size.height-22)
 		homeSlideView.slideViewDelegate = self
-		homeSlideView.delegate = self
 		
 		let prefsImage = UIImage(named: "cogs") ?? UIImage()
 		preferencesButton.frame = CGRect.init(x: 0, y: 0, width: 40, height: 40)
@@ -48,15 +47,14 @@ class ViewController: UIViewController, UINavigationControllerDelegate, QueryVie
 		queryView.alpha = 0.0
 		queryView.delegate = self
 		queryView.frame = CGRect(x: 0, y: 15 + 70, width: self.view.frame.size.width, height: self.view.frame.size.height - 15 - 70)
-//		queryView.frame = CGRect(x: 0, y: barChartTop + 15, width: self.view.frame.size.width, height: self.scrollView.contentSize.height - barChartTop - 15)
 
 		self.view.addSubview(homeSlideView)
 		self.view.addSubview(queryView)
 		self.view.sendSubview(toBack:queryView)
 		
-		let mapView = MKMapView()
-		mapView.frame = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height)
-		self.view.addSubview(mapView)
+//		let mapView = MKMapView()
+//		mapView.frame = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height)
+//		self.view.addSubview(mapView)
 		
 		
 //		if UIDevice().userInterfaceIdiom == .phone {
@@ -113,11 +111,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, QueryVie
 //				UserDefaults.standard.synchronize()
 //			}
 		}
-	}
-	
-	
-	func scrollViewDidScroll(_ scrollView: UIScrollView) {
-		homeSlideView.scrollViewDidScroll(homeSlideView)
 	}
 
 }
