@@ -7,16 +7,14 @@
 //
 
 import UIKit
-import MapKit
-import CoreLocation
 
 class ViewController: UIViewController, UINavigationControllerDelegate, QueryViewDelegate, HomeSlideViewDelegate{
 	
 	let preferencesButton = UIButton()
 
-	// home slide view contains everything on the top layer: circle chart, bottom bar chart, blue circle
+	// everything on top: circle chart, bottom bar chart, blue circle
 	let homeSlideView = HomeSlideView()
-	// query view contains everything below, after the user pulls back the blue circle
+	// everything underneath: questions, map
 	let queryView = QueryView()
 
 	override func viewWillAppear(_ animated: Bool) {
@@ -51,66 +49,22 @@ class ViewController: UIViewController, UINavigationControllerDelegate, QueryVie
 		self.view.addSubview(homeSlideView)
 		self.view.addSubview(queryView)
 		self.view.sendSubview(toBack:queryView)
-		
-//		let mapView = MKMapView()
-//		mapView.frame = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height)
-//		self.view.addSubview(mapView)
-		
-		
-//		if UIDevice().userInterfaceIdiom == .phone {
-//			if UIScreen.main.nativeBounds.height == 2436{
-//				self.view.backgroundColor = Style.shared.blue
-//			}
-//			switch UIScreen.main.nativeBounds.height {
-//			case 1136:
-//				print("iPhone 5 or 5S or 5C")
-//			case 1334:
-//				print("iPhone 6/6S/7/8")
-//			case 2208:
-//				print("iPhone 6+/6S+/7+/8+")
-//			case 2436:
-//				self.view.backgroundColor = UIColor.white
-//			default:
-//				print("unknown")
-//			}
-//		}
-	
+
 	}
-//
-//	func downloadAndRefresh(){
-//		Pollen.shared.loadRecentData(numberOfDays: 1) { (sample) in
-//			self.radialChart.data = sample
-//			self.refreshBarChart()
-//		}
-//		self.samples = []
-//		Pollen.shared.loadRecentData(numberOfDays: 15) { (sample) in
-//			self.samples.append(sample)
-//			self.refreshBarChart()
-//		}
-//	}
-	
 	
 	func queryViewDateDidChange(date:Date){
 		homeSlideView.updateTopSectionDate(closestMatch: date)
 	}
 	
 	@objc func preferencesButtonPressed(){
-//		let nav = UINavigationController()
-//		nav.viewControllers = [Preferences.init(style: .grouped)]
-//		self.present(nav, animated: true, completion: nil)
+		let nav = UINavigationController()
+		nav.viewControllers = [Preferences.init(style: .grouped)]
+		self.present(nav, animated: true, completion: nil)
 	}
-	
 	
 	func slideViewDidOpen(percent: CGFloat) {
 		self.queryView.alpha = percent
 		self.queryView.transform = CGAffineTransform.init(scaleX: percent*0.15+0.85, y: percent*0.15+0.85)
-		if percent >= 1.0 {
-//			if UserDefaults.standard.bool(forKey: "welcomeScreenHasSeen") == false{
-//				print("synchronizing welcome screen has been seen")
-//				UserDefaults.standard.set(true, forKey: "welcomeScreenHasSeen")
-//				UserDefaults.standard.synchronize()
-//			}
-		}
 	}
 
 }

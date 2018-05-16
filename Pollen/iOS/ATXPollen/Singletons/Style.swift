@@ -13,9 +13,23 @@ let SYSTEM_FONT = "AvenirNext-Medium"
 
 let IS_IPAD:Bool = UIDevice.current.userInterfaceIdiom == UIUserInterfaceIdiom.pad
 let IS_IPHONE:Bool = UIDevice.current.userInterfaceIdiom == UIUserInterfaceIdiom.phone
+let IS_IPHONE_X:Bool = UIDevice().userInterfaceIdiom == .phone && UIScreen.main.nativeBounds.height == 2436
+
 func statusBarHeight() -> CGFloat {
 	let statusBarSize = UIApplication.shared.statusBarFrame.size
 	return Swift.min(statusBarSize.width, statusBarSize.height)
+}
+
+func getDevice(){
+//	if UIDevice().userInterfaceIdiom == .phone {
+//		switch UIScreen.main.nativeBounds.height {
+//		case 1136: print("iPhone 5 or 5S or 5C")
+//		case 1334: print("iPhone 6/6S/7/8")
+//		case 2208: print("iPhone 6+/6S+/7+/8+")
+//		case 2436: self.view.backgroundColor = UIColor.white
+//		default: print("unknown")
+//		}
+//	}
 }
 
 class Style {

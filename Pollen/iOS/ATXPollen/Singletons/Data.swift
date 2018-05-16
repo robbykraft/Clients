@@ -9,7 +9,8 @@ extension Notification.Name {
 class Data {
 	static let shared = Data()
 	
-	var pollenSamples:[PollenSample] = []
+	// date(toString) : sample
+	var pollenSamples:[String:PollenSample] = [:]
 	
 //	let bootTime:Date = Date()
 	
@@ -60,15 +61,23 @@ class Data {
 		var successes = 0
 		
 		func queryOnce(){
-			let dateString = makeDateCode(daysPast: tries)
+			// build date for #days past
+			var deltaDate = DateComponents()
+			deltaDate.day = -tries
+			let queryDate:Date = (Calendar.current as NSCalendar).date(byAdding: deltaDate, to: Date(), options: NSCalendar.Options.matchFirst)!
+			let dateString = collectionsKey(forDate:queryDate)
+
 			tries += 1
 			Database.database().reference().child("collections/" + dateString).observeSingleEvent(of: .value) { (data) in
 				if let d = data.value as? [String:Any]{
 					let sample = PollenSample()
 					sample.setFromDatabase(d)
-					self.pollenSamples.append(sample)
-					NotificationCenter.default.post(name: .pollenDidUpdate, object: nil)
-					successes += 1
+					if let sampleDate = sample.date{
+						let dateString = sampleDate.toString()
+						self.pollenSamples[dateString] = sample
+						NotificationCenter.default.post(name: .pollenDidUpdate, object: nil)
+						successes += 1
+					}
 				} else{
 					print("no entry for " + dateString + ". trying again")
 				}
@@ -80,17 +89,12 @@ class Data {
 		}
 		queryOnce()
 	}
-
+	
 	// daysPast is expecting a positive number. ("5" means 5 days ago)
-	func makeDateCode(daysPast:Int) -> String{
-//		var GMTCalendar = Calendar.current
-//		GMTCalendar.timeZone = TimeZone.init(secondsFromGMT: 0)!
-		var deltaDate = DateComponents()
-		deltaDate.day = -daysPast
-		let dateIterate:Date = (Calendar.current as NSCalendar).date(byAdding: deltaDate, to: Date(), options: NSCalendar.Options.matchFirst)!
-		let yearNumber:Int = Calendar.current.component(.year, from: dateIterate)
-		let monthNumber:Int = Calendar.current.component(.month, from: dateIterate)
-		let dayNumber:Int = Calendar.current.component(.day, from: dateIterate)
+	func collectionsKey(forDate date:Date) -> String{
+		let yearNumber:Int = Calendar.current.component(.year, from: date)
+		let monthNumber:Int = Calendar.current.component(.month, from: date)
+		let dayNumber:Int = Calendar.current.component(.day, from: date)
 		return "\(yearNumber)" + String(format: "%02d", monthNumber) + String(format: "%02d", dayNumber)
 	}
 

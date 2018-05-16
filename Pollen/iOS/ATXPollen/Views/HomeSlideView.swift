@@ -23,7 +23,7 @@ class HomeSlideView: UIScrollView, BarChartDelegate, UIScrollViewDelegate {
 	let touchTape = UIView()
 
 	var radialChartCenter = CGPoint.zero
-	var barChartCenter:CGPoint = CGPoint.zero
+	var barChartCenter = CGPoint.zero
 
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -45,22 +45,14 @@ class HomeSlideView: UIScrollView, BarChartDelegate, UIScrollViewDelegate {
 	func initUI(){
 		
 		self.delegate = self
-		
 		self.showsVerticalScrollIndicator = false
 		self.isPagingEnabled = true
 		self.delaysContentTouches = false
 		self.backgroundColor = UIColor.clear
 
 		barChart.delegate = self
-		
 		radialButton.center = radialChart.center
 		radialButton.backgroundColor = UIColor.clear
-//		radialButton.addTarget(self, action: #selector(radialTouchCancel), for: .touchCancel)
-//		radialButton.addTarget(self, action: #selector(radialTouchCancel), for: .touchDragExit)
-//		radialButton.addTarget(self, action: #selector(radialTouchDown), for: .touchDragEnter)
-//		radialButton.addTarget(self, action: #selector(radialTouchDown), for: .touchDown)
-//		radialButton.addTarget(self, action: #selector(radialTouchUpInside), for: .touchUpInside)
-		
 		touchTape.backgroundColor = Style.shared.blue
 
 		self.layer.addSublayer(sliderLayer)
@@ -68,7 +60,13 @@ class HomeSlideView: UIScrollView, BarChartDelegate, UIScrollViewDelegate {
 		self.addSubview(radialChart)
 		self.addSubview(barChart)
 		self.addSubview(radialButton)
-		
+
+		radialButton.addTarget(self, action: #selector(radialTouchCancel), for: .touchCancel)
+		radialButton.addTarget(self, action: #selector(radialTouchCancel), for: .touchDragExit)
+		radialButton.addTarget(self, action: #selector(radialTouchDown), for: .touchDragEnter)
+		radialButton.addTarget(self, action: #selector(radialTouchDown), for: .touchDown)
+		radialButton.addTarget(self, action: #selector(radialTouchUpInside), for: .touchUpInside)
+
 		NotificationCenter.default.addObserver(self, selector: #selector(refreshData), name: .pollenDidUpdate, object: nil)
 	}
 	
@@ -77,34 +75,20 @@ class HomeSlideView: UIScrollView, BarChartDelegate, UIScrollViewDelegate {
 	}
 	
 	func setupSubviews() {
-		print("home slide view layout subviews")
 
-		let statusBarHeight:CGFloat = 22
-		var barChartTop:CGFloat = self.frame.size.height - 200
-		var radius:CGFloat = self.frame.size.height * 1.25
-		var circleCenter = CGPoint(x: self.center.x, y: barChartTop - radius)
-		if( UIDevice().userInterfaceIdiom == .phone && UIScreen.main.nativeBounds.height == 2436 ){
-			// iphone x
-			barChartTop = self.frame.size.height - 230
-			radius = self.frame.size.height * 1
-			circleCenter = CGPoint(x: self.center.x, y: barChartTop - radius)
-		}
+		let statusBarHeight:CGFloat = 0
+		let barChartTop:CGFloat = IS_IPHONE_X ? self.frame.size.height - 230 : self.frame.size.height - 200
+		let circleRadius:CGFloat = IS_IPHONE_X ? self.frame.size.height : self.frame.size.height * 1.25
+		let circleCenter = CGPoint(x: self.center.x, y: barChartTop - circleRadius)
 
-		self.contentSize = CGSize(width: self.bounds.width, height: self.bounds.height + barChartTop - 80)
-		if( UIDevice().userInterfaceIdiom == .phone && UIScreen.main.nativeBounds.height == 2436 ){
-			// iphone x
-			self.contentSize = CGSize(width: self.bounds.width, height: self.bounds.height + barChartTop - 80 - 80)
-		}
+		let backgroundCircle = CAShapeLayer()
+		backgroundCircle.path = UIBezierPath.init(arcCenter: circleCenter, radius: circleRadius, startAngle: 0, endAngle: CGFloat(Double.pi * 2), clockwise: true).cgPath
+		backgroundCircle.fillColor = Style.shared.blue.cgColor
+		sliderLayer.sublayers = [backgroundCircle]
 
-		sliderLayer.sublayers = []
-		let layer = CAShapeLayer()
-		let circle = UIBezierPath.init(arcCenter: circleCenter, radius: radius, startAngle: 0, endAngle: CGFloat(Double.pi * 2), clockwise: true)
-		layer.path = circle.cgPath
-		layer.fillColor = Style.shared.blue.cgColor
-		sliderLayer.addSublayer(layer)
-
-		barChart.frame = CGRect.init(x: 0, y: barChartTop, width: self.frame.size.width, height: 200)
-
+		radialChart.frame = CGRect(x: 0, y: statusBarHeight + (self.frame.size.height - 320.0) * 0.13, width: self.frame.size.width, height: self.frame.size.width)
+		radialChartCenter = CGPoint(x: self.bounds.size.width*0.5, y: statusBarHeight + (self.frame.size.width - 320.0) * 0.4 + self.frame.size.width*0.5 )
+		
 		if(IS_IPAD){
 			radialChart.frame = CGRect(x: self.frame.size.width*0.05,
 									   y: statusBarHeight+self.frame.size.width*0.05,
@@ -112,16 +96,13 @@ class HomeSlideView: UIScrollView, BarChartDelegate, UIScrollViewDelegate {
 									   height: self.frame.size.width * 0.9)
 			radialChartCenter = CGPoint(x: self.bounds.size.width*0.5, y: statusBarHeight + self.frame.size.width*0.5 )
 			
-		} else if( UIDevice().userInterfaceIdiom == .phone && UIScreen.main.nativeBounds.height == 2436 ){
+		} else if(IS_IPHONE_X){
 			radialChart.frame = CGRect(x: 0, y: statusBarHeight + (self.frame.size.height - 320.0) * 0.22, width: self.frame.size.width, height: self.frame.size.width)
 			radialChartCenter = CGPoint(x: self.bounds.size.width*0.5, y: statusBarHeight + (self.frame.size.width - 320.0) * 0.8 + self.frame.size.width*0.5 )
 			
 		}
-		else{
-			radialChart.frame = CGRect(x: 0, y: statusBarHeight + (self.frame.size.height - 320.0) * 0.13, width: self.frame.size.width, height: self.frame.size.width)
-			radialChartCenter = CGPoint(x: self.bounds.size.width*0.5, y: statusBarHeight + (self.frame.size.width - 320.0) * 0.4 + self.frame.size.width*0.5 )
-		}
 		
+		barChart.frame = CGRect.init(x: 0, y: barChartTop, width: self.frame.size.width, height: 200)
 		barChartCenter = CGPoint(x: self.bounds.size.width*0.5, y: barChartTop + 100)
 
 		radialButton.frame = CGRect.init(x: 0, y: 0, width: radialChart.frame.size.width*0.66, height: radialChart.frame.size.height*0.66)
@@ -130,9 +111,7 @@ class HomeSlideView: UIScrollView, BarChartDelegate, UIScrollViewDelegate {
 		barChart.center = barChartCenter
 
 		touchTape.frame = CGRect(x:self.center.x-25, y:barChartTop - 30-10, width:50, height:3*8+20)
-		for view in touchTape.subviews{
-			view.removeFromSuperview()
-		}
+		touchTape.subviews.forEach{ $0.removeFromSuperview() }
 		for i in 0..<3{
 			let touchTapeLine = UIView()
 			touchTapeLine.layer.cornerRadius = 2
@@ -143,13 +122,20 @@ class HomeSlideView: UIScrollView, BarChartDelegate, UIScrollViewDelegate {
 			touchTape.addSubview(touchTapeLine)
 		}
 		
+		
+		self.contentSize = CGSize(width: self.bounds.width, height: self.bounds.height + barChartTop - 44)
+		if(IS_IPHONE_X){
+			self.contentSize = CGSize(width: self.bounds.width, height: self.bounds.height + barChartTop - 80 - 80 + 22)
+		}
+
+		// resize charts
 		radialChart.refreshViewData()
 		self.refreshBarChart()
 	}
 	
 	@objc func refreshData(){
 		
-		let samples = Data.shared.pollenSamples.sorted { (a, b) -> Bool in
+		let samples = Array(Data.shared.pollenSamples.values).sorted { (a, b) -> Bool in
 			if let aDate = a.date, let bDate = b.date{
 				return aDate > bDate
 			}
@@ -165,7 +151,7 @@ class HomeSlideView: UIScrollView, BarChartDelegate, UIScrollViewDelegate {
 	func refreshBarChart(){
 		// build bar chart again
 		var barValues:[Float] = []
-		let samples = Data.shared.pollenSamples.sorted { (a, b) -> Bool in
+		let samples = Array(Data.shared.pollenSamples.values).sorted { (a, b) -> Bool in
 			if let aDate = a.date, let bDate = b.date{
 				return aDate > bDate
 			}

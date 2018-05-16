@@ -7,13 +7,12 @@
 //
 
 import UIKit
-//import MapKit
-//import CoreLocation
+import MapKit
+import CoreLocation
 
-class ExposureQueryView: UIView {
-//class ExposureQueryView: UIView, MKMapViewDelegate {
-//	let mapView = MKMapView()
-//	let locationManager = CLLocationManager.init()
+class ExposureQueryView: UIView, MKMapViewDelegate {
+	let mapView = MKMapView()
+	let locationManager = CLLocationManager()
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -28,20 +27,20 @@ class ExposureQueryView: UIView {
 	
 	func initUI(){
 //		locationManager.requestWhenInUseAuthorization()
-//		mapView.delegate = self
-//		mapView.mapType = .satellite
-//		mapView.showsUserLocation = true
-//		mapView.showsScale = true
-//		mapView.showsCompass = true
-//		self.addSubview(mapView)
+		mapView.delegate = self
+		mapView.mapType = .satellite
+		mapView.showsUserLocation = true
+		mapView.showsScale = true
+		mapView.showsCompass = true
+		self.addSubview(mapView)
 
 //		mapView.setCenter(CLLocationCoordinate2DMake(40.6877609761811, -73.989780480111), animated: true)
 	}
 	override func layoutSubviews() {
 		super.layoutSubviews()
-//		let mapW:CGFloat = self.bounds.size.height - 20
-//		mapView.frame = CGRect(x: 0, y: 0, width: mapW, height: mapW)
-//		mapView.center = CGPoint(x: mapW*0.5+20, y: self.bounds.size.height*0.5)
+		let mapW:CGFloat = self.bounds.size.height - 20
+		mapView.frame = CGRect(x: 0, y: 0, width: mapW, height: mapW)
+		mapView.center = CGPoint(x: mapW*0.5+20, y: self.bounds.size.height*0.5)
 	}
 
 //	func zoomToCurrentLocation() {

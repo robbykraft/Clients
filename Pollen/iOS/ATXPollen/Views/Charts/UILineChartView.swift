@@ -10,11 +10,11 @@ import UIKit
 
 class UILineChartView: UIView {
 
-//	var values:[Date:Int] = [:]{
-//		didSet{
+	var values:[String:Int] = [:]{
+		didSet{
 //			redrawLayer()
-//		}
-//	}
+		}
+	}
 	
 	let colors:[CGColor] = [
 		Style.shared.colorNoPollen.cgColor,
@@ -24,14 +24,14 @@ class UILineChartView: UIView {
 		Style.shared.colorVeryHeavy.cgColor
 	]
 	
-	// fake data
-	var values:[String:Int] = [
-			Date().toString() : 3,
-			Calendar.current.date(byAdding: Calendar.Component.day, value: -1, to: Date())!.toString() : 2,
-			Calendar.current.date(byAdding: Calendar.Component.day, value: -2, to: Date())!.toString() : 0,
-			Calendar.current.date(byAdding: Calendar.Component.day, value: -6, to: Date())!.toString() : 1,
-			Calendar.current.date(byAdding: Calendar.Component.day, value: -7, to: Date())!.toString() : 2,
-	]
+//	// fake data
+//	var values:[String:Int] = [
+//			Date().toString() : 3,
+//			Calendar.current.date(byAdding: Calendar.Component.day, value: -1, to: Date())!.toString() : 2,
+//			Calendar.current.date(byAdding: Calendar.Component.day, value: -2, to: Date())!.toString() : 0,
+//			Calendar.current.date(byAdding: Calendar.Component.day, value: -6, to: Date())!.toString() : 1,
+//			Calendar.current.date(byAdding: Calendar.Component.day, value: -7, to: Date())!.toString() : 2,
+//	]
 
 	
 	let barLayer:CALayer = CALayer()
