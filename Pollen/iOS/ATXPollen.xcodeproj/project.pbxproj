@@ -38,6 +38,8 @@
 		D5167FF120ACD6F800478CBE /* CenteredTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167FF020ACD6F700478CBE /* CenteredTableViewCell.swift */; };
 		D5167FF320ACD71D00478CBE /* MyAllergies.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167FF220ACD71D00478CBE /* MyAllergies.swift */; };
 		D5167FF520ACDC9E00478CBE /* MyChartsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167FF420ACDC9E00478CBE /* MyChartsView.swift */; };
+		D5167FFA20ACE3C900478CBE /* PollenCountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167FF920ACE3C900478CBE /* PollenCountViewController.swift */; };
+		D5167FFC20ACE3F900478CBE /* LineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167FFB20ACE3F900478CBE /* LineTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,6 +98,8 @@
 		D5167FF020ACD6F700478CBE /* CenteredTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CenteredTableViewCell.swift; sourceTree = "<group>"; };
 		D5167FF220ACD71D00478CBE /* MyAllergies.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyAllergies.swift; sourceTree = "<group>"; };
 		D5167FF420ACDC9E00478CBE /* MyChartsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyChartsView.swift; sourceTree = "<group>"; };
+		D5167FF920ACE3C900478CBE /* PollenCountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollenCountViewController.swift; sourceTree = "<group>"; };
+		D5167FFB20ACE3F900478CBE /* LineTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineTableViewCell.swift; sourceTree = "<group>"; };
 		E8F13C6D9D00FED51585F67F /* Pods_ATXPollen.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ATXPollen.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -262,6 +266,7 @@
 			children = (
 				D5167FED20ACD64700478CBE /* AboutPage.swift */,
 				D5167FF220ACD71D00478CBE /* MyAllergies.swift */,
+				D5167FF920ACE3C900478CBE /* PollenCountViewController.swift */,
 				D5167FEB20ACD56800478CBE /* Preferences.swift */,
 			);
 			path = ViewControllers;
@@ -271,6 +276,7 @@
 			isa = PBXGroup;
 			children = (
 				D5167FF020ACD6F700478CBE /* CenteredTableViewCell.swift */,
+				D5167FFB20ACE3F900478CBE /* LineTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -468,6 +474,7 @@
 				D5167FEE20ACD64700478CBE /* AboutPage.swift in Sources */,
 				D5167FDB20AC9D3E00478CBE /* QueryView.swift in Sources */,
 				D5167FE320ACB1F900478CBE /* UIBorderedButton.swift in Sources */,
+				D5167FFA20ACE3C900478CBE /* PollenCountViewController.swift in Sources */,
 				D5167FC420AC890F00478CBE /* UILineChartView.swift in Sources */,
 				D5167FE120AC9D8700478CBE /* AllergyQueryView.swift in Sources */,
 				D5167FD220AC8CB000478CBE /* PollenSample.swift in Sources */,
@@ -485,6 +492,7 @@
 				D5167FCA20AC89DF00478CBE /* Style.swift in Sources */,
 				D5167FF320ACD71D00478CBE /* MyAllergies.swift in Sources */,
 				D5167FC320AC890F00478CBE /* UIRadialChart.swift in Sources */,
+				D5167FFC20ACE3F900478CBE /* LineTableViewCell.swift in Sources */,
 				D5167FD620AC8D0D00478CBE /* Extensions.swift in Sources */,
 				D5167FD420AC8CF600478CBE /* Pollen.swift in Sources */,
 			);

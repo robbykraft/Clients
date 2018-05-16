@@ -10,6 +10,7 @@ import UIKit
 
 protocol HomeSlideViewDelegate {
 	func slideViewDidOpen(percent:CGFloat)
+	func detailRequested(forSample sample:PollenSample)
 }
 
 class HomeSlideView: UIScrollView, BarChartDelegate, UIScrollViewDelegate {
@@ -212,15 +213,9 @@ class HomeSlideView: UIScrollView, BarChartDelegate, UIScrollViewDelegate {
 	
 	@objc func radialTouchUpInside(){
 		radialChart.pressed = false
-//		if samples.count > 0{
-//			let nav = UILightNavigationController()
-//			let vc = DetailTableViewController()
-//			vc.data = self.radialChart.data
-//			nav.viewControllers = [vc]
-//			nav.modalPresentationStyle = .custom
-//			nav.modalTransitionStyle = .crossDissolve
-//			self.present(nav, animated: true, completion: nil)
-//		}
+		if let sample = self.radialChart.data{
+			self.slideViewDelegate?.detailRequested(forSample: sample)
+		}
 	}
 	
 	func scrollViewDidScroll(_ scrollView: UIScrollView) {

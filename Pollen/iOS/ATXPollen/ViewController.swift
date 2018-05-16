@@ -66,5 +66,16 @@ class ViewController: UIViewController, UINavigationControllerDelegate, QueryVie
 		self.queryView.alpha = percent
 		self.queryView.transform = CGAffineTransform.init(scaleX: percent*0.15+0.85, y: percent*0.15+0.85)
 	}
+	
+	func detailRequested(forSample sample: PollenSample) {
+//		let nav = UILightNavigationController()
+		let nav = UINavigationController()
+		let vc = PollenCountViewController()
+		vc.data = sample
+		nav.viewControllers = [vc]
+		nav.modalPresentationStyle = .custom
+		nav.modalTransitionStyle = .crossDissolve
+		self.present(nav, animated: true, completion: nil)
+	}
 
 }
