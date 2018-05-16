@@ -42,11 +42,13 @@ class QueryView: UIView{
 	func initUI(){
 		segmentedHR.backgroundColor = Style.shared.blue
 		dividerView.image = UIImage(named: "separator")
+		myChartsView.isHidden = true
 		self.addSubview(segmentedControl)
 		self.addSubview(segmentedHR)
 		self.addSubview(allergyView)
 		self.addSubview(dividerView)
 		self.addSubview(exposureView)
+		self.addSubview(myChartsView)
 		segmentedControl.addTarget(self, action: #selector(segmentedControlDidChange), for: .valueChanged)
 	}
 	
