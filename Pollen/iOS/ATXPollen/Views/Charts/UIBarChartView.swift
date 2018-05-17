@@ -71,6 +71,13 @@ class UIBarChartView: UIView {
 		fatalError("This class does not support NSCoding")
 	}
 	
+	override var frame: CGRect{
+		didSet{
+			redrawLayer()
+			layoutSubviews()
+		}
+	}
+	
 	func initUI() {
 		
 		// UILabels

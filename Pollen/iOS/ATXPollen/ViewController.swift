@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UINavigationControllerDelegate, QueryViewDelegate, HomeSlideViewDelegate{
+class ViewController: UIViewController, UINavigationControllerDelegate, HomeSlideViewDelegate{
 	
 	let preferencesButton = UIButton()
 
@@ -43,7 +43,6 @@ class ViewController: UIViewController, UINavigationControllerDelegate, QueryVie
 		
 		queryView.layer.anchorPoint = CGPoint(x:0.5, y:0.5)
 		queryView.alpha = 0.0
-		queryView.delegate = self
 		queryView.frame = CGRect(x: 0, y: 15 + 70, width: self.view.frame.size.width, height: self.view.frame.size.height - 15 - 70)
 
 		self.view.addSubview(homeSlideView)
@@ -69,11 +68,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, QueryVie
 		}
 		homeSlideView.barChart.data = sortedSamples
 	}
-	
-	func queryViewDateDidChange(date:Date){
-		homeSlideView.updateTopSectionDate(closestMatch: date)
-	}
-	
+		
 	@objc func preferencesButtonPressed(){
 		let nav = UINavigationController()
 		nav.viewControllers = [Preferences.init(style: .grouped)]

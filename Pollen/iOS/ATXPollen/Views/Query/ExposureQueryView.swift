@@ -28,13 +28,17 @@ class ExposureQueryView: UIView, MKMapViewDelegate {
 	func initUI(){
 //		locationManager.requestWhenInUseAuthorization()
 		mapView.delegate = self
-		mapView.mapType = .satellite
+//		mapView.mapType = .mutedStandard
+		mapView.mapType = .standard
 		mapView.showsUserLocation = true
 		mapView.showsScale = true
 		mapView.showsCompass = true
 		self.addSubview(mapView)
 
-//		mapView.setCenter(CLLocationCoordinate2DMake(40.6877609761811, -73.989780480111), animated: true)
+		let austinCoordinates = CLLocationCoordinate2DMake(30.2750415,-97.7418208)
+		let span = MKCoordinateSpan.init(latitudeDelta: 0.28, longitudeDelta: 0.28)
+		let region = MKCoordinateRegion(center: austinCoordinates, span: span)
+		mapView.setRegion(region, animated: true)
 	}
 	override func layoutSubviews() {
 		super.layoutSubviews()

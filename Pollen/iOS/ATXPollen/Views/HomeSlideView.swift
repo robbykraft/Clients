@@ -120,31 +120,13 @@ class HomeSlideView: UIScrollView, BarChartDelegate, UIScrollViewDelegate {
 		if(IS_IPHONE_X){
 			self.contentSize = CGSize(width: self.bounds.width, height: self.bounds.height + barChartTop - 80 - 80 + 22)
 		}
-
-		// resize charts
-//		radialChart.refreshViewData()
-//		self.refreshBarChart()
-	}
-
-	func updateTopSectionDate(closestMatch:Date){
-//		var closestI = 0
-//		for i in 1..<self.samples.count{
-//			let dDate = abs(closestMatch.timeIntervalSince1970 - (self.samples[i].date?.timeIntervalSince1970)!)
-//			let closestSoFar = abs(closestMatch.timeIntervalSince1970 - (self.samples[closestI].date?.timeIntervalSince1970)!)
-//			if dDate < closestSoFar{
-//				closestI = i
-//			}
-//		}
-////		 this calls the delegate back to here, barChartDidUpdateSelection
-//		self.barChart.didTouchIn(number: closestI)
-		
 	}
 
 	// UIBarChartView delegate
-//	func barChartDidUpdateSelection(sender: UIBarChartView) {
 	func barChartDidUpdateSelection(pollenSample: PollenSample) {
 		self.radialChart.data = pollenSample
 	}
+	
 	@objc func radialTouchDown(){
 		radialChart.pressed = true
 	}
