@@ -131,7 +131,8 @@ class UIRadialChart: UIView {
 			// filter out trace elements
 			var report = sample.report().sorted(by: { (a1, a2) -> Bool in
 				return ( Float(a1.2) ) < ( Float(a2.2) )
-			}).filter{ $0.1 != 0 }
+			})
+				//.filter{ $0.1 != 0 }
 			
 			var i = 0
 			while i < report.count {

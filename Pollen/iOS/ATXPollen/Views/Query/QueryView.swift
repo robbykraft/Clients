@@ -55,6 +55,8 @@ class QueryView: UIView{
 		
 		// allergies and exposures
 		let content = CGRect(x: 0, y: segmentedHR.frame.bottom, width: self.bounds.size.width, height: self.bounds.size.height-segmentedHR.frame.bottom)
+		
+		// layout 1
 //		allergyView.frame = CGRect(x: 0, y: content.origin.y, width: content.size.width, height: content.size.height*0.5 - dividerH*0.5)
 //		dividerView.frame = CGRect(x: -30, y: content.origin.y + content.size.height*0.5 - dividerH*0.5, width: content.size.width+60, height: dividerH)
 //		exposureView.frame = CGRect(x: 0, y: content.origin.y + content.size.height*0.5 + dividerH*0.5, width: content.size.width, height: content.size.height*0.5 - dividerH*0.5)

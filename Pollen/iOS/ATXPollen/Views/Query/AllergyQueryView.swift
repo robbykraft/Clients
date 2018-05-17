@@ -9,7 +9,7 @@
 import UIKit
 
 class AllergyQueryView: UIView {
-	
+
 	let dateLabel = UILabel()
 	let topQuestionLabel = UILabel()
 	var date:Date = Date()
@@ -17,7 +17,7 @@ class AllergyQueryView: UIView {
 	let datePrevButton = UIButton()
 	let responseSlider = UIImageView()
 	let responseText = UILabel()
-	
+
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		initUI()
@@ -36,23 +36,23 @@ class AllergyQueryView: UIView {
 
 		// buttons
 //		let labels = ["severe","medium","light","none"]
-		
+
 		self.addSubview(responseText)
 		self.addSubview(responseSlider)
 		self.addSubview(topQuestionLabel)
 	}
-	
+
 	override func layoutSubviews() {
 		super.layoutSubviews()
-		
+
 		self.formatQuestion()
-		
+
 		let topPadding:CGFloat = 35
 		let belowQuestionPad:CGFloat = 25
 		let belowSliderPad:CGFloat = 60
-		
+
 		topQuestionLabel.center = CGPoint(x: self.bounds.size.width*0.5, y: topPadding + dateLabel.frame.size.height*0.5)
-		
+
 		responseSlider.image = UIImage(named: "slider-mockup")
 		responseSlider.frame = CGRect(x: 0, y: 0, width: self.frame.size.width-100, height: (self.frame.size.width-100)/5.8)
 		responseSlider.center = CGPoint(x: self.frame.size.width*0.5, y: topQuestionLabel.frame.bottom + belowQuestionPad + responseSlider.frame.size.height*0.5)
@@ -61,8 +61,8 @@ class AllergyQueryView: UIView {
 		responseText.center = responseSlider.center
 		responseText.center.y += belowSliderPad
 	}
-	
-	
+
+
 	func formatQuestion(){
 		if Calendar.current.isDateInToday(self.date){
 			topQuestionLabel.text = "how are your allergies today?"
@@ -75,8 +75,8 @@ class AllergyQueryView: UIView {
 		}
 		topQuestionLabel.sizeToFit()
 	}
-	
-	
+
+
 	@objc func dateNextButtonHandler(){
 		var components = DateComponents()
 		components.setValue(1, for: .day)
@@ -85,7 +85,7 @@ class AllergyQueryView: UIView {
 		}
 		self.setNeedsLayout()
 	}
-	
+
 	@objc func datePrevButtonHandler(){
 		var components = DateComponents()
 		components.setValue(-1, for: .day)
@@ -94,7 +94,6 @@ class AllergyQueryView: UIView {
 		}
 		self.setNeedsLayout()
 	}
-	
 }
 
 
