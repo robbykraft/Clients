@@ -76,12 +76,12 @@ class Style {
 	private init() {
 		// custom initialize
 		if(IS_IPAD){
-			P64 = 92
-			P48 = 72
-			P40 = 60
-			P30 = 50
-			P24 = 36
-			P21 = 32
+			P64 = 100
+			P48 = 84
+			P40 = 68
+			P30 = 54
+			P24 = 41
+			P21 = 36
 			P20 = 31
 			P18 = 27
 			P15 = 26
@@ -135,10 +135,9 @@ class Style {
 //		navigationBarAppearace.tintColor = UIColor.white
 //		navigationBarAppearace.setBackgroundImage(UIImage.init(named: "darkGray"), for: .default)
 //		navigationBarAppearace.barStyle = UIBarStyle.blackTranslucent
-		let font = UIFont(name: SYSTEM_FONT_B, size: P24) ?? UIFont.boldSystemFont(ofSize: P24)
-		navigationBarAppearace.titleTextAttributes = [NSAttributedStringKey.font : font,
+		let navBarFont = (IS_IPAD) ? (UIFont(name: SYSTEM_FONT_B, size: P18) ?? UIFont.boldSystemFont(ofSize: P18)) : (UIFont(name: SYSTEM_FONT_B, size: P24) ?? UIFont.boldSystemFont(ofSize: P24))
+		navigationBarAppearace.titleTextAttributes = [NSAttributedStringKey.font : navBarFont,
 		                                              NSAttributedStringKey.foregroundColor : UIColor.black]
-//		NSKernAttributeName : CGFloat(-4.0)]
 	}
 	
 	

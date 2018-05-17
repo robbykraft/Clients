@@ -113,7 +113,8 @@ class UIRadialChart: UIView {
 		label.sizeToFit()
 		label.center = CGPoint.init(x: self.frame.size.width*0.5, y: self.frame.size.height*0.5)
 		dayLabel.sizeToFit()
-		dayLabel.center = CGPoint.init(x: self.frame.size.width*0.5, y: self.frame.size.height*0.5 - self.frame.width*0.25 + 50)
+		let paddingDayLabel:CGFloat = dayLabel.frame.size.height*0.1
+		dayLabel.center = CGPoint.init(x: self.frame.size.width*0.5, y: self.frame.size.height*0.5 - label.frame.size.height*0.5 - dayLabel.frame.size.height*0.5 - paddingDayLabel)
 		attributionText.center = CGPoint.init(x: self.frame.size.width*0.5, y: self.frame.size.height*0.5)
 	}
 	
@@ -169,6 +170,8 @@ class UIRadialChart: UIView {
 			let context = UIGraphicsGetCurrentContext()!
 			context.translateBy (x: size.width / 2, y: size.height / 2)
 			context.scaleBy (x: 1, y: -1)
+			
+			let arcFont = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P24) ?? UIFont.boldSystemFont(ofSize: Style.shared.P24)
 
 			for i in 0..<report.count {
 				let (name, _, logValue, _) = report[i]
@@ -180,9 +183,9 @@ class UIRadialChart: UIView {
 				let textAngle = angle*CGFloat(Float(i)+0.5) - CGFloat(Double.pi*0.5)
 				let textRadius = radius + arcHeight*0.5
 				if textAngle > 0 && textAngle < CGFloat.pi{
-					Style.shared.centreArcPerpendicular(text: name, context: context, radius: textRadius, angle: -textAngle, colour: UIColor.white, font: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P24)!, clockwise: false, maxAngle:angle-0.1)
+					Style.shared.centreArcPerpendicular(text: name, context: context, radius: textRadius, angle: -textAngle, colour: UIColor.white, font: arcFont, clockwise: false, maxAngle:angle-0.1)
 				} else{
-					Style.shared.centreArcPerpendicular(text: name, context: context, radius: textRadius, angle: -textAngle, colour: UIColor.white, font: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P24)!, clockwise: true, maxAngle:angle-0.1)
+					Style.shared.centreArcPerpendicular(text: name, context: context, radius: textRadius, angle: -textAngle, colour: UIColor.white, font: arcFont, clockwise: true, maxAngle:angle-0.1)
 				}
 			}
 			let image = UIGraphicsGetImageFromCurrentImageContext()
@@ -203,11 +206,12 @@ class UIRadialChart: UIView {
 
 	
 	func makeCurvedAttributionText(size:CGSize, textRadius:CGFloat) -> UIImage?{
+		let attributionFont = UIFont(name: SYSTEM_FONT, size: Style.shared.P12) ?? UIFont.systemFont(ofSize: Style.shared.P12)
 		UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
 		if let context = UIGraphicsGetCurrentContext(){
 			context.translateBy (x: size.width / 2, y: size.height / 2 )
 			context.scaleBy (x: 1, y: -1)
-			Style.shared.centreArcPerpendicular(text: "provided by Allergy Free Austin", context: context, radius: textRadius, angle: -CGFloat.pi*0.5, colour: UIColor.gray, font: UIFont(name: SYSTEM_FONT, size: Style.shared.P12)!, clockwise: false, maxAngle:nil)
+			Style.shared.centreArcPerpendicular(text: "provided by Allergy Free Austin", context: context, radius: textRadius, angle: -CGFloat.pi*0.5, colour: UIColor.gray, font: attributionFont, clockwise: false, maxAngle:nil)
 			let image = UIGraphicsGetImageFromCurrentImageContext()
 			UIGraphicsEndImageContext()
 			return image
