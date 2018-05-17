@@ -16,7 +16,7 @@ class QueryView: UIView{
 	
 	var delegate:QueryViewDelegate?
 	
-	let segmentedControl = QuerySegmentedControl(items: ["My Allergies","My Charts"])
+	let segmentedControl = QuerySegmentedControl(items: ["my allergies","my charts"])
 	let segmentedHR = UIView()
 
 	// allergies and exposures

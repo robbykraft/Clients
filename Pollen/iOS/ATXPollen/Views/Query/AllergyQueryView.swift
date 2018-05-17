@@ -42,7 +42,7 @@ class AllergyQueryView: UIView {
 		datePrevButton.addTarget(self, action: #selector(datePrevButtonHandler), for: .touchUpInside)
 		
 		// buttons
-		let labels = ["SEVERE","MEDIUM","LIGHT","NONE"]
+		let labels = ["severe","medium","light","none"]
 		let colors = [Style.shared.colorHeavy, Style.shared.colorMedium, Style.shared.colorLow, Style.shared.blue]
 		for i in 0 ..< responseButtons.count {
 			let button = responseButtons[i]
@@ -96,15 +96,15 @@ class AllergyQueryView: UIView {
 
 	func formatQuestion(){
 		if Calendar.current.isDateInToday(self.date){
-			topQuestionLabel.text = "How are your allergies today?"
+			topQuestionLabel.text = "how are your allergies today?"
 		} else if Calendar.current.isDateInYesterday(self.date){
-			topQuestionLabel.text = "How were your allergies yesterday?"
+			topQuestionLabel.text = "how were your allergies yesterday?"
 		} else if self.date.timeIntervalSinceNow < Date().timeIntervalSinceNow{
 			// date in the past
-			topQuestionLabel.text = "How were your allergies?"
+			topQuestionLabel.text = "how were your allergies?"
 		} else{
 			// date in the future
-			topQuestionLabel.text = "How will your allergies be?"
+			topQuestionLabel.text = "how will your allergies be?"
 		}
 		topQuestionLabel.sizeToFit()
 	}

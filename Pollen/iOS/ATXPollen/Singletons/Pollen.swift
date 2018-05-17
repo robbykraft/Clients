@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Firebase
 import FirebaseDatabase
 
 enum Rating {
@@ -66,6 +67,7 @@ class Pollen {
 		
 	
 	func boot(completionHandler: ((_ success:Bool) -> ())? ){
+		FirebaseApp.configure()
 		// get pollen types
 		Database.database().reference().child("types").observeSingleEvent(of: .value) { (data: DataSnapshot) in
 			if let types = data.value as? [String:Any]{

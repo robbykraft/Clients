@@ -22,6 +22,7 @@ class PollenSample {
 					if let valueInt = itemValue as? Int{
 						v = valueInt
 					} else if itemValue is String{
+						v = 0
 //						v = -1
 						// big question here, should we report trace amounts, or
 						// count them the same as an unread sample.

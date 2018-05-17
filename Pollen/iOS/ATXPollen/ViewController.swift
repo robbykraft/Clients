@@ -50,6 +50,24 @@ class ViewController: UIViewController, UINavigationControllerDelegate, QueryVie
 		self.view.addSubview(queryView)
 		self.view.sendSubview(toBack:queryView)
 
+		NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: .pollenDidUpdate, object: nil)
+	}
+	
+	deinit {
+		NotificationCenter.default.removeObserver(self, name: .pollenDidUpdate, object: nil)
+	}
+	
+	@objc func reloadData(){
+		let sortedSamples = Array(Data.shared.pollenSamples.values).sorted { (a, b) -> Bool in
+			if let aDate = a.date, let bDate = b.date{
+				return aDate > bDate
+			}
+			return false
+		}
+		if let mostRecent = sortedSamples.first{
+			homeSlideView.radialChart.data = mostRecent
+		}
+		homeSlideView.barChart.data = sortedSamples
 	}
 	
 	func queryViewDateDidChange(date:Date){

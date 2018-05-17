@@ -15,7 +15,6 @@ class Data {
 //	let bootTime:Date = Date()
 	
 	private init(){
-		FirebaseApp.configure()
 		// if a new pollen count is taken while the app is open, reload data in app
 		Database.database().reference(withPath: "/collections").observe(.value, with: { snapshot in
 			NotificationCenter.default.post(name: .pollenDidUpdate, object: nil)

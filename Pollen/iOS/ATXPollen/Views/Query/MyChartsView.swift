@@ -26,8 +26,10 @@ public class DateValueFormatter: NSObject, IAxisValueFormatter {
 class MyChartsView: UIView, ChartViewDelegate {
 
 	
-	var chartView = LineChartView()
-	
+	var masterChartView = LineChartView()
+	var chartView1 = LineChartView()
+	var chartView2 = LineChartView()
+
 //	var sliderX: UISlider!
 //	var sliderTextX: UITextField!
 	
@@ -45,15 +47,23 @@ class MyChartsView: UIView, ChartViewDelegate {
 	
 	override func layoutSubviews() {
 		super.layoutSubviews()
-		chartView.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height*0.5)
+		masterChartView.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height*0.15)
+		chartView1.frame = CGRect(x: 0, y: self.bounds.size.height*0.15, width: self.bounds.size.width, height: self.bounds.size.height*0.4)
+		chartView2.frame = CGRect(x: 0, y: self.bounds.size.height*0.55, width: self.bounds.size.width, height: self.bounds.size.height*0.4)
 	}
 	
 	func initUI(){
-		self.addSubview(chartView)
+		self.addSubview(masterChartView)
+		self.addSubview(chartView1)
+		self.addSubview(chartView2)
 
-		let data = dataWithCount(36, range: 100)
+		let data = dataWithCount(36, range: 100, color: .white)
 		data.setValueFont(UIFont(name: "HelveticaNeue", size: 7)!)
-		setupChart(chartView, data: data, color: Style.shared.blue)
+		setupChart(masterChartView, data: data, color: Style.shared.blue)
+		let data1 = dataWithCount(36, range: 100, color:Style.shared.blue)
+		setupChart(chartView1, data: data1, color: .white)
+		let data2 = dataWithCount(36, range: 100, color:Style.shared.blue)
+		setupChart(chartView2, data: data2, color: .white)
 	}
 	
 	func setupChart(_ chart: LineChartView, data: LineChartData, color: UIColor) {
@@ -82,7 +92,7 @@ class MyChartsView: UIView, ChartViewDelegate {
 		chart.animate(xAxisDuration: 2.5)
 	}
 	
-	func dataWithCount(_ count: Int, range: UInt32) -> LineChartData {
+	func dataWithCount(_ count: Int, range: UInt32, color:UIColor) -> LineChartData {
 		let yVals = (0..<count).map { i -> ChartDataEntry in
 			let val = Double(arc4random_uniform(range)) + 3
 			return ChartDataEntry(x: Double(i), y: val)
@@ -93,9 +103,9 @@ class MyChartsView: UIView, ChartViewDelegate {
 		set1.lineWidth = 1.75
 		set1.circleRadius = 5.0
 		set1.circleHoleRadius = 2.5
-		set1.setColor(.white)
-		set1.setCircleColor(.white)
-		set1.highlightColor = .white
+		set1.setColor(color)
+		set1.setCircleColor(color)
+		set1.highlightColor = color
 		set1.drawValuesEnabled = false
 		
 		return LineChartData(dataSet: set1)

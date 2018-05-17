@@ -15,6 +15,8 @@ class LineTableViewCell: UITableViewCell {
 	
 	var rating:Rating = .none
 	
+//	var traceLabel = UILabel()
+	
 	var data:(Int, Float)?{  // raw value, logValue
 		didSet{
 			self.layoutSubviews()
@@ -43,6 +45,9 @@ class LineTableViewCell: UITableViewCell {
 		barDescription.textColor = UIColor.white
 		self.addSubview(barDescription)
 		self.backgroundColor = UIColor.clear
+//		traceLabel.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P24)
+//		traceLabel.textColor = Style.shared.colorNoPollen
+//		self.addSubview(traceLabel)
 	}
 	
 	func redrawLayers(){
@@ -74,8 +79,9 @@ class LineTableViewCell: UITableViewCell {
 			case .heavy:     shape.strokeColor = Style.shared.colorHeavy.cgColor
 			case .veryHeavy: shape.strokeColor = Style.shared.colorVeryHeavy.cgColor
 			}
-			
-			barLayer.addSublayer(shape)
+			if logValue != 0{
+				barLayer.addSublayer(shape)
+			}
 		}
 	}
 	
@@ -98,6 +104,13 @@ class LineTableViewCell: UITableViewCell {
 			barDescription.text = String(describing: value)
 			barDescription.sizeToFit()
 			barDescription.center = CGPoint(x: thisLineWidth - barDescription.frame.size.width*0.5+pad, y: self.frame.size.height*0.5)
+			if value == 0{
+				barDescription.text = "trace"
+				barDescription.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P24)
+				barDescription.sizeToFit()
+				barDescription.center = CGPoint(x: barDescription.frame.size.width*0.5+pad + pad, y: self.frame.size.height*0.5)
+				barDescription.textColor = Style.shared.colorNoPollen
+			}
 		} else{
 //			barDescription.isHidden = true
 		}

@@ -67,14 +67,8 @@ class HomeSlideView: UIScrollView, BarChartDelegate, UIScrollViewDelegate {
 		radialButton.addTarget(self, action: #selector(radialTouchDown), for: .touchDragEnter)
 		radialButton.addTarget(self, action: #selector(radialTouchDown), for: .touchDown)
 		radialButton.addTarget(self, action: #selector(radialTouchUpInside), for: .touchUpInside)
+	}
 
-		NotificationCenter.default.addObserver(self, selector: #selector(refreshData), name: .pollenDidUpdate, object: nil)
-	}
-	
-	deinit{
-		NotificationCenter.default.removeObserver(self, name: .pollenDidUpdate, object: nil)
-	}
-	
 	func setupSubviews() {
 
 		let statusBarHeight:CGFloat = 0
@@ -96,11 +90,9 @@ class HomeSlideView: UIScrollView, BarChartDelegate, UIScrollViewDelegate {
 									   width: self.frame.size.width*0.9,
 									   height: self.frame.size.width * 0.9)
 			radialChartCenter = CGPoint(x: self.bounds.size.width*0.5, y: statusBarHeight + self.frame.size.width*0.5 )
-			
 		} else if(IS_IPHONE_X){
 			radialChart.frame = CGRect(x: 0, y: statusBarHeight + (self.frame.size.height - 320.0) * 0.22, width: self.frame.size.width, height: self.frame.size.width)
 			radialChartCenter = CGPoint(x: self.bounds.size.width*0.5, y: statusBarHeight + (self.frame.size.width - 320.0) * 0.8 + self.frame.size.width*0.5 )
-			
 		}
 		
 		barChart.frame = CGRect.init(x: 0, y: barChartTop, width: self.frame.size.width, height: 200)
@@ -130,57 +122,8 @@ class HomeSlideView: UIScrollView, BarChartDelegate, UIScrollViewDelegate {
 		}
 
 		// resize charts
-		radialChart.refreshViewData()
-		self.refreshBarChart()
-	}
-	
-	@objc func refreshData(){
-		
-		let samples = Array(Data.shared.pollenSamples.values).sorted { (a, b) -> Bool in
-			if let aDate = a.date, let bDate = b.date{
-				return aDate > bDate
-			}
-			return false
-		}
-		if let mostRecent = samples.first{
-			radialChart.data = mostRecent
-			radialChart.refreshViewData()
-		}
-		refreshBarChart()
-	}
-	
-	func refreshBarChart(){
-		// build bar chart again
-		var barValues:[Float] = []
-		let samples = Array(Data.shared.pollenSamples.values).sorted { (a, b) -> Bool in
-			if let aDate = a.date, let bDate = b.date{
-				return aDate > bDate
-			}
-			return false
-		}
-		for sample in samples{
-//			let keys = Array(sample.values.keys)
-			let reports = sample.report()
-			var dailyHigh:Float = 0.0
-			for i in 0..<reports.count{
-				let (_, _, logValue, _) = reports[i]
-				if logValue > dailyHigh{
-					dailyHigh = logValue
-				}
-			}
-			barValues.append( dailyHigh )
-		}
-		self.barChart.values = barValues
-		// set bar labels
-		var dateStrings:[String] = []
-		for sample in samples{
-			if let date = sample.date{
-				let dateFormatter = DateFormatter()
-				dateFormatter.dateFormat = "EEEEE"
-				dateStrings.append(dateFormatter.string(from: date).localizedUppercase)
-			}
-		}
-		self.barChart.labels = dateStrings
+//		radialChart.refreshViewData()
+//		self.refreshBarChart()
 	}
 
 	func updateTopSectionDate(closestMatch:Date){
@@ -196,12 +139,11 @@ class HomeSlideView: UIScrollView, BarChartDelegate, UIScrollViewDelegate {
 //		self.barChart.didTouchIn(number: closestI)
 		
 	}
-	
-	func barChartDidUpdateSelection(sender: UIBarChartView) {
-//		let selected = sender.selected
-//		if selected < self.samples.count{
-//			self.radialChart.data = self.samples[selected]
-//		}
+
+	// UIBarChartView delegate
+//	func barChartDidUpdateSelection(sender: UIBarChartView) {
+	func barChartDidUpdateSelection(pollenSample: PollenSample) {
+		self.radialChart.data = pollenSample
 	}
 	@objc func radialTouchDown(){
 		radialChart.pressed = true

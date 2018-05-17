@@ -9,13 +9,29 @@
 import UIKit
 
 protocol BarChartDelegate: class {
-	func barChartDidUpdateSelection(sender: UIBarChartView)
+//	func barChartDidUpdateSelection(sender: UIBarChartView)
+	func barChartDidUpdateSelection(pollenSample:PollenSample)
 }
 
 class UIBarChartView: UIView {
 	
 	weak var delegate:BarChartDelegate? // for calling completed button press function
 	var selected = 0
+	
+	var data:[PollenSample] = []{
+		didSet{
+			// build bar chart again
+			self.values = data.map { (sample) -> Float in
+				return sample.report().sorted { $0.2 > $1.2 }.first?.2 ?? 0
+			}
+			self.labels = data.map {
+				let date = $0.date ?? Date()
+				let dateFormatter = DateFormatter()
+				dateFormatter.dateFormat = "EEEEE"
+				return dateFormatter.string(from: date).localizedUppercase
+			}
+		}
+	}
 	
 	var values:[Float] = []{
 		didSet{
@@ -145,7 +161,10 @@ class UIBarChartView: UIView {
 		if selected != number{
 			selected = number
 			if delegate != nil{
-				delegate?.barChartDidUpdateSelection(sender: self)
+//				delegate?.barChartDidUpdateSelection(sender: self)
+				if selected < self.data.count{
+					delegate?.barChartDidUpdateSelection(pollenSample: self.data[selected])
+				}
 			}
 			redrawLayer()
 		}
