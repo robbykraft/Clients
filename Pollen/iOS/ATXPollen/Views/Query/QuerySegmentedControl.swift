@@ -12,7 +12,6 @@ class QuerySegmentedControl: UISegmentedControl {
 	
 	let selectedBackgroundColor = Style.shared.blue
 	var sortedViews: [UIView]!
-//	var currentIndex: Int = 0
 	
 	override init(items: [Any]?) {
 		super.init(items: items)

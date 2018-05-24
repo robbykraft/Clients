@@ -128,23 +128,24 @@ class UIRadialChart: UIView {
 			barHeight = 110.0;
 		}
 		if let sample = data{
+			var samples = sample.relevantSamples().sorted(by:{ $0.logValue < $1.logValue })
+//			var report = sample.report().sorted(by: { (a1, a2) -> Bool in
+//				return ( Float(a1.2) ) < ( Float(a2.2) )
+//			})
 			// filter out trace elements
-			var report = sample.report().sorted(by: { (a1, a2) -> Bool in
-				return ( Float(a1.2) ) < ( Float(a2.2) )
-			})
 				//.filter{ $0.1 != 0 }
 			
+			// staggered sort samples
 			var i = 0
-			while i < report.count {
-				let removed = report.remove(at: i)
-				report.insert(removed, at: 0)
+			while i < samples.count {
+				let removed = samples.remove(at: i)
+				samples.insert(removed, at: 0)
 				i += 2
 			}
 			
-			let count = report.count
-			for i in 0..<report.count {
-				let (_, _, logValue, rating) = report[i]
-				var valuePCT:CGFloat = CGFloat(logValue)
+			let count = samples.count
+			for i in 0..<samples.count {
+				var valuePCT:CGFloat = CGFloat(samples[i].logValue)
 				if(valuePCT > 0.75){ valuePCT = 0.75 }
 				let thisRadius:CGFloat = valuePCT * barHeight
 				let layer = CAShapeLayer()
@@ -153,7 +154,7 @@ class UIRadialChart: UIView {
 				circle.addLine(to: center)
 				layer.path = circle.cgPath
 				
-				switch rating {
+				switch samples[i].rating {
 				case .none:      layer.fillColor = Style.shared.colorNoPollen.cgColor
 				case .low:       layer.fillColor = Style.shared.colorLow.cgColor
 				case .medium:    layer.fillColor = Style.shared.colorMedium.cgColor
@@ -174,9 +175,8 @@ class UIRadialChart: UIView {
 			
 			let arcFont = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P24) ?? UIFont.boldSystemFont(ofSize: Style.shared.P24)
 
-			for i in 0..<report.count {
-				let (name, _, logValue, _) = report[i]
-				var valuePCT = CGFloat(logValue)
+			for i in 0..<samples.count {
+				var valuePCT = CGFloat(samples[i].logValue)
 				if(valuePCT > 0.75){ valuePCT = 0.75 }
 				let thisRadius:CGFloat = valuePCT * barHeight
 				let arcHeight:CGFloat = (barHeight*0.4)+thisRadius
@@ -184,9 +184,9 @@ class UIRadialChart: UIView {
 				let textAngle = angle*CGFloat(Float(i)+0.5) - CGFloat(Double.pi*0.5)
 				let textRadius = radius + arcHeight*0.5
 				if textAngle > 0 && textAngle < CGFloat.pi{
-					Style.shared.centreArcPerpendicular(text: name, context: context, radius: textRadius, angle: -textAngle, colour: UIColor.white, font: arcFont, clockwise: false, maxAngle:angle-0.1)
+					Style.shared.centreArcPerpendicular(text: samples[i].name, context: context, radius: textRadius, angle: -textAngle, colour: UIColor.white, font: arcFont, clockwise: false, maxAngle:angle-0.1)
 				} else{
-					Style.shared.centreArcPerpendicular(text: name, context: context, radius: textRadius, angle: -textAngle, colour: UIColor.white, font: arcFont, clockwise: true, maxAngle:angle-0.1)
+					Style.shared.centreArcPerpendicular(text: samples[i].name, context: context, radius: textRadius, angle: -textAngle, colour: UIColor.white, font: arcFont, clockwise: true, maxAngle:angle-0.1)
 				}
 			}
 			let image = UIGraphicsGetImageFromCurrentImageContext()

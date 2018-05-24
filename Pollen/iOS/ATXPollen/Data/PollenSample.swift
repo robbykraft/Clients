@@ -26,10 +26,27 @@ enum Rating: Int{
 	}
 }
 
+struct PollenSample{
+	var key:String
+	var value:Int
+	var rating:Rating
+	var name:String
+	var logValue:Float
+	
+	init(withKey key:String, value:Int){
+		self.key = key
+		self.value = value
+		self.rating = Pollen.shared.ratingFor(key: key, value: value)
+		self.name = Pollen.shared.nameFor(key: key)
+		self.logValue = Pollen.shared.logValueFor(key: key, value: value)
+	}
+}
+
 struct PollenSamples {
 	
 	var date:Date?
-	var values:[String:Int] = [:]
+	// ask for relevantSamples() instead. it filters through your list of personal allergies
+	private var samples:[PollenSample] = []
 
 	/** default initializer. fill with contents from firebase database. this is expecting:
 	* key "counts" with array of values ["pollen key":Int]
@@ -39,31 +56,25 @@ struct PollenSamples {
 		guard let unixDate = data["date"] as? Double else {return}
 		guard let counts = data["counts"] as? [String:Any] else { return }
 		// expecting database to store INT types. if not it is implied the string value "t" means trace and is stored as 0
-		self.values = counts.mapValues { (value:Any) -> Int in
-			return value is Int ? value as! Int : 0
-		}
+		self.samples = counts.map({ (key, value) -> PollenSample in
+			return PollenSample(withKey: key, value: value is Int ? value as! Int : 0)
+		})
 		self.date = Date.init(timeIntervalSince1970: unixDate)
 	}
 
-	/** returns the highest Rating of pollen entries in values */
+	/** returns the highest Rating of pollen entries filtered through your curated list of allergy types */
 	func rating() -> Rating{
-		return values
-			.map{ return Pollen.shared.ratingFor(key: $0, value: $1) }
-			.reduce(.none) { (a:Rating, b:Rating) -> Rating in
-				return (a.rawValue > b.rawValue) ? a : b
-		}
+		return self.relevantSamples()
+			.map({ $0.rating })
+			.sorted(by: { $0.rawValue > $1.rawValue })
+			.first ?? .none
 	}
 	
-	// my report gives back the sample, filtered through your curated list of allergy types
-	//
-	func report() -> [(String, Int, Float, Rating)]{  // name, raw value, 0.0-1.0 log value, Rating(low,high)
-		var report:[(String, Int, Float, Rating)] = []
-		for key in Array(self.values.keys) {
-			if Pollen.shared.myAllergies[key]!{
-				report.append( (Pollen.shared.nameFor(key: key), self.values[key]!, Pollen.shared.logValueFor(key: key, value: self.values[key]!), Pollen.shared.ratingFor(key: key, value: self.values[key]! ) ) )
-			}
-		}
-		return report
+	/** my get back the array of samples filtered through your curated list of allergy types */
+	func relevantSamples() -> [PollenSample]{
+		return self.samples.filter({ (sample) -> Bool in
+			return Pollen.shared.myAllergies[sample.key] ?? true
+		})
 	}
-	
+
 }

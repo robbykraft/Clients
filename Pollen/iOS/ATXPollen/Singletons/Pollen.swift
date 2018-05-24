@@ -10,6 +10,10 @@ import Foundation
 import Firebase
 import FirebaseDatabase
 
+let USER_DEFAULTS_MY_ALLERGY_TYPES = "allergies"
+let USER_DEFAULTS_SORT_PLANT_PREFERENCE = "sortAllergiesBy"
+let USER_DEFAULTS_PUSH_NOTIFICATION_TYPES = "notifications"
+
 class Pollen {
 
 	static let shared = Pollen()
@@ -18,32 +22,27 @@ class Pollen {
 	var types:[String:Any] = [:]
 	// this is a mirror of the "types" entry in the database
 	// keys are abbreviation of pollen names, values are dictionaries
-	
 	var notifications:[String:Any] = [:]{
 		// "enabled": BOOL
-		// "level: 0,1,2,3 (none, low, med, heavy, very heavy)
+		// "level": 0,1,2,3 (none, low, med, heavy, very heavy)
 		didSet{
-			let defaults = UserDefaults.standard
-			defaults.setValue(self.notifications, forKey: "notifications")
+			UserDefaults.standard.setValue(self.notifications, forKey: USER_DEFAULTS_PUSH_NOTIFICATION_TYPES)
 		}
 	}
 	
+	// whether the user is allergic to a certain plant: keys are pollen-keys, values are T/F
 	var myAllergies:[String:Bool] = [:]{
-		// pollen-key, T/F
 		didSet{
-			let defaults = UserDefaults.standard
-			defaults.setValue(self.myAllergies, forKey: "allergies")
+			UserDefaults.standard.setValue(self.myAllergies, forKey: USER_DEFAULTS_MY_ALLERGY_TYPES)
 		}
 	}
 	
 	var sortAllergiesBy:Int = 0{  // on my allergies page, sort by season / group
 		didSet{
-			let defaults = UserDefaults.standard
-			defaults.setValue(self.sortAllergiesBy, forKey: "sortAllergiesBy")
+			UserDefaults.standard.setValue(self.sortAllergiesBy, forKey: USER_DEFAULTS_SORT_PLANT_PREFERENCE)
 		}
 	}
-		
-	
+
 	func boot(completionHandler: ((_ success:Bool) -> ())? ){
 		FirebaseApp.configure()
 		// get pollen types
@@ -116,9 +115,8 @@ class Pollen {
 	
 	
 	func refreshUserDefaults(){
-		let defaults = UserDefaults.standard
 		// allergies
-		if var allergies = defaults.object(forKey:"allergies") as? [String:Bool] {
+		if var allergies = UserDefaults.standard.object(forKey:USER_DEFAULTS_MY_ALLERGY_TYPES) as? [String:Bool] {
 			let keys:[String] = Array(self.types.keys)
 			for key in keys{
 				if(allergies[key] == nil){
@@ -136,7 +134,7 @@ class Pollen {
 			self.myAllergies = emptyAllergies
 		}
 		// push notification preferences
-		if var pnPrefs = defaults.object(forKey:"notifications") as? [String:Any] {
+		if var pnPrefs = UserDefaults.standard.object(forKey:USER_DEFAULTS_PUSH_NOTIFICATION_TYPES) as? [String:Any] {
 			if (pnPrefs["enabled"] == nil){
 				pnPrefs["enabled"] = true
 			}
@@ -151,7 +149,7 @@ class Pollen {
 				]
 			self.notifications = pnPrefs
 		}
-		if let mySort = defaults.object(forKey:"sortAllergiesBy") as? Int {
+		if let mySort = UserDefaults.standard.object(forKey:USER_DEFAULTS_SORT_PLANT_PREFERENCE) as? Int {
 			self.sortAllergiesBy = mySort
 		} else{
 			self.sortAllergiesBy = 0

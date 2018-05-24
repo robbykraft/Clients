@@ -23,24 +23,17 @@ class CenteredTableViewCell: UITableViewCell {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
 		initUI()
 	}
-	
 	required init?(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
 		initUI()
 	}
-	
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		initUI()
 	}
-	
 	func initUI(){
 		self.textLabel?.textAlignment = .center
 		self.detailTextLabel?.textAlignment = .center
 	}
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-    }
 
 }

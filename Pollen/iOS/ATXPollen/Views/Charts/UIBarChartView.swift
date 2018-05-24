@@ -9,7 +9,6 @@
 import UIKit
 
 protocol BarChartDelegate: class {
-//	func barChartDidUpdateSelection(sender: UIBarChartView)
 	func barChartDidUpdateSelection(pollenSample:PollenSamples)
 }
 
@@ -21,9 +20,9 @@ class UIBarChartView: UIView {
 	var data:[PollenSamples] = []{
 		didSet{
 			// build bar chart again
-			self.values = data.map { (sample) -> Float in
-				return sample.report().sorted { $0.2 > $1.2 }.first?.2 ?? 0
-			}
+			self.values = data.map({ (samples:PollenSamples) -> Float in
+				return samples.relevantSamples().map({$0.logValue}).sorted(by: {$0 > $1}).first ?? 0
+			})
 			self.labels = data.map {
 				let date = $0.date ?? Date()
 				let dateFormatter = DateFormatter()
