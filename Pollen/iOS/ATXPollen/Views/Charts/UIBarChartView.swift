@@ -10,7 +10,7 @@ import UIKit
 
 protocol BarChartDelegate: class {
 //	func barChartDidUpdateSelection(sender: UIBarChartView)
-	func barChartDidUpdateSelection(pollenSample:PollenSample)
+	func barChartDidUpdateSelection(pollenSample:PollenSamples)
 }
 
 class UIBarChartView: UIView {
@@ -18,7 +18,7 @@ class UIBarChartView: UIView {
 	weak var delegate:BarChartDelegate? // for calling completed button press function
 	var selected = 0
 	
-	var data:[PollenSample] = []{
+	var data:[PollenSamples] = []{
 		didSet{
 			// build bar chart again
 			self.values = data.map { (sample) -> Float in

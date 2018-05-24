@@ -56,15 +56,10 @@ class QueryView: UIView{
 		// allergies and exposures
 		let content = CGRect(x: 0, y: segmentedHR.frame.bottom, width: self.bounds.size.width, height: self.bounds.size.height-segmentedHR.frame.bottom)
 		
-		// layout 1
-//		allergyView.frame = CGRect(x: 0, y: content.origin.y, width: content.size.width, height: content.size.height*0.5 - dividerH*0.5)
-//		dividerView.frame = CGRect(x: -30, y: content.origin.y + content.size.height*0.5 - dividerH*0.5, width: content.size.width+60, height: dividerH)
-//		exposureView.frame = CGRect(x: 0, y: content.origin.y + content.size.height*0.5 + dividerH*0.5, width: content.size.width, height: content.size.height*0.5 - dividerH*0.5)
-
-		// layout 2
-		allergyView.frame = CGRect(x: 0, y: content.origin.y, width: content.size.width, height: content.size.height*0.4 - dividerH*0.5)
-		dividerView.frame = CGRect(x: -30, y: content.origin.y + content.size.height*0.4 - dividerH*0.5, width: content.size.width+60, height: dividerH)
-		exposureView.frame = CGRect(x: 0, y: content.origin.y + content.size.height*0.4 + dividerH*0.5, width: content.size.width, height: content.size.height*0.6 - dividerH*0.5)
+		let pctTop:CGFloat = 0.4
+		allergyView.frame = CGRect(x: 0, y: content.origin.y, width: content.size.width, height: content.size.height*pctTop - dividerH*0.5)
+		dividerView.frame = CGRect(x: -30, y: content.origin.y + content.size.height*pctTop - dividerH*0.5, width: content.size.width+60, height: dividerH)
+		exposureView.frame = CGRect(x: 0, y: content.origin.y + content.size.height*pctTop + dividerH*0.5, width: content.size.width, height: content.size.height*(1-pctTop) - dividerH*0.5)
 
 		
 		// my charts

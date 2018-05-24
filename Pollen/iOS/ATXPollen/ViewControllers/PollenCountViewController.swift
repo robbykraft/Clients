@@ -10,7 +10,7 @@ import UIKit
 
 class PollenCountViewController: UITableViewController {
 	
-	var data:PollenSample?{
+	var data:PollenSamples?{
 		didSet{
 			self.tableView.reloadData()
 			if let d = data{
@@ -92,7 +92,8 @@ class PollenCountViewController: UITableViewController {
 			// Rotate the coordinate system
 			context.rotate(by: CGFloat.pi / 2.0)
 			// Calculate the width of the text
-			let str = Pollen.shared.stringForRating(rating)
+			
+			let str = rating.description()
 			let offset = str.size(withAttributes: attributes)
 			// Move the origin by half the size of the text
 

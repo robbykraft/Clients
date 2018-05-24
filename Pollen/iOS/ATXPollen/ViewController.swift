@@ -28,7 +28,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, HomeSlid
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-				
+						
 		self.view.backgroundColor = Style.shared.whiteSmoke
 
 		homeSlideView.frame = CGRect(x: 0, y: 22, width: self.view.frame.size.width, height: self.view.frame.size.height-22)
@@ -80,7 +80,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, HomeSlid
 		self.queryView.transform = CGAffineTransform.init(scaleX: percent*0.15+0.85, y: percent*0.15+0.85)
 	}
 	
-	func detailRequested(forSample sample: PollenSample) {
+	func detailRequested(forSample sample: PollenSamples) {
 //		let nav = UILightNavigationController()
 		let nav = UINavigationController()
 		let vc = PollenCountViewController()

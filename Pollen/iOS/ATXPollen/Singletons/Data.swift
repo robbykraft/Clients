@@ -10,7 +10,7 @@ class Data {
 	static let shared = Data()
 	
 	// date(toString) : sample
-	var pollenSamples:[String:PollenSample] = [:]
+	var pollenSamples:[String:PollenSamples] = [:]
 	
 //	let bootTime:Date = Date()
 	
@@ -69,8 +69,7 @@ class Data {
 			tries += 1
 			Database.database().reference().child("collections/" + dateString).observeSingleEvent(of: .value) { (data) in
 				if let d = data.value as? [String:Any]{
-					let sample = PollenSample()
-					sample.setFromDatabase(d)
+					let sample = PollenSamples(fromDatabase: d)
 					if let sampleDate = sample.date{
 						let dateString = sampleDate.toString()
 						self.pollenSamples[dateString] = sample

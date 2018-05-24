@@ -10,7 +10,7 @@ import UIKit
 
 class UIRadialChart: UIView {
 	
-	var data:PollenSample?{
+	var data:PollenSamples?{
 		didSet{
 			self.refreshViewData()
 		}
@@ -56,8 +56,8 @@ class UIRadialChart: UIView {
 	
 	func refreshViewData() {
 		if let d = data{
-			let summary = d.generateSummary()
-			label.text = Pollen.shared.stringForRating(summary)
+			let summary = d.rating()
+			label.text = summary.description()
 			// text size
 			switch summary {
 			case .veryHeavy: label.font = UIFont.init(name: SYSTEM_FONT_B, size: Style.shared.P40)

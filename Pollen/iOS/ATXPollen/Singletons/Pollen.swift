@@ -10,28 +10,6 @@ import Foundation
 import Firebase
 import FirebaseDatabase
 
-enum Rating {
-	case none
-	case low
-	case medium
-	case heavy
-	case veryHeavy
-}
-
-struct PollenLevels{
-	var vh:Int
-	var h:Int
-	var m:Int
-	var l:Int
-}
-
-struct PollenType{
-	var name:String
-	var levels:PollenLevels
-	var group:Int
-	var season:Int
-}
-
 class Pollen {
 
 	static let shared = Pollen()
@@ -181,28 +159,7 @@ class Pollen {
 		print("refreshUserDefaults did finish")
 		
 	}
-	
-	func stringForRating(_ rating:Rating) -> String{
-		switch rating {
-		case .veryHeavy: return "very heavy"
-		case .heavy: return "heavy"
-		case .medium: return "medium"
-		case .low: return "light"
-		case .none: return "no pollen"
-		}
-	}
-	
-//	func getPollenTypes(completionHandler: ((_ success:Bool) -> ())? ){
-//		Fire.shared.getData("types") { (data) in
-//			if let types = data as? [String:Any]{
-//				self.types = types
-//				if(completionHandler != nil){
-//					completionHandler!(true)
-//				}
-//			}
-//		}
-//	}
-	
+
 	func getAllPollenNames() -> [String]{
 		var nameArray:[String] = [];
 		let keys = Array(self.types.keys)
@@ -216,34 +173,6 @@ class Pollen {
 		return nameArray
 	}
 	
-	
-//	func loadRecentData(numberOfDays:Int, completionHandler: ((_ entry:PollenSample) -> ())? ){
-//		
-//		var tries = 0
-//		var successes = 0
-//		func queryDatabase(){
-//			let dateString = makeDateCode(daysPast: tries)
-//			tries += 1
-//			Fire.shared.getData("collections/" + dateString) { (data) in
-//				if(data == nil && tries < 40){
-//					print("no entry for " + dateString + ". trying again")
-//					queryDatabase()
-//				} else if let d = data as? [String:Any]{
-//					let sample = Sample()
-//					sample.setFromDatabase(d)
-//					if(completionHandler != nil){
-//						completionHandler!(sample)
-//					}
-//					successes += 1
-//					if successes < numberOfDays{
-//						queryDatabase()
-//					}
-//				}
-//			}
-//		}
-//		
-//		// run the function
-//		queryDatabase()
-//	}
+
 
 }
