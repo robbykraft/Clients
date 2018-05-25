@@ -55,8 +55,14 @@ class PollenCountViewController: UITableViewController {
 		let strokeWeight:CGFloat = 38
 		let pad:CGFloat = 10
 		
-		let sampleData = [.low, .medium, .heavy, .veryHeavy].map { PollenSample(withKey: "cot", value: Pollen.shared.getValueFor(key: "cot", atRating: $0)) }
+//		let sampleData = [.low, .medium, .heavy, .veryHeavy].map { PollenSample(withKey: "cot", value: Pollen.shared.getValueFor(key: "cot", atRating: $0)) }
 		
+		let sampleData:[[String:Any]] = [
+			["name" : Rating.low.description(), "logValue" : 0.177],
+			["name" : Rating.medium.description(), "logValue" : 0.328],
+			["name" : Rating.heavy.description(), "logValue" : 0.588],
+			["name" : Rating.veryHeavy.description(), "logValue" : 1.0]
+		]
 		// draw sideways text marking low, medium, heavy, very heavy lines
 		let size = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.width)
 		UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
@@ -71,9 +77,9 @@ class PollenCountViewController: UITableViewController {
 			// Undo the inversion of the Y-axis (or the text goes backwards!)
 			context.scaleBy(x: 1, y: -1)
 			context.rotate(by: CGFloat.pi / 2.0)
-			let str = sample.rating.description()
+			let str:String = sample["name"] as! String
 			let offset = str.size(withAttributes: attributes)
-			let ratingPoint:CGPoint = CGPoint.init(x: 1+strokeWeight+pad + lineFrame*CGFloat(sample.logValue), y: 0.0)
+			let ratingPoint:CGPoint = CGPoint.init(x: 1+strokeWeight+pad + lineFrame*CGFloat(sample["logValue"] as! Float), y: 0.0)
 			context.translateBy(x: -offset.width + size.width*0.33, y: size.width*0.5 - ratingPoint.x - offset.height*0.85)
 			str.draw(at: CGPoint(x: 0, y: 0), withAttributes: attributes)
 			context.restoreGState()
@@ -87,8 +93,8 @@ class PollenCountViewController: UITableViewController {
 		for sample in sampleData{
 			let shape = CAShapeLayer()
 			let bz = UIBezierPath()
-			bz.move(to: CGPoint.init(x: 1+strokeWeight+pad + lineFrame*CGFloat(sample.logValue), y: 0.0))
-			bz.addLine(to: CGPoint.init(x: 1+strokeWeight+pad + lineFrame*CGFloat(sample.logValue), y: self.view.frame.size.height))
+			bz.move(to: CGPoint.init(x: 1+strokeWeight+pad + lineFrame*CGFloat(sample["logValue"] as! Float), y: 0.0))
+			bz.addLine(to: CGPoint.init(x: 1+strokeWeight+pad + lineFrame*CGFloat(sample["logValue"] as! Float), y: self.view.frame.size.height))
 			shape.lineWidth = 4
 			let lineDashPatterns: [NSNumber]  = [0, 8]
 			shape.lineDashPattern = lineDashPatterns
@@ -97,7 +103,6 @@ class PollenCountViewController: UITableViewController {
 			shape.path = bz.cgPath
 			gridLayer.addSublayer(shape)
 		}
-
 	}
 	
 	override func viewDidLayoutSubviews() {

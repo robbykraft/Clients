@@ -40,6 +40,7 @@
 		D5167FF520ACDC9E00478CBE /* MyChartsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167FF420ACDC9E00478CBE /* MyChartsView.swift */; };
 		D5167FFA20ACE3C900478CBE /* PollenCountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167FF920ACE3C900478CBE /* PollenCountViewController.swift */; };
 		D5167FFC20ACE3F900478CBE /* LineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167FFB20ACE3F900478CBE /* LineTableViewCell.swift */; };
+		D5D1DF5120B8B32C008DA7F7 /* Pollen.plist in Resources */ = {isa = PBXBuildFile; fileRef = D5D1DF5020B8B32C008DA7F7 /* Pollen.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -100,6 +101,7 @@
 		D5167FF420ACDC9E00478CBE /* MyChartsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyChartsView.swift; sourceTree = "<group>"; };
 		D5167FF920ACE3C900478CBE /* PollenCountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollenCountViewController.swift; sourceTree = "<group>"; };
 		D5167FFB20ACE3F900478CBE /* LineTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineTableViewCell.swift; sourceTree = "<group>"; };
+		D5D1DF5020B8B32C008DA7F7 /* Pollen.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Pollen.plist; sourceTree = "<group>"; };
 		E8F13C6D9D00FED51585F67F /* Pods_ATXPollen.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ATXPollen.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -177,6 +179,7 @@
 				D5167F9520AC841200478CBE /* Assets.xcassets */,
 				D5167F9720AC841200478CBE /* LaunchScreen.storyboard */,
 				D5167F9A20AC841200478CBE /* Info.plist */,
+				D5D1DF5020B8B32C008DA7F7 /* Pollen.plist */,
 				D5167FE420ACB90700478CBE /* GoogleService-Info.plist */,
 				D5167F9220AC841000478CBE /* ATXPollen.xcdatamodeld */,
 			);
@@ -396,6 +399,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5D1DF5120B8B32C008DA7F7 /* Pollen.plist in Resources */,
 				D5167F9920AC841200478CBE /* LaunchScreen.storyboard in Resources */,
 				D5167FE520ACB90800478CBE /* GoogleService-Info.plist in Resources */,
 				D5167F9620AC841200478CBE /* Assets.xcassets in Resources */,

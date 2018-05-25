@@ -28,46 +28,24 @@ class MyAllergies: UITableViewController{
 	func rebuildData(){
 		// seasons and categories are both 4 long
 		self.sections = [ [], [], [], [] ]
-		
-		let myAllergies = Pollen.shared.myAllergies
-		let keys = Array(myAllergies.keys)
 		var dataKeys:[String:Bool] = [:]
-		for key in keys{
-			var section:Int = 0
-			switch Pollen.shared.sortAllergiesBy {
-			case 0:
-				// sort by seasons
-				if let t = Pollen.shared.types[key] as? [String:Any]{
-					if let season = t["season"] as? Int{
-						section = season
-					}
-				}
-			default:
-				// sort by species categories
-				if let t = Pollen.shared.types[key] as? [String:Any]{
-					if let group = t["group"] as? Int{
-						section = group
-					}
-				}
-			}
-			let value = myAllergies[key]!
-			dataKeys[key] = value
-			self.sections[section].append(key)
-		}
-		for i in 0..<self.sections.count{
-			self.sections[i] = self.sections[i].sorted(by: { (s1, s2) -> Bool in
-				return s1 < s2
+		switch Pollen.shared.sortAllergiesBy {
+		case 0:
+			Pollen.shared.types.sorted(by: { return $0.name < $1.name }).forEach({
+				dataKeys[$0.key] = Pollen.shared.myAllergies[$0.key]!
+				self.sections[$0.season.rawValue].append($0.key)
+			})
+		default:
+			Pollen.shared.types.sorted(by: { return $0.name < $1.name }).forEach({
+				dataKeys[$0.key] = Pollen.shared.myAllergies[$0.key]!
+				self.sections[$0.group.rawValue].append($0.key)
 			})
 		}
 		self.data = dataKeys
-		
 	}
 	
 	override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-		if(IS_IPAD){
-			return 60
-		}
-		return 44
+		return IS_IPAD ? 60 : 44
 	}
 
 	override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -75,20 +53,12 @@ class MyAllergies: UITableViewController{
 		case 0:
 			switch section{
 			case 0: return nil
-			case 1: return "Spring"
-			case 2: return "Summer"
-			case 3: return "Autumn"
-			case 4: return "Winter"
-			default: return nil
+			default: return PollenTypeSeason(rawValue: section-1)?.asString().capitalized ?? ""
 			}
 		default:
 			switch section{
 			case 0: return nil
-			case 1: return "Trees"
-			case 2: return "Grasses"
-			case 3: return "Molds"
-			case 4: return "Weeds"
-			default: return nil
+			default: return PollenTypeGroup(rawValue: section-1)?.asString().capitalized ?? ""
 			}
 		}
 	}

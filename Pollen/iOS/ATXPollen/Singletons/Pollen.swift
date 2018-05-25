@@ -14,12 +14,102 @@ let USER_DEFAULTS_MY_ALLERGY_TYPES = "allergies"
 let USER_DEFAULTS_SORT_PLANT_PREFERENCE = "sortAllergiesBy"
 let USER_DEFAULTS_PUSH_NOTIFICATION_TYPES = "notifications"
 
+
+struct ClinicHours{
+	var days:String  // days is something like "M-F"
+	var times:String  // times is something like "8am - 5pm"
+	init(withDictionary dictionary:[String:AnyObject]){
+		days = dictionary["days"] as? String ?? ""
+		times = dictionary["times"] as? String ?? ""
+	}
+}
+
+struct ClinicInfo{
+	var address:String
+	var phone:String
+	var website:String
+	var hours:[ClinicHours]
+	init(withDictionary dictionary:[String:AnyObject]){
+		address = dictionary["address"] as? String ?? ""
+		phone = dictionary["phone"] as? String ?? ""
+		website = dictionary["website"] as? String ?? ""
+		hours = (dictionary["hours"] as? Array ?? []).map({ return ClinicHours(withDictionary: $0) })
+	}
+}
+
+enum PollenTypeSeason:Int{
+	case spring
+	case summer
+	case autumn
+	case winter
+	func asString() -> String {
+		switch self{
+		case .spring: return "spring"
+		case .summer: return "summer"
+		case .autumn: return "autumn"
+		case .winter: return "winter"
+		}
+	}
+}
+enum PollenTypeGroup:Int{
+	case trees
+	case grasses
+	case molds
+	case weeds
+	func asString() -> String {
+		switch self{
+		case .trees: return "trees"
+		case .grasses: return "grasses"
+		case .molds: return "molds"
+		case .weeds: return "weeds"
+		}
+	}
+}
+struct PollenTypeLevels{
+	var l:Int
+	var m:Int
+	var h:Int
+	var vh:Int
+	init(withDictionary dictionary:[String:Int]){
+		l = dictionary["l"] ?? 15
+		m = dictionary["m"] ?? 50
+		h = dictionary["h"] ?? 300
+		vh = dictionary["vh"] ?? 3000
+	}
+}
+struct PollenType{
+	var key:String
+	var name:String
+	var season:PollenTypeSeason
+	var group:PollenTypeGroup
+	var levels:PollenTypeLevels
+	func logValue(forValue value:Int) -> Float {
+		var result = Float(value) / Float(levels.vh)
+		if(result > 1.0){ result = 1.0 }
+		result = pow(result, 0.1)
+		result = result - 0.5;
+		if(result < 0.0){ result = 0.0 }
+		result *= 2
+		return result
+	}
+	func rating(forValue value:Int) -> Rating{
+		if value < levels.l{ return .none }
+		if value < levels.m{ return .low }
+		if value < levels.h{ return .medium }
+		if value < levels.vh{ return .heavy }
+		return .veryHeavy
+	}
+}
+
 class Pollen {
 
 	static let shared = Pollen()
 	
 	// fill on boot
-	var types:[String:Any] = [:]
+	var types:[PollenType] = []
+	
+	var clinic:ClinicInfo?
+
 	// this is a mirror of the "types" entry in the database
 	// keys are abbreviation of pollen names, values are dictionaries
 	var notifications:[String:Any] = [:]{
@@ -42,135 +132,118 @@ class Pollen {
 			UserDefaults.standard.setValue(self.sortAllergiesBy, forKey: USER_DEFAULTS_SORT_PLANT_PREFERENCE)
 		}
 	}
+	
+	func loadSystemPList(){
+		guard let plistPath = Bundle.main.path(forResource: "Pollen", ofType: "plist") else { return }
+		guard let plistData = FileManager.default.contents(atPath: plistPath) else {return}
+		var format = PropertyListSerialization.PropertyListFormat.xml
+		guard let pListDict = try! PropertyListSerialization.propertyList(from: plistData, options: .mutableContainersAndLeaves, format: &format) as? [String:AnyObject] else {return}
+		
+		if let clinicDict = pListDict["clinic"] as? [String:AnyObject]{
+			self.clinic = ClinicInfo(withDictionary: clinicDict)
+		}
+
+		if let typesDict = pListDict["types"] as? [[String:AnyObject]]{
+			self.types = typesDict.map { (entry) -> PollenType in
+				let typeName = entry["name"] as? String ?? ""
+				let typeKey = entry["key"] as? String ?? ""
+				let typeSeason = PollenTypeSeason(rawValue: (entry["season"] as? Int ?? 0))!
+				let typeGroup = PollenTypeGroup(rawValue: (entry["group"] as? Int ?? 0))!
+				let typeLevels = PollenTypeLevels(withDictionary: entry["levels"] as? [String:Int] ?? [:])
+				return PollenType(key: typeKey, name: typeName, season: typeSeason, group: typeGroup, levels: typeLevels)
+			}
+			
+			print(self.types)
+
+//			if let types = data.value as? [String:Any]{
+//				self.types = types
+//				self.refreshUserDefaults()
+//				if(completionHandler != nil){
+//					completionHandler!(true)
+//				}
+//			}
+
+		}
+	}
 
 	func boot(completionHandler: ((_ success:Bool) -> ())? ){
-		FirebaseApp.configure()
+//		FirebaseApp.configure()
+//		Database.database().reference().child("types").observeSingleEvent(of: .value) { (data: DataSnapshot) in
+//			if let types = data.value as? [String:Any]{
+//				self.types = types
+//				self.refreshUserDefaults()
+//				if(completionHandler != nil){
+//					completionHandler!(true)
+//				}
+//			}
+//		}
+
+		
 		// get pollen types
-		Database.database().reference().child("types").observeSingleEvent(of: .value) { (data: DataSnapshot) in
-			if let types = data.value as? [String:Any]{
-				self.types = types
-				self.refreshUserDefaults()
-				if(completionHandler != nil){
-					completionHandler!(true)
-				}
-			}
+		loadSystemPList()
+
+		self.bootUserDefaults()
+		if(completionHandler != nil){
+			completionHandler!(true)
 		}
 	}
 	
-	func getValueFor(key:String, atRating:Rating) -> Int{
-		let pollenType:[String:Any] = self.types[key] as! [String : Any]
-		if let levels = pollenType["levels"] as? [String:Any]{
-			switch atRating{
-			case .none: return 0
-			case .low: return levels["l"] as! Int
-			case .medium: return levels["m"] as! Int
-			case .heavy: return levels["h"] as! Int
-			case .veryHeavy: return levels["vh"] as! Int
-			}
-		}
-		return 0
-	}
+//	func getValueFor(key:String, atRating:Rating) -> Int{
+//		let pollenType:[String:Any] = self.types[key] as! [String : Any]
+//		if let levels = pollenType["levels"] as? [String:Any]{
+//			switch atRating{
+//			case .none: return 0
+//			case .low: return levels["l"] as! Int
+//			case .medium: return levels["m"] as! Int
+//			case .heavy: return levels["h"] as! Int
+//			case .veryHeavy: return levels["vh"] as! Int
+//			}
+//		}
+//		return 0
+//	}
 	
 	func nameFor(key:String) -> String{
-		let entry = self.types[key] as? [String:Any]
-		if let e = entry{
-			let name = e["name"] as? String
-			if let n = name{
-				return n
-			}
-		}
+		if let validMatch = self.types.filter({ $0.key == key }).first{ return validMatch.name }
 		return key
 	}
 
 	func logValueFor(key:String, value:Int) -> Float{
-		let pollenType:[String:Any] = self.types[key] as! [String : Any]
-		if let levels = pollenType["levels"] as? [String:Any]{
-			let veryHeavy:Int = levels["vh"] as! Int
-			var result = Float(value) / Float(veryHeavy)
-			if(result > 1.0){ result = 1.0 }
-			result = pow(result, 0.1)
-			result = result - 0.5;
-			if(result < 0.0) {result = 0.0}
-			result *= 2
-			return result
+		if let validMatch = self.types.filter({ $0.key == key }).first{
+			return validMatch.logValue(forValue: value)
 		}
 		return 0.0
 	}
 	
 	func ratingFor(key:String, value:Int) -> Rating{
-		let pollenType:[String:Any] = self.types[key] as! [String : Any]
-		if let levels = pollenType["levels"] as? [String:Any]{
-			let low:Int = levels["l"] as! Int
-			let med:Int = levels["m"] as! Int
-			let heavy:Int = levels["h"] as! Int
-			let veryHeavy:Int = levels["vh"] as! Int
-			if value < low{ return .none }
-			if value < med{ return .low }
-			if value < heavy{ return .medium }
-			if value < veryHeavy{ return .heavy }
-			return .veryHeavy
+		if let validMatch = self.types.filter({ $0.key == key }).first{
+			return validMatch.rating(forValue: value)
 		}
 		return .none
 	}
 	
-	
-	func refreshUserDefaults(){
-		// allergies
-		if var allergies = UserDefaults.standard.object(forKey:USER_DEFAULTS_MY_ALLERGY_TYPES) as? [String:Bool] {
-			let keys:[String] = Array(self.types.keys)
-			for key in keys{
-				if(allergies[key] == nil){
-					print("adding an allergy entry for " + key)
-					allergies[key] = true
+	func bootUserDefaults(){
+		// my allergy types
+		if let storedAllergies = UserDefaults.standard.object(forKey:USER_DEFAULTS_MY_ALLERGY_TYPES) as? [String:Bool]{
+			// boot up allergies from last storage
+			self.myAllergies = storedAllergies;
+			// make sure all keys are inside our defaults in case new plants have been added since last run
+			self.types.map({ $0.key }).forEach({
+				if self.myAllergies[$0] == nil{
+					self.myAllergies[$0] = true
 				}
-			}
-			self.myAllergies = allergies
+			})
 		} else{
-			let keys:[String] = Array(self.types.keys)
-			var emptyAllergies:[String:Bool] = [:]
-			for key in keys{
-				emptyAllergies[key] = true
-			}
-			self.myAllergies = emptyAllergies
+			// first boot. fill all allergy types with key:true
+			self.myAllergies = self.types.reduce(into: [:]) { $0[$1.key] = true }
 		}
-		// push notification preferences
-		if var pnPrefs = UserDefaults.standard.object(forKey:USER_DEFAULTS_PUSH_NOTIFICATION_TYPES) as? [String:Any] {
-			if (pnPrefs["enabled"] == nil){
-				pnPrefs["enabled"] = true
-			}
-			if (pnPrefs["level"] == nil){
-				pnPrefs["level"] = 2
-			}
-			self.notifications = pnPrefs
-		} else{
-			let pnPrefs:[String:Any] = [
-				"enabled" : true,
-				"level" : 2
-				]
-			self.notifications = pnPrefs
-		}
-		if let mySort = UserDefaults.standard.object(forKey:USER_DEFAULTS_SORT_PLANT_PREFERENCE) as? Int {
-			self.sortAllergiesBy = mySort
-		} else{
-			self.sortAllergiesBy = 0
-		}
-		print("refreshUserDefaults did finish")
 		
-	}
+		// push notification preferences
+		self.notifications = UserDefaults.standard.object(forKey:USER_DEFAULTS_PUSH_NOTIFICATION_TYPES) as? [String:Any] ?? [:]
+		if (self.notifications["enabled"] == nil){ self.notifications["enabled"] = true }
+		if (self.notifications["level"] == nil){ self.notifications["level"] = 2 }
 
-	func getAllPollenNames() -> [String]{
-		var nameArray:[String] = [];
-		let keys = Array(self.types.keys)
-		for key in keys{
-			if let thisType = self.types[key] as? [String:Any]{
-				if let thisName = thisType["name"] as? String{
-					nameArray.append(thisName)
-				}
-			}
-		}
-		return nameArray
+		// preferences pane, sort allergy by
+		self.sortAllergiesBy = UserDefaults.standard.object(forKey:USER_DEFAULTS_SORT_PLANT_PREFERENCE) as? Int ?? 0
 	}
-	
-
 
 }

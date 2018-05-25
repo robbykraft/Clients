@@ -13,18 +13,10 @@ class AboutPage: UITableViewController{
 	
 	let logoImageView = UIImageView()
 
-	var phoneNumberString:String?{
-		didSet{ self.tableView.reloadData() }
-	}
-	var addressString:String?{
-		didSet{ self.tableView.reloadData() }
-	}
-	var websiteString:String?{
-		didSet{ self.tableView.reloadData() }
-	}
-	var hours:[[String:Any]]?{
-		didSet{ self.tableView.reloadData()}
-	}
+	var phoneNumberString:String?
+	var addressString:String?
+	var websiteString:String?
+	var hours:[ClinicHours]?
 
 	override func viewDidLoad() {
 		self.title = "ABOUT US"
@@ -33,15 +25,14 @@ class AboutPage: UITableViewController{
 		self.view.addSubview(logoImageView)
 		
 		navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-
-		Database.database().reference().child("clinic/").observeSingleEvent(of: .value) { (data) in
-			if let d = data.value as? [String:Any]{
-				self.phoneNumberString = d["phone"] as? String
-				self.websiteString = d["website"] as? String
-				self.addressString = d["address"] as? String
-				self.hours = d["hours"] as? [[String:Any]]
-			}
+		
+		if let clinic = Pollen.shared.clinic{
+			self.addressString = clinic.address
+			self.phoneNumberString = clinic.phone
+			self.websiteString = clinic.website
+			self.hours = clinic.hours
 		}
+		self.tableView.reloadData()
 	}
 	
 	override func viewDidLayoutSubviews() {
@@ -133,8 +124,8 @@ class AboutPage: UITableViewController{
 			default:
 				if let d = self.hours{
 					if(d.count > indexPath.row-1){
-						cell.textLabel?.text = d[indexPath.row-1]["days"] as? String
-						cell.detailTextLabel?.text = d[indexPath.row-1]["times"] as? String
+						cell.textLabel?.text = d[indexPath.row-1].days
+						cell.detailTextLabel?.text = d[indexPath.row-1].times
 					}
 				}
 			}
