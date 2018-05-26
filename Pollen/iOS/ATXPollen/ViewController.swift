@@ -57,7 +57,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, HomeSlid
 	}
 	
 	@objc func reloadData(){
-		let sortedSamples = Array(Data.shared.pollenSamples.values).sorted { (a, b) -> Bool in
+		let sortedSamples = Array(ClinicData.shared.pollenSamples.values).sorted { (a, b) -> Bool in
 			if let aDate = a.date, let bDate = b.date{
 				return aDate > bDate
 			}

@@ -26,7 +26,7 @@ class PollenCountViewController: UITableViewController {
 	
 	let gridView = UIView()
 	let gridLayer = CAShapeLayer()
-
+	
     override func viewDidLoad() {
         super.viewDidLoad()
 				
@@ -54,22 +54,21 @@ class PollenCountViewController: UITableViewController {
 		let lineFrame:CGFloat = self.view.frame.size.width * 0.5
 		let strokeWeight:CGFloat = 38
 		let pad:CGFloat = 10
-		
-//		let sampleData = [.low, .medium, .heavy, .veryHeavy].map { PollenSample(withKey: "cot", value: Pollen.shared.getValueFor(key: "cot", atRating: $0)) }
-		
-		let sampleData:[[String:Any]] = [
-			["name" : Rating.low.description(), "logValue" : 0.177],
-			["name" : Rating.medium.description(), "logValue" : 0.328],
-			["name" : Rating.heavy.description(), "logValue" : 0.588],
-			["name" : Rating.veryHeavy.description(), "logValue" : 1.0]
+
+		let ratingLogData:[(String,Double)] = [
+			(PollenRating.low.description(), 0.177),
+			(PollenRating.medium.description(), 0.328),
+			(PollenRating.heavy.description(), 0.588),
+			(PollenRating.veryHeavy.description(), 1.0)
 		]
+
 		// draw sideways text marking low, medium, heavy, very heavy lines
 		let size = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.width)
 		UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
 		let context = UIGraphicsGetCurrentContext()!
 		context.translateBy (x: size.width / 2, y: size.height / 2)
 		context.scaleBy (x: 1, y: -1)
-		for sample in sampleData{
+		for sample in ratingLogData{
 			let font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P30) ?? UIFont.boldSystemFont(ofSize: Style.shared.P30)
 			let attributes = [NSAttributedStringKey.foregroundColor: Style.shared.lightGray,
 							  NSAttributedStringKey.font: font]
@@ -77,9 +76,9 @@ class PollenCountViewController: UITableViewController {
 			// Undo the inversion of the Y-axis (or the text goes backwards!)
 			context.scaleBy(x: 1, y: -1)
 			context.rotate(by: CGFloat.pi / 2.0)
-			let str:String = sample["name"] as! String
+			let str:String = sample.0
 			let offset = str.size(withAttributes: attributes)
-			let ratingPoint:CGPoint = CGPoint.init(x: 1+strokeWeight+pad + lineFrame*CGFloat(sample["logValue"] as! Float), y: 0.0)
+			let ratingPoint:CGPoint = CGPoint.init(x: 1+strokeWeight+pad + lineFrame*CGFloat(sample.1), y: 0.0)
 			context.translateBy(x: -offset.width + size.width*0.33, y: size.width*0.5 - ratingPoint.x - offset.height*0.85)
 			str.draw(at: CGPoint(x: 0, y: 0), withAttributes: attributes)
 			context.restoreGState()
@@ -90,11 +89,11 @@ class PollenCountViewController: UITableViewController {
 		labelImageView.frame = CGRect(x: 0, y: self.view.frame.size.height - size.height, width: size.width, height: size.height)
 		self.gridView.addSubview(labelImageView)
 
-		for sample in sampleData{
+		for sample in ratingLogData{
 			let shape = CAShapeLayer()
 			let bz = UIBezierPath()
-			bz.move(to: CGPoint.init(x: 1+strokeWeight+pad + lineFrame*CGFloat(sample["logValue"] as! Float), y: 0.0))
-			bz.addLine(to: CGPoint.init(x: 1+strokeWeight+pad + lineFrame*CGFloat(sample["logValue"] as! Float), y: self.view.frame.size.height))
+			bz.move(to: CGPoint.init(x: 1+strokeWeight+pad + lineFrame*CGFloat(sample.1), y: 0.0))
+			bz.addLine(to: CGPoint.init(x: 1+strokeWeight+pad + lineFrame*CGFloat(sample.1), y: self.view.frame.size.height))
 			shape.lineWidth = 4
 			let lineDashPatterns: [NSNumber]  = [0, 8]
 			shape.lineDashPattern = lineDashPatterns
@@ -130,10 +129,7 @@ class PollenCountViewController: UITableViewController {
     // MARK: - Table view data source
 	
 	override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-		if(IS_IPAD){
-			return 68
-		}
-		return 44
+		return IS_IPAD ? 68 : 44
 	}
 
     override func numberOfSections(in tableView: UITableView) -> Int {

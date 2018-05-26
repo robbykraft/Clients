@@ -1,4 +1,5 @@
 
+import Foundation
 import Firebase
 import FirebaseDatabase
 
@@ -6,13 +7,11 @@ extension Notification.Name {
 	static let pollenDidUpdate = Notification.Name("POLLEN_SAMPLES_DID_UPDATE")
 }
 
-class Data {
-	static let shared = Data()
+class ClinicData {
+	static let shared = ClinicData()
 	
 	// date(toString) : sample
 	var pollenSamples:[String:PollenSamples] = [:]
-	
-//	let bootTime:Date = Date()
 	
 	private init(){
 		FirebaseApp.configure()
@@ -20,19 +19,6 @@ class Data {
 		Database.database().reference(withPath: "/collections").observe(.value, with: { snapshot in
 			NotificationCenter.default.post(name: .pollenDidUpdate, object: nil)
 		})
-
-//		let connectedRef = Database.database().reference(withPath: ".info/connected")
-//		connectedRef.observe(.value, with: { snapshot in
-//			if let connected = snapshot.value as? Bool , connected {
-//				if(abs(self.bootTime.timeIntervalSinceNow) > 2.0){
-//					// show banner: internet connected
-//				}
-//			} else {
-//				if(abs(self.bootTime.timeIntervalSinceNow) > 2.0){
-//					// show banner: internet down
-//				}
-//			}
-//		})
 	}
 	
 	func boot(){

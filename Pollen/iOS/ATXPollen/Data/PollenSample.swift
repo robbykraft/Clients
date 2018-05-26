@@ -8,28 +8,10 @@
 
 import Foundation
 
-enum Rating: Int{
-	case none
-	case low
-	case medium
-	case heavy
-	case veryHeavy
-	
-	func description() -> String {
-		switch self {
-		case .none: return "no pollen"
-		case .low: return "low"
-		case .medium: return "medium"
-		case .heavy: return "heavy"
-		case .veryHeavy: return "very heavy"
-		}
-	}
-}
-
 struct PollenSample{
 	var key:String
 	var value:Int
-	var rating:Rating
+	var rating:PollenRating
 	var name:String
 	var logValue:Float
 	
@@ -62,8 +44,8 @@ struct PollenSamples {
 		self.date = Date.init(timeIntervalSince1970: unixDate)
 	}
 
-	/** returns the highest Rating of pollen entries filtered through your curated list of allergy types */
-	func rating() -> Rating{
+	/** returns the highest PollenRating of pollen entries filtered through your curated list of allergy types */
+	func rating() -> PollenRating{
 		return self.relevantSamples()
 			.map({ $0.rating })
 			.sorted(by: { $0.rawValue > $1.rawValue })

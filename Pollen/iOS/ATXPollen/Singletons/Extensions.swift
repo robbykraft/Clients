@@ -10,13 +10,10 @@ import UIKit
 
 extension Date {
 	func isLessThanDate(_ dateToCompare: Date) -> Bool {
-		//Declare Variables
 		var isLess = false
-		//Compare Values
 		if self.compare(dateToCompare) == ComparisonResult.orderedAscending {
 			isLess = true
 		}
-		//Return Result
 		return isLess
 	}
 
@@ -31,11 +28,6 @@ extension Date {
 		if let success = formatter.date(from: fromString){ self = success }
 		else { return nil }
 	}
-	//	mutating func from(string:String){
-	//		let formatter = DateFormatter()
-	//		formatter.dateFormat = "yyyy-MM-dd"
-	//		if let success = formatter.date(from: string){ self = success }
-	//	}
 }
 
 extension UIColor {
