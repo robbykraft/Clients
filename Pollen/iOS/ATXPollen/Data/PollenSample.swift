@@ -36,12 +36,13 @@ struct PollenSamples {
 	*/
 	init(fromDatabase data:[String:Any]){
 		guard let unixDate = data["date"] as? Double else {return}
-		guard let counts = data["counts"] as? [String:Any] else { return }
-		// expecting database to store INT types. if not it is implied the string value "t" means trace and is stored as 0
-		self.samples = counts.map({ (key, value) -> PollenSample in
-			return PollenSample(withKey: key, value: value is Int ? value as! Int : 0)
-		})
 		self.date = Date.init(timeIntervalSince1970: unixDate)
+		if let counts = data["counts"] as? [String:Any]{
+			// expecting database to store INT types. if not it is implied the string value "t" means trace and is stored as 0
+			self.samples = counts.map({ (key, value) -> PollenSample in
+				return PollenSample(withKey: key, value: value is Int ? value as! Int : 0)
+			})
+		}
 	}
 
 	/** returns the highest PollenRating of pollen entries filtered through your curated list of allergy types */
@@ -58,5 +59,7 @@ struct PollenSamples {
 			return Pollen.shared.myAllergies[sample.key] ?? true
 		})
 	}
+	
+	func getSamples() -> [PollenSample] { return samples }
 
 }

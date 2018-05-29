@@ -57,16 +57,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, HomeSlid
 	}
 	
 	@objc func reloadData(){
-		let sortedSamples = Array(ClinicData.shared.pollenSamples.values).sorted { (a, b) -> Bool in
-			if let aDate = a.date, let bDate = b.date{
-				return aDate > bDate
-			}
-			return false
-		}
-		if let mostRecent = sortedSamples.first{
-			homeSlideView.radialChart.data = mostRecent
-		}
-		homeSlideView.barChart.data = sortedSamples
+		homeSlideView.barChart.data = Array(ClinicData.shared.pollenSamples.prefix(15))
+		homeSlideView.radialChart.data = homeSlideView.barChart.data.first
 	}
 		
 	@objc func preferencesButtonPressed(){

@@ -30,7 +30,7 @@ class ExposureQueryView: UIView {
 		topQuestionLabel.text = "Exposed to any of these today?"
 		
 		// buttons
-		let labels = ["dust","molds","virus","pets"]
+		let labels = ["dog", "cat", "molds", "dust", "virus"]
 		for i in 0 ..< responseButtons.count {
 			let button = responseButtons[i]
 			button.setTitle(labels[i], for: .normal)
