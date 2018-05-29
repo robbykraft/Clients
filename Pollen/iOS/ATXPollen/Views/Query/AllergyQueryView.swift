@@ -12,7 +12,6 @@ class AllergyQueryView: UIView {
 
 	let topQuestionLabel = UILabel()
 	let responseButtons = [UIBorderedButton(), UIBorderedButton(), UIBorderedButton(), UIBorderedButton()]
-//	let responseSlider = UIImageView()
 
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -30,8 +29,8 @@ class AllergyQueryView: UIView {
 		topQuestionLabel.text = "How are your allergies today?"
 
 		// buttons
-		let labels = ["severe","medium","light","none"]
-		let colors = [Style.shared.colorHeavy, Style.shared.colorMedium, Style.shared.colorLow, Style.shared.blue]
+		let labels = ["none","light","medium","severe"]
+		let colors = [UIColor.black, Style.shared.colorLow, Style.shared.colorMedium, Style.shared.colorHeavy]
 		for i in 0 ..< responseButtons.count {
 			let button = responseButtons[i]
 			button.setTitle(labels[i], for: .normal)
@@ -40,7 +39,6 @@ class AllergyQueryView: UIView {
 		}
 
 		self.addSubview(topQuestionLabel)
-//		self.addSubview(responseSlider)
 		for button in responseButtons { self.addSubview(button) }
 	}
 
@@ -48,29 +46,21 @@ class AllergyQueryView: UIView {
 		super.layoutSubviews()
 
 		let topPadding:CGFloat = 20
-		let belowQuestionPad:CGFloat = 15
-		let buttonPad:CGFloat = 2
+		let btnPad:CGFloat = 2
+		let btnAreaPad:CGFloat = 10
 
 		topQuestionLabel.sizeToFit()
 		topQuestionLabel.center = CGPoint(x: self.bounds.size.width*0.5, y: topPadding)
-		let buttonContent = CGRect(x: 0, y: topQuestionLabel.frame.bottom + belowQuestionPad, width: self.bounds.size.width, height: self.bounds.size.height - topQuestionLabel.frame.bottom - belowQuestionPad)
-		let buttonX:CGFloat = self.bounds.size.width*0.16666
-		let buttonW:CGFloat = self.bounds.size.width*0.6666
-		let buttonH:CGFloat = buttonContent.size.height / CGFloat(responseButtons.count) - buttonPad
-		var i:CGFloat = 0
-		for button in responseButtons{
-			button.frame = CGRect(x: buttonX, y: buttonContent.origin.y + i * (buttonH+buttonPad), width: buttonW, height: buttonH)
-			i += 1
+		let buttonContent = CGRect(x: btnAreaPad, y: topQuestionLabel.frame.bottom + btnAreaPad, width: self.bounds.size.width - btnAreaPad*2, height: self.bounds.size.height - topQuestionLabel.frame.bottom - btnAreaPad*2)
+		
+		if let noneButton = responseButtons.first{
+			noneButton.frame = CGRect(x: buttonContent.origin.x, y: buttonContent.origin.y + buttonContent.size.height*2/3+btnPad, width: buttonContent.size.width, height: buttonContent.size.height/3-btnPad)
 		}
-
-//		responseSlider.image = UIImage(named: "slider-mockup")
-//		responseSlider.frame = CGRect(x: 0, y: 0, width: self.frame.size.width-100, height: (self.frame.size.width-100)/5.8)
-//		responseSlider.center = CGPoint(x: self.frame.size.width*0.5, y: topQuestionLabel.frame.bottom + belowQuestionPad + responseSlider.frame.size.height*0.5)
-//		responseText.text = "light"
-//		responseText.sizeToFit()
-//		responseText.center = responseSlider.center
-//		responseText.center.y += belowSliderPad
-
+		let buttonsX:CGFloat = buttonContent.origin.x
+		let buttonW:CGFloat = buttonContent.size.width / 3 - CGFloat(responseButtons.count-2)*2
+		let buttonH:CGFloat = buttonContent.size.height * 2/3 - btnPad
+		for i in 1..<responseButtons.count{
+			responseButtons[i].frame = CGRect(x: buttonsX + (buttonW+btnPad*2)*CGFloat(i-1), y: buttonContent.origin.y+btnPad, width: buttonW, height: buttonH)
+		}
 	}
-
 }
