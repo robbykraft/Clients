@@ -165,7 +165,7 @@ class ClinicData {
 		let managedContext = appDelegate.persistentContainer.viewContext
 		let entity = NSEntityDescription.entity(forEntityName: POLLEN_SAMPLE_ENTITY, in: managedContext)!
 		let coreSample = NSManagedObject(entity: entity, insertInto: managedContext)
-		samples.getSamples().forEach({ coreSample.setValue($0.value, forKey: $0.key) })
+		samples.getSamples().forEach({ coreSample.setValue($0.value, forKey: $0.type.key) })
 		if let date = samples.date{ coreSample.setValue(date, forKey: "date") }
 		do{
 			try managedContext.save()

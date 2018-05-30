@@ -29,12 +29,12 @@ class AllergyQueryView: UIView {
 		topQuestionLabel.text = "How are your allergies today?"
 
 		// buttons
-		let labels = ["none","light","medium","severe"]
+		let labels = ["no allergies","light","medium","severe"]
 		let colors = [UIColor.black, Style.shared.colorLow, Style.shared.colorMedium, Style.shared.colorHeavy]
 		for i in 0 ..< responseButtons.count {
 			let button = responseButtons[i]
 			button.setTitle(labels[i], for: .normal)
-			button.titleLabel?.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P24)
+			button.titleLabel?.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P21)
 			button.color = colors[i]
 		}
 
@@ -47,11 +47,12 @@ class AllergyQueryView: UIView {
 
 		let topPadding:CGFloat = 20
 		let btnPad:CGFloat = 2
-		let btnAreaPad:CGFloat = 10
+		let btnAreaPadX:CGFloat = 25
+		let btnAreaPadY:CGFloat = 15
 
 		topQuestionLabel.sizeToFit()
 		topQuestionLabel.center = CGPoint(x: self.bounds.size.width*0.5, y: topPadding)
-		let buttonContent = CGRect(x: btnAreaPad, y: topQuestionLabel.frame.bottom + btnAreaPad, width: self.bounds.size.width - btnAreaPad*2, height: self.bounds.size.height - topQuestionLabel.frame.bottom - btnAreaPad*2)
+		let buttonContent = CGRect(x: btnAreaPadX, y: topQuestionLabel.frame.bottom + btnAreaPadY, width: self.bounds.size.width - btnAreaPadX*2, height: self.bounds.size.height - topQuestionLabel.frame.bottom - btnAreaPadY*2)
 		
 		if let noneButton = responseButtons.first{
 			noneButton.frame = CGRect(x: buttonContent.origin.x, y: buttonContent.origin.y + buttonContent.size.height*2/3+btnPad, width: buttonContent.size.width, height: buttonContent.size.height/3-btnPad)

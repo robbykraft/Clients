@@ -16,7 +16,7 @@ class LineTableViewCell: UITableViewCell {
 	var data:PollenSample?{
 		didSet{
 			if let sample = data{
-				self.textLabel?.text = sample.name
+				self.textLabel?.text = sample.type.name
 			}
 			self.layoutSubviews()
 		}

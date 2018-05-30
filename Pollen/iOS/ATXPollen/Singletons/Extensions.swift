@@ -16,6 +16,11 @@ extension Date {
 		}
 		return isLess
 	}
+	
+	func isBetween(_ first:Date, and second:Date) -> Bool{
+		return (self.compare(first) == ComparisonResult.orderedDescending || self.compare(first) == ComparisonResult.orderedSame) &&
+		       (self.compare(second) == ComparisonResult.orderedAscending || self.compare(second) == ComparisonResult.orderedSame)
+	}
 
 	func toString() -> String{
 		let formatter = DateFormatter()

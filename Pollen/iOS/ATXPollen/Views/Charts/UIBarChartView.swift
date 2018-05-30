@@ -20,9 +20,10 @@ class UIBarChartView: UIView {
 	var data:[PollenSamples] = []{
 		didSet{
 			// build bar chart again
-			self.values = data.map({ (samples:PollenSamples) -> Float in
-				return samples.relevantSamples().map({$0.logValue}).sorted(by: {$0 > $1}).first ?? 0
-			})
+			self.values = data.compactMap({ $0.strongestSample() }).map({ $0.logValue })
+//			self.values = data.map({ (samples:PollenSamples) -> Float in
+//				return samples.getSamples().map({$0.logValue}).sorted(by: {$0 > $1}).first ?? 0
+//			})
 			self.labels = data.map {
 				let date = $0.date ?? Date()
 				let dateFormatter = DateFormatter()

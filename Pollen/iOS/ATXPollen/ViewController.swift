@@ -57,7 +57,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, HomeSlid
 	}
 	
 	@objc func reloadData(){
-		homeSlideView.barChart.data = Array(ClinicData.shared.pollenSamples.prefix(15))
+		homeSlideView.barChart.data = Array(ClinicData.shared.pollenSamples.prefix(15)).map({ $0.relevantToMyAllergies() })
 		homeSlideView.radialChart.data = homeSlideView.barChart.data.first
 	}
 		

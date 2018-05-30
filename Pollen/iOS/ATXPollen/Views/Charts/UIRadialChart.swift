@@ -128,10 +128,7 @@ class UIRadialChart: UIView {
 			barHeight = 110.0;
 		}
 		if let sample = data{
-			var samples = sample.relevantSamples().sorted(by:{ $0.logValue < $1.logValue })
-//			var report = sample.report().sorted(by: { (a1, a2) -> Bool in
-//				return ( Float(a1.2) ) < ( Float(a2.2) )
-//			})
+			var samples = sample.getSamples().sorted(by:{ $0.logValue < $1.logValue })
 			// filter out trace elements
 				//.filter{ $0.1 != 0 }
 			
@@ -184,9 +181,9 @@ class UIRadialChart: UIView {
 				let textAngle = angle*CGFloat(Float(i)+0.5) - CGFloat(Double.pi*0.5)
 				let textRadius = radius + arcHeight*0.5
 				if textAngle > 0 && textAngle < CGFloat.pi{
-					Style.shared.centreArcPerpendicular(text: samples[i].name, context: context, radius: textRadius, angle: -textAngle, colour: UIColor.white, font: arcFont, clockwise: false, maxAngle:angle-0.1)
+					Style.shared.centreArcPerpendicular(text: samples[i].type.name, context: context, radius: textRadius, angle: -textAngle, colour: UIColor.white, font: arcFont, clockwise: false, maxAngle:angle-0.1)
 				} else{
-					Style.shared.centreArcPerpendicular(text: samples[i].name, context: context, radius: textRadius, angle: -textAngle, colour: UIColor.white, font: arcFont, clockwise: true, maxAngle:angle-0.1)
+					Style.shared.centreArcPerpendicular(text: samples[i].type.name, context: context, radius: textRadius, angle: -textAngle, colour: UIColor.white, font: arcFont, clockwise: true, maxAngle:angle-0.1)
 				}
 			}
 			let image = UIGraphicsGetImageFromCurrentImageContext()

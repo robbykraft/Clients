@@ -137,14 +137,14 @@ class PollenCountViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return data != nil ? data!.relevantSamples().count : 0
+		return data != nil ? data!.getSamples().count : 0
     }
 	
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 //        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
 		let cell = LineTableViewCell.init(style: .default, reuseIdentifier: "BarTableViewCell")
 		cell.selectionStyle = .none
-		cell.data = self.data!.relevantSamples().sorted(by:{return $0.logValue > $1.logValue;})[indexPath.row]
+		cell.data = self.data!.getSamples().sorted(by:{return $0.logValue > $1.logValue;})[indexPath.row]
         return cell
     }
 

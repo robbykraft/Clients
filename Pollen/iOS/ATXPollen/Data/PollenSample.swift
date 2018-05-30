@@ -9,26 +9,38 @@
 import Foundation
 
 struct PollenSample{
-	var key:String
-	var value:Int
+	var type:PollenType
 	var rating:PollenRating
-	var name:String
+	var value:Int
 	var logValue:Float
 	
 	init(withKey key:String, value:Int){
-		self.key = key
+		var group:PollenTypeGroup
+		var season:PollenTypeSeason
+		var levels:PollenTypeLevels
+		if let typematch = Pollen.shared.types.filter({$0.key == key}).first{
+			group = typematch.group
+			season = typematch.season
+			levels = typematch.levels
+		} else{
+			group = .grasses
+			season = .spring
+			levels = PollenTypeLevels(withDictionary: [:])
+		}
+		self.type = PollenType(key: key, name: Pollen.shared.nameFor(key: key), season: season, group: group, levels: levels)
 		self.value = value
-		self.rating = Pollen.shared.ratingFor(key: key, value: value)
-		self.name = Pollen.shared.nameFor(key: key)
-		self.logValue = Pollen.shared.logValueFor(key: key, value: value)
+		self.logValue = self.type.logValue(forValue: value)
+		self.rating = self.type.rating(forValue: value)
 	}
 }
 
 struct PollenSamples {
-	
+	// make sure to use relevantToMyAllergies(). it filters through your list of personal allergies
+
 	var date:Date?
-	// ask for relevantSamples() instead. it filters through your list of personal allergies
 	private var samples:[PollenSample] = []
+	
+	func getSamples() -> [PollenSample] { return samples }
 
 	/** default initializer. fill with contents from firebase database. this is expecting:
 	* key "counts" with array of values ["pollen key":Int]
@@ -44,22 +56,36 @@ struct PollenSamples {
 			})
 		}
 	}
+	
+	func strongestSample() -> PollenSample?{
+		return self.samples
+			.sorted(by: { $0.logValue > $1.logValue })
+			.first
+	}
 
 	/** returns the highest PollenRating of pollen entries filtered through your curated list of allergy types */
 	func rating() -> PollenRating{
-		return self.relevantSamples()
+		return self.samples
 			.map({ $0.rating })
 			.sorted(by: { $0.rawValue > $1.rawValue })
 			.first ?? .none
 	}
 	
-	/** my get back the array of samples filtered through your curated list of allergy types */
-	func relevantSamples() -> [PollenSample]{
-		return self.samples.filter({ (sample) -> Bool in
-			return Pollen.shared.myAllergies[sample.key] ?? true
-		})
+	func filteredBy(group:PollenTypeGroup) -> PollenSamples{
+		var samples = PollenSamples(fromDatabase: [:])
+		samples.date = self.date
+		samples.samples = self.samples.filter({ $0.type.group == group })
+		return samples
 	}
 	
-	func getSamples() -> [PollenSample] { return samples }
+	/** my get back a copy of this with samples filtered through your curated list of allergy types */
+	func relevantToMyAllergies() -> PollenSamples{
+		var samples = PollenSamples(fromDatabase: [:])
+		samples.date = self.date
+		samples.samples = self.samples.filter({ (sample) -> Bool in
+			return Pollen.shared.myAllergies[sample.type.key] ?? true
+		})
+		return samples
+	}
 
 }
