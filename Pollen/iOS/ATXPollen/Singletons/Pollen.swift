@@ -46,18 +46,7 @@ class Pollen {
 		if let validMatch = self.types.filter({ $0.key == key }).first{ return validMatch.name }
 		return key
 	}
-//	func logValueFor(key:String, value:Int) -> Float{
-//		if let validMatch = self.types.filter({ $0.key == key }).first{
-//			return validMatch.logValue(forValue: value)
-//		}
-//		return 0.0
-//	}
-//	func ratingFor(key:String, value:Int) -> PollenRating{
-//		if let validMatch = self.types.filter({ $0.key == key }).first{
-//			return validMatch.rating(forValue: value)
-//		}
-//		return .none
-//	}
+
 
 	func loadSystemPList(){
 		func pListBootError(){ print("plist is corrupt. app bundle directory has been modified.") }

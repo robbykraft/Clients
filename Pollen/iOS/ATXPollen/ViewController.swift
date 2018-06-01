@@ -49,6 +49,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, HomeSlid
 		self.view.addSubview(queryView)
 		self.view.sendSubview(toBack:queryView)
 
+		reloadData()
 		NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: .pollenDidUpdate, object: nil)
 	}
 	

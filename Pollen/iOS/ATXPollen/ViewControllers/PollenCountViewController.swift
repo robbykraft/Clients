@@ -56,10 +56,10 @@ class PollenCountViewController: UITableViewController {
 		let pad:CGFloat = 10
 
 		let ratingLogData:[(String,Double)] = [
-			(PollenRating.low.description(), 0.177),
-			(PollenRating.medium.description(), 0.328),
-			(PollenRating.heavy.description(), 0.588),
-			(PollenRating.veryHeavy.description(), 1.0)
+			(PollenRating.low.asString(), 0.177),
+			(PollenRating.medium.asString(), 0.328),
+			(PollenRating.heavy.asString(), 0.588),
+			(PollenRating.veryHeavy.asString(), 1.0)
 		]
 
 		// draw sideways text marking low, medium, heavy, very heavy lines

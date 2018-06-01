@@ -15,7 +15,7 @@ enum PollenRating: Int{
 	case heavy
 	case veryHeavy
 	
-	func description() -> String {
+	func asString() -> String {
 		switch self {
 		case .none: return "no pollen"
 		case .low: return "low"

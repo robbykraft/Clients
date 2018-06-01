@@ -57,7 +57,7 @@ class UIRadialChart: UIView {
 	func refreshViewData() {
 		if let d = data{
 			let summary = d.rating()
-			label.text = summary.description()
+			label.text = summary.asString()
 			// text size
 			switch summary {
 			case .veryHeavy: label.font = UIFont.init(name: SYSTEM_FONT_B, size: Style.shared.P40)

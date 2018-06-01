@@ -11,12 +11,10 @@ import Charts
 
 public class DateValueFormatter: NSObject, IAxisValueFormatter {
 	private let dateFormatter = DateFormatter()
-	
 	override init() {
 		super.init()
 		dateFormatter.dateFormat = "dd MMM HH:mm"
 	}
-	
 	public func stringForValue(_ value: Double, axis: AxisBase?) -> String {
 		return dateFormatter.string(from: Date(timeIntervalSince1970: value))
 	}
@@ -27,32 +25,27 @@ class MyChartsView: UIView, ChartViewDelegate {
 	
 	let labels = [UILabel(), UILabel(), UILabel(), UILabel()]
 	var groupCharts = [LineChartView(), LineChartView(), LineChartView(), LineChartView()]
-
-//	var sliderX: UISlider!
-//	var sliderTextX: UITextField!
-	
+	var clinicSampleData:[[PollenSamples]] = [[]]
 	var lowBounds = Date(fromString: "2017-05-29")!
 	var upperBounds = Date(fromString: "2018-05-29")!
 
+	let detailTextView = UITextView()
 	let dateSelector = UISegmentedControl(items: ["Years", "Months", "Weeks"])
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		initUI()
 	}
-	convenience init() {
-		self.init(frame: CGRect.zero)
-	}
-	required init(coder aDecoder: NSCoder) {
-		fatalError("This class does not support NSCoding")
-	}
+	convenience init() { self.init(frame: CGRect.zero) }
+	required init(coder aDecoder: NSCoder) { fatalError("This class does not support NSCoding") }
 	
 	func initUI(){
 //		self.addSubview(masterChartView)
 
-		
-		
-		groupCharts.forEach({ self.addSubview($0) })
+		groupCharts.forEach({
+			self.addSubview($0)
+			$0.delegate = self
+		})
 		
 		dateSelector.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
 		self.addSubview(dateSelector)
@@ -67,6 +60,10 @@ class MyChartsView: UIView, ChartViewDelegate {
 			labels[i].sizeToFit()
 			self.addSubview(labels[i])
 		}
+		
+		detailTextView.textColor = Style.shared.blue
+		detailTextView.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P20)
+		self.addSubview(detailTextView)
 		
 //		let data = dataWithCount(36, range: 100, color: .white)
 //		data.setValueFont(UIFont(name: "HelveticaNeue", size: 7)!)
@@ -86,6 +83,7 @@ class MyChartsView: UIView, ChartViewDelegate {
 			labels[i].center = CGPoint(x: 10 + labels[i].frame.size.width*0.5, y: 15 + h*CGFloat(i))
 		}
 		dateSelector.center = CGPoint(x: self.frame.size.width*0.5, y: self.frame.size.height*0.9)
+		detailTextView.frame = CGRect(x: 20, y: groupCharts.last!.frame.bottom+20, width: self.frame.size.width-40, height: self.frame.size.height*0.9 - groupCharts.last!.frame.bottom+20)
 	}
 	
 	@objc func dateChanged(sender:UISegmentedControl){
@@ -97,12 +95,45 @@ class MyChartsView: UIView, ChartViewDelegate {
 		}
 		reloadData()
 	}
+	
+	func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
+		let otherCharts = groupCharts.filter({ chartView != $0 })
+		otherCharts.forEach { (chart) in
+			var y:Double = 0
+			if let data = chart.data{
+				if let foundentry = data.dataSets[0].entriesForXValue(highlight.x).first{
+					y = foundentry.y
+				}
+			}
+			chart.highlightValue(x: highlight.x, y: y, dataSetIndex: highlight.dataSetIndex, dataIndex: highlight.dataIndex, callDelegate: false)
+		}
+		
+		let speciesArray = [PollenTypeGroup.grasses, PollenTypeGroup.weeds, PollenTypeGroup.trees, PollenTypeGroup.molds]
+		var detailString = ""
+		if let date = clinicSampleData[0][Int(highlight.x)].date{
+			let formatter = DateFormatter()
+			formatter.dateFormat = "MMM d, yyyy"
+			detailString += formatter.string(from: date) + "\n"
+		}
+		clinicSampleData
+			.map { $0[Int(highlight.x)] }
+			.enumerated()
+			.forEach({
+				if let strongest = $0.element.strongestSample(){
+					detailString += "\(speciesArray[$0.offset].asString()): \(strongest.rating.asString()) (\(strongest.value))\n"
+				}
+			})
+		detailTextView.text = detailString
+	}
 
 	@objc func reloadData(){
 		let samples = ClinicData.shared.pollenSamples.filter({
 			if let date = $0.date{ return date.isBetween(lowBounds, and: upperBounds) }
 			return false
 		})
+		
+		let dateArray = samples.compactMap({ $0.date }).sorted()
+		
 		
 //		print(samples)
 //		let largestValues = samples
@@ -123,17 +154,31 @@ class MyChartsView: UIView, ChartViewDelegate {
 					.map({ $0.filteredBy(group: group) })
 		}
 		
-		let bySpeciesValues = bySpecies.map({ (samples) -> [Double] in
-			return samples.compactMap({ $0.strongestSample() })
-				.map({ Double($0.logValue) })
-		})
+//		let bySpeciesValues = bySpecies.map({ (samples) -> [Double] in
+//			return samples.compactMap({ $0.strongestSample() })
+//				.map({ Double($0.logValue) })
+//		})
 		
-		let bySpeciesChartData = bySpeciesValues.map({ return filledChartData(from: $0, color: Style.shared.blue) })
+		let cal = Calendar.current
+		clinicSampleData = bySpecies.map { (speciesSamples) -> [PollenSamples] in
+			return dateArray.map { (date) -> PollenSamples in
+				return speciesSamples.filter({
+					guard let sampleDate = $0.date else { return false }
+					return cal.isDate(sampleDate, inSameDayAs: date)
+				}).first ?? PollenSamples(fromDatabase: [:])
+			}
+		}
 		
-//		setupChart1(masterChartView, data: chartData(from: largestValues, color: Style.shared.blue), color: .white)
-
-		for i in 0..<groupCharts.count{
-			setupChart1(groupCharts[i], data: bySpeciesChartData[i], color: .white)
+		clinicSampleData
+			.map({ (samples) -> [Double] in
+				return samples
+					.map({ $0.strongestSample() ?? PollenSample(withKey: "nil", value: 0) })
+					.map({ Double($0.logValue) })
+			})
+			.map({ return filledChartData(from: $0, color: Style.shared.blue) })
+			.enumerated()
+			.forEach { (entry) in
+				setupChart1(groupCharts[entry.offset], data: entry.element, color: .white)
 		}
 	}
 	
@@ -177,7 +222,8 @@ class MyChartsView: UIView, ChartViewDelegate {
 //		set1.circleHoleRadius = 2.5
 //		set1.setColor(color)
 //		set1.setCircleColor(color)
-		set1.highlightColor = color
+		set1.highlightColor = Style.shared.orange
+		set1.highlightLineWidth = 1
 		set1.drawValuesEnabled = false
 		set1.drawCirclesEnabled = false
 		set1.drawFilledEnabled = true
