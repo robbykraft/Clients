@@ -40,6 +40,7 @@ class ClinicData {
 //				self.downloadAllSamples()
 //			}
 //		}
+//		self.downloadAllSamples()
 		loadSamplesFromCoreData()
 	}
 	

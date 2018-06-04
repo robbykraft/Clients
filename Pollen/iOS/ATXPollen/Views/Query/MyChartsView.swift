@@ -23,11 +23,12 @@ public class DateValueFormatter: NSObject, IAxisValueFormatter {
 
 class MyChartsView: UIView, ChartViewDelegate {
 	
+	let dateChart = LineChartView()
 	let labels = [UILabel(), UILabel(), UILabel(), UILabel()]
-	var groupCharts = [LineChartView(), LineChartView(), LineChartView(), LineChartView()]
+	let groupCharts = [LineChartView(), LineChartView(), LineChartView(), LineChartView()]
 	var clinicSampleData:[[PollenSamples]] = [[]]
-	var lowBounds = Date(fromString: "2017-05-29")!
-	var upperBounds = Date(fromString: "2018-05-29")!
+	var lowBounds = Date()
+	var upperBounds = Date()
 
 	let detailTextView = UITextView()
 	let dateSelector = UISegmentedControl(items: ["Years", "Months", "Weeks"])
@@ -41,16 +42,19 @@ class MyChartsView: UIView, ChartViewDelegate {
 	
 	func initUI(){
 //		self.addSubview(masterChartView)
+		
+		lowBounds = Calendar.current.date(byAdding: .year, value: -1, to: Date())!
+		upperBounds = Date()
 
 		groupCharts.forEach({
 			self.addSubview($0)
 			$0.delegate = self
 		})
+		self.addSubview(dateChart)
 		
 		dateSelector.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
 		self.addSubview(dateSelector)
 
-		
 		let groups = [PollenTypeGroup.grasses, PollenTypeGroup.weeds, PollenTypeGroup.trees, PollenTypeGroup.molds]
 		for i in 0..<labels.count{
 			labels[i].font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15)
@@ -74,26 +78,41 @@ class MyChartsView: UIView, ChartViewDelegate {
 	
 	override func layoutSubviews() {
 		super.layoutSubviews()
-//		masterChartView.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height*0.15)
-		let h:CGFloat = self.bounds.size.height*0.15
+		dateChart.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: 40)
+		
+		let marginTop:CGFloat = 50
+		let h:CGFloat = self.bounds.size.height*0.1
 		for i in 0..<groupCharts.count{
-			groupCharts[i].frame = CGRect(x: 0, y: h*CGFloat(i), width: self.bounds.size.width, height: h)
+			groupCharts[i].frame = CGRect(x: 0, y: marginTop + h*CGFloat(i), width: self.bounds.size.width, height: h)
 		}
 		for i in 0..<labels.count{
-			labels[i].center = CGPoint(x: 10 + labels[i].frame.size.width*0.5, y: 15 + h*CGFloat(i))
+			labels[i].center = CGPoint(x: 10 + labels[i].frame.size.width*0.5, y: marginTop + h*CGFloat(i) + labels[i].frame.size.height*0.5)
 		}
-		dateSelector.center = CGPoint(x: self.frame.size.width*0.5, y: self.frame.size.height*0.9)
-		detailTextView.frame = CGRect(x: 20, y: groupCharts.last!.frame.bottom+20, width: self.frame.size.width-40, height: self.frame.size.height*0.9 - groupCharts.last!.frame.bottom+20)
+		dateSelector.center = CGPoint(x: self.frame.size.width*0.5, y: self.frame.size.height*0.92)
+		detailTextView.frame = CGRect(x: 20, y: groupCharts.last!.frame.bottom+20, width: self.frame.size.width-40, height: dateSelector.frame.origin.y - (groupCharts.last!.frame.bottom+20) )
 	}
 	
 	@objc func dateChanged(sender:UISegmentedControl){
-		upperBounds = Date(fromString: "2018-05-31")!
+		upperBounds = Date()
 		switch dateSelector.selectedSegmentIndex{
-		case 0: lowBounds = Date(fromString: "2017-05-31")!
-		case 1: lowBounds = Date(fromString: "2018-03-31")!
-		default: lowBounds = Date(fromString: "2018-05-16")!
+		case 0: lowBounds = Calendar.current.date(byAdding: .year, value: -1, to: Date())!
+		case 1: lowBounds = Calendar.current.date(byAdding: .month, value: -1, to: Date())!
+		default: lowBounds = Calendar.current.date(byAdding: .day, value: -7, to: Date())!
 		}
 		reloadData()
+	}
+	
+	func chartTranslated(_ chartView: ChartViewBase, dX: CGFloat, dY: CGFloat) {
+		let otherCharts = groupCharts.filter({ chartView != $0 })
+		otherCharts.forEach { (chart) in
+			chart.viewPortHandler.refresh(newMatrix: chartView.viewPortHandler.touchMatrix, chart: chart, invalidate: false)
+		}
+	}
+	func chartScaled(_ chartView: ChartViewBase, scaleX: CGFloat, scaleY: CGFloat) {
+		let otherCharts = groupCharts.filter({ chartView != $0 })
+		otherCharts.forEach { (chart) in
+			chart.viewPortHandler.refresh(newMatrix: chartView.viewPortHandler.touchMatrix, chart: chart, invalidate: false)
+		}
 	}
 	
 	func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
@@ -134,31 +153,12 @@ class MyChartsView: UIView, ChartViewDelegate {
 		
 		let dateArray = samples.compactMap({ $0.date }).sorted()
 		
-		
-//		print(samples)
-//		let largestValues = samples
-//			.map({ $0.relevantToMyAllergies() })
-//			.map({ (samples:PollenSamples) -> Double in
-//			return samples.getSamples().map({Double($0.logValue)}).sorted(by: {$0 > $1}).first ?? 0
-//		})
-		
-//		let largestValues = samples
-//			.map({ $0.relevantToMyAllergies() })
-//			.compactMap({ $0.strongestSample() })
-//			.map({ Double($0.logValue) })
-
 		let bySpecies = [PollenTypeGroup.grasses, PollenTypeGroup.weeds, PollenTypeGroup.trees, PollenTypeGroup.molds]
 			.map { (group) -> [PollenSamples] in
 				return samples
 					.map({ $0.relevantToMyAllergies() })
 					.map({ $0.filteredBy(group: group) })
 		}
-		
-//		let bySpeciesValues = bySpecies.map({ (samples) -> [Double] in
-//			return samples.compactMap({ $0.strongestSample() })
-//				.map({ Double($0.logValue) })
-//		})
-		
 		let cal = Calendar.current
 		clinicSampleData = bySpecies.map { (speciesSamples) -> [PollenSamples] in
 			return dateArray.map { (date) -> PollenSamples in
@@ -178,11 +178,13 @@ class MyChartsView: UIView, ChartViewDelegate {
 			.map({ return filledChartData(from: $0, color: Style.shared.blue) })
 			.enumerated()
 			.forEach { (entry) in
-				setupChart1(groupCharts[entry.offset], data: entry.element, color: .white)
+				setupFilledChart(groupCharts[entry.offset], data: entry.element, color: .white)
 		}
+		
+		setupDateChart(dateChart, data:dateChartData(from: dateArray, color: Style.shared.blue), color:.white)
 	}
 	
-	func setupChart1(_ chart: LineChartView, data: LineChartData, color: UIColor) {
+	func setupDateChart(_ chart: LineChartView, data: LineChartData, color: UIColor) {
 		(data.getDataSetByIndex(0) as! LineChartDataSet).circleHoleColor = color
 		chart.delegate = self
 		chart.backgroundColor = color
@@ -190,29 +192,44 @@ class MyChartsView: UIView, ChartViewDelegate {
 		chart.dragEnabled = true
 		chart.setScaleEnabled(true)
 		chart.pinchZoomEnabled = false
-		chart.setViewPortOffsets(left: 10, top: 0, right: 10, bottom: 0)
+		chart.setViewPortOffsets(left: 0, top: 0, right: 0, bottom: 0)
 		chart.legend.enabled = false
 		chart.leftAxis.enabled = false
 		chart.leftAxis.spaceTop = 0.4
 		chart.leftAxis.spaceBottom = 0.0
 		chart.rightAxis.enabled = false
-		chart.xAxis.enabled = false
+		chart.xAxis.enabled = true
+		chart.doubleTapToZoomEnabled = false
 		chart.data = data
 		chart.animate(xAxisDuration: 0.5)
 	}
 	
-//	func chartData(from array:[Double], color:UIColor) -> LineChartData {
-//		let yVals = array.enumerated().map({ ChartDataEntry(x: Double($0.offset), y: $0.element) })
-//		let set1 = LineChartDataSet(values: yVals, label: "DataSet 1")
-//		set1.lineWidth = 1.75
-//		set1.circleRadius = 5.0
-//		set1.circleHoleRadius = 2.5
-//		set1.setColor(color)
-//		set1.setCircleColor(color)
-//		set1.highlightColor = color
-//		set1.drawValuesEnabled = false
-//		return LineChartData(dataSet: set1)
-//	}
+	func dateChartData(from array:[Date], color:UIColor) -> LineChartData {
+		let yVals = array.enumerated().map({ ChartDataEntry(x: Double($0.offset), y: 0) })
+		let set1 = LineChartDataSet(values: yVals, label: "DataSet 1")
+		set1.fillColor = color
+		return LineChartData(dataSet: set1)
+	}
+	
+	func setupFilledChart(_ chart: LineChartView, data: LineChartData, color: UIColor) {
+		(data.getDataSetByIndex(0) as! LineChartDataSet).circleHoleColor = color
+		chart.delegate = self
+		chart.backgroundColor = color
+		chart.chartDescription?.enabled = false
+		chart.dragEnabled = true
+		chart.setScaleEnabled(true)
+		chart.pinchZoomEnabled = false
+		chart.setViewPortOffsets(left: 0, top: 0, right: 0, bottom: 0)
+		chart.legend.enabled = false
+		chart.leftAxis.enabled = false
+//		chart.leftAxis.spaceTop = 0.4
+		chart.leftAxis.spaceBottom = 0.0
+		chart.rightAxis.enabled = false
+		chart.xAxis.enabled = false
+		chart.doubleTapToZoomEnabled = false
+		chart.data = data
+		chart.animate(xAxisDuration: 0.5)
+	}
 	
 	func filledChartData(from array:[Double], color:UIColor) -> LineChartData {
 		let yVals = array.enumerated().map({ ChartDataEntry(x: Double($0.offset), y: $0.element) })
@@ -235,23 +252,5 @@ class MyChartsView: UIView, ChartViewDelegate {
 	}
 
 	
-//	func dataWithCount(_ count: Int, range: UInt32, color:UIColor) -> LineChartData {
-//		let yVals = (0..<count).map { i -> ChartDataEntry in
-//			let val = Double(arc4random_uniform(range)) + 3
-//			return ChartDataEntry(x: Double(i), y: val)
-//		}
-//
-//		let set1 = LineChartDataSet(values: yVals, label: "DataSet 1")
-//
-//		set1.lineWidth = 1.75
-//		set1.circleRadius = 5.0
-//		set1.circleHoleRadius = 2.5
-//		set1.setColor(color)
-//		set1.setCircleColor(color)
-//		set1.highlightColor = color
-//		set1.drawValuesEnabled = false
-//
-//		return LineChartData(dataSet: set1)
-//	}
 
 }
