@@ -27,6 +27,7 @@ class MyChartsView: UIView, ChartViewDelegate {
 	let dateChart = LineChartView()
 	let labels = [UILabel(), UILabel(), UILabel(), UILabel()]
 	let groupCharts = [LineChartView(), LineChartView(), LineChartView(), LineChartView()]
+	let symptomCharts = [LineChartView(), ScatterChartView()]
 	var clinicSampleData:[[PollenSamples]] = [[]]
 	var lowBounds = Date()
 	var upperBounds = Date()
@@ -53,7 +54,12 @@ class MyChartsView: UIView, ChartViewDelegate {
 			self.addSubview($0)
 			$0.delegate = self
 		})
-		allCharts = [dateChart] + groupCharts
+		symptomCharts.forEach({
+			self.addSubview($0)
+			$0.delegate = self
+		})
+
+		allCharts = [dateChart] + groupCharts + [symptomCharts[0] as! LineChartView]
 
 		let groups = [PollenTypeGroup.grasses, PollenTypeGroup.weeds, PollenTypeGroup.trees, PollenTypeGroup.molds]
 		for i in 0..<labels.count{
@@ -66,7 +72,7 @@ class MyChartsView: UIView, ChartViewDelegate {
 		}
 		
 		detailTextView.textColor = Style.shared.blue
-		detailTextView.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P20)
+		detailTextView.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15)
 		self.addSubview(detailTextView)
 		NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: .pollenDidUpdate, object: nil)
 	}
@@ -83,7 +89,11 @@ class MyChartsView: UIView, ChartViewDelegate {
 		for i in 0..<labels.count{
 			labels[i].center = CGPoint(x: 10 + labels[i].frame.size.width*0.5, y: marginTop + h*CGFloat(i) + labels[i].frame.size.height*0.5 - 5)
 		}
-		detailTextView.frame = CGRect(x: 20, y: groupCharts.last!.frame.bottom+20, width: self.frame.size.width-40, height: self.frame.size.height - (groupCharts.last!.frame.bottom+20) )
+		
+		symptomCharts[0].frame = CGRect(x: 0, y: groupCharts.last!.frame.bottom, width: self.bounds.size.width, height: h)
+
+		let chartBottom = symptomCharts[0].frame.bottom+20
+		detailTextView.frame = CGRect(x: 20, y: chartBottom, width: self.frame.size.width-40, height: self.frame.size.height - chartBottom - 30 )
 	}
 	
 	func chartTranslated(_ chartView: ChartViewBase, dX: CGFloat, dY: CGFloat) {
@@ -153,13 +163,28 @@ class MyChartsView: UIView, ChartViewDelegate {
 			}
 		}
 		
+		let symptomData = dateArray.map { (date) -> SymptomEntry in
+			return Symptom.shared.entries.filter({
+				let sampleDate = $0.date
+				return cal.isDate(sampleDate, inSameDayAs: date)
+			}).first ?? SymptomEntry(date: date, location: nil, rating: nil, exposures: nil)
+		}
+		
+		let symptomChartData = symptomData.map { (entry) -> Double in
+			if let rating = entry.rating{ return Double(rating.rawValue)/3 }
+			return 0
+			}
+		print(symptomData)
+		print(symptomChartData)
+		setupFilledChart(symptomCharts[0] as! LineChartView, data: filledChartData(from: symptomChartData, color: Style.shared.blue), color: .white)
+
 		clinicSampleData
 			.map({ (samples) -> [Double] in
 				return samples
 					.map({ $0.strongestSample() ?? PollenSample(withKey: "nil", value: 0) })
 					.map({ Double($0.logValue) })
 			})
-			.map({ return filledChartData(from: $0, color: Style.shared.blue) })
+			.map({ return filledChartData(from: $0, color: Style.shared.green) })
 			.enumerated()
 			.forEach { (entry) in
 				setupFilledChart(groupCharts[entry.offset], data: entry.element, color: .white)
@@ -167,6 +192,54 @@ class MyChartsView: UIView, ChartViewDelegate {
 		
 		setupDateChart(dateChart, data:dateChartData(from: dateArray, level:.day))
 	}
+	
+	
+	
+	
+	func setupFilledChart(_ chart: LineChartView, data: LineChartData, color: UIColor) {
+		(data.getDataSetByIndex(0) as! LineChartDataSet).circleHoleColor = color
+		chart.delegate = self
+		chart.backgroundColor = color
+		chart.chartDescription?.enabled = false
+		chart.dragEnabled = true
+		chart.setScaleEnabled(true)
+		chart.pinchZoomEnabled = false
+		chart.setViewPortOffsets(left: 0, top: 0, right: 0, bottom: 0)
+		chart.legend.enabled = false
+		chart.leftAxis.enabled = false
+		//		chart.leftAxis.spaceTop = 0.4
+		chart.leftAxis.spaceBottom = 0.0
+		chart.rightAxis.enabled = false
+		chart.xAxis.enabled = false
+		chart.doubleTapToZoomEnabled = false
+		chart.data = data
+		chart.animate(xAxisDuration: 0.5)
+	}
+	
+	func filledChartData(from array:[Double], color:UIColor) -> LineChartData {
+		let values = array.enumerated().map({ ChartDataEntry(x: Double($0.offset), y: $0.element) })
+		let set1 = LineChartDataSet(values: values, label: "Lines")
+		set1.lineWidth = 0.1
+		//		set1.circleRadius = 5.0
+		//		set1.circleHoleRadius = 2.5
+		//		set1.setColor(color)
+		//		set1.setCircleColor(color)
+		set1.highlightColor = Style.shared.orange
+		set1.highlightLineWidth = 1
+		set1.drawValuesEnabled = false
+		set1.drawCirclesEnabled = false
+		set1.drawFilledEnabled = true
+		set1.fillAlpha = 1
+		set1.fillColor = color
+		//		set1.cubicIntensity = 0.5
+		set1.mode = .cubicBezier
+		return LineChartData(dataSet: set1)
+	}
+
+
+
+	
+	
 	
 	func setupDateChart(_ chart: LineChartView, data: LineChartData) {
 //		(data.getDataSetByIndex(0) as! LineChartDataSet).circleHoleColor = UIColor.white
@@ -194,6 +267,8 @@ class MyChartsView: UIView, ChartViewDelegate {
 //		chart.legend.drawInside = false
 //        chartView.legend = l
 		
+		chart.chartDescription?.text = ""
+		
 		chart.rightAxis.axisMinimum = 0
 		chart.leftAxis.axisMinimum = 0
 //		chart.xAxis.labelPosition = .bothSided
@@ -215,7 +290,7 @@ class MyChartsView: UIView, ChartViewDelegate {
 			return ChartDataEntry(x: Double(i) + 0.5, y: Double(arc4random_uniform(15) + 5))
 		}
 		
-		let set = LineChartDataSet(values: entries, label: "Line DataSet")
+		let set = LineChartDataSet(values: entries, label: "Dates")
 		set.setColor(UIColor.clear)
 		set.lineWidth = 2.5
 		set.setCircleColor(UIColor.clear)
@@ -233,46 +308,6 @@ class MyChartsView: UIView, ChartViewDelegate {
 		set.axisDependency = .left
 		
 		return LineChartData(dataSet: set)
-	}
-	
-	func setupFilledChart(_ chart: LineChartView, data: LineChartData, color: UIColor) {
-		(data.getDataSetByIndex(0) as! LineChartDataSet).circleHoleColor = color
-		chart.delegate = self
-		chart.backgroundColor = color
-		chart.chartDescription?.enabled = false
-		chart.dragEnabled = true
-		chart.setScaleEnabled(true)
-		chart.pinchZoomEnabled = false
-		chart.setViewPortOffsets(left: 0, top: 0, right: 0, bottom: 0)
-		chart.legend.enabled = false
-		chart.leftAxis.enabled = false
-//		chart.leftAxis.spaceTop = 0.4
-		chart.leftAxis.spaceBottom = 0.0
-		chart.rightAxis.enabled = false
-		chart.xAxis.enabled = false
-		chart.doubleTapToZoomEnabled = false
-		chart.data = data
-		chart.animate(xAxisDuration: 0.5)
-	}
-	
-	func filledChartData(from array:[Double], color:UIColor) -> LineChartData {
-		let values = array.enumerated().map({ ChartDataEntry(x: Double($0.offset), y: $0.element) })
-		let set1 = LineChartDataSet(values: values, label: "Lines")
-		set1.lineWidth = 0.1
-//		set1.circleRadius = 5.0
-//		set1.circleHoleRadius = 2.5
-//		set1.setColor(color)
-//		set1.setCircleColor(color)
-		set1.highlightColor = Style.shared.orange
-		set1.highlightLineWidth = 1
-		set1.drawValuesEnabled = false
-		set1.drawCirclesEnabled = false
-		set1.drawFilledEnabled = true
-		set1.fillAlpha = 1
-		set1.fillColor = color
-//		set1.cubicIntensity = 0.5
-		set1.mode = .cubicBezier
-		return LineChartData(dataSet: set1)
 	}
 }
 

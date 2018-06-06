@@ -44,6 +44,6 @@ struct SymptomEntry{
 	var date:Date
 	var location:(Double, Double)?
 	var rating:SymptomRating?
-	var exposures:[Exposures]
+	var exposures:[Exposures]?
 }
 

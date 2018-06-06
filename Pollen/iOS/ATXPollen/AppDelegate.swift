@@ -18,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		// Override point for customization after application launch.
 		
 		_ = Pollen.shared
+		_ = Symptom.shared
 		ClinicData.shared.boot()
 		
 		return true

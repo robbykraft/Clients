@@ -18,7 +18,9 @@ class Symptom {
 	// date(toString) : sample
 	var entries:[SymptomEntry] = []
 	
-	private init(){ }
+	private init(){
+		loadFakeData()
+	}
 	
 	func boot(){
 		// 1. check core data for stored info:
@@ -31,7 +33,6 @@ class Symptom {
 		//		print(mostRecentCoreDataEntryDate() ?? "")
 
 //		loadSamplesFromCoreData()
-		loadFakeData()
 	}
 	
 	func loadFakeData(){
@@ -55,7 +56,7 @@ class Symptom {
 		var symptomEntries:[SymptomEntry] = []
 		for (key,value) in fakeData{
 			let date = Date(fromString: key)!
-			let s = SymptomEntry(date: date, location: nil, rating: SymptomRating(rawValue: value), exposures: [])
+			let s = SymptomEntry(date: date, location: nil, rating: SymptomRating(rawValue: value), exposures: nil)
 			symptomEntries.append(s)
 		}
 		self.entries = symptomEntries
