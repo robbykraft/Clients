@@ -54,9 +54,11 @@ class Symptom {
 									 "2018-06-01":0,
 									 "2018-06-02":3]
 		var symptomEntries:[SymptomEntry] = []
+
 		for (key,value) in fakeData{
 			let date = Date(fromString: key)!
-			let s = SymptomEntry(date: date, location: nil, rating: SymptomRating(rawValue: value), exposures: nil)
+			let exposuresArray:[Exposures] = [Exposures.cat, Exposures.dog, Exposures.dust, Exposures.molds, Exposures.virus].filter({ _ in arc4random_uniform(100) < 40 })
+			let s = SymptomEntry(date: date, location: nil, rating: SymptomRating(rawValue: value), exposures: exposuresArray)
 			symptomEntries.append(s)
 		}
 		self.entries = symptomEntries

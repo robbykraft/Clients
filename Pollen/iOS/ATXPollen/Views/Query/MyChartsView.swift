@@ -20,23 +20,30 @@ public class DateValueFormatter: NSObject, IAxisValueFormatter {
 	}
 }
 
+extension MyChartsView: IAxisValueFormatter {
+	func stringForValue(_ value: Double, axis: AxisBase?) -> String {
+		return months[Int(value) % months.count]
+	}
+}
+
 
 class MyChartsView: UIView, ChartViewDelegate {
-	var allCharts:[LineChartView] = []
 
-	let dateChart = LineChartView()
-	let labels = [UILabel(), UILabel(), UILabel(), UILabel()]
-	let groupCharts = [LineChartView(), LineChartView(), LineChartView(), LineChartView()]
-	let symptomCharts = [LineChartView(), ScatterChartView()]
+	// data
+	let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+	let speciesGroups:[PollenTypeGroup] = [.grasses, .weeds, .trees, .molds]
+	let exposureTypes:[Exposures] = [.dog, .cat, .dust, .molds, .virus]
 	var clinicSampleData:[[PollenSamples]] = [[]]
 	var lowBounds = Date()
 	var upperBounds = Date()
+	// charts
+	var allCharts:[BarLineChartViewBase] = []
+	let dateChart = LineChartView()
+	let groupCharts = [LineChartView(), LineChartView(), LineChartView(), LineChartView()]
+	let symptomCharts = [LineChartView(), ScatterChartView()]
+	// ui kit
+	let chartLabels = [UILabel(), UILabel(), UILabel(), UILabel()]
 	let detailTextView = UITextView()
-	
-	let months = ["Jan", "Feb", "Mar",
-				  "Apr", "May", "Jun",
-				  "Jul", "Aug", "Sep",
-				  "Oct", "Nov", "Dec"]
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -49,27 +56,20 @@ class MyChartsView: UIView, ChartViewDelegate {
 		lowBounds = Calendar.current.date(byAdding: .year, value: -1, to: Date())!
 		upperBounds = Date()
 
-		self.addSubview(dateChart)
-		groupCharts.forEach({
+		allCharts = [dateChart] + groupCharts + symptomCharts
+		allCharts.forEach({
 			self.addSubview($0)
 			$0.delegate = self
 		})
-		symptomCharts.forEach({
-			self.addSubview($0)
-			$0.delegate = self
+		
+		chartLabels.enumerated().forEach({
+			$0.element.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15)
+			$0.element.textColor = Style.shared.blue
+			$0.element.text = speciesGroups[$0.offset].asString()
+			$0.element.textAlignment = .left
+			$0.element.sizeToFit()
+			self.addSubview($0.element)
 		})
-
-		allCharts = [dateChart] + groupCharts + [symptomCharts[0] as! LineChartView]
-
-		let groups = [PollenTypeGroup.grasses, PollenTypeGroup.weeds, PollenTypeGroup.trees, PollenTypeGroup.molds]
-		for i in 0..<labels.count{
-			labels[i].font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15)
-			labels[i].textColor = Style.shared.blue
-			labels[i].text = groups[i].asString()
-			labels[i].textAlignment = .left
-			labels[i].sizeToFit()
-			self.addSubview(labels[i])
-		}
 		
 		detailTextView.textColor = Style.shared.blue
 		detailTextView.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15)
@@ -79,20 +79,20 @@ class MyChartsView: UIView, ChartViewDelegate {
 	
 	override func layoutSubviews() {
 		super.layoutSubviews()
-		dateChart.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: 40)
+//		dateChart.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: 40)
 		
-		let marginTop:CGFloat = 50
 		let h:CGFloat = self.bounds.size.height*0.1
-		for i in 0..<groupCharts.count{
-			groupCharts[i].frame = CGRect(x: 0, y: marginTop + h*CGFloat(i), width: self.bounds.size.width, height: h)
-		}
-		for i in 0..<labels.count{
-			labels[i].center = CGPoint(x: 10 + labels[i].frame.size.width*0.5, y: marginTop + h*CGFloat(i) + labels[i].frame.size.height*0.5 - 5)
-		}
+		allCharts.enumerated().forEach({
+			$0.element.frame = CGRect(x: 0, y: h*CGFloat($0.offset), width: self.bounds.size.width, height: h)
+		})
+		let marginTop:CGFloat = 50
+		chartLabels.enumerated().forEach({
+			$0.element.center = CGPoint(x: 10 + $0.element.frame.size.width*0.5, y: marginTop + h*CGFloat($0.offset) + $0.element.frame.size.height*0.5)
+		})
 		
-		symptomCharts[0].frame = CGRect(x: 0, y: groupCharts.last!.frame.bottom, width: self.bounds.size.width, height: h)
+//		symptomCharts[0].frame = CGRect(x: 0, y: groupCharts.last!.frame.bottom, width: self.bounds.size.width, height: h)
 
-		let chartBottom = symptomCharts[0].frame.bottom+20
+		let chartBottom = allCharts.last!.frame.bottom+20
 		detailTextView.frame = CGRect(x: 20, y: chartBottom, width: self.frame.size.width-40, height: self.frame.size.height - chartBottom - 30 )
 	}
 	
@@ -109,19 +109,30 @@ class MyChartsView: UIView, ChartViewDelegate {
 		}
 	}
 	
-	func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
-		let otherCharts = groupCharts.filter({ chartView != $0 })
-		otherCharts.forEach { (chart) in
-			var y:Double = 0
-			if let data = chart.data{
-				if let foundentry = data.dataSets[0].entriesForXValue(highlight.x).first{
-					y = foundentry.y
-				}
-			}
-			chart.highlightValue(x: highlight.x, y: y, dataSetIndex: highlight.dataSetIndex, dataIndex: highlight.dataIndex, callDelegate: false)
+	func chartValueNothingSelected(_ chartView: ChartViewBase) {
+		allCharts
+			.filter({ chartView != $0 })
+			.filter({ $0 != dateChart })
+			.forEach { (chart) in
+				chart.highlightValue(x: -1, dataSetIndex: 1, callDelegate: false)
 		}
-		
-		let speciesArray = [PollenTypeGroup.grasses, PollenTypeGroup.weeds, PollenTypeGroup.trees, PollenTypeGroup.molds]
+	
+	}
+	
+	func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
+		allCharts
+			.filter({ chartView != $0 })
+			.filter({ $0 != dateChart })
+			.forEach { (chart) in
+				var y:Double = 0
+				if let data = chart.data{
+					if let foundentry = data.dataSets[0].entriesForXValue(highlight.x).first{
+						y = foundentry.y
+					}
+				}
+				chart.highlightValue(x: highlight.x, y: y, dataSetIndex: highlight.dataSetIndex, dataIndex: highlight.dataIndex, callDelegate: false)
+		}
+
 		var detailString = ""
 		if let date = clinicSampleData[0][Int(highlight.x)].date{
 			let formatter = DateFormatter()
@@ -133,7 +144,7 @@ class MyChartsView: UIView, ChartViewDelegate {
 			.enumerated()
 			.forEach({
 				if let strongest = $0.element.strongestSample(){
-					detailString += "\(speciesArray[$0.offset].asString()): \(strongest.rating.asString()) (\(strongest.value))\n"
+					detailString += "\(speciesGroups[$0.offset].asString()): \(strongest.rating.asString()) (\(strongest.value))\n"
 				}
 			})
 		detailTextView.text = detailString
@@ -146,8 +157,12 @@ class MyChartsView: UIView, ChartViewDelegate {
 		})
 		
 		let dateArray = samples.compactMap({ $0.date }).sorted()
-		
-		let bySpecies = [PollenTypeGroup.grasses, PollenTypeGroup.weeds, PollenTypeGroup.trees, PollenTypeGroup.molds]
+
+		// setup date slider
+		setupDateChart(dateChart, data:dateChartData(from: dateArray, level:.day))
+
+		// setup species groups
+		let bySpecies = speciesGroups
 			.map { (group) -> [PollenSamples] in
 				return samples
 					.map({ $0.relevantToMyAllergies() })
@@ -162,22 +177,6 @@ class MyChartsView: UIView, ChartViewDelegate {
 				}).first ?? PollenSamples(fromDatabase: [:])
 			}
 		}
-		
-		let symptomData = dateArray.map { (date) -> SymptomEntry in
-			return Symptom.shared.entries.filter({
-				let sampleDate = $0.date
-				return cal.isDate(sampleDate, inSameDayAs: date)
-			}).first ?? SymptomEntry(date: date, location: nil, rating: nil, exposures: nil)
-		}
-		
-		let symptomChartData = symptomData.map { (entry) -> Double in
-			if let rating = entry.rating{ return Double(rating.rawValue)/3 }
-			return 0
-			}
-		print(symptomData)
-		print(symptomChartData)
-		setupFilledChart(symptomCharts[0] as! LineChartView, data: filledChartData(from: symptomChartData, color: Style.shared.blue), color: .white)
-
 		clinicSampleData
 			.map({ (samples) -> [Double] in
 				return samples
@@ -189,11 +188,40 @@ class MyChartsView: UIView, ChartViewDelegate {
 			.forEach { (entry) in
 				setupFilledChart(groupCharts[entry.offset], data: entry.element, color: .white)
 		}
+
+		// setup symptom charts
+		let symptomData = dateArray.map { (date) -> SymptomEntry in
+			return Symptom.shared.entries.filter({
+				let sampleDate = $0.date
+				return cal.isDate(sampleDate, inSameDayAs: date)
+			}).first ?? SymptomEntry(date: date, location: nil, rating: nil, exposures: nil)
+		}
+		let symptomChartData = symptomData.map { (entry) -> Double in
+			if let rating = entry.rating{ return Double(rating.rawValue)/3 }
+			return 0
+		}
+		setupFilledChart(symptomCharts[0] as! LineChartView, data: filledChartData(from: symptomChartData, color: Style.shared.blue), color: .white)
+
+		// exposures data
 		
-		setupDateChart(dateChart, data:dateChartData(from: dateArray, level:.day))
+
+		let exposureChartData = symptomData.map { (entry) -> [Exposures] in
+			if let exposures = entry.exposures{ return exposures }
+			return []
+			}.map { (exposure) -> [Bool] in
+				return exposureTypes.map({ (type) -> Bool in
+					return exposure.contains(type)
+				})
+		}
+		
+		let exposureChartDataRowColFlip = exposureTypes.map { (exposure) -> [Bool] in
+			return exposureChartData.map({ (boolArray) -> Bool in
+				return boolArray[exposure.rawValue]
+			})
+		}
+
+		setupScatterChart(symptomCharts[1] as! ScatterChartView, data: scatterData(from: exposureChartDataRowColFlip, color: Style.shared.blue), color: .white)
 	}
-	
-	
 	
 	
 	func setupFilledChart(_ chart: LineChartView, data: LineChartData, color: UIColor) {
@@ -207,7 +235,7 @@ class MyChartsView: UIView, ChartViewDelegate {
 		chart.setViewPortOffsets(left: 0, top: 0, right: 0, bottom: 0)
 		chart.legend.enabled = false
 		chart.leftAxis.enabled = false
-		//		chart.leftAxis.spaceTop = 0.4
+//		chart.leftAxis.spaceTop = 0.4
 		chart.leftAxis.spaceBottom = 0.0
 		chart.rightAxis.enabled = false
 		chart.xAxis.enabled = false
@@ -220,10 +248,10 @@ class MyChartsView: UIView, ChartViewDelegate {
 		let values = array.enumerated().map({ ChartDataEntry(x: Double($0.offset), y: $0.element) })
 		let set1 = LineChartDataSet(values: values, label: "Lines")
 		set1.lineWidth = 0.1
-		//		set1.circleRadius = 5.0
-		//		set1.circleHoleRadius = 2.5
-		//		set1.setColor(color)
-		//		set1.setCircleColor(color)
+//		set1.circleRadius = 5.0
+//		set1.circleHoleRadius = 2.5
+//		set1.setColor(color)
+//		set1.setCircleColor(color)
 		set1.highlightColor = Style.shared.orange
 		set1.highlightLineWidth = 1
 		set1.drawValuesEnabled = false
@@ -231,15 +259,51 @@ class MyChartsView: UIView, ChartViewDelegate {
 		set1.drawFilledEnabled = true
 		set1.fillAlpha = 1
 		set1.fillColor = color
-		//		set1.cubicIntensity = 0.5
+//		set1.cubicIntensity = 0.5
 		set1.mode = .cubicBezier
 		return LineChartData(dataSet: set1)
 	}
-
-
+	
+	func setupScatterChart(_ chart: ScatterChartView, data: ScatterChartData, color: UIColor) {
+//		(data.getDataSetByIndex(0) as! ScatterChartDataSet).circleHoleColor = color
+		chart.delegate = self
+		chart.backgroundColor = color
+		chart.chartDescription?.enabled = false
+		chart.dragEnabled = true
+		chart.setScaleEnabled(true)
+		chart.pinchZoomEnabled = false
+		chart.setViewPortOffsets(left: 0, top: 0, right: 0, bottom: 0)
+		chart.legend.enabled = false
+		chart.leftAxis.enabled = false
+//		chart.leftAxis.spaceTop = 0.4
+		chart.leftAxis.spaceBottom = 0.0
+		chart.rightAxis.enabled = false
+		chart.xAxis.enabled = false
+		chart.doubleTapToZoomEnabled = false
+		chart.data = data
+		chart.animate(xAxisDuration: 0.5)
+	}
 
 	
-	
+	func scatterData(from array:[[Bool]], color:UIColor) -> ScatterChartData{
+		let colors = [Style.shared.orange, Style.shared.lightBlue, Style.shared.purple, Style.shared.softBlue, Style.shared.red]
+		let dataSets = array.enumerated().map { (i, valueArray) -> ChartDataSet in
+			let values = valueArray.map{ return $0 ? i+1 : 0
+				}.enumerated().map({ (j, value) -> ChartDataEntry in
+					return ChartDataEntry(x: Double(j), y: Double(value)/6)
+				}).filter({ $0.y != 0.0 })
+			let set = ScatterChartDataSet(values: values + [ChartDataEntry(x: 0, y: 0)], label: exposureTypes[i].asString())
+			set.setScatterShape(.circle)
+			set.scatterShapeHoleColor = colors[i%5]
+			set.scatterShapeHoleRadius = 3.5
+			set.drawValuesEnabled = false
+			set.setColor(colors[i%5])
+			set.scatterShapeSize = 8
+			return set
+		}
+		return ScatterChartData(dataSets: dataSets)
+	}
+
 	
 	func setupDateChart(_ chart: LineChartView, data: LineChartData) {
 //		(data.getDataSetByIndex(0) as! LineChartDataSet).circleHoleColor = UIColor.white
@@ -265,7 +329,7 @@ class MyChartsView: UIView, ChartViewDelegate {
 //		chart.legend.verticalAlignment = .bottom
 //		chart.legend.orientation = .horizontal
 //		chart.legend.drawInside = false
-//        chartView.legend = l
+//		chartView.legend = l
 		
 		chart.chartDescription?.text = ""
 		
@@ -308,12 +372,5 @@ class MyChartsView: UIView, ChartViewDelegate {
 		set.axisDependency = .left
 		
 		return LineChartData(dataSet: set)
-	}
-}
-
-
-extension MyChartsView: IAxisValueFormatter {
-	func stringForValue(_ value: Double, axis: AxisBase?) -> String {
-		return months[Int(value) % months.count]
 	}
 }

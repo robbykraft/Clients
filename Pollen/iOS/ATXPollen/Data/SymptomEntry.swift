@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum SymptomRating: Int{
+enum SymptomRating : Int{
 	case none
 	case light
 	case medium
@@ -23,7 +23,7 @@ enum SymptomRating: Int{
 	}
 }
 
-enum Exposures{
+enum Exposures : Int{
 	case dog
 	case cat
 	case molds
