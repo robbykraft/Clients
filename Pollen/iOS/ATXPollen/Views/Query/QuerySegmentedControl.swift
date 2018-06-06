@@ -29,7 +29,6 @@ class QuerySegmentedControl: UISegmentedControl {
 	}
 	
 	private func configure() {
-		self.selectedSegmentIndex = 0
 		sortedViews = self.subviews.sorted(by:{$0.frame.origin.x < $1.frame.origin.x})
 //		changeSelectedIndex(to: currentIndex)
 		self.tintColor = Style.shared.blue

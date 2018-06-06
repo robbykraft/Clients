@@ -42,6 +42,8 @@
 		D5167FF520ACDC9E00478CBE /* MyChartsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167FF420ACDC9E00478CBE /* MyChartsView.swift */; };
 		D5167FFA20ACE3C900478CBE /* PollenCountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167FF920ACE3C900478CBE /* PollenCountViewController.swift */; };
 		D5167FFC20ACE3F900478CBE /* LineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167FFB20ACE3F900478CBE /* LineTableViewCell.swift */; };
+		D51B3DEC20C8240D001A4D8D /* SymptomEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51B3DEB20C8240D001A4D8D /* SymptomEntry.swift */; };
+		D51B3DEE20C826AE001A4D8D /* SymptomData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51B3DED20C826AE001A4D8D /* SymptomData.swift */; };
 		D5D1DF5120B8B32C008DA7F7 /* Pollen.plist in Resources */ = {isa = PBXBuildFile; fileRef = D5D1DF5020B8B32C008DA7F7 /* Pollen.plist */; };
 /* End PBXBuildFile section */
 
@@ -105,6 +107,8 @@
 		D5167FF420ACDC9E00478CBE /* MyChartsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyChartsView.swift; sourceTree = "<group>"; };
 		D5167FF920ACE3C900478CBE /* PollenCountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollenCountViewController.swift; sourceTree = "<group>"; };
 		D5167FFB20ACE3F900478CBE /* LineTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineTableViewCell.swift; sourceTree = "<group>"; };
+		D51B3DEB20C8240D001A4D8D /* SymptomEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymptomEntry.swift; sourceTree = "<group>"; };
+		D51B3DED20C826AE001A4D8D /* SymptomData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SymptomData.swift; path = ATXPollen/Data/SymptomData.swift; sourceTree = SOURCE_ROOT; };
 		D5D1DF5020B8B32C008DA7F7 /* Pollen.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Pollen.plist; sourceTree = "<group>"; };
 		E8F13C6D9D00FED51585F67F /* Pods_ATXPollen.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ATXPollen.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -234,6 +238,7 @@
 			children = (
 				D5167FD320AC8CF600478CBE /* Pollen.swift */,
 				D5167FD720AC93D500478CBE /* ClinicData.swift */,
+				D51B3DED20C826AE001A4D8D /* SymptomData.swift */,
 				D5167FD520AC8D0D00478CBE /* Extensions.swift */,
 				D5167FC920AC89DF00478CBE /* Style.swift */,
 			);
@@ -252,6 +257,7 @@
 			isa = PBXGroup;
 			children = (
 				D5167FD120AC8CB000478CBE /* PollenSample.swift */,
+				D51B3DEB20C8240D001A4D8D /* SymptomEntry.swift */,
 				D51272DB20B9A49100F21EF4 /* PollenTypeInfo.swift */,
 				D51272DD20B9A4B800F21EF4 /* ClinicInfo.swift */,
 			);
@@ -496,7 +502,9 @@
 				D5167FEC20ACD56800478CBE /* Preferences.swift in Sources */,
 				D5167F9420AC841000478CBE /* ATXPollen.xcdatamodeld in Sources */,
 				D5167FDD20AC9D7000478CBE /* QuerySegmentedControl.swift in Sources */,
+				D51B3DEE20C826AE001A4D8D /* SymptomData.swift in Sources */,
 				D5167FF520ACDC9E00478CBE /* MyChartsView.swift in Sources */,
+				D51B3DEC20C8240D001A4D8D /* SymptomEntry.swift in Sources */,
 				D5167F8C20AC841000478CBE /* AppDelegate.swift in Sources */,
 				D5167FD820AC93D500478CBE /* ClinicData.swift in Sources */,
 				D5167FE020AC9D8700478CBE /* ExposureQueryView.swift in Sources */,

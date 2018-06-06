@@ -47,7 +47,6 @@ class Pollen {
 		return key
 	}
 
-
 	func loadSystemPList(){
 		func pListBootError(){ print("plist is corrupt. app bundle directory has been modified.") }
 		guard let plistPath = Bundle.main.path(forResource: "Pollen", ofType: "plist") else { pListBootError(); return }

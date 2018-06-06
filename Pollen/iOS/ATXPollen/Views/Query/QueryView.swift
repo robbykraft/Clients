@@ -36,7 +36,13 @@ class QueryView: UIView{
 	func initUI(){
 		segmentedHR.backgroundColor = Style.shared.blue
 		dividerView.image = UIImage(named: "separator")
-		myChartsView.isHidden = true
+
+		segmentedControl.selectedSegmentIndex = 1
+//		myChartsView.isHidden = true
+		allergyView.isHidden = true
+		dividerView.isHidden = true
+		exposureView.isHidden = true
+
 		self.addSubview(segmentedControl)
 		self.addSubview(segmentedHR)
 		self.addSubview(allergyView)

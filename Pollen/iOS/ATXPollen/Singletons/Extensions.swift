@@ -29,7 +29,7 @@ extension Date {
 	}
 	init?(fromString:String){
 		let formatter = DateFormatter()
-//		formatter.dateFormat = "yyyy-MM-dd"
+		formatter.dateFormat = "yyyy-MM-dd"
 		if let success = formatter.date(from: fromString){ self = success }
 		else { return nil }
 	}
