@@ -57,10 +57,10 @@ class ProjectsViewController: UITableViewController {
 					projectArray.append(Project(key: key, data: value))
 				}
 			}
-			projectArray.sort(by: { (a, b) -> Bool in
-				return a.name < b.name
-			})
-			self.projects = projectArray
+//			projectArray.sort(by: { (a, b) -> Bool in
+//				return a.name < b.name
+//			})
+			self.projects = projectArray.sorted{$0.name.localizedStandardCompare($1.name) == .orderedAscending}
 			if let completion = completionHandler{
 				completion()
 			}

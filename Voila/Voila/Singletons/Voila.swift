@@ -124,7 +124,7 @@ class Voila{
 		}
 		let allFurniture = Array(self.furnitureCost.keys).filter { (name) -> Bool in
 			return !currentRoomAllFurnitureNames.contains(name)
-		}
+		}.sorted()
 		return allFurniture.map({ (name) -> Furniture in
 			return Furniture(name: name, price: self.priceForFurniture(name: name), room: nil)
 		})

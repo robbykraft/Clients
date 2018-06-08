@@ -180,6 +180,7 @@ class RoomTableViewController: UITableViewController { //}, MFMailComposeViewCon
 		let alertController = UIAlertController(title: "Create New Furniture Item", message: nil, preferredStyle: .alert)
 		alertController.addTextField { (textField : UITextField) -> Void in
 			textField.placeholder = "Furniture Name"
+			textField.autocapitalizationType = UITextAutocapitalizationType.words
 		}
 		let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (result : UIAlertAction) -> Void in
 		}
