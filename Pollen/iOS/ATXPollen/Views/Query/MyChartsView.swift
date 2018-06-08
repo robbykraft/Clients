@@ -67,13 +67,11 @@ class MyChartsView: UIView, ChartViewDelegate {
 			$0.element.textColor = Style.shared.blue
 			$0.element.text = speciesGroups[$0.offset].asString()
 			$0.element.textAlignment = .left
+			$0.element.backgroundColor = UIColor.white
 			$0.element.sizeToFit()
 			self.addSubview($0.element)
 		})
 		
-		detailTextView.textColor = Style.shared.blue
-		detailTextView.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15)
-		self.addSubview(detailTextView)
 		NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: .pollenDidUpdate, object: nil)
 	}
 	
@@ -89,11 +87,6 @@ class MyChartsView: UIView, ChartViewDelegate {
 		chartLabels.enumerated().forEach({
 			$0.element.center = CGPoint(x: 10 + $0.element.frame.size.width*0.5, y: marginTop + h*CGFloat($0.offset) + $0.element.frame.size.height*0.5)
 		})
-		
-//		symptomCharts[0].frame = CGRect(x: 0, y: groupCharts.last!.frame.bottom, width: self.bounds.size.width, height: h)
-
-		let chartBottom = allCharts.last!.frame.bottom+20
-		detailTextView.frame = CGRect(x: 20, y: chartBottom, width: self.frame.size.width-40, height: self.frame.size.height - chartBottom - 30 )
 	}
 	
 	func chartTranslated(_ chartView: ChartViewBase, dX: CGFloat, dY: CGFloat) {
@@ -116,7 +109,7 @@ class MyChartsView: UIView, ChartViewDelegate {
 			.forEach { (chart) in
 				chart.highlightValue(x: -1, dataSetIndex: 1, callDelegate: false)
 		}
-	
+		self.chartLabels.enumerated().forEach({ $0.element.text = speciesGroups[$0.offset].asString() })
 	}
 	
 	func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
@@ -132,22 +125,25 @@ class MyChartsView: UIView, ChartViewDelegate {
 				}
 				chart.highlightValue(x: highlight.x, y: y, dataSetIndex: highlight.dataSetIndex, dataIndex: highlight.dataIndex, callDelegate: false)
 		}
-
-		var detailString = ""
-		if let date = clinicSampleData[0][Int(highlight.x)].date{
-			let formatter = DateFormatter()
-			formatter.dateFormat = "MMM d, yyyy"
-			detailString += formatter.string(from: date) + "\n"
-		}
+		// clear out entry
+		self.chartLabels.enumerated().forEach({ $0.element.text = speciesGroups[$0.offset].asString() })
+		// deta
 		clinicSampleData
 			.map { $0[Int(highlight.x)] }
 			.enumerated()
 			.forEach({
 				if let strongest = $0.element.strongestSample(){
-					detailString += "\(speciesGroups[$0.offset].asString()): \(strongest.rating.asString()) (\(strongest.value))\n"
+					self.chartLabels[$0.offset].text = "\(speciesGroups[$0.offset].asString()): \(strongest.rating.asString()) (\(strongest.value))"
 				}
 			})
-		detailTextView.text = detailString
+		self.chartLabels.forEach({ $0.sizeToFit() })
+		
+//		var dateString = ""
+//		if let date = clinicSampleData[0][Int(highlight.x)].date{
+//			let formatter = DateFormatter()
+//			formatter.dateFormat = "MMM d, yyyy"
+//			dateString = formatter.string(from: date)
+//		}
 	}
 
 	@objc func reloadData(){
@@ -203,8 +199,6 @@ class MyChartsView: UIView, ChartViewDelegate {
 		setupFilledChart(symptomCharts[0] as! LineChartView, data: filledChartData(from: symptomChartData, color: Style.shared.blue), color: .white)
 
 		// exposures data
-		
-
 		let exposureChartData = symptomData.map { (entry) -> [Exposures] in
 			if let exposures = entry.exposures{ return exposures }
 			return []
