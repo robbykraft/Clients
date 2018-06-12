@@ -10,6 +10,10 @@ import UIKit
 
 class QueryView: UIView{
 	let questionButton = UIBorderedButton()
+	
+	let symptomsCoverView = UIImageView()
+	
+	let trackYourAllergiesButton = UIButton()
 		
 //	let segmentedControl = QuerySegmentedControl(items: ["my allergies","my charts"])
 //	let segmentedHR = UIView()
@@ -49,7 +53,17 @@ class QueryView: UIView{
 //		self.addSubview(allergyView)
 //		self.addSubview(dividerView)
 //		self.addSubview(exposureView)
+		
+		symptomsCoverView.image = UIImage(named: "cutout")
+
+		trackYourAllergiesButton.setTitle("track your allergies", for: .normal)
+		trackYourAllergiesButton.setTitleColor(.black, for: .normal)
+		trackYourAllergiesButton.titleLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P30)
+		trackYourAllergiesButton.sizeToFit()
+
 		self.addSubview(myChartsView)
+		self.addSubview(symptomsCoverView)
+		self.addSubview(trackYourAllergiesButton)
 		self.addSubview(questionButton)
 //		segmentedControl.addTarget(self, action: #selector(segmentedControlDidChange), for: .valueChanged)
 	}
@@ -69,10 +83,14 @@ class QueryView: UIView{
 //		dividerView.frame = CGRect(x: -30, y: content.origin.y + content.size.height*pctTop - dividerH*0.5, width: content.size.width+60, height: dividerH)
 //		exposureView.frame = CGRect(x: 0, y: content.origin.y + content.size.height*pctTop + dividerH*0.5, width: content.size.width, height: content.size.height*(1-pctTop) - dividerH*0.5)
 
-		
 		// my charts
 		myChartsView.frame = self.bounds
 		
+		symptomsCoverView.frame = myChartsView.getSymptomChartsFrame()
+		if(Symptom.shared.entries.count > 0){ symptomsCoverView.isHidden = true }
+
+		trackYourAllergiesButton.center = CGPoint(x: symptomsCoverView.center.x, y: symptomsCoverView.center.y)
+
 		questionButton.setTitle("Allergies?", for: .normal)
 		questionButton.sizeToFit()
 		questionButton.frame = CGRect(x: 0, y: 0, width: questionButton.bounds.size.width+40, height: questionButton.bounds.size.height+15)
@@ -80,6 +98,7 @@ class QueryView: UIView{
 		questionButton.center = CGPoint(x: self.bounds.size.width*0.5, y: self.bounds.size.height*0.93)
 		questionButton.addTarget(self, action: #selector(openQuestion), for: .touchUpInside)
 	}
+	
 	
 	@objc func openQuestion(){
 		let alert = PopAlertView(title: "(1 / 2)", view: AllergyQueryView())

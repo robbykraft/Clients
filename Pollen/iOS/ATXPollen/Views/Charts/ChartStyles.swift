@@ -24,8 +24,11 @@ extension MyChartsView: IAxisValueFormatter {
 	public func stringForValue(_ value: Double, axis: AxisBase?) -> String {
 //		return months[Int(value) % months.count]
 		if Int(value) < self.dataDates.count{
+			let dateFormatter = DateFormatter()
+			dateFormatter.dateFormat = "MMM d"
 			let date = self.dataDates[Int(value)]
-			return Calendar.current.weekdaySymbols[Calendar.current.component(.weekday, from: date)]
+			return dateFormatter.string(from: date)
+//			return Calendar.current.weekdaySymbols[(Calendar.current.component(.weekday, from: date)+6)%7]
 		}
 		return "\(Int(value))"
 	}
@@ -110,7 +113,7 @@ extension MyChartsView {
 		chart.dragEnabled = true
 		chart.setScaleEnabled(true)
 		chart.pinchZoomEnabled = false
-//		chart.setViewPortOffsets(left: 0, top: 0, right: 0, bottom: 0)
+		chart.setViewPortOffsets(left: 0, top: 0, right: 0, bottom: 0)
 		chart.legend.enabled = false
 		chart.leftAxis.enabled = false
 		chart.leftAxis.spaceBottom = 0.0

@@ -9,12 +9,9 @@
 import UIKit
 import Charts
 
-protocol MyChartsDelegate{
-	
-}
 
 class MyChartsView: UIView, ChartViewDelegate {
-
+	
 	let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
 	// parameters for data
@@ -49,6 +46,7 @@ class MyChartsView: UIView, ChartViewDelegate {
 	required init(coder aDecoder: NSCoder) { fatalError("This class does not support NSCoding") }
 	
 	func initUI(){
+		
 		lowBounds = Calendar.current.date(byAdding: .year, value: -1, to: Date())!
 		upperBounds = Date()
 
@@ -63,26 +61,32 @@ class MyChartsView: UIView, ChartViewDelegate {
 			$0.element.textColor = Style.shared.blue
 			$0.element.text = speciesGroups[$0.offset].asString()
 			$0.element.textAlignment = .left
-			$0.element.backgroundColor = UIColor.white
+//			$0.element.backgroundColor = UIColor.white
 			$0.element.sizeToFit()
 			self.addSubview($0.element)
-		})
-		
-		NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: .pollenDidUpdate, object: nil)
+		})		
 	}
 	
 	override func layoutSubviews() {
 		super.layoutSubviews()
 //		dateChart.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: 40)
 		
-		let h:CGFloat = self.bounds.size.height*0.1
-		allCharts.enumerated().forEach({
-			$0.element.frame = CGRect(x: 0, y: h*CGFloat($0.offset), width: self.bounds.size.width, height: h)
+		let h:CGFloat = self.bounds.size.height*0.13
+		dateChart.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: h*0.5)
+		
+		allCharts.filter({$0 != dateChart}).enumerated().forEach({
+			$0.element.frame = CGRect(x: 0, y: h*CGFloat($0.offset) + h*0.5, width: self.bounds.size.width, height: h)
 		})
-		let marginTop:CGFloat = 50
+		let marginTop:CGFloat = h*0.5
 		chartLabels.enumerated().forEach({
 			$0.element.center = CGPoint(x: 10 + $0.element.frame.size.width*0.5, y: marginTop + h*CGFloat($0.offset) + $0.element.frame.size.height*0.5)
 		})
+	}
+	
+	func getSymptomChartsFrame() -> CGRect{
+		guard let firstChart = symptomCharts.first else { return CGRect.zero }
+		guard let lastChart = symptomCharts.last else { return CGRect.zero }
+		return CGRect(x: firstChart.frame.origin.x, y: firstChart.frame.origin.y, width: firstChart.frame.size.width, height: lastChart.frame.bottom - firstChart.frame.origin.y)
 	}
 	
 	@objc func reloadData(){
@@ -150,6 +154,7 @@ class MyChartsView: UIView, ChartViewDelegate {
 			.forEach({ setupBarChart(groupCharts[$0.offset] as! BarChartView, data: $0.element, color: .white) })
 		setupFilledChart(symptomCharts[0] as! LineChartView, data: filledChartData(from: allergyDataValues, color: Style.shared.blue), color: .white)
 		setupScatterChart(symptomCharts[1] as! ScatterChartView, data: scatterData(from: exposureEntryData, color: Style.shared.blue), color: .white)
+
 	}
 	
 	func chartTranslated(_ chartView: ChartViewBase, dX: CGFloat, dY: CGFloat) {

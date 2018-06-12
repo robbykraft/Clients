@@ -19,7 +19,7 @@ class Symptom {
 	var entries:[SymptomEntry] = []
 	
 	private init(){
-		loadFakeData()
+//		loadFakeData()
 	}
 	
 	func boot(){
