@@ -26,21 +26,20 @@ extension MyChartsView: IAxisValueFormatter {
 	}
 }
 
-
 public class IntAxisValueFormatter: NSObject, IAxisValueFormatter {
 	public func stringForValue(_ value: Double, axis: AxisBase?) -> String {
 		return "\(Int(value))"
 	}
 }
 
-
 extension MyChartsView{
 
 	func barChartData(from array:[Double], color:UIColor) -> BarChartData {
 		let values = array.enumerated().map({ BarChartDataEntry(x: Double($0.offset), y: $0.element) })
-		let set1 = BarChartDataSet(values: values, label: "The year 2017")
+		let set1 = BarChartDataSet(values: values, label: "Pollen Data")
+		set1.setColor(Style.shared.green)
+		set1.highlightEnabled = true
 		set1.highlightColor = Style.shared.orange
-		set1.highlightLineWidth = 1
 		set1.drawValuesEnabled = false
 		return BarChartData(dataSet: set1)
 	}
@@ -49,10 +48,10 @@ extension MyChartsView{
 		let values = array.enumerated().map({ ChartDataEntry(x: Double($0.offset), y: $0.element) })
 		let set1 = LineChartDataSet(values: values, label: "Lines")
 		set1.lineWidth = 0.1
-		//		set1.circleRadius = 5.0
-		//		set1.circleHoleRadius = 2.5
-		//		set1.setColor(color)
-		//		set1.setCircleColor(color)
+//		set1.circleRadius = 5.0
+//		set1.circleHoleRadius = 2.5
+//		set1.setColor(color)
+//		set1.setCircleColor(color)
 		set1.highlightColor = Style.shared.orange
 		set1.highlightLineWidth = 1
 		set1.drawValuesEnabled = false
@@ -60,7 +59,7 @@ extension MyChartsView{
 		set1.drawFilledEnabled = true
 		set1.fillAlpha = 1
 		set1.fillColor = color
-		//		set1.cubicIntensity = 0.5
+//		set1.cubicIntensity = 0.5
 		set1.mode = .cubicBezier
 		return LineChartData(dataSet: set1)
 	}
@@ -85,8 +84,8 @@ extension MyChartsView{
 	}
 	
 	func dateChartData(from array:[Date], level:Calendar.Component) -> LineChartData {
-		//		let values = array.enumerated().map({ ChartDataEntry(x: Double($0.offset), y: 0, data: $0.element as AnyObject) })
-		//		let dateSet = LineChartDataSet(values: values, label: "Dates")
+//		let values = array.enumerated().map({ ChartDataEntry(x: Double($0.offset), y: 0, data: $0.element as AnyObject) })
+//		let dateSet = LineChartDataSet(values: values, label: "Dates")
 		
 		let entries = (0..<array.count).map { (i) -> ChartDataEntry in
 			return ChartDataEntry(x: Double(i) + 0.5, y: Double(arc4random_uniform(15) + 5))
@@ -99,9 +98,9 @@ extension MyChartsView{
 		set.circleRadius = 5
 		set.circleHoleRadius = 2.5
 		set.fillColor = UIColor.clear
-		//		set.mode = .cubicBezier
+//		set.mode = .cubicBezier
 		set.drawValuesEnabled = true
-		//		set.valueFont = .systemFont(ofSize: 10)
+//		set.valueFont = .systemFont(ofSize: 10)
 		if let font = UIFont(name: SYSTEM_FONT, size: Style.shared.P11){
 			set.valueFont = font
 		}

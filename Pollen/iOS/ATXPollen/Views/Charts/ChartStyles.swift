@@ -19,7 +19,7 @@ extension MyChartsView {
 		chart.dragEnabled = true
 		chart.setScaleEnabled(true)
 		chart.pinchZoomEnabled = false
-		//		chart.setViewPortOffsets(left: 0, top: 0, right: 0, bottom: 0)
+//		chart.setViewPortOffsets(left: 0, top: 0, right: 0, bottom: 0)
 		chart.legend.enabled = false
 		chart.leftAxis.enabled = false
 		chart.leftAxis.spaceBottom = 0.0
@@ -36,7 +36,7 @@ extension MyChartsView {
 		chart.dragEnabled = true
 		chart.setScaleEnabled(true)
 		chart.pinchZoomEnabled = false
-		//		chart.setViewPortOffsets(left: 0, top: 0, right: 0, bottom: 0)
+//		chart.setViewPortOffsets(left: 0, top: 0, right: 0, bottom: 0)
 		chart.legend.enabled = false
 		chart.leftAxis.enabled = false
 		chart.leftAxis.spaceBottom = 0.0
@@ -59,7 +59,7 @@ extension MyChartsView {
 	}
 
 	func setupScatterChart(_ chart: ScatterChartView, data: ScatterChartData, color: UIColor) {
-		//		(data.getDataSetByIndex(0) as! ScatterChartDataSet).circleHoleColor = color
+//		(data.getDataSetByIndex(0) as! ScatterChartDataSet).circleHoleColor = color
 		chart.delegate = self
 		chart.backgroundColor = color
 		chart.chartDescription?.enabled = false
@@ -69,7 +69,7 @@ extension MyChartsView {
 		chart.setViewPortOffsets(left: 0, top: 0, right: 0, bottom: 0)
 		chart.legend.enabled = false
 		chart.leftAxis.enabled = false
-		//		chart.leftAxis.spaceTop = 0.4
+//		chart.leftAxis.spaceTop = 0.4
 		chart.leftAxis.spaceBottom = 0.0
 		chart.rightAxis.enabled = false
 		chart.xAxis.enabled = false
@@ -80,14 +80,14 @@ extension MyChartsView {
 
 	
 	func setupBarChart(_ chart: BarChartView, data: BarChartData, color: UIColor) {
-		//		(data.getDataSetByIndex(0) as! BarChartDataSet).circleHoleColor = color
+//		(data.getDataSetByIndex(0) as! BarChartDataSet).circleHoleColor = color
 		chart.delegate = self
 		chart.backgroundColor = color
 		chart.chartDescription?.enabled = false
 		chart.dragEnabled = true
 		chart.setScaleEnabled(true)
 		chart.pinchZoomEnabled = false
-		//		chart.setViewPortOffsets(left: 0, top: 0, right: 0, bottom: 0)
+//		chart.setViewPortOffsets(left: 0, top: 0, right: 0, bottom: 0)
 		chart.legend.enabled = false
 		chart.leftAxis.enabled = false
 		chart.leftAxis.spaceBottom = 0.0

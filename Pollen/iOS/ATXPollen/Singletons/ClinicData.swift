@@ -13,9 +13,7 @@ let POLLEN_SAMPLE_ENTITY = "CorePollenSample"
 
 class ClinicData {
 	static let shared = ClinicData()
-	
-	// date(toString) : sample
-//	var pollenSamples:[String:PollenSamples] = [:]
+
 	var pollenSamples:[PollenSamples] = []
 
 	private init(){
@@ -27,24 +25,37 @@ class ClinicData {
 	}
 	
 	func boot(){
-		// 1. check core data for stored info:
-		//   if entries: search for most recent entry, ask firebase for anything more recent
-		//   if no entries: ask firebase for 15 recent entries, load years of data in background
+		// FOR TESTING remove 2 weeks of recent data
+//		let startDate = Calendar.current.date(byAdding: .day, value: -14, to: Date())!
+//		print(startDate)
+//		let samples = queryCoreDataSamples(between: startDate, endDate: Date())
+//		print("deleting \(samples.count) samples")
+//		print(deleteCoreData(samplesData: samples))
 
-//		clearCoreData()
-
-//		print("mostRecentCoreDataEntryDate()")
-//		print(mostRecentCoreDataEntryDate() ?? "")
-
-//		loopAndLoadData(numberOfDays: 15) {
-//			if self.mostRecentCoreDataEntryDate() == nil{
-//				self.downloadAllSamples()
-//			}
-//		}
-//		self.downloadAllSamples()
 		loadSamplesFromCoreData()
+
+		if let lastEntryDate = mostRecentCoreDataEntryDate(){
+			let nextSearchDate = Calendar.current.date(byAdding: .day, value: 1, to: lastEntryDate)!
+			let datesToUpdate = self.allDatesBetween(nextSearchDate, endDate: Date())
+			self.queryDatabase(for: datesToUpdate, completionHandler: nil)
+		} else{
+			// this is the first time running the app. download all the data
+			self.downloadAllSamples()
+		}
 	}
-	
+	// MARK: PollenSamples to Core Data
+	func pollenSamplesFromCoreData(data:NSManagedObject) -> PollenSamples?{
+		let counts = Pollen.shared.types.map({ ($0.key,data.value(forKey: $0.key)) }).reduce([:]) { (dict, entry) -> [String:Any] in
+			var dict = dict
+			dict[entry.0] = entry.1
+			return dict
+		}
+		if let date = data.value(forKey: "date") as? Date{
+			return PollenSamples(fromDatabase: ["date":date.timeIntervalSince1970, "counts":counts])
+		}
+		return nil
+	}
+	// MARK: Core Data
 	func loadSamplesFromCoreData(){
 		guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
 		let managedContext = appDelegate.persistentContainer.viewContext
@@ -57,19 +68,42 @@ class ClinicData {
 			NotificationCenter.default.post(name: .pollenDidUpdate, object: nil)
 		} catch let error as NSError{ print("could not fetch \(error)") }
 	}
-	
-	func pollenSamplesFromCoreData(data:NSManagedObject) -> PollenSamples?{
-		let counts = Pollen.shared.types.map({ ($0.key,data.value(forKey: $0.key)) }).reduce([:]) { (dict, entry) -> [String:Any] in
-			var dict = dict
-			dict[entry.0] = entry.1
-			return dict
+	func saveCoreData(withSamples samples:PollenSamples){
+		// search core data for an entry that shares the same date as samples. remove it
+		if let samplesDate = samples.date{
+			self.deleteCoreData(samplesData: self.queryCoreDataSamples(on: samplesDate))
 		}
-		if let date = data.value(forKey: "date") as? Date{
-			return PollenSamples(fromDatabase: ["date":date.timeIntervalSince1970, "counts":counts])
-		}
-		return nil
+		guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+		let managedContext = appDelegate.persistentContainer.viewContext
+		let entity = NSEntityDescription.entity(forEntityName: POLLEN_SAMPLE_ENTITY, in: managedContext)!
+		let coreSample = NSManagedObject(entity: entity, insertInto: managedContext)
+		samples.getSamples().forEach({ coreSample.setValue($0.value, forKey: $0.type.key) })
+		if let date = samples.date{ coreSample.setValue(date, forKey: "date") }
+		do{ try managedContext.save() }
+		catch let error as NSError { print("could not save \(error)") }
 	}
-	
+	func queryCoreDataSamples(on date:Date) -> [NSManagedObject]{
+		guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return [] }
+		let managedContext = appDelegate.persistentContainer.viewContext
+		let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: POLLEN_SAMPLE_ENTITY)
+		let cal = Calendar.current
+		let startOfDay = cal.startOfDay(for: date)
+		let endOfDay = cal.date(byAdding: .day, value: 1, to: startOfDay)!
+		fetchRequest.predicate = NSPredicate(format: "(date >= %@) AND (date <= %@)", startOfDay as NSDate, endOfDay as NSDate)
+		do{ return try managedContext.fetch(fetchRequest) }
+		catch { return [] }
+	}
+	func queryCoreDataSamples(between startDate:Date, endDate:Date) -> [NSManagedObject]{
+		guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return [] }
+		let managedContext = appDelegate.persistentContainer.viewContext
+		let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: POLLEN_SAMPLE_ENTITY)
+		let cal = Calendar.current
+		let startOfStartDay = cal.startOfDay(for: startDate)
+		let endOfEndDay = cal.startOfDay(for: cal.date(byAdding: .day, value: 1, to: endDate)!)
+		fetchRequest.predicate = NSPredicate(format: "(date >= %@) AND (date < %@)", startOfStartDay as NSDate, endOfEndDay as NSDate)
+		do{ return try managedContext.fetch(fetchRequest) }
+		catch { return [] }
+	}
 	func mostRecentCoreDataEntryDate() -> Date?{
 		guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return nil }
 		let managedContext = appDelegate.persistentContainer.viewContext
@@ -79,54 +113,20 @@ class ClinicData {
 		do {
 			let sampleData:[NSManagedObject] = try managedContext.fetch(fetchRequest)
 			if let first = sampleData.first{
-				if let date = first.value(forKey: "date") as? Date{
-					return date
-				}
+				if let date = first.value(forKey: "date") as? Date{ return date }
 			}
-		} catch let error as NSError{ print("could not fetch \(error)") }
+		} catch { return nil }
 		return nil
 	}
-	
-//	func coreDataCount() -> Int{
-//		guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return 0 }
-//		let managedContext = appDelegate.persistentContainer.viewContext
-//		let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: POLLEN_SAMPLE_ENTITY)
-//		do {
-//			let sampleData:[NSManagedObject] = try managedContext.fetch(fetchRequest)
-//			return sampleData.count
-//		} catch let error as NSError{ print("could not fetch \(error)") }
-//		return 0
-//	}
-
-	func downloadAllSamples(){
-		Database.database().reference().child("collections").observeSingleEvent(of: .value) { (data) in
-			if let d = data.value as? [String:[String:Any]]{
-				let samplesArray = Array(d.values)
-				samplesArray.forEach({
-					let samples = PollenSamples(fromDatabase: $0)
-					self.saveCoreData(withSamples: samples)
-				})
-				self.printCoreDataContents()
-			}
-		}
+	@discardableResult func deleteCoreData(samplesData:[NSManagedObject]) -> Bool{
+		guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return false }
+		let managedContext = appDelegate.persistentContainer.viewContext
+		do{
+			for samples in samplesData{ managedContext.delete(samples) }
+			try managedContext.save()
+			return true
+		} catch{ return false }
 	}
-	
-	// childURL = nil returns the root of the database
-	// childURL can contain multiple subdirectories separated with a slash: "one/two/three"
-	func getData(_ childURL:String?, completionHandler: @escaping (AnyObject?) -> ()) {
-		var reference = Database.database().reference()
-		if(childURL != nil){
-			reference = Database.database().reference().child(childURL!)
-		}
-		reference.observeSingleEvent(of: .value) { (snapshot: DataSnapshot) in
-			if snapshot.value is NSNull {
-				completionHandler(nil)
-			} else {
-				completionHandler(snapshot.value as AnyObject?)
-			}
-		}
-	}
-
 	func clearCoreData(){
 		var sampleData: [NSManagedObject] = []
 		guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
@@ -142,7 +142,6 @@ class ClinicData {
 			print("clearCoreData() could not fetch \(error)")
 		}
 	}
-	
 	func printCoreDataContents(){
 		print("fetching core data")
 		var sampleData: [NSManagedObject] = []
@@ -161,65 +160,86 @@ class ClinicData {
 		}
 		print("end of fetching core data")
 	}
-
-	func saveCoreData(withSamples samples:PollenSamples){
-		guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-		let managedContext = appDelegate.persistentContainer.viewContext
-		let entity = NSEntityDescription.entity(forEntityName: POLLEN_SAMPLE_ENTITY, in: managedContext)!
-		let coreSample = NSManagedObject(entity: entity, insertInto: managedContext)
-		samples.getSamples().forEach({ coreSample.setValue($0.value, forKey: $0.type.key) })
-		if let date = samples.date{ coreSample.setValue(date, forKey: "date") }
-		do{
-			try managedContext.save()
-//			allergies.append(allergy)
-		} catch let error as NSError {
-			print("could not save \(error)")
-		}
-	}
-	
-	func loopAndLoadData(numberOfDays:Int, completionHandler: (() -> ())? ){
-		/*
-		var tries = 0
-		var successes = 0
-		
-		func queryOnce(){
-			// build date for #days past
-			var deltaDate = DateComponents()
-			deltaDate.day = -tries
-			let queryDate:Date = (Calendar.current as NSCalendar).date(byAdding: deltaDate, to: Date(), options: NSCalendar.Options.matchFirst)!
-			let dateString = collectionsKey(forDate:queryDate)
-
-			tries += 1
-			Database.database().reference().child("collections/" + dateString).observeSingleEvent(of: .value) { (data) in
-				if let d = data.value as? [String:Any]{
-					let samples = PollenSamples(fromDatabase: d)
-					if let sampleDate = samples.date{
-						let dateString = sampleDate.toString()
-						self.pollenSamples[dateString] = samples
-						NotificationCenter.default.post(name: .pollenDidUpdate, object: nil)
-						successes += 1
-					}
-				} else{
-					print("no entry for " + dateString + ". trying again")
-				}
-				// repeat if we need more days of data
-				if(successes < numberOfDays && tries < 100){
-					queryOnce()
-				} else{
-					completionHandler?()
-				}
-			}
-		}
-		queryOnce()
-		*/
-	}
-	
-	// daysPast is expecting a positive number. ("5" means 5 days ago)
+	// MARK: Firebase Database
+	// encode a date in the manner they are used in the JSON database
 	func collectionsKey(forDate date:Date) -> String{
 		let yearNumber:Int = Calendar.current.component(.year, from: date)
 		let monthNumber:Int = Calendar.current.component(.month, from: date)
 		let dayNumber:Int = Calendar.current.component(.day, from: date)
 		return "\(yearNumber)" + String(format: "%02d", monthNumber) + String(format: "%02d", dayNumber)
+	}
+	func downloadAllSamples(){
+		Database.database().reference().child("collections").observeSingleEvent(of: .value) { (data) in
+			if let d = data.value as? [String:[String:Any]]{
+				let samplesArray = Array(d.values)
+				samplesArray.forEach({
+					self.saveCoreData(withSamples: PollenSamples(fromDatabase: $0))
+				})
+				self.loadSamplesFromCoreData()
+			}
+		}
+	}
+	func queryDatabase(for dates:[Date], completionHandler: (() -> ())? ){
+		var dateKeys = dates.map({ self.collectionsKey(forDate: $0) })
+		func queryDate(key:String){
+			Database.database().reference().child("collections/" + key).observeSingleEvent(of: .value) { (data) in
+				if let d = data.value as? [String:Any]{
+					self.saveCoreData(withSamples: PollenSamples(fromDatabase: d))
+					self.loadSamplesFromCoreData()
+					NotificationCenter.default.post(name: .pollenDidUpdate, object: nil)
+				}
+				else{ print("no entry for " + key) }
+				if let index = dateKeys.index(of: key){
+					dateKeys.remove(at: index)
+					if let firstKey = dateKeys.first{ queryDate(key: firstKey) }
+					else{
+						print("finished checking dates")
+						completionHandler?()
+					}
+				} else{
+					// something went wrong, breaking to prevent infinite loop
+				}
+			}
+		}
+		// run the function
+		if let firstKey = dateKeys.first{
+			queryDate(key: firstKey)
+		}
+	}
+
+//	func queryDatabase(for dates:[Date], completionHandler: (() -> ())? ){
+//		func queryDate(key:String){
+//			Database.database().reference().child("collections/" + key).observeSingleEvent(of: .value) { (data) in
+//				if let d = data.value as? [String:Any]{
+//					self.saveCoreData(withSamples: PollenSamples(fromDatabase: d))
+//					self.loadSamplesFromCoreData()
+//					NotificationCenter.default.post(name: .pollenDidUpdate, object: nil)
+//				} else{ print("no entry for " + key) }
+//			}
+//		}
+//		// begin looping and querying data
+//		var dateKeys = dates.map({ self.collectionsKey(forDate: $0) })
+//		while dateKeys.count > 0{
+//			if let key = dateKeys.first{
+//				queryDate(key: key)
+//				if let index = dateKeys.index(of: key){ dateKeys.remove(at: index) }
+//				else{ return } //something went wrong, return to prevent infinite loop
+//			} else{
+//				print("finished checking dates")
+//				completionHandler?()
+//			}
+//		}
+//	}
+	
+	func allDatesBetween(_ startDate: Date, endDate: Date) -> [Date] {
+		var datesArray: [Date] =  []
+		var startDate = startDate
+		let calendar = Calendar.current
+		while startDate <= endDate {
+			datesArray.append(startDate)
+			startDate = calendar.date(byAdding: .day, value: 1, to: startDate)!
+		}
+		return datesArray
 	}
 
 }
