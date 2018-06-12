@@ -47,6 +47,8 @@
 		D5A9A3DA20CAD7E1006A762E /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9A3D920CAD7E1006A762E /* Modal.swift */; };
 		D5A9A3DC20CAD825006A762E /* PopAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9A3DB20CAD825006A762E /* PopAlertView.swift */; };
 		D5D1DF5120B8B32C008DA7F7 /* Pollen.plist in Resources */ = {isa = PBXBuildFile; fileRef = D5D1DF5020B8B32C008DA7F7 /* Pollen.plist */; };
+		D5E4AE8420D03C490045BC7F /* ChartStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E4AE8320D03C490045BC7F /* ChartStyles.swift */; };
+		D5E4AE8620D03CE00045BC7F /* ChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E4AE8520D03CE00045BC7F /* ChartData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -114,6 +116,8 @@
 		D5A9A3D920CAD7E1006A762E /* Modal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modal.swift; sourceTree = "<group>"; };
 		D5A9A3DB20CAD825006A762E /* PopAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopAlertView.swift; sourceTree = "<group>"; };
 		D5D1DF5020B8B32C008DA7F7 /* Pollen.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Pollen.plist; sourceTree = "<group>"; };
+		D5E4AE8320D03C490045BC7F /* ChartStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartStyles.swift; sourceTree = "<group>"; };
+		D5E4AE8520D03CE00045BC7F /* ChartData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartData.swift; sourceTree = "<group>"; };
 		E8F13C6D9D00FED51585F67F /* Pods_ATXPollen.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ATXPollen.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -222,19 +226,20 @@
 				D5167FCE20AC8ABB00478CBE /* HomeSlideView.swift */,
 				D5167FEF20ACD6E300478CBE /* Cells */,
 				D5167FD920AC9D2A00478CBE /* Query */,
-				D5167FBF20AC88F400478CBE /* Charts */,
+				D5E4AE8220D03C210045BC7F /* Charts */,
+				D5167FBF20AC88F400478CBE /* MyCharts */,
 			);
 			path = Views;
 			sourceTree = "<group>";
 		};
-		D5167FBF20AC88F400478CBE /* Charts */ = {
+		D5167FBF20AC88F400478CBE /* MyCharts */ = {
 			isa = PBXGroup;
 			children = (
 				D5167FC220AC890F00478CBE /* UIBarChartView.swift */,
 				D5167FC120AC890F00478CBE /* UILineChartView.swift */,
 				D5167FC020AC890F00478CBE /* UIRadialChart.swift */,
 			);
-			path = Charts;
+			path = MyCharts;
 			sourceTree = "<group>";
 		};
 		D5167FC620AC89B900478CBE /* Singletons */ = {
@@ -300,6 +305,15 @@
 				D5167FFB20ACE3F900478CBE /* LineTableViewCell.swift */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		D5E4AE8220D03C210045BC7F /* Charts */ = {
+			isa = PBXGroup;
+			children = (
+				D5E4AE8320D03C490045BC7F /* ChartStyles.swift */,
+				D5E4AE8520D03CE00045BC7F /* ChartData.swift */,
+			);
+			path = Charts;
 			sourceTree = "<group>";
 		};
 		EE8652356542B14A961A6887 /* Pods */ = {
@@ -515,8 +529,10 @@
 				D5167F8C20AC841000478CBE /* AppDelegate.swift in Sources */,
 				D5167FD820AC93D500478CBE /* ClinicData.swift in Sources */,
 				D5A9A3DC20CAD825006A762E /* PopAlertView.swift in Sources */,
+				D5E4AE8620D03CE00045BC7F /* ChartData.swift in Sources */,
 				D5167FE020AC9D8700478CBE /* ExposureQueryView.swift in Sources */,
 				D51272DE20B9A4B800F21EF4 /* ClinicInfo.swift in Sources */,
+				D5E4AE8420D03C490045BC7F /* ChartStyles.swift in Sources */,
 				D5167FCA20AC89DF00478CBE /* Style.swift in Sources */,
 				D5167FF320ACD71D00478CBE /* MyAllergies.swift in Sources */,
 				D5167FC320AC890F00478CBE /* UIRadialChart.swift in Sources */,
