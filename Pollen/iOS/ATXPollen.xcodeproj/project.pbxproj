@@ -49,6 +49,7 @@
 		D5D1DF5120B8B32C008DA7F7 /* Pollen.plist in Resources */ = {isa = PBXBuildFile; fileRef = D5D1DF5020B8B32C008DA7F7 /* Pollen.plist */; };
 		D5E4AE8420D03C490045BC7F /* ChartStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E4AE8320D03C490045BC7F /* ChartStyles.swift */; };
 		D5E4AE8620D03CE00045BC7F /* ChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E4AE8520D03CE00045BC7F /* ChartData.swift */; };
+		D5E4AE8820D083260045BC7F /* IntroAllergyTrackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E4AE8720D083260045BC7F /* IntroAllergyTrackView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -118,6 +119,7 @@
 		D5D1DF5020B8B32C008DA7F7 /* Pollen.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Pollen.plist; sourceTree = "<group>"; };
 		D5E4AE8320D03C490045BC7F /* ChartStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartStyles.swift; sourceTree = "<group>"; };
 		D5E4AE8520D03CE00045BC7F /* ChartData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartData.swift; sourceTree = "<group>"; };
+		D5E4AE8720D083260045BC7F /* IntroAllergyTrackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroAllergyTrackView.swift; sourceTree = "<group>"; };
 		E8F13C6D9D00FED51585F67F /* Pods_ATXPollen.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ATXPollen.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -280,6 +282,7 @@
 			children = (
 				D5167FDC20AC9D7000478CBE /* QuerySegmentedControl.swift */,
 				D5167FDA20AC9D3E00478CBE /* QueryView.swift */,
+				D5E4AE8720D083260045BC7F /* IntroAllergyTrackView.swift */,
 				D5167FDF20AC9D8700478CBE /* AllergyQueryView.swift */,
 				D5167FDE20AC9D8700478CBE /* ExposureQueryView.swift */,
 				D5167FF420ACDC9E00478CBE /* MyChartsView.swift */,
@@ -532,6 +535,7 @@
 				D5E4AE8620D03CE00045BC7F /* ChartData.swift in Sources */,
 				D5167FE020AC9D8700478CBE /* ExposureQueryView.swift in Sources */,
 				D51272DE20B9A4B800F21EF4 /* ClinicInfo.swift in Sources */,
+				D5E4AE8820D083260045BC7F /* IntroAllergyTrackView.swift in Sources */,
 				D5E4AE8420D03C490045BC7F /* ChartStyles.swift in Sources */,
 				D5167FCA20AC89DF00478CBE /* Style.swift in Sources */,
 				D5167FF320ACD71D00478CBE /* MyAllergies.swift in Sources */,

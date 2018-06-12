@@ -60,11 +60,14 @@ class QueryView: UIView{
 		trackYourAllergiesButton.setTitleColor(.black, for: .normal)
 		trackYourAllergiesButton.titleLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P30)
 		trackYourAllergiesButton.sizeToFit()
+		trackYourAllergiesButton.addTarget(self, action: #selector(openIntroScreen), for: .touchUpInside)
+
+		questionButton.addTarget(self, action: #selector(openQuestion), for: .touchUpInside)
 
 		self.addSubview(myChartsView)
 		self.addSubview(symptomsCoverView)
 		self.addSubview(trackYourAllergiesButton)
-		self.addSubview(questionButton)
+//		self.addSubview(questionButton)
 //		segmentedControl.addTarget(self, action: #selector(segmentedControlDidChange), for: .valueChanged)
 	}
 	
@@ -96,9 +99,12 @@ class QueryView: UIView{
 		questionButton.frame = CGRect(x: 0, y: 0, width: questionButton.bounds.size.width+40, height: questionButton.bounds.size.height+15)
 		questionButton.color = .black
 		questionButton.center = CGPoint(x: self.bounds.size.width*0.5, y: self.bounds.size.height*0.93)
-		questionButton.addTarget(self, action: #selector(openQuestion), for: .touchUpInside)
 	}
 	
+	@objc func openIntroScreen(){
+		let alert = PopAlertView(title: "(1 / 2)", view: IntroAllergyTrackView())
+		alert.show(animated: true)
+	}
 	
 	@objc func openQuestion(){
 		let alert = PopAlertView(title: "(1 / 2)", view: AllergyQueryView())

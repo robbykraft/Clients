@@ -31,7 +31,7 @@ class MyChartsView: UIView, ChartViewDelegate {
 	
 	// charts
 	var allCharts:[BarLineChartViewBase] = []
-	let dateChart = LineChartView()
+	let dateChart = BarChartView()
 	let groupCharts:[BarLineChartViewBase] = [BarChartView(), BarChartView(), BarChartView(), BarChartView()]
 	let symptomCharts = [LineChartView(), ScatterChartView()]
 	

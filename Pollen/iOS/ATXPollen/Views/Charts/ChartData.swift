@@ -65,21 +65,23 @@ extension MyChartsView{
 		return ScatterChartData(dataSets: dataSets)
 	}
 	
-	func dateChartData(from array:[Date], level:Calendar.Component) -> LineChartData {
+	func dateChartData(from array:[Date], level:Calendar.Component) -> BarChartData {
 //		let values = array.enumerated().map({ ChartDataEntry(x: Double($0.offset), y: 0, data: $0.element as AnyObject) })
 //		let dateSet = LineChartDataSet(values: values, label: "Dates")
 		
-		let entries = (0..<array.count).map { (i) -> ChartDataEntry in
-			return ChartDataEntry(x: Double(i) + 0.5, y: Double(arc4random_uniform(15) + 5))
+		let entries = (0..<array.count).map { (i) -> BarChartDataEntry in
+			return BarChartDataEntry(x: Double(i) + 0.5, y: Double(arc4random_uniform(15) + 5))
 		}
 		
-		let set = LineChartDataSet(values: entries, label: "Dates")
+		let set = BarChartDataSet(values: entries, label: "Dates")
+//		let set = LineChartDataSet(values: entries, label: "Dates")
 		set.setColor(UIColor.clear)
-		set.lineWidth = 2.5
-		set.setCircleColor(UIColor.clear)
-		set.circleRadius = 5
-		set.circleHoleRadius = 2.5
-		set.fillColor = UIColor.clear
+//		set.lineWidth = 2.5
+//		set.setCircleColor(UIColor.clear)
+//		set.circleRadius = 5
+//		set.circleHoleRadius = 2.5
+//		set.fillColor = UIColor.clear
+		set.setColor(UIColor.clear)
 //		set.mode = .cubicBezier
 		set.drawValuesEnabled = true
 //		set.valueFont = .systemFont(ofSize: 10)
@@ -88,6 +90,6 @@ extension MyChartsView{
 		}
 		set.valueTextColor = UIColor.clear
 		set.axisDependency = .left
-		return LineChartData(dataSet: set)
+		return BarChartData(dataSet: set)
 	}
 }

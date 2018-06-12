@@ -23,7 +23,7 @@ public class DateValueFormatter: NSObject, IAxisValueFormatter {
 extension MyChartsView: IAxisValueFormatter {
 	public func stringForValue(_ value: Double, axis: AxisBase?) -> String {
 //		return months[Int(value) % months.count]
-		if Int(value) < self.dataDates.count{
+		if Int(value) < self.dataDates.count && Int(value) >= 0{
 			let dateFormatter = DateFormatter()
 			dateFormatter.dateFormat = "MMM d"
 			let date = self.dataDates[Int(value)]
@@ -56,7 +56,7 @@ extension MyChartsView {
 		chart.animate(xAxisDuration: 0.5)
 	}
 	
-	func setupDateChart(_ chart: LineChartView, data: LineChartData) {
+	func setupDateChart(_ chart: BarChartView, data: BarChartData) {
 		chart.backgroundColor = UIColor.white
 		chart.chartDescription?.enabled = false
 		chart.dragEnabled = true
