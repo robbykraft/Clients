@@ -115,7 +115,17 @@ class Style {
 		
 		styleUIAppearance()
 	}
-
+	
+	func colorFor(rating:PollenRating)->UIColor{
+		switch rating {
+		case .none: return self.colorNoPollen
+		case .low: return self.colorLow
+		case .medium: return self.colorMedium
+		case .heavy: return self.colorHeavy
+		case .veryHeavy: return self.colorVeryHeavy
+		}
+	}
+		
 	func heading1Attributes() -> [String:NSObject] {
 		var fontSize:CGFloat = 22
 		if(IS_IPAD){

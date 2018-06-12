@@ -9,35 +9,17 @@
 import Foundation
 import Charts
 
-public class DateValueFormatter: NSObject, IAxisValueFormatter {
-	private let dateFormatter = DateFormatter()
-	override init() {
-		super.init()
-		dateFormatter.dateFormat = "dd MMM HH:mm"
-	}
-	public func stringForValue(_ value: Double, axis: AxisBase?) -> String {
-		return dateFormatter.string(from: Date(timeIntervalSince1970: value))
-	}
-}
-
-extension MyChartsView: IAxisValueFormatter {
-	func stringForValue(_ value: Double, axis: AxisBase?) -> String {
-		return months[Int(value) % months.count]
-	}
-}
-
-public class IntAxisValueFormatter: NSObject, IAxisValueFormatter {
-	public func stringForValue(_ value: Double, axis: AxisBase?) -> String {
-		return "\(Int(value))"
-	}
-}
-
 extension MyChartsView{
 
-	func barChartData(from array:[Double], color:UIColor) -> BarChartData {
-		let values = array.enumerated().map({ BarChartDataEntry(x: Double($0.offset), y: $0.element) })
-		let set1 = BarChartDataSet(values: values, label: "Pollen Data")
-		set1.setColor(Style.shared.green)
+	func barChartData(from pollenSamples:[PollenSamples], color:UIColor) -> BarChartData {
+		let logValues = pollenSamples
+			.map({ let ss = $0.strongestSample(); return (ss != nil) ? Double(ss!.logValue) : 0.0 })
+			.enumerated()
+			.map({ BarChartDataEntry(x: Double($0.offset), y: $0.element) })
+		let colors = pollenSamples.map({ Style.shared.colorFor(rating: $0.rating()) })
+		let set1 = BarChartDataSet(values: logValues, label: "Pollen Data")
+		set1.setColors(colors, alpha: 1.0)
+//		set1.setColor(Style.shared.green)
 		set1.highlightEnabled = true
 		set1.highlightColor = Style.shared.orange
 		set1.drawValuesEnabled = false

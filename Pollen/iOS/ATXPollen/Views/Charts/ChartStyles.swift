@@ -9,6 +9,29 @@
 import Foundation
 import Charts
 
+public class DateValueFormatter: NSObject, IAxisValueFormatter {
+	private let dateFormatter = DateFormatter()
+	override init() {
+		super.init()
+		dateFormatter.dateFormat = "dd MMM HH:mm"
+	}
+	public func stringForValue(_ value: Double, axis: AxisBase?) -> String {
+		return dateFormatter.string(from: Date(timeIntervalSince1970: value))
+	}
+}
+
+extension MyChartsView: IAxisValueFormatter {
+	public func stringForValue(_ value: Double, axis: AxisBase?) -> String {
+//		return months[Int(value) % months.count]
+		if Int(value) < self.dataDates.count{
+			let date = self.dataDates[Int(value)]
+			return Calendar.current.weekdaySymbols[Calendar.current.component(.weekday, from: date)]
+		}
+		return "\(Int(value))"
+	}
+}
+
+
 extension MyChartsView {
 	
 	func setupFilledChart(_ chart: LineChartView, data: LineChartData, color: UIColor) {
@@ -48,7 +71,7 @@ extension MyChartsView {
 		}
 		chart.xAxis.granularity = 1
 		chart.xAxis.centerAxisLabelsEnabled = true
-		chart.xAxis.valueFormatter = IntAxisValueFormatter()
+		chart.xAxis.valueFormatter = self
 		chart.xAxis.enabled = true
 		chart.xAxis.drawAxisLineEnabled = false
 		chart.xAxis.drawGridLinesEnabled = false

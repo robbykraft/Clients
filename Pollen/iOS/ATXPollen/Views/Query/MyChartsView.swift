@@ -9,6 +9,10 @@
 import UIKit
 import Charts
 
+protocol MyChartsDelegate{
+	
+}
+
 class MyChartsView: UIView, ChartViewDelegate {
 
 	let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
@@ -18,6 +22,8 @@ class MyChartsView: UIView, ChartViewDelegate {
 	let exposureTypes:[Exposures] = [.dog, .cat, .dust, .molds, .virus]
 	var lowBounds = Date()
 	var upperBounds = Date()
+	
+	var dataDates:[Date] = []
 
 	// data visualized
 	var clinicSampleData:[[PollenSamples]] = [[]]
@@ -87,6 +93,7 @@ class MyChartsView: UIView, ChartViewDelegate {
 			if let date = $0.date{ return date.isBetween(lowBounds, and: upperBounds) }
 			return false
 		}).sorted(by: { $0.date! < $1.date! })
+		dataDates = clinicData.map({ $0.date! })
 		// for every species type in [speciesGroups], create a inner array of all filtered clinicData
 		// creating [[PollenSamples],[PollenSamples],[PollenSamples],[PollenSamples]]
 		let clinicDataBySpecies = speciesGroups
@@ -111,9 +118,7 @@ class MyChartsView: UIView, ChartViewDelegate {
 		// [[Double],[Double],[Double],[Double]], each species group array of log values, strongest daily sample
 		clinicSampleLogValues = clinicSampleData
 			.map({ (samples) -> [Double] in
-				return samples
-					.map({ $0.strongestSample() ?? PollenSample(withKey: "nil", value: 0) })
-					.map({ Double($0.logValue) })
+				return samples.map({ let ss = $0.strongestSample(); return (ss != nil) ? Double(ss!.logValue) : 0.0 })
 			})
 
 		// SYMPTOMS (ALLERGIES AND EXPOSURES)
@@ -139,7 +144,7 @@ class MyChartsView: UIView, ChartViewDelegate {
 		}
 
 		setupDateChart(dateChart, data:dateChartData(from: clinicData.map({ $0.date! }), level:.day))
-		clinicSampleLogValues
+		clinicSampleData
 			.map({ return barChartData(from: $0, color: Style.shared.green) })
 			.enumerated()
 			.forEach({ setupBarChart(groupCharts[$0.offset] as! BarChartView, data: $0.element, color: .white) })
