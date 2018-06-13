@@ -9,38 +9,74 @@
 import Foundation
 import Charts
 
-public class DateValueFormatter: NSObject, IAxisValueFormatter {
-	private let dateFormatter = DateFormatter()
-	override init() {
-		super.init()
-		dateFormatter.dateFormat = "dd MMM HH:mm"
-	}
-	public func stringForValue(_ value: Double, axis: AxisBase?) -> String {
-		return dateFormatter.string(from: Date(timeIntervalSince1970: value))
-	}
-}
+//public class DateValueFormatter: NSObject, IAxisValueFormatter {
+//	private let dateFormatter = DateFormatter()
+//	override init() {
+//		super.init()
+//		dateFormatter.dateFormat = "dd MMM HH:mm"
+//	}
+//	public func stringForValue(_ value: Double, axis: AxisBase?) -> String {
+//		return dateFormatter.string(from: Date(timeIntervalSince1970: value))
+//	}
+//}
 
 extension MyChartsView: IAxisValueFormatter {
 	public func stringForValue(_ value: Double, axis: AxisBase?) -> String {
-//		return months[Int(value) % months.count]
-		if Int(value) < self.dataDates.count && Int(value) >= 0{
+//		return "\(Int(value))"
+		if Int(value) >= self.dataDates.count || Int(value) < 0{ return "" }
+		switch zoomPage {
+		case 0:
+			let dateFormatter = DateFormatter()
+			dateFormatter.dateFormat = "MMM yyyy"
+			let date = self.dataDates[Int(value)]
+			return dateFormatter.string(from: date)
+		case 1:
 			let dateFormatter = DateFormatter()
 			dateFormatter.dateFormat = "MMM d"
 			let date = self.dataDates[Int(value)]
 			return dateFormatter.string(from: date)
 //			return Calendar.current.weekdaySymbols[(Calendar.current.component(.weekday, from: date)+6)%7]
+		default:
+			return ""
 		}
-		return "\(Int(value))"
+//		if Int(value) < self.dataDates.count && Int(value) >= 0{
+//			let dateFormatter = DateFormatter()
+//			dateFormatter.dateFormat = "MMM d"
+//			let date = self.dataDates[Int(value)]
+//			return dateFormatter.string(from: date)
+////			return Calendar.current.weekdaySymbols[(Calendar.current.component(.weekday, from: date)+6)%7]
+//		}
+//		return ""
 	}
 }
 
 
 extension MyChartsView {
 	
-	func setupFilledChart(_ chart: LineChartView, data: LineChartData, color: UIColor) {
-		(data.getDataSetByIndex(0) as! LineChartDataSet).circleHoleColor = color
+	func setupFilledChart(_ chart: LineChartView, data: LineChartData) {
+		(data.getDataSetByIndex(0) as! LineChartDataSet).circleHoleColor = Style.shared.blue
 		chart.delegate = self
-		chart.backgroundColor = color
+		chart.backgroundColor = Style.shared.whiteSmoke
+		chart.chartDescription?.enabled = false
+		chart.dragEnabled = true
+		chart.setScaleEnabled(true)
+		chart.pinchZoomEnabled = false
+//		chart.setViewPortOffsets(left: 0, top: 0, right: 0, bottom: 0)
+		chart.legend.enabled = false
+		chart.leftAxis.enabled = false
+		chart.leftAxis.spaceBottom = 0.0
+		chart.rightAxis.enabled = false
+		chart.xAxis.enabled = false
+		chart.doubleTapToZoomEnabled = false
+		chart.data = data
+		chart.animate(xAxisDuration: 0.5)
+	}
+	
+	
+	func setupBarChart(_ chart: BarChartView, data: BarChartData) {
+//		(data.getDataSetByIndex(0) as! BarChartDataSet).circleHoleColor = color
+		chart.delegate = self
+		chart.backgroundColor = Style.shared.whiteSmoke
 		chart.chartDescription?.enabled = false
 		chart.dragEnabled = true
 		chart.setScaleEnabled(true)
@@ -57,7 +93,7 @@ extension MyChartsView {
 	}
 	
 	func setupDateChart(_ chart: BarChartView, data: BarChartData) {
-		chart.backgroundColor = UIColor.white
+		chart.backgroundColor = Style.shared.whiteSmoke
 		chart.chartDescription?.enabled = false
 		chart.dragEnabled = true
 		chart.setScaleEnabled(true)
@@ -72,22 +108,19 @@ extension MyChartsView {
 		if let font = UIFont(name: SYSTEM_FONT, size: Style.shared.P11){
 			chart.xAxis.labelFont = font
 		}
-		chart.xAxis.granularity = 1
-		chart.xAxis.centerAxisLabelsEnabled = true
 		chart.xAxis.valueFormatter = self
 		chart.xAxis.enabled = true
+		chart.xAxis.granularity = 30.0
 		chart.xAxis.drawAxisLineEnabled = false
 		chart.xAxis.drawGridLinesEnabled = false
 		chart.xAxis.drawLabelsEnabled = true
-		
-		chart.xAxis.axisMaximum = data.xMax + 0.25
 		chart.data = data
 	}
 
-	func setupScatterChart(_ chart: ScatterChartView, data: ScatterChartData, color: UIColor) {
+	func setupScatterChart(_ chart: ScatterChartView, data: ScatterChartData) {
 //		(data.getDataSetByIndex(0) as! ScatterChartDataSet).circleHoleColor = color
 		chart.delegate = self
-		chart.backgroundColor = color
+		chart.backgroundColor = Style.shared.whiteSmoke
 		chart.chartDescription?.enabled = false
 		chart.dragEnabled = true
 		chart.setScaleEnabled(true)
@@ -104,24 +137,4 @@ extension MyChartsView {
 		chart.animate(xAxisDuration: 0.5)
 	}
 
-	
-	func setupBarChart(_ chart: BarChartView, data: BarChartData, color: UIColor) {
-//		(data.getDataSetByIndex(0) as! BarChartDataSet).circleHoleColor = color
-		chart.delegate = self
-		chart.backgroundColor = color
-		chart.chartDescription?.enabled = false
-		chart.dragEnabled = true
-		chart.setScaleEnabled(true)
-		chart.pinchZoomEnabled = false
-		chart.setViewPortOffsets(left: 0, top: 0, right: 0, bottom: 0)
-		chart.legend.enabled = false
-		chart.leftAxis.enabled = false
-		chart.leftAxis.spaceBottom = 0.0
-		chart.rightAxis.enabled = false
-		chart.xAxis.enabled = false
-		chart.doubleTapToZoomEnabled = false
-		chart.data = data
-		chart.animate(xAxisDuration: 0.5)
-	}
-	
 }

@@ -11,7 +11,7 @@ import Charts
 
 extension MyChartsView{
 
-	func barChartData(from pollenSamples:[PollenSamples], color:UIColor) -> BarChartData {
+	func barChartData(from pollenSamples:[PollenSamples]) -> BarChartData {
 		let logValues = pollenSamples
 			.map({ let ss = $0.strongestSample(); return (ss != nil) ? Double(ss!.logValue) : 0.0 })
 			.enumerated()
@@ -26,7 +26,7 @@ extension MyChartsView{
 		return BarChartData(dataSet: set1)
 	}
 	
-	func filledChartData(from array:[Double], color:UIColor) -> LineChartData {
+	func filledChartData(from array:[Double]) -> LineChartData {
 		let values = array.enumerated().map({ ChartDataEntry(x: Double($0.offset), y: $0.element) })
 		let set1 = LineChartDataSet(values: values, label: "Lines")
 		set1.lineWidth = 0.1
@@ -40,13 +40,13 @@ extension MyChartsView{
 		set1.drawCirclesEnabled = false
 		set1.drawFilledEnabled = true
 		set1.fillAlpha = 1
-		set1.fillColor = color
+		set1.fillColor = Style.shared.blue
 //		set1.cubicIntensity = 0.5
 		set1.mode = .cubicBezier
 		return LineChartData(dataSet: set1)
 	}
 	
-	func scatterData(from array:[[Bool]], color:UIColor) -> ScatterChartData{
+	func scatterData(from array:[[Bool]]) -> ScatterChartData{
 		let colors = [Style.shared.orange, Style.shared.lightBlue, Style.shared.purple, Style.shared.softBlue, Style.shared.red]
 		let dataSets = array.enumerated().map { (i, valueArray) -> ChartDataSet in
 			let values = valueArray.map{ return $0 ? i+1 : 0
@@ -68,28 +68,18 @@ extension MyChartsView{
 	func dateChartData(from array:[Date], level:Calendar.Component) -> BarChartData {
 //		let values = array.enumerated().map({ ChartDataEntry(x: Double($0.offset), y: 0, data: $0.element as AnyObject) })
 //		let dateSet = LineChartDataSet(values: values, label: "Dates")
-		
-		let entries = (0..<array.count).map { (i) -> BarChartDataEntry in
-			return BarChartDataEntry(x: Double(i) + 0.5, y: Double(arc4random_uniform(15) + 5))
-		}
-		
-		let set = BarChartDataSet(values: entries, label: "Dates")
-//		let set = LineChartDataSet(values: entries, label: "Dates")
-		set.setColor(UIColor.clear)
-//		set.lineWidth = 2.5
-//		set.setCircleColor(UIColor.clear)
-//		set.circleRadius = 5
-//		set.circleHoleRadius = 2.5
-//		set.fillColor = UIColor.clear
-		set.setColor(UIColor.clear)
-//		set.mode = .cubicBezier
-		set.drawValuesEnabled = true
-//		set.valueFont = .systemFont(ofSize: 10)
+		let chartValues = array
+			.enumerated()
+			.map({ BarChartDataEntry(x: Double($0.offset), y: 0.0) })
+		let set1 = BarChartDataSet(values: chartValues, label: "Dates")
+		set1.setColor(UIColor.clear)
 		if let font = UIFont(name: SYSTEM_FONT, size: Style.shared.P11){
-			set.valueFont = font
+			set1.valueFont = font
 		}
-		set.valueTextColor = UIColor.clear
-		set.axisDependency = .left
-		return BarChartData(dataSet: set)
+		set1.highlightEnabled = false
+		set1.drawValuesEnabled = false
+//		set.valueTextColor = UIColor.clear
+//		set.axisDependency = .left
+		return BarChartData(dataSet: set1)
 	}
 }

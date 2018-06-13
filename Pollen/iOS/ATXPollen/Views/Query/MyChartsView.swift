@@ -12,8 +12,6 @@ import Charts
 
 class MyChartsView: UIView, ChartViewDelegate {
 	
-	let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-
 	// parameters for data
 	let speciesGroups:[PollenTypeGroup] = [.grasses, .weeds, .trees, .molds]
 	let exposureTypes:[Exposures] = [.dog, .cat, .dust, .molds, .virus]
@@ -34,6 +32,18 @@ class MyChartsView: UIView, ChartViewDelegate {
 	let dateChart = BarChartView()
 	let groupCharts:[BarLineChartViewBase] = [BarChartView(), BarChartView(), BarChartView(), BarChartView()]
 	let symptomCharts = [LineChartView(), ScatterChartView()]
+	
+	var zoomPage:Int = 0{
+		willSet{
+			if(zoomPage != newValue){
+				switch newValue{
+				case 0: dateChart.xAxis.granularity = 30.0
+				case 1: dateChart.xAxis.granularity = 1.0
+				default: break;
+				}
+			}
+		}
+	}
 	
 	// ui kit
 	let chartLabels = [UILabel(), UILabel(), UILabel(), UILabel()]
@@ -72,14 +82,14 @@ class MyChartsView: UIView, ChartViewDelegate {
 //		dateChart.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: 40)
 		
 		let h:CGFloat = self.bounds.size.height*0.13
-		dateChart.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: h*0.5)
-		
+		let dateChartHeight:CGFloat = h*0.33
+		dateChart.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: dateChartHeight)
+
 		allCharts.filter({$0 != dateChart}).enumerated().forEach({
-			$0.element.frame = CGRect(x: 0, y: h*CGFloat($0.offset) + h*0.5, width: self.bounds.size.width, height: h)
+			$0.element.frame = CGRect(x: 0, y: h*CGFloat($0.offset) + dateChartHeight, width: self.bounds.size.width, height: h)
 		})
-		let marginTop:CGFloat = h*0.5
 		chartLabels.enumerated().forEach({
-			$0.element.center = CGPoint(x: 10 + $0.element.frame.size.width*0.5, y: marginTop + h*CGFloat($0.offset) + $0.element.frame.size.height*0.5)
+			$0.element.center = CGPoint(x: 10 + $0.element.frame.size.width*0.5, y: dateChartHeight + h*CGFloat($0.offset) + $0.element.frame.size.height*0.5)
 		})
 	}
 	
@@ -149,12 +159,11 @@ class MyChartsView: UIView, ChartViewDelegate {
 
 		setupDateChart(dateChart, data:dateChartData(from: clinicData.map({ $0.date! }), level:.day))
 		clinicSampleData
-			.map({ return barChartData(from: $0, color: Style.shared.green) })
+			.map({ return barChartData(from: $0) })
 			.enumerated()
-			.forEach({ setupBarChart(groupCharts[$0.offset] as! BarChartView, data: $0.element, color: .white) })
-		setupFilledChart(symptomCharts[0] as! LineChartView, data: filledChartData(from: allergyDataValues, color: Style.shared.blue), color: .white)
-		setupScatterChart(symptomCharts[1] as! ScatterChartView, data: scatterData(from: exposureEntryData, color: Style.shared.blue), color: .white)
-
+			.forEach({ setupBarChart(groupCharts[$0.offset] as! BarChartView, data: $0.element) })
+		setupFilledChart(symptomCharts[0] as! LineChartView, data: filledChartData(from: allergyDataValues))
+		setupScatterChart(symptomCharts[1] as! ScatterChartView, data: scatterData(from: exposureEntryData))
 	}
 	
 	func chartTranslated(_ chartView: ChartViewBase, dX: CGFloat, dY: CGFloat) {
@@ -167,6 +176,9 @@ class MyChartsView: UIView, ChartViewDelegate {
 		let otherCharts = allCharts.filter({ chartView != $0 })
 		otherCharts.forEach { (chart) in
 			chart.viewPortHandler.refresh(newMatrix: chartView.viewPortHandler.touchMatrix, chart: chart, invalidate: false)
+		}
+		if let chart = otherCharts.first{
+			zoomPage = (chart.viewPortHandler.scaleX < 4) ? 0 : 1
 		}
 	}
 	
