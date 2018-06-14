@@ -32,6 +32,10 @@ class MyChartsView: UIView, ChartViewDelegate {
 	let dateChart = BarChartView()
 	let groupCharts:[BarLineChartViewBase] = [BarChartView(), BarChartView(), BarChartView(), BarChartView()]
 	let symptomCharts = [LineChartView(), ScatterChartView()]
+
+	// ui kit
+	let chartLabels = [UILabel(), UILabel(), UILabel(), UILabel()]
+	let dateLabel = UILabel()
 	
 	var zoomPage:Int = 0{
 		willSet{
@@ -44,9 +48,6 @@ class MyChartsView: UIView, ChartViewDelegate {
 			}
 		}
 	}
-	
-	// ui kit
-	let chartLabels = [UILabel(), UILabel(), UILabel(), UILabel()]
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)

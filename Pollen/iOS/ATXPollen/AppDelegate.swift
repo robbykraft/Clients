@@ -8,23 +8,19 @@
 
 import UIKit
 import CoreData
-import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
 	var window: UIWindow?
-	let pollenNotifications = PollenNotificationDelegate()
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 		// Override point for customization after application launch.
 		
 		_ = Pollen.shared
 		_ = Symptom.shared
+		_ = PollenNotifications.shared
 		ClinicData.shared.boot()
-		
-		let center = UNUserNotificationCenter.current()
-		center.delegate = pollenNotifications
 		
 		return true
 	}

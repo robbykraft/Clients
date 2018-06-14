@@ -66,21 +66,8 @@ class QueryView: UIView{
 	}
 	
 	@objc func openIntroScreen(){
-//		let alert = PopAlertView(title: "(1 / 2)", view: IntroAllergyTrackView())
-//		alert.show(animated: true)
-//		Pollen.shared.checkNotificationAuthorizationStatus { (authorized) in
-//			if authorized{
-//				Pollen.shared.testNotification()
-//			} else{
-//				Pollen.shared.requestNotificationAccess(completionHandler: { (requestAccepted) in
-//					if requestAccepted{
-//						Pollen.shared.testNotification()
-//					} else{
-//						print("declined request")
-//					}
-//				})
-//			}
-//		}
+		let alert = PopAlertView(title: "(1 / 2)", view: IntroAllergyTrackView())
+		alert.show(animated: true)
 	}
 	
 	@objc func openQuestion(){

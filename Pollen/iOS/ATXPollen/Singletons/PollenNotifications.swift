@@ -9,17 +9,20 @@
 import UIKit
 import UserNotifications
 
-class PollenNotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
+class PollenNotifications: NSObject, UNUserNotificationCenterDelegate {
+
+	static let shared = PollenNotifications()
 	
-	override init() {
+	fileprivate override init(){
 		super.init()
+		let center = UNUserNotificationCenter.current()
+		center.delegate = self
 		registerCategory()
 	}
-
+	
 	let center = UNUserNotificationCenter.current()
 	
 	func registerCategory(){
-		print("registerCategory")
 		// add buttons to category
 		let symptomRatings:[SymptomRating] = [.severe, .medium, .light, .none]
 		let notificationActions = symptomRatings.map { (rating) -> UNNotificationAction in
@@ -75,6 +78,12 @@ class PollenNotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
 		center.getNotificationSettings { (settings) in
 			completionHandler?(settings.authorizationStatus == .authorized)
 		}
+	}
+	
+	func openSettings(){
+		if let url = URL(string: UIApplicationOpenSettingsURLString) {
+			UIApplication.shared.open(url, options: ["root":"NOTIFICATIONS_ID"], completionHandler: nil)
+		} else{ }
 	}
 	
 	func testNotification(){
