@@ -19,7 +19,7 @@ class Pollen {
 	// fill on boot
 	var types:[PollenType] = []
 	var clinic:ClinicInfo?
-	
+
 	fileprivate init(){
 		loadSystemPList()
 		bootUserDefaults()

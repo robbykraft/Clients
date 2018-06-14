@@ -32,7 +32,7 @@ class QueryView: UIView{
 		
 		symptomsCoverView.image = UIImage(named: "cutout")
 
-		trackYourAllergiesButton.setTitle("track your allergies", for: .normal)
+		trackYourAllergiesButton.setTitle("track my allergies", for: .normal)
 		trackYourAllergiesButton.setTitleColor(.black, for: .normal)
 		trackYourAllergiesButton.titleLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P30)
 		trackYourAllergiesButton.sizeToFit()
@@ -66,8 +66,21 @@ class QueryView: UIView{
 	}
 	
 	@objc func openIntroScreen(){
-		let alert = PopAlertView(title: "(1 / 2)", view: IntroAllergyTrackView())
-		alert.show(animated: true)
+//		let alert = PopAlertView(title: "(1 / 2)", view: IntroAllergyTrackView())
+//		alert.show(animated: true)
+//		Pollen.shared.checkNotificationAuthorizationStatus { (authorized) in
+//			if authorized{
+//				Pollen.shared.testNotification()
+//			} else{
+//				Pollen.shared.requestNotificationAccess(completionHandler: { (requestAccepted) in
+//					if requestAccepted{
+//						Pollen.shared.testNotification()
+//					} else{
+//						print("declined request")
+//					}
+//				})
+//			}
+//		}
 	}
 	
 	@objc func openQuestion(){

@@ -44,6 +44,7 @@
 		D5167FFC20ACE3F900478CBE /* LineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167FFB20ACE3F900478CBE /* LineTableViewCell.swift */; };
 		D51B3DEC20C8240D001A4D8D /* SymptomEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51B3DEB20C8240D001A4D8D /* SymptomEntry.swift */; };
 		D51B3DEE20C826AE001A4D8D /* SymptomData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51B3DED20C826AE001A4D8D /* SymptomData.swift */; };
+		D5351E9E20D2D1EB009AE439 /* PollenNotificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5351E9D20D2D1EB009AE439 /* PollenNotificationDelegate.swift */; };
 		D5A9A3DA20CAD7E1006A762E /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9A3D920CAD7E1006A762E /* Modal.swift */; };
 		D5A9A3DC20CAD825006A762E /* PopAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9A3DB20CAD825006A762E /* PopAlertView.swift */; };
 		D5D1DF5120B8B32C008DA7F7 /* Pollen.plist in Resources */ = {isa = PBXBuildFile; fileRef = D5D1DF5020B8B32C008DA7F7 /* Pollen.plist */; };
@@ -114,6 +115,7 @@
 		D5167FFB20ACE3F900478CBE /* LineTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineTableViewCell.swift; sourceTree = "<group>"; };
 		D51B3DEB20C8240D001A4D8D /* SymptomEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymptomEntry.swift; sourceTree = "<group>"; };
 		D51B3DED20C826AE001A4D8D /* SymptomData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SymptomData.swift; path = ATXPollen/Data/SymptomData.swift; sourceTree = SOURCE_ROOT; };
+		D5351E9D20D2D1EB009AE439 /* PollenNotificationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollenNotificationDelegate.swift; sourceTree = "<group>"; };
 		D5A9A3D920CAD7E1006A762E /* Modal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modal.swift; sourceTree = "<group>"; };
 		D5A9A3DB20CAD825006A762E /* PopAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopAlertView.swift; sourceTree = "<group>"; };
 		D5D1DF5020B8B32C008DA7F7 /* Pollen.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Pollen.plist; sourceTree = "<group>"; };
@@ -248,6 +250,7 @@
 			isa = PBXGroup;
 			children = (
 				D5167FD320AC8CF600478CBE /* Pollen.swift */,
+				D5351E9D20D2D1EB009AE439 /* PollenNotificationDelegate.swift */,
 				D5167FD720AC93D500478CBE /* ClinicData.swift */,
 				D51B3DED20C826AE001A4D8D /* SymptomData.swift */,
 				D5167FD520AC8D0D00478CBE /* Extensions.swift */,
@@ -518,6 +521,7 @@
 				D5167FC420AC890F00478CBE /* UILineChartView.swift in Sources */,
 				D5167FE120AC9D8700478CBE /* AllergyQueryView.swift in Sources */,
 				D5167FD220AC8CB000478CBE /* PollenSample.swift in Sources */,
+				D5351E9E20D2D1EB009AE439 /* PollenNotificationDelegate.swift in Sources */,
 				D5167FC520AC890F00478CBE /* UIBarChartView.swift in Sources */,
 				D5167FF120ACD6F800478CBE /* CenteredTableViewCell.swift in Sources */,
 				D5167F8E20AC841000478CBE /* ViewController.swift in Sources */,

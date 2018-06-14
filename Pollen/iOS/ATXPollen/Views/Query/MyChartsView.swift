@@ -68,10 +68,12 @@ class MyChartsView: UIView, ChartViewDelegate {
 		
 		chartLabels.enumerated().forEach({
 			$0.element.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15)
-			$0.element.textColor = Style.shared.blue
+			$0.element.textColor = .black
 			$0.element.text = speciesGroups[$0.offset].asString()
 			$0.element.textAlignment = .left
-//			$0.element.backgroundColor = UIColor.white
+			$0.element.backgroundColor = Style.shared.whiteSmoke
+			$0.element.layer.cornerRadius = 3
+			$0.element.clipsToBounds = true
 			$0.element.sizeToFit()
 			self.addSubview($0.element)
 		})		
@@ -99,7 +101,11 @@ class MyChartsView: UIView, ChartViewDelegate {
 		return CGRect(x: firstChart.frame.origin.x, y: firstChart.frame.origin.y, width: firstChart.frame.size.width, height: lastChart.frame.bottom - firstChart.frame.origin.y)
 	}
 	
-	@objc func reloadData(){
+//	func reloadData(){
+//		
+//	}
+	
+	func reloadData(){
 		
 		// get array of Clinic Sample data between dates lowBounds and upperBounds
 		// this filter function validates all dates exist, so we can use ! from now on.
@@ -164,6 +170,13 @@ class MyChartsView: UIView, ChartViewDelegate {
 			.forEach({ setupBarChart(groupCharts[$0.offset] as! BarChartView, data: $0.element) })
 		setupFilledChart(symptomCharts[0] as! LineChartView, data: filledChartData(from: allergyDataValues))
 		setupScatterChart(symptomCharts[1] as! ScatterChartView, data: scatterData(from: exposureEntryData))
+		
+		// reset views
+		allCharts.forEach { (chart) in
+			chart.zoom(scaleX: 2, scaleY: 1, x: chart.frame.size.width*1.5, y: 0)
+		}
+		zoomPage = 1
+		dateChart.xAxis.granularity = 1.0
 	}
 	
 	func chartTranslated(_ chartView: ChartViewBase, dX: CGFloat, dY: CGFloat) {

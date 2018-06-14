@@ -68,8 +68,12 @@ extension MyChartsView {
 		chart.rightAxis.enabled = false
 		chart.xAxis.enabled = false
 		chart.doubleTapToZoomEnabled = false
+		if let font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15){
+			chart.noDataFont = font
+		}
+		chart.noDataText = "waiting on data.."
 		chart.data = data
-		chart.animate(xAxisDuration: 0.5)
+//		chart.animate(xAxisDuration: 0.5)
 	}
 	
 	
@@ -88,8 +92,12 @@ extension MyChartsView {
 		chart.rightAxis.enabled = false
 		chart.xAxis.enabled = false
 		chart.doubleTapToZoomEnabled = false
+		if let font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15){
+			chart.noDataFont = font
+		}
+		chart.noDataText = "waiting on data.."
 		chart.data = data
-		chart.animate(xAxisDuration: 0.5)
+//		chart.animate(xAxisDuration: 0.5)
 	}
 	
 	func setupDateChart(_ chart: BarChartView, data: BarChartData) {
@@ -111,9 +119,14 @@ extension MyChartsView {
 		chart.xAxis.valueFormatter = self
 		chart.xAxis.enabled = true
 		chart.xAxis.granularity = 30.0
+//		chart.xAxis.granularity = 1.0
 		chart.xAxis.drawAxisLineEnabled = false
 		chart.xAxis.drawGridLinesEnabled = false
 		chart.xAxis.drawLabelsEnabled = true
+		if let font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15){
+			chart.noDataFont = font
+		}
+		chart.noDataText = "waiting on data.."
 		chart.data = data
 	}
 
@@ -134,6 +147,10 @@ extension MyChartsView {
 		chart.xAxis.enabled = false
 		chart.doubleTapToZoomEnabled = false
 		chart.data = data
+		if let font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15){
+			chart.noDataFont = font
+		}
+		chart.noDataText = "waiting on data.."
 		chart.animate(xAxisDuration: 0.5)
 	}
 
