@@ -82,12 +82,20 @@ class PollenNotifications: NSObject, UNUserNotificationCenterDelegate {
 		switch response.actionIdentifier {
 		case "ATXPollenSevereAction":
 			print("severe")
+			let entry = SymptomEntry(date: Date(), location: nil, rating: .severe, exposures: nil)
+			Symptom.shared.updateDatabaseWith(entry: entry)
 		case "ATXPollenMediumAction":
 			print("medium")
-		case "ATXPollenLowAction":
-			print("low")
+			let entry = SymptomEntry(date: Date(), location: nil, rating: .medium, exposures: nil)
+			Symptom.shared.updateDatabaseWith(entry: entry)
+		case "ATXPollenLightAction":
+			print("light")
+			let entry = SymptomEntry(date: Date(), location: nil, rating: .light, exposures: nil)
+			Symptom.shared.updateDatabaseWith(entry: entry)
 		case "ATXPollenNoneAction":
 			print("none")
+			let entry = SymptomEntry(date: Date(), location: nil, rating: .none, exposures: nil)
+			Symptom.shared.updateDatabaseWith(entry: entry)
 		case UNNotificationDismissActionIdentifier: print("Dismiss Action")
 		case UNNotificationDefaultActionIdentifier: print("Default")
 		default: print("Unknown action")
@@ -112,7 +120,7 @@ class PollenNotifications: NSObject, UNUserNotificationCenterDelegate {
 	
 	func enableLocalTimer(completionHandler: ((Bool) -> ())?) {
 		// create the trigger
-		let sixPM = Calendar.current.date(bySettingHour: 19, minute: 45, second: 0, of: Date())!
+		let sixPM = Calendar.current.date(bySettingHour: 18, minute: 0, second: 0, of: Date())!
 		let triggerDaily = Calendar.current.dateComponents([.hour,.minute,.second], from: sixPM)
 		let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDaily, repeats: true)
 		// create the notification

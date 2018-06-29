@@ -55,8 +55,7 @@ class MyChartsView: UIView, ChartViewDelegate {
 	convenience init() { self.init(frame: CGRect.zero) }
 	required init(coder aDecoder: NSCoder) { fatalError("This class does not support NSCoding") }
 	
-	func initUI(){
-		
+	func initUI(){		
 		lowBounds = Calendar.current.date(byAdding: .year, value: -1, to: Date())!
 		upperBounds = Date()
 
@@ -103,15 +102,17 @@ class MyChartsView: UIView, ChartViewDelegate {
 	
 //	func reloadData(){ }
 	
-	func reloadData(){
-		
+	func reloadData(){		
 		// get array of Clinic Sample data between dates lowBounds and upperBounds
 		// this filter function validates all dates exist, so we can use ! from now on.
 		let clinicData = ClinicData.shared.pollenSamples.filter({
 			if let date = $0.date{ return date.isBetween(lowBounds, and: upperBounds) }
 			return false
 		}).sorted(by: { $0.date! < $1.date! })
+		// if no data, return
+		if clinicData.count == 0{ return }
 		dataDates = clinicData.map({ $0.date! })
+		
 		// for every species type in [speciesGroups], create a inner array of all filtered clinicData
 		// creating [[PollenSamples],[PollenSamples],[PollenSamples],[PollenSamples]]
 		let clinicDataBySpecies = speciesGroups

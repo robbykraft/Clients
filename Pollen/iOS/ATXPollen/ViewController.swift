@@ -52,9 +52,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, HomeSlid
 
 		reloadData()
 		NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: .pollenDidUpdate, object: nil)
-		
+		NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: .symptomDidUpdate, object: nil)
+
 //		PollenNotifications.shared.enableLocalTimer()
-		PollenNotifications.shared.check()
 	}
 	
 	deinit {
@@ -92,7 +92,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, HomeSlid
 	
 	// Query View Delegate
 	func showScheduleAlert() {
-		let alert = UIAlertController.init(title: "At the close of each day, 6 P.M., ATX Pollen will ask \"How were your allergies?\"", message: nil, preferredStyle: .alert)
+		let alert = UIAlertController.init(title: "At the close of each day we'll send you a notification asking how were your allergies.", message: nil, preferredStyle: .alert)
 		let action1 = UIAlertAction.init(title: "Got it", style: .cancel, handler:nil)
 		alert.addAction(action1)
 		self.present(alert, animated: true, completion: nil)

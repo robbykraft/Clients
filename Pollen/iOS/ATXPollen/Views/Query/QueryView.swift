@@ -102,12 +102,14 @@ class QueryView: UIView{
 	@objc func openNextScreen(){
 		PollenNotifications.shared.isLocalEnabled { (enabled) in
 			if enabled{
+				self.showTrackButton = false
 				if let alert = self.currentAlert{
 					alert.dismiss(animated: true)
 				}
 				self.delegate?.showScheduleAlert()
 			}
 			else {
+				self.showTrackButton = true
 				self.delegate?.showNeedNotificationsAlert()
 			}
 		}

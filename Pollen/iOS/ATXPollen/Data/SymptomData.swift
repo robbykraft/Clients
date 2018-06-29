@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 import CoreData
 
-
 class Symptom {
 	private let SYMPTOM_SAMPLE_ENTITY = "CoreSymptomSample"
 
@@ -20,64 +19,11 @@ class Symptom {
 	var entries:[SymptomEntry] = []
 	
 	private init(){
-//		loadFakeData()
+//		clearCoreData()
+		loadSamplesFromCoreData()
 	}
 	
-	func boot(){
-		// 1. check core data for stored info:
-		//   if entries: search for most recent entry, ask firebase for anything more recent
-		//   if no entries: ask firebase for 15 recent entries, load years of data in background
-		
-		//		clearCoreData()
-		
-		//		print("mostRecentCoreDataEntryDate()")
-		//		print(mostRecentCoreDataEntryDate() ?? "")
-
-//		loadSamplesFromCoreData()
-	}
-	
-	func loadFakeData(){
-		let fakeData:[String:Int] = ["2018-05-10":0,
-									 "2018-05-11":0,
-									 "2018-05-12":2,
-									 "2018-05-13":1,
-									 "2018-05-14":2,
-									 "2018-05-15":3,
-									 "2018-05-16":3,
-									 "2018-05-17":2,
-									 "2018-05-18":3,
-									 "2018-05-24":0,
-									 "2018-05-25":0,
-									 "2018-05-26":2,
-									 "2018-05-27":2,
-									 "2018-05-28":2,
-									 "2018-05-30":1,
-									 "2018-06-01":0,
-									 "2018-06-02":3]
-		var symptomEntries:[SymptomEntry] = []
-
-		for (key,value) in fakeData{
-			let date = Date(fromString: key)!
-			let exposuresArray:[Exposures] = [Exposures.cat, Exposures.dog, Exposures.dust, Exposures.molds, Exposures.virus].filter({ _ in arc4random_uniform(100) < 40 })
-			let s = SymptomEntry(date: date, location: nil, rating: SymptomRating(rawValue: value), exposures: exposuresArray)
-			symptomEntries.append(s)
-		}
-		self.entries = symptomEntries
-	}
-	
-	func loadSamplesFromCoreData(){
-		guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-		let managedContext = appDelegate.persistentContainer.viewContext
-		let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: SYMPTOM_SAMPLE_ENTITY)
-		let sort = NSSortDescriptor(key: "date", ascending: false)
-		fetchRequest.sortDescriptors = [sort]
-		do {
-			let sampleData:[NSManagedObject] = try managedContext.fetch(fetchRequest)
-			self.entries = sampleData.map({ self.symptomEntryFromCoreData(data: $0) }).compactMap({ $0 })
-			NotificationCenter.default.post(name: .symptomDidUpdate, object: nil)
-		} catch let error as NSError{ print("could not fetch \(error)") }
-	}
-	// MARK: Core Data to SymptomEntry
+	// MARK: convert Core Data to SymptomEntry
 	func symptomEntryFromCoreData(data:NSManagedObject) -> SymptomEntry?{
 		let latitude = data.value(forKey: "latitude") as? Double
 		let longitude = data.value(forKey: "longitude") as? Double
@@ -96,6 +42,41 @@ class Symptom {
 		}
 		return nil
 	}
-
+	
+	// MARK: Core Data
+	func loadSamplesFromCoreData(){
+		guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+		let managedContext = appDelegate.persistentContainer.viewContext
+		let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: SYMPTOM_SAMPLE_ENTITY)
+		let sort = NSSortDescriptor(key: "date", ascending: false)
+		fetchRequest.sortDescriptors = [sort]
+		do {
+			let sampleData:[NSManagedObject] = try managedContext.fetch(fetchRequest)
+			self.entries = sampleData.map({ self.symptomEntryFromCoreData(data: $0) }).compactMap({ $0 })
+			NotificationCenter.default.post(name: .symptomDidUpdate, object: nil)
+		} catch let error as NSError{ print("could not fetch \(error)") }
+	}
+	
+	func updateDatabaseWith(entry:SymptomEntry){
+		// search core data for an entry that fits within the same time window
+//		if let samplesDate = samples.date{
+//			self.deleteCoreData(samplesData: self.queryCoreDataSamples(on: samplesDate))
+//		}
+		guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+		let managedContext = appDelegate.persistentContainer.viewContext
+		let entity = NSEntityDescription.entity(forEntityName: SYMPTOM_SAMPLE_ENTITY, in: managedContext)!
+		let coreSample = NSManagedObject(entity: entity, insertInto: managedContext)
+		coreSample.setValue(entry.date, forKey: "date")
+		if let rating = entry.rating{ coreSample.setValue(rating.rawValue, forKey: "rating") }
+		if let location = entry.location{
+			coreSample.setValue(location.0, forKey: "latitude")
+			coreSample.setValue(location.1, forKey: "longitude")
+		}
+		if let exposures = entry.exposures{
+			coreSample.setValue(exposures.map({$0.asString()}).joined(separator: ","), forKey: "exposures")
+		}
+		do{ try managedContext.save() }
+		catch let error as NSError { print("could not save \(error)") }
+	}
 
 }

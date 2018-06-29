@@ -36,15 +36,13 @@ class IntroAllergyTrackView: UIView {
 		enableNotificationsButton.sizeToFit()
 		enableNotificationsButton.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: enableNotificationsButton.bounds.size.height+15)
 		
-
 		getStartedButton.setTitle("get started", for: .normal)
 		getStartedButton.sizeToFit()
 		getStartedButton.frame = CGRect(x: 0, y: 0, width: getStartedButton.bounds.size.width+40, height: getStartedButton.bounds.size.height+15)
 		getStartedButton.color = .black
 		
 		PollenNotifications.shared.isLocalEnabled { (enabled) in
-			if enabled{ self.enableNotificationsButton.buttonState = .checked }
-			else      { self.enableNotificationsButton.buttonState = .unchecked }
+			self.updateCheckedButton(enabled)
 		}
 
 		enableNotificationsButton.addTarget(self, action: #selector(authorizeNotificationsHandler), for: .touchUpInside)
@@ -53,11 +51,15 @@ class IntroAllergyTrackView: UIView {
 		self.addSubview(enableNotificationsButton)
 		self.addSubview(getStartedButton)
 	}
+	
+	func updateCheckedButton(_ checked:Bool){
+		if checked{ self.enableNotificationsButton.buttonState = .checked }
+		else      { self.enableNotificationsButton.buttonState = .unchecked }
+	}
 
 	@objc func authorizeNotificationsHandler(){
 		PollenNotifications.shared.enableLocalNotifications { (success) in
-			print("authorizeNotificationsHandler")
-			print(success)
+			self.updateCheckedButton(success)
 		}
 	}
 	
