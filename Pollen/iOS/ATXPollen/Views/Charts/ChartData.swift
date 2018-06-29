@@ -9,7 +9,7 @@
 import Foundation
 import Charts
 
-extension MyChartsView{
+extension PollenTypeChartView{
 
 	func barChartData(from pollenSamples:[PollenSamples]) -> BarChartData {
 		let logValues = pollenSamples

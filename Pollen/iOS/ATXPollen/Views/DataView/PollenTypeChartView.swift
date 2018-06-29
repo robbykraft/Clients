@@ -1,5 +1,5 @@
 //
-//  MyChartsView.swift
+//  PollenTypeChartView.swift
 //  ATXPollen
 //
 //  Created by Robby Kraft on 5/16/18.
@@ -10,7 +10,7 @@ import UIKit
 import Charts
 
 
-class MyChartsView: UIView, ChartViewDelegate {
+class PollenTypeChartView: UIView, ChartViewDelegate {
 	
 	// parameters for data
 	let speciesGroups:[PollenTypeGroup] = [.grasses, .weeds, .trees, .molds]
@@ -99,8 +99,6 @@ class MyChartsView: UIView, ChartViewDelegate {
 		guard let lastChart = symptomCharts.last else { return CGRect.zero }
 		return CGRect(x: firstChart.frame.origin.x, y: firstChart.frame.origin.y, width: firstChart.frame.size.width, height: lastChart.frame.bottom - firstChart.frame.origin.y)
 	}
-	
-//	func reloadData(){ }
 	
 	func reloadData(){		
 		// get array of Clinic Sample data between dates lowBounds and upperBounds

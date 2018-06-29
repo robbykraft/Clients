@@ -8,7 +8,7 @@
 
 import UIKit
 
-class QuerySegmentedControl: UISegmentedControl {
+class SegmentedControl: UISegmentedControl {
 	
 	let selectedBackgroundColor = Style.shared.blue
 	var sortedViews: [UIView]!
@@ -30,7 +30,7 @@ class QuerySegmentedControl: UISegmentedControl {
 	
 	private func configure() {
 		sortedViews = self.subviews.sorted(by:{$0.frame.origin.x < $1.frame.origin.x})
-//		changeSelectedIndex(to: currentIndex)
+		self.selectedSegmentIndex = 0
 		self.tintColor = Style.shared.blue
 		self.layer.cornerRadius = 4
 		self.clipsToBounds = true

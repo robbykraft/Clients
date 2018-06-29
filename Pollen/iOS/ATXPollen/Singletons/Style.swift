@@ -108,8 +108,8 @@ class Style {
 		colorNoPollen = green
 		colorLow = UIColor(red: 0.0, green: 200/255.0, blue: 50/255.0, alpha: 1.0)
 		colorMedium = UIColor(red: 1.0, green: 156/255.0, blue: 14/255.0, alpha: 1.0)
-		colorHeavy = UIColor(red: 1.0, green: 97/255.0, blue: 28/255.0, alpha: 1.0)
-		colorVeryHeavy = red
+		colorHeavy = UIColor(red: 255/255.0, green: 59/255.0, blue: 48/255.0, alpha: 1.0)//UIColor(red: 1.0, green: 97/255.0, blue: 28/255.0, alpha: 1.0)
+		colorVeryHeavy = purple
 		
 		colorNoEntry = UIColor.black
 		

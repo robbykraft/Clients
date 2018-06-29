@@ -1,5 +1,5 @@
 //
-//  QueryView.swift
+//  DataView.swift
 //  Allergy
 //
 //  Created by Robby on 10/18/17.
@@ -8,24 +8,23 @@
 
 import UIKit
 
-protocol QueryViewDelegate {
+protocol DataViewDelegate {
 	func showScheduleAlert()
 	func showNeedNotificationsAlert()
 }
 
-class QueryView: UIView{
+class DataView: UIView{
 	
-	var delegate:QueryViewDelegate?
-
-	let myChartsView = MyChartsView()
-
+	var delegate:DataViewDelegate?
 	let trackYourAllergiesButton = UIButton()
 	let symptomsCoverView = UIImageView()
-
 	let questionButton = UIBorderedButton()
-	
 	var currentAlert:PopAlertView?
-	
+	let segmentedControl = SegmentedControl(items: ["Chart 1","Chart 2","Chart 3","Chart 4"])
+
+	let pollenTypeChartView = PollenTypeChartView()
+	let stackedChartView = StackedChartView()
+
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		initUI()
@@ -62,11 +61,13 @@ class QueryView: UIView{
 
 		questionButton.addTarget(self, action: #selector(openQuestion), for: .touchUpInside)
 
-		self.addSubview(myChartsView)
+		self.addSubview(pollenTypeChartView)
+		self.addSubview(stackedChartView)
 		self.addSubview(symptomsCoverView)
 		self.addSubview(trackYourAllergiesButton)
-//		self.addSubview(questionButton)
-//		segmentedControl.addTarget(self, action: #selector(segmentedControlDidChange), for: .valueChanged)
+		self.addSubview(segmentedControl)
+		
+		segmentedControl.addTarget(self, action: #selector(segmentedControlDidChange), for: .valueChanged)
 		
 		PollenNotifications.shared.isLocalEnabled { (enabled) in
 			if enabled{ self.showTrackButton = false }
@@ -76,11 +77,18 @@ class QueryView: UIView{
 	
 	override func layoutSubviews() {
 		super.layoutSubviews()
+		
+		segmentedControl.center = CGPoint(x: self.bounds.size.width*0.5, y: 20)
 
 		// my charts
-		myChartsView.frame = self.bounds
+//		pollenTypeChartView.frame = self.bounds
+		pollenTypeChartView.frame = CGRect(x: 0, y: 40, width: self.bounds.size.width, height: self.bounds.size.height-40)
+		stackedChartView.frame = CGRect(x: 0, y: 40, width: self.bounds.size.width, height: self.bounds.size.height-40)
 		
-		symptomsCoverView.frame = myChartsView.getSymptomChartsFrame()
+		///////////////////
+		stackedChartView.isHidden = true
+
+		symptomsCoverView.frame = pollenTypeChartView.getSymptomChartsFrame()
 		if(Symptom.shared.entries.count > 0){ symptomsCoverView.isHidden = true }
 
 		trackYourAllergiesButton.center = CGPoint(x: symptomsCoverView.center.x, y: symptomsCoverView.center.y)
@@ -118,6 +126,22 @@ class QueryView: UIView{
 //		let seasonsQuestionView = WhatSeasonsView(frame: CGRect(x: 0, y: 0, width: self.bounds.size.width*0.66, height: self.bounds.size.height*0.66))
 //		currentAlert = PopAlertView(title: "1 / 2", view: seasonsQuestionView)
 //		currentAlert!.show(animated: true)
+	}
+	
+	@objc func segmentedControlDidChange(sender:UISegmentedControl){
+		pollenTypeChartView.isHidden = true
+		stackedChartView.isHidden = true
+
+		switch sender.selectedSegmentIndex {
+		case 0:
+			pollenTypeChartView.isHidden = false
+		case 1:
+			stackedChartView.isHidden = false
+		case 2:
+			break;
+		default:
+			break;
+		}
 	}
 	
 	@objc func openQuestion(){

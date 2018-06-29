@@ -8,14 +8,14 @@
 
 import UIKit
 
-class ViewController: UIViewController, UINavigationControllerDelegate, HomeSlideViewDelegate, QueryViewDelegate{
+class ViewController: UIViewController, UINavigationControllerDelegate, HomeSlideViewDelegate, DataViewDelegate{
 	
 	let preferencesButton = UIButton()
 
 	// everything on top: circle chart, bottom bar chart, blue circle
 	let homeSlideView = HomeSlideView()
 	// everything underneath: questions, map
-	let queryView = QueryView()
+	let dataView = DataView()
 
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
@@ -41,14 +41,14 @@ class ViewController: UIViewController, UINavigationControllerDelegate, HomeSlid
 		preferencesButton.addTarget(self, action: #selector(preferencesButtonPressed), for: .touchUpInside)
 		homeSlideView.addSubview(preferencesButton)
 		
-		queryView.delegate = self
-		queryView.layer.anchorPoint = CGPoint(x:0.5, y:0.5)
-		queryView.alpha = 0.0
-		queryView.frame = CGRect(x: 0, y: 15 + 70, width: self.view.frame.size.width, height: self.view.frame.size.height - 15 - 70)
+		dataView.delegate = self
+		dataView.layer.anchorPoint = CGPoint(x:0.5, y:0.5)
+		dataView.alpha = 0.0
+		dataView.frame = CGRect(x: 0, y: 15 + 70, width: self.view.frame.size.width, height: self.view.frame.size.height - 15 - 70)
 
 		self.view.addSubview(homeSlideView)
-		self.view.addSubview(queryView)
-		self.view.sendSubview(toBack:queryView)
+		self.view.addSubview(dataView)
+		self.view.sendSubview(toBack:dataView)
 
 		reloadData()
 		NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: .pollenDidUpdate, object: nil)
@@ -64,8 +64,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, HomeSlid
 	@objc func reloadData(){
 		homeSlideView.barChart.data = Array(ClinicData.shared.pollenSamples.prefix(15)).map({ $0.relevantToMyAllergies() })
 		homeSlideView.radialChart.data = homeSlideView.barChart.data.first
-		queryView.myChartsView.reloadData()
-		queryView.layoutSubviews()
+		dataView.pollenTypeChartView.reloadData()
+		dataView.stackedChartView.reloadData()
+		dataView.layoutSubviews()
 	}
 		
 	@objc func preferencesButtonPressed(){
@@ -75,8 +76,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, HomeSlid
 	}
 	
 	func slideViewDidOpen(percent: CGFloat) {
-		self.queryView.alpha = percent
-		self.queryView.transform = CGAffineTransform.init(scaleX: percent*0.15+0.85, y: percent*0.15+0.85)
+		self.dataView.alpha = percent
+		self.dataView.transform = CGAffineTransform.init(scaleX: percent*0.15+0.85, y: percent*0.15+0.85)
 	}
 	
 	func detailRequested(forSample sample: PollenSamples) {

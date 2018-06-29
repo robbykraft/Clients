@@ -8,8 +8,11 @@
 
 import UIKit
 import UserNotifications
+import Firebase
+import FirebaseInstanceID
+import FirebaseMessaging
 
-class PollenNotifications: NSObject, UNUserNotificationCenterDelegate {
+class PollenNotifications: NSObject, UNUserNotificationCenterDelegate, MessagingDelegate {
 
 	static let shared = PollenNotifications()
 	
@@ -17,7 +20,12 @@ class PollenNotifications: NSObject, UNUserNotificationCenterDelegate {
 		super.init()
 		let center = UNUserNotificationCenter.current()
 		center.delegate = self
-		registerCategory()
+		
+		// register local
+		registerLocalCategory()
+		
+		// register remote
+		registerRemoteNotifications()
 	}
 	
 	let center = UNUserNotificationCenter.current()
@@ -57,7 +65,7 @@ class PollenNotifications: NSObject, UNUserNotificationCenterDelegate {
 
 	}
 	
-	func registerCategory(){
+	func registerLocalCategory(){
 		// add buttons to category
 		let symptomRatings:[SymptomRating] = [.severe, .medium, .light, .none]
 		let notificationActions = symptomRatings.map { (rating) -> UNNotificationAction in
@@ -204,4 +212,39 @@ class PollenNotifications: NSObject, UNUserNotificationCenterDelegate {
 		})
 	}
 	
+	
+	//MARK: REMOTE NOTIFICATIONS
+	
+	func registerRemoteNotifications(){
+		let application = UIApplication.shared
+		if #available(iOS 10.0, *) {
+			// For iOS 10 display notification (sent via APNS)
+			UNUserNotificationCenter.current().delegate = self
+			let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
+			UNUserNotificationCenter.current().requestAuthorization(
+				options: authOptions,
+				completionHandler: {_, _ in })
+			// For iOS 10 data message (sent via FCM
+			Messaging.messaging().delegate = self
+		} else {
+			let settings: UIUserNotificationSettings =
+				UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
+			application.registerUserNotificationSettings(settings)
+		}
+		application.registerForRemoteNotifications()
+	}
+
+	func applicationReceivedRemoteMessage(_ remoteMessage: MessagingRemoteMessage) {
+		print("applicationReceivedRemoteMessage")
+		print(remoteMessage.appData)
+	}
+	
+	func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String) {
+		print("didReceiveRegistrationToken")
+		print(fcmToken)
+	}
+	
 }
+
+
+

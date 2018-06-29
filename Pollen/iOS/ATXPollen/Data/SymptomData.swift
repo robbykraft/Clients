@@ -19,8 +19,21 @@ class Symptom {
 	var entries:[SymptomEntry] = []
 	
 	private init(){
-//		clearCoreData()
+		clearCoreData()
+		loadFakeData()
 		loadSamplesFromCoreData()
+	}
+	
+	func loadFakeData(){
+		var symptoms:[SymptomEntry] = []
+		for i in 0..<60{
+			var components = DateComponents()
+			components.day = -i
+			let date = Calendar.current.date(byAdding: components, to: Date())!
+			let rand = Int(arc4random() % 4)
+			symptoms.append(SymptomEntry(date: date, location: nil, rating: SymptomRating(rawValue: rand), exposures: nil))
+		}
+		symptoms.forEach({ updateDatabaseWith(entry: $0) })
 	}
 	
 	// MARK: convert Core Data to SymptomEntry
@@ -77,6 +90,22 @@ class Symptom {
 		}
 		do{ try managedContext.save() }
 		catch let error as NSError { print("could not save \(error)") }
+	}
+	
+	func clearCoreData(){
+		var sampleData: [NSManagedObject] = []
+		guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+		let managedContext = appDelegate.persistentContainer.viewContext
+		let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: SYMPTOM_SAMPLE_ENTITY)
+		do {
+			sampleData = try managedContext.fetch(fetchRequest)
+			for samples in sampleData{
+				managedContext.delete(samples)
+			}
+			try managedContext.save()
+		} catch let error as NSError{
+			print("clearCoreData() could not fetch \(error)")
+		}
 	}
 
 }

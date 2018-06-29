@@ -27,8 +27,8 @@
 		D5167FD420AC8CF600478CBE /* Pollen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167FD320AC8CF600478CBE /* Pollen.swift */; };
 		D5167FD620AC8D0D00478CBE /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167FD520AC8D0D00478CBE /* Extensions.swift */; };
 		D5167FD820AC93D500478CBE /* ClinicData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167FD720AC93D500478CBE /* ClinicData.swift */; };
-		D5167FDB20AC9D3E00478CBE /* QueryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167FDA20AC9D3E00478CBE /* QueryView.swift */; };
-		D5167FDD20AC9D7000478CBE /* QuerySegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167FDC20AC9D7000478CBE /* QuerySegmentedControl.swift */; };
+		D5167FDB20AC9D3E00478CBE /* DataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167FDA20AC9D3E00478CBE /* DataView.swift */; };
+		D5167FDD20AC9D7000478CBE /* SegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167FDC20AC9D7000478CBE /* SegmentedControl.swift */; };
 		D5167FE020AC9D8700478CBE /* ExposureQueryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167FDE20AC9D8700478CBE /* ExposureQueryView.swift */; };
 		D5167FE120AC9D8700478CBE /* AllergyQueryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167FDF20AC9D8700478CBE /* AllergyQueryView.swift */; };
 		D5167FE320ACB1F900478CBE /* UIBorderedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167FE220ACB1F900478CBE /* UIBorderedButton.swift */; };
@@ -39,7 +39,7 @@
 		D5167FEE20ACD64700478CBE /* AboutPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167FED20ACD64700478CBE /* AboutPage.swift */; };
 		D5167FF120ACD6F800478CBE /* CenteredTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167FF020ACD6F700478CBE /* CenteredTableViewCell.swift */; };
 		D5167FF320ACD71D00478CBE /* MyAllergies.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167FF220ACD71D00478CBE /* MyAllergies.swift */; };
-		D5167FF520ACDC9E00478CBE /* MyChartsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167FF420ACDC9E00478CBE /* MyChartsView.swift */; };
+		D5167FF520ACDC9E00478CBE /* PollenTypeChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167FF420ACDC9E00478CBE /* PollenTypeChartView.swift */; };
 		D5167FFA20ACE3C900478CBE /* PollenCountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167FF920ACE3C900478CBE /* PollenCountViewController.swift */; };
 		D5167FFC20ACE3F900478CBE /* LineTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5167FFB20ACE3F900478CBE /* LineTableViewCell.swift */; };
 		D51B3DEC20C8240D001A4D8D /* SymptomEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51B3DEB20C8240D001A4D8D /* SymptomEntry.swift */; };
@@ -47,6 +47,7 @@
 		D5351E9E20D2D1EB009AE439 /* PollenNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5351E9D20D2D1EB009AE439 /* PollenNotifications.swift */; };
 		D5A9A3DA20CAD7E1006A762E /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9A3D920CAD7E1006A762E /* Modal.swift */; };
 		D5A9A3DC20CAD825006A762E /* PopAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9A3DB20CAD825006A762E /* PopAlertView.swift */; };
+		D5C6CD4D20E6B2EF00848F3D /* StackedChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C6CD4C20E6B2EE00848F3D /* StackedChartView.swift */; };
 		D5CFFEF420D9545400F69F81 /* UICheckButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CFFEF320D9545400F69F81 /* UICheckButton.swift */; };
 		D5CFFEF620D963F700F69F81 /* WhatSeasonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CFFEF520D963F700F69F81 /* WhatSeasonsView.swift */; };
 		D5D1DF5120B8B32C008DA7F7 /* Pollen.plist in Resources */ = {isa = PBXBuildFile; fileRef = D5D1DF5020B8B32C008DA7F7 /* Pollen.plist */; };
@@ -100,8 +101,8 @@
 		D5167FD320AC8CF600478CBE /* Pollen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pollen.swift; sourceTree = "<group>"; };
 		D5167FD520AC8D0D00478CBE /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		D5167FD720AC93D500478CBE /* ClinicData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClinicData.swift; sourceTree = "<group>"; };
-		D5167FDA20AC9D3E00478CBE /* QueryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryView.swift; sourceTree = "<group>"; };
-		D5167FDC20AC9D7000478CBE /* QuerySegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuerySegmentedControl.swift; sourceTree = "<group>"; };
+		D5167FDA20AC9D3E00478CBE /* DataView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataView.swift; sourceTree = "<group>"; };
+		D5167FDC20AC9D7000478CBE /* SegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedControl.swift; sourceTree = "<group>"; };
 		D5167FDE20AC9D8700478CBE /* ExposureQueryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExposureQueryView.swift; sourceTree = "<group>"; };
 		D5167FDF20AC9D8700478CBE /* AllergyQueryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllergyQueryView.swift; sourceTree = "<group>"; };
 		D5167FE220ACB1F900478CBE /* UIBorderedButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIBorderedButton.swift; sourceTree = "<group>"; };
@@ -112,7 +113,7 @@
 		D5167FED20ACD64700478CBE /* AboutPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutPage.swift; sourceTree = "<group>"; };
 		D5167FF020ACD6F700478CBE /* CenteredTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CenteredTableViewCell.swift; sourceTree = "<group>"; };
 		D5167FF220ACD71D00478CBE /* MyAllergies.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyAllergies.swift; sourceTree = "<group>"; };
-		D5167FF420ACDC9E00478CBE /* MyChartsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyChartsView.swift; sourceTree = "<group>"; };
+		D5167FF420ACDC9E00478CBE /* PollenTypeChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollenTypeChartView.swift; sourceTree = "<group>"; };
 		D5167FF920ACE3C900478CBE /* PollenCountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollenCountViewController.swift; sourceTree = "<group>"; };
 		D5167FFB20ACE3F900478CBE /* LineTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineTableViewCell.swift; sourceTree = "<group>"; };
 		D51B3DEB20C8240D001A4D8D /* SymptomEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymptomEntry.swift; sourceTree = "<group>"; };
@@ -120,6 +121,8 @@
 		D5351E9D20D2D1EB009AE439 /* PollenNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollenNotifications.swift; sourceTree = "<group>"; };
 		D5A9A3D920CAD7E1006A762E /* Modal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modal.swift; sourceTree = "<group>"; };
 		D5A9A3DB20CAD825006A762E /* PopAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopAlertView.swift; sourceTree = "<group>"; };
+		D5C6CD4820E6902200848F3D /* ATXPollen.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ATXPollen.entitlements; sourceTree = "<group>"; };
+		D5C6CD4C20E6B2EE00848F3D /* StackedChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackedChartView.swift; sourceTree = "<group>"; };
 		D5CFFEF320D9545400F69F81 /* UICheckButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICheckButton.swift; sourceTree = "<group>"; };
 		D5CFFEF520D963F700F69F81 /* WhatSeasonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatSeasonsView.swift; sourceTree = "<group>"; };
 		D5D1DF5020B8B32C008DA7F7 /* Pollen.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Pollen.plist; sourceTree = "<group>"; };
@@ -192,6 +195,7 @@
 		D5167F8A20AC841000478CBE /* ATXPollen */ = {
 			isa = PBXGroup;
 			children = (
+				D5C6CD4820E6902200848F3D /* ATXPollen.entitlements */,
 				D5167F8B20AC841000478CBE /* AppDelegate.swift */,
 				D5167F8D20AC841000478CBE /* ViewController.swift */,
 				D5167FD020AC8CA000478CBE /* Data */,
@@ -233,8 +237,9 @@
 			children = (
 				D5167FCE20AC8ABB00478CBE /* HomeSlideView.swift */,
 				D5167FEF20ACD6E300478CBE /* Cells */,
-				D5167FD920AC9D2A00478CBE /* Query */,
+				D5167FD920AC9D2A00478CBE /* DataView */,
 				D5E4AE8220D03C210045BC7F /* Charts */,
+				D5C6CD4B20E6B19C00848F3D /* DataCollection */,
 				D5167FBF20AC88F400478CBE /* MyCharts */,
 			);
 			path = Views;
@@ -269,6 +274,7 @@
 				D5167FE220ACB1F900478CBE /* UIBorderedButton.swift */,
 				D5CFFEF320D9545400F69F81 /* UICheckButton.swift */,
 				D5A9A3D920CAD7E1006A762E /* Modal.swift */,
+				D5167FDC20AC9D7000478CBE /* SegmentedControl.swift */,
 				D5A9A3DB20CAD825006A762E /* PopAlertView.swift */,
 			);
 			path = Supers;
@@ -285,18 +291,14 @@
 			path = Data;
 			sourceTree = "<group>";
 		};
-		D5167FD920AC9D2A00478CBE /* Query */ = {
+		D5167FD920AC9D2A00478CBE /* DataView */ = {
 			isa = PBXGroup;
 			children = (
-				D5167FDC20AC9D7000478CBE /* QuerySegmentedControl.swift */,
-				D5167FDA20AC9D3E00478CBE /* QueryView.swift */,
-				D5167FF420ACDC9E00478CBE /* MyChartsView.swift */,
-				D5E4AE8720D083260045BC7F /* IntroAllergyTrackView.swift */,
-				D5CFFEF520D963F700F69F81 /* WhatSeasonsView.swift */,
-				D5167FDF20AC9D8700478CBE /* AllergyQueryView.swift */,
-				D5167FDE20AC9D8700478CBE /* ExposureQueryView.swift */,
+				D5167FDA20AC9D3E00478CBE /* DataView.swift */,
+				D5167FF420ACDC9E00478CBE /* PollenTypeChartView.swift */,
+				D5C6CD4C20E6B2EE00848F3D /* StackedChartView.swift */,
 			);
-			path = Query;
+			path = DataView;
 			sourceTree = "<group>";
 		};
 		D5167FEA20ACD53A00478CBE /* ViewControllers */ = {
@@ -317,6 +319,17 @@
 				D5167FFB20ACE3F900478CBE /* LineTableViewCell.swift */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		D5C6CD4B20E6B19C00848F3D /* DataCollection */ = {
+			isa = PBXGroup;
+			children = (
+				D5E4AE8720D083260045BC7F /* IntroAllergyTrackView.swift */,
+				D5CFFEF520D963F700F69F81 /* WhatSeasonsView.swift */,
+				D5167FDE20AC9D8700478CBE /* ExposureQueryView.swift */,
+				D5167FDF20AC9D8700478CBE /* AllergyQueryView.swift */,
+			);
+			path = DataCollection;
 			sourceTree = "<group>";
 		};
 		D5E4AE8220D03C210045BC7F /* Charts */ = {
@@ -407,6 +420,11 @@
 				TargetAttributes = {
 					D5167F8720AC841000478CBE = {
 						CreatedOnToolsVersion = 9.3.1;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					D5167F9E20AC841200478CBE = {
 						CreatedOnToolsVersion = 9.3.1;
@@ -521,7 +539,7 @@
 			files = (
 				D5167FEE20ACD64700478CBE /* AboutPage.swift in Sources */,
 				D51272DC20B9A49100F21EF4 /* PollenTypeInfo.swift in Sources */,
-				D5167FDB20AC9D3E00478CBE /* QueryView.swift in Sources */,
+				D5167FDB20AC9D3E00478CBE /* DataView.swift in Sources */,
 				D5167FE320ACB1F900478CBE /* UIBorderedButton.swift in Sources */,
 				D5167FFA20ACE3C900478CBE /* PollenCountViewController.swift in Sources */,
 				D5167FC420AC890F00478CBE /* UILineChartView.swift in Sources */,
@@ -537,9 +555,9 @@
 				D5167FEC20ACD56800478CBE /* Preferences.swift in Sources */,
 				D5167F9420AC841000478CBE /* ATXPollen.xcdatamodeld in Sources */,
 				D5A9A3DA20CAD7E1006A762E /* Modal.swift in Sources */,
-				D5167FDD20AC9D7000478CBE /* QuerySegmentedControl.swift in Sources */,
+				D5167FDD20AC9D7000478CBE /* SegmentedControl.swift in Sources */,
 				D51B3DEE20C826AE001A4D8D /* SymptomData.swift in Sources */,
-				D5167FF520ACDC9E00478CBE /* MyChartsView.swift in Sources */,
+				D5167FF520ACDC9E00478CBE /* PollenTypeChartView.swift in Sources */,
 				D51B3DEC20C8240D001A4D8D /* SymptomEntry.swift in Sources */,
 				D5167F8C20AC841000478CBE /* AppDelegate.swift in Sources */,
 				D5167FD820AC93D500478CBE /* ClinicData.swift in Sources */,
@@ -554,6 +572,7 @@
 				D5167FC320AC890F00478CBE /* UIRadialChart.swift in Sources */,
 				D5167FFC20ACE3F900478CBE /* LineTableViewCell.swift in Sources */,
 				D5167FD620AC8D0D00478CBE /* Extensions.swift in Sources */,
+				D5C6CD4D20E6B2EF00848F3D /* StackedChartView.swift in Sources */,
 				D5167FD420AC8CF600478CBE /* Pollen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -728,6 +747,7 @@
 			baseConfigurationReference = 91E189CFBD0890CBC0EF497A /* Pods-ATXPollen.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = ATXPollen/ATXPollen.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = LZQR3392T8;
 				INFOPLIST_FILE = ATXPollen/Info.plist;
@@ -747,6 +767,7 @@
 			baseConfigurationReference = C3C8252B3BC40CCD8D21C955 /* Pods-ATXPollen.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = ATXPollen/ATXPollen.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = LZQR3392T8;
 				INFOPLIST_FILE = ATXPollen/Info.plist;

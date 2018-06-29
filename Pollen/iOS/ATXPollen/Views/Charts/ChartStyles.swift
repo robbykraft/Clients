@@ -20,7 +20,7 @@ import Charts
 //	}
 //}
 
-extension MyChartsView: IAxisValueFormatter {
+extension PollenTypeChartView: IAxisValueFormatter {
 	public func stringForValue(_ value: Double, axis: AxisBase?) -> String {
 //		return "\(Int(value))"
 		if Int(value) >= self.dataDates.count || Int(value) < 0{ return "" }
@@ -51,7 +51,7 @@ extension MyChartsView: IAxisValueFormatter {
 }
 
 
-extension MyChartsView {
+extension PollenTypeChartView {
 	
 	func setupFilledChart(_ chart: LineChartView, data: LineChartData) {
 		(data.getDataSetByIndex(0) as! LineChartDataSet).circleHoleColor = Style.shared.blue
@@ -61,7 +61,6 @@ extension MyChartsView {
 		chart.dragEnabled = true
 		chart.setScaleEnabled(true)
 		chart.pinchZoomEnabled = false
-//		chart.setViewPortOffsets(left: 0, top: 0, right: 0, bottom: 0)
 		chart.legend.enabled = false
 		chart.leftAxis.enabled = false
 		chart.leftAxis.spaceBottom = 0.0
@@ -85,7 +84,6 @@ extension MyChartsView {
 		chart.dragEnabled = true
 		chart.setScaleEnabled(true)
 		chart.pinchZoomEnabled = false
-//		chart.setViewPortOffsets(left: 0, top: 0, right: 0, bottom: 0)
 		chart.legend.enabled = false
 		chart.leftAxis.enabled = false
 		chart.leftAxis.spaceBottom = 0.0
@@ -97,7 +95,6 @@ extension MyChartsView {
 		}
 		chart.noDataText = "waiting on data.."
 		chart.data = data
-//		chart.animate(xAxisDuration: 0.5)
 	}
 	
 	func setupDateChart(_ chart: BarChartView, data: BarChartData) {
@@ -106,7 +103,6 @@ extension MyChartsView {
 		chart.dragEnabled = true
 		chart.setScaleEnabled(true)
 		chart.pinchZoomEnabled = false
-//		chart.setViewPortOffsets(left: 0, top: 0, right: 0, bottom: 0)
 		chart.legend.enabled = false
 		chart.leftAxis.enabled = false
 		chart.leftAxis.spaceBottom = 0.0
@@ -138,6 +134,7 @@ extension MyChartsView {
 		chart.dragEnabled = true
 		chart.setScaleEnabled(true)
 		chart.pinchZoomEnabled = false
+		chart.resetViewPortOffsets()
 		chart.setViewPortOffsets(left: 0, top: 0, right: 0, bottom: 0)
 		chart.legend.enabled = false
 		chart.leftAxis.enabled = false
