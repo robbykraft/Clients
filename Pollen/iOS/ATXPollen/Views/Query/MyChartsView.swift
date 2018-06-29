@@ -22,7 +22,6 @@ class MyChartsView: UIView, ChartViewDelegate {
 
 	// data visualized
 	var clinicSampleData:[[PollenSamples]] = [[]]
-	var clinicSampleLogValues:[[Double]] = [[]]
 	var symptomEntryData:[SymptomEntry] = []
 	var allergyDataValues:[Double] = []
 	var exposureEntryData:[[Bool]] = []
@@ -102,9 +101,7 @@ class MyChartsView: UIView, ChartViewDelegate {
 		return CGRect(x: firstChart.frame.origin.x, y: firstChart.frame.origin.y, width: firstChart.frame.size.width, height: lastChart.frame.bottom - firstChart.frame.origin.y)
 	}
 	
-//	func reloadData(){
-//		
-//	}
+//	func reloadData(){ }
 	
 	func reloadData(){
 		
@@ -136,11 +133,6 @@ class MyChartsView: UIView, ChartViewDelegate {
 				}).first ?? PollenSamples(fromDatabase: [:])
 			}
 		}
-		// [[Double],[Double],[Double],[Double]], each species group array of log values, strongest daily sample
-		clinicSampleLogValues = clinicSampleData
-			.map({ (samples) -> [Double] in
-				return samples.map({ let ss = $0.strongestSample(); return (ss != nil) ? Double(ss!.logValue) : 0.0 })
-			})
 
 		// SYMPTOMS (ALLERGIES AND EXPOSURES)
 		// generate array of symptom data 1:1 for every day, empty SymptomEntry for dates with no prior data

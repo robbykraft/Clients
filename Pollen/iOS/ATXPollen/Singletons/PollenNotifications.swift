@@ -22,15 +22,50 @@ class PollenNotifications: NSObject, UNUserNotificationCenterDelegate {
 	
 	let center = UNUserNotificationCenter.current()
 	
+	func check(){
+//		self.center.removeAllPendingNotificationRequests()
+		self.center.getPendingNotificationRequests { (requestList) in
+			print("found pending requests")
+			print(requestList.count)
+			for r in requestList{
+				print(r.trigger?.repeats ?? "")
+				print(r.content.body)
+			}
+		}
+		self.center.getDeliveredNotifications { (deliveredList) in
+			print("found delivered requests")
+			print(deliveredList.count)
+			for delivered in deliveredList{
+				print(delivered.request.content.body)
+			}
+		}
+	}
+	
+	func isLocalTimerRunning(completionHandler: ((Bool) -> ())?) {
+		self.center.getPendingNotificationRequests { (requestList) in
+			for r in requestList{
+				if let rep = r.trigger?.repeats{
+					// yes, our best guess, a timer that has a repeat is currently running in the background
+					if rep == true{
+						DispatchQueue.main.async {
+							completionHandler?(true)
+						}
+					}
+				}
+			}
+		}
+
+	}
+	
 	func registerCategory(){
 		// add buttons to category
 		let symptomRatings:[SymptomRating] = [.severe, .medium, .light, .none]
 		let notificationActions = symptomRatings.map { (rating) -> UNNotificationAction in
-			return UNNotificationAction(identifier: "UYL\(rating.asString().capitalized)Action", title: rating.asString(), options: [])
+			return UNNotificationAction(identifier: "ATXPollen\(rating.asString().capitalized)Action", title: rating.asString(), options: [])
 		}
-//		let deleteAction = UNNotificationAction(identifier: "UYLDeleteAction",
+//		let deleteAction = UNNotificationAction(identifier: "ATXPollenDeleteAction",
 //												title: "Delete", options: [.destructive])
-		let category = UNNotificationCategory(identifier: "UYLReminderCategory",
+		let category = UNNotificationCategory(identifier: "ATXPollenReminderCategory",
 											  actions: notificationActions,
 											  intentIdentifiers: [], options: [])
 		center.setNotificationCategories([category])
@@ -43,22 +78,19 @@ class PollenNotifications: NSObject, UNUserNotificationCenterDelegate {
 		completionHandler([.alert,.sound])
 	}
 	
-	func userNotificationCenter(_ center: UNUserNotificationCenter,
-								didReceive response: UNNotificationResponse,
-								withCompletionHandler completionHandler: @escaping () -> Void) {
-		
-		// Determine the user action
+	func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
 		switch response.actionIdentifier {
-		case UNNotificationDismissActionIdentifier:
-			print("Dismiss Action")
-		case UNNotificationDefaultActionIdentifier:
-			print("Default")
-		case "Snooze":
-			print("Snooze")
-		case "Delete":
-			print("Delete")
-		default:
-			print("Unknown action")
+		case "ATXPollenSevereAction":
+			print("severe")
+		case "ATXPollenMediumAction":
+			print("medium")
+		case "ATXPollenLowAction":
+			print("low")
+		case "ATXPollenNoneAction":
+			print("none")
+		case UNNotificationDismissActionIdentifier: print("Dismiss Action")
+		case UNNotificationDefaultActionIdentifier: print("Default")
+		default: print("Unknown action")
 		}
 		completionHandler()
 	}
@@ -74,9 +106,43 @@ class PollenNotifications: NSObject, UNUserNotificationCenterDelegate {
 		}
 	}
 	
-	func checkNotificationAuthorizationStatus(completionHandler: ((Bool) -> ())?) {
+	func disableLocalTimer(){
+		self.center.removeAllPendingNotificationRequests()
+	}
+	
+	func enableLocalTimer(completionHandler: ((Bool) -> ())?) {
+		// create the trigger
+		let sixPM = Calendar.current.date(bySettingHour: 19, minute: 45, second: 0, of: Date())!
+		let triggerDaily = Calendar.current.dateComponents([.hour,.minute,.second], from: sixPM)
+		let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDaily, repeats: true)
+		// create the notification
+		let content = UNMutableNotificationContent()
+		content.title = "How are your allergies today?"
+		content.body = "slide to respond"
+		content.sound = UNNotificationSound.default()
+		content.categoryIdentifier = "ATXPollenReminderCategory"
+		// run notification
+		let identifier = "ATXPollenLocalNotification"
+		let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+		center.add(request, withCompletionHandler: { (error) in
+			if let error = error {
+				print(error)
+				DispatchQueue.main.async {
+					completionHandler?(false)
+				}
+			} else{
+				DispatchQueue.main.async {
+					completionHandler?(true)
+				}
+			}
+		})
+	}
+	
+	func isLocalEnabled(completionHandler: ((Bool) -> ())?) {
 		center.getNotificationSettings { (settings) in
-			completionHandler?(settings.authorizationStatus == .authorized)
+			DispatchQueue.main.async {
+				completionHandler?(settings.authorizationStatus == .authorized)
+			}
 		}
 	}
 	
@@ -86,39 +152,48 @@ class PollenNotifications: NSObject, UNUserNotificationCenterDelegate {
 		} else{ }
 	}
 	
+	func enableLocalNotifications(completionHandler: ((Bool) -> ())?) {
+		isLocalEnabled { (authorized) in
+			if authorized{
+				DispatchQueue.main.async {
+					completionHandler?(true)
+				}
+			} else{
+				self.requestNotificationAccess(completionHandler: { (requestAccepted) in
+					if requestAccepted{
+						DispatchQueue.main.async {
+							completionHandler?(true)
+						}
+					} else{
+						DispatchQueue.main.async {
+							self.openSettings()
+						}
+					}
+				})
+			}
+		}
+	}
+	
 	func testNotification(){
 		
 		let content = UNMutableNotificationContent()
 		content.title = "How are your allergies today?"
 		content.body = "slide to respond"
 		content.sound = UNNotificationSound.default()
-		content.categoryIdentifier = "UYLReminderCategory"
+		content.categoryIdentifier = "ATXPollenReminderCategory"
 		
 		let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 20,
 														repeats: false)
-		
-//		let date = Date(timeIntervalSinceNow: 3600)
-//		let triggerDate = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute,.second,], from: date)
-//		let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDate,
-//													repeats: false)
-
-/// daily trigger
-//		let triggerDaily = Calendar.current.dateComponents([.hour,.minute,.second,], from: date)
-//		let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDaily, repeats: true)
-		
-		
-		let identifier = "UYLLocalNotification"
+		let identifier = "ATXPollenLocalNotification"
 		let request = UNNotificationRequest(identifier: identifier,
 											content: content, trigger: trigger)
-		
+
 		center.add(request, withCompletionHandler: { (error) in
 			if let error = error {
 				print(error)
 				// Something went wrong
 			}
 		})
-		
-		
 	}
 	
 }

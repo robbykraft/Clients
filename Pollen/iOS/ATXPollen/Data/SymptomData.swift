@@ -10,9 +10,10 @@ import Foundation
 import UIKit
 import CoreData
 
-let SYMPTOM_SAMPLE_ENTITY = "CoreSymptomSample"
 
 class Symptom {
+	private let SYMPTOM_SAMPLE_ENTITY = "CoreSymptomSample"
+
 	static let shared = Symptom()
 	
 	// date(toString) : sample
@@ -65,16 +66,36 @@ class Symptom {
 	}
 	
 	func loadSamplesFromCoreData(){
-//		guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-//		let managedContext = appDelegate.persistentContainer.viewContext
-//		let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: POLLEN_SAMPLE_ENTITY)
-//		let sort = NSSortDescriptor(key: "date", ascending: false)
-//		fetchRequest.sortDescriptors = [sort]
-//		do {
-//			let sampleData:[NSManagedObject] = try managedContext.fetch(fetchRequest)
-//			self.entries = sampleData.map({ self.pollenSamplesFromCoreData(data: $0) }).compactMap({ $0 })
-//			NotificationCenter.default.post(name: .pollenDidUpdate, object: nil)
-//		} catch let error as NSError{ print("could not fetch \(error)") }
+		guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+		let managedContext = appDelegate.persistentContainer.viewContext
+		let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: SYMPTOM_SAMPLE_ENTITY)
+		let sort = NSSortDescriptor(key: "date", ascending: false)
+		fetchRequest.sortDescriptors = [sort]
+		do {
+			let sampleData:[NSManagedObject] = try managedContext.fetch(fetchRequest)
+			self.entries = sampleData.map({ self.symptomEntryFromCoreData(data: $0) }).compactMap({ $0 })
+			NotificationCenter.default.post(name: .symptomDidUpdate, object: nil)
+		} catch let error as NSError{ print("could not fetch \(error)") }
 	}
+	// MARK: Core Data to SymptomEntry
+	func symptomEntryFromCoreData(data:NSManagedObject) -> SymptomEntry?{
+		let latitude = data.value(forKey: "latitude") as? Double
+		let longitude = data.value(forKey: "longitude") as? Double
+		let location = (latitude != nil && longitude != nil) ? (latitude!, longitude!) : nil
+		let rating = data.value(forKey: "rating") != nil ? SymptomRating(rawValue: data.value(forKey: "rating") as! Int) : nil
+		var exposures:[Exposures]?
+		if let exposureString = data.value(forKey: "exposures") as? String{
+			exposures = exposureString
+				.components(separatedBy: ",")
+				.compactMap({ (string) -> Exposures? in
+					return exposureFromString(string: string)
+				})
+		}
+		if let date = data.value(forKey: "date") as? Date{
+			return SymptomEntry(date: date, location: location, rating: rating, exposures: exposures)
+		}
+		return nil
+	}
+
 
 }

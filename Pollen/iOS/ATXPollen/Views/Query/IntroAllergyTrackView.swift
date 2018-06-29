@@ -10,9 +10,8 @@ import UIKit
 
 class IntroAllergyTrackView: UIView {
 
-	let topQuestionLabel = UILabel()
 	let paragraphText = UITextView()
-	let enableNotificationsButton = UIBorderedButton()
+	let enableNotificationsButton = UICheckButton()
 	let getStartedButton = UIBorderedButton()
 
 	override init(frame: CGRect) {
@@ -26,69 +25,52 @@ class IntroAllergyTrackView: UIView {
 		fatalError("This class does not support NSCoding")
 	}
 	func initUI(){
-		topQuestionLabel.textColor = UIColor.black
-		topQuestionLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P21)
-		topQuestionLabel.text = "discover your allergies"
-
 		paragraphText.textColor = UIColor.black
-		paragraphText.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P12)
-		paragraphText.text = "Each day at a certain time, this will ask you to record your allergies. This can now be answered right inside of the notification itself. Adjust notification settings under the \"settings\" window."
+		paragraphText.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15)
+		paragraphText.text = "Together we can figure out what's triggering your allergies, giving you a leg up on the allergy season.\n\nAll it takes is one simple question asked daily and can be turned off at any time."
 
-		enableNotificationsButton.setTitle("enable notifications", for: .normal)
+		enableNotificationsButton.uncheckedString = "enable notifications"
+		enableNotificationsButton.checkedString = "notifications enabled"
+		enableNotificationsButton.color = Style.shared.blue
+		enableNotificationsButton.buttonState = .unchecked
 		enableNotificationsButton.sizeToFit()
-		enableNotificationsButton.frame = CGRect(x: 0, y: 0, width: enableNotificationsButton.bounds.size.width+40, height: enableNotificationsButton.bounds.size.height+15)
-		enableNotificationsButton.color = .black
+		enableNotificationsButton.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: enableNotificationsButton.bounds.size.height+15)
+		
 
-		getStartedButton.setTitle("let's go", for: .normal)
+		getStartedButton.setTitle("get started", for: .normal)
 		getStartedButton.sizeToFit()
 		getStartedButton.frame = CGRect(x: 0, y: 0, width: getStartedButton.bounds.size.width+40, height: getStartedButton.bounds.size.height+15)
 		getStartedButton.color = .black
+		
+		PollenNotifications.shared.isLocalEnabled { (enabled) in
+			if enabled{ self.enableNotificationsButton.buttonState = .checked }
+			else      { self.enableNotificationsButton.buttonState = .unchecked }
+		}
 
 		enableNotificationsButton.addTarget(self, action: #selector(authorizeNotificationsHandler), for: .touchUpInside)
 
-		self.addSubview(topQuestionLabel)
 		self.addSubview(paragraphText)
 		self.addSubview(enableNotificationsButton)
 		self.addSubview(getStartedButton)
 	}
-	
+
 	@objc func authorizeNotificationsHandler(){
-		PollenNotifications.shared.checkNotificationAuthorizationStatus { (authorized) in
-			if authorized{
-				DispatchQueue.main.async {
-					PollenNotifications.shared.testNotification()
-				}
-			} else{
-				DispatchQueue.main.async {
-					PollenNotifications.shared.requestNotificationAccess(completionHandler: { (requestAccepted) in
-						if requestAccepted{
-							DispatchQueue.main.async {
-								PollenNotifications.shared.testNotification()
-							}
-						} else{
-							DispatchQueue.main.async {
-								PollenNotifications.shared.openSettings()
-							}
-						}
-					})
-				}
-			}
+		PollenNotifications.shared.enableLocalNotifications { (success) in
+			print("authorizeNotificationsHandler")
+			print(success)
 		}
 	}
 	
 	override func layoutSubviews() {
 		super.layoutSubviews()
-		
-		let topPadding:CGFloat = 20
 		let btnAreaPadX:CGFloat = 25
-		let btnAreaPadY:CGFloat = 15
-		
-		topQuestionLabel.sizeToFit()
-		topQuestionLabel.center = CGPoint(x: self.bounds.size.width*0.5, y: topPadding)
-		let belowContent = CGRect(x: btnAreaPadX, y: topQuestionLabel.frame.bottom + btnAreaPadY, width: self.bounds.size.width - btnAreaPadX*2, height: self.bounds.size.height - topQuestionLabel.frame.bottom - btnAreaPadY*2)
-		paragraphText.frame = belowContent
+		enableNotificationsButton.sizeToFit()
+		enableNotificationsButton.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: enableNotificationsButton.bounds.size.height+30)
 
-		enableNotificationsButton.center = CGPoint(x: self.bounds.size.width*0.5, y: self.bounds.size.height*0.6)
-		getStartedButton.center = CGPoint(x: self.bounds.size.width*0.5, y: self.bounds.size.height*0.85)
+		getStartedButton.center = CGPoint(x: self.bounds.size.width*0.5, y: self.bounds.size.height - getStartedButton.frame.size.height*0.5 - 10)
+		enableNotificationsButton.center = CGPoint(x: self.bounds.size.width*0.5, y: getStartedButton.center.y - getStartedButton.frame.size.height*0.5 - enableNotificationsButton.frame.size.height * 0.5 - 15)
+		
+		paragraphText.frame = CGRect(x: btnAreaPadX, y: 0, width: self.bounds.size.width - btnAreaPadX*2, height: enableNotificationsButton.frame.origin.y)
 	}
+
 }

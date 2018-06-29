@@ -52,6 +52,7 @@ class UIBorderedButton: UIButton {
 		self.layer.backgroundColor = self.color.cgColor
 		self.setTitleColor(UIColor.white, for: .normal)
 	}
+	
 	@objc func buttonSetUnselected(){
 		self.layer.backgroundColor = UIColor.white.cgColor
 		self.setTitleColor(self.color, for: .normal)

@@ -13,7 +13,20 @@ extension MyChartsView{
 
 	func barChartData(from pollenSamples:[PollenSamples]) -> BarChartData {
 		let logValues = pollenSamples
-			.map({ let ss = $0.strongestSample(); return (ss != nil) ? Double(ss!.logValue) : 0.0 })
+			.map({ (sample) -> Double in
+				let ss = sample.strongestSample();
+				return (ss != nil) ? Double(ss!.logValue) : 0.0
+			})
+//			.map({ (sample:PollenSamples) -> Double in
+//				// flatten values to integers
+//				switch sample.rating(){
+//				case .none: return 0.0
+//				case .low: return 0.25
+//				case .medium: return 0.5
+//				case .heavy: return 0.75
+//				case .veryHeavy: return 1.0
+//				}
+//			})
 			.enumerated()
 			.map({ BarChartDataEntry(x: Double($0.offset), y: $0.element) })
 		let colors = pollenSamples.map({ Style.shared.colorFor(rating: $0.rating()) })

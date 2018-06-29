@@ -12,6 +12,9 @@ class Preferences: UITableViewController {
 	
 	let levelNames = ["NONE", "LOW", "MEDIUM", "HEAVY", "VERY HEAVY"]
 	
+	var isLocalEnabled = false
+	var isLocalTimerRunning = false
+	
     override func viewDidLoad() {
         super.viewDidLoad()
 		
@@ -24,6 +27,15 @@ class Preferences: UITableViewController {
 
 		let font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18) ?? UIFont.boldSystemFont(ofSize: Style.shared.P18)
 		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedStringKey.font: font, NSAttributedStringKey.foregroundColor: Style.shared.blue], for:.normal)
+		
+		PollenNotifications.shared.isLocalEnabled { (isEnabled) in
+			self.isLocalEnabled = isEnabled
+			self.tableView.reloadData()
+		}
+		PollenNotifications.shared.isLocalTimerRunning { (isRunning) in
+			self.isLocalTimerRunning = isRunning
+			self.tableView.reloadData()
+		}
 
     }
 	
@@ -40,13 +52,14 @@ class Preferences: UITableViewController {
 	}
 	
 	override func numberOfSections(in tableView: UITableView) -> Int {
-		return 3
+		return 4
 	}
 	
 	override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
 		switch section{
 		case 0: return "Personalized Allergy Report"
-		case 1: return "Push Notifications"
+		case 1: return "Daily Clinic Report"
+		case 2: return "Symptom Tracking"
 		default: return nil
 		}
 	}
@@ -64,6 +77,8 @@ class Preferences: UITableViewController {
 //			}
 			return 1
 		case 2:
+			return 3
+		case 3:
 			return 1
 		default:
 			return 0
@@ -85,7 +100,7 @@ class Preferences: UITableViewController {
 		case 1:
 			switch indexPath.row {
 			case 0:
-				cell.textLabel?.text = "Notifications"
+				cell.textLabel?.text = "Push Notification"
 
 				switch UIApplication.shared.isRegisteredForRemoteNotifications {
 				case true:
@@ -124,6 +139,26 @@ class Preferences: UITableViewController {
 			default: break
 			}
 		case 2:
+			switch indexPath.row {
+			case 0:
+				cell.textLabel?.text = "Daily Tracking"
+				
+				if isLocalEnabled && isLocalTimerRunning{
+					cell.detailTextLabel?.textColor = Style.shared.blue
+					cell.detailTextLabel?.text = "Enabled"
+				} else{
+					cell.detailTextLabel?.textColor = UIColor.lightGray
+					cell.detailTextLabel?.text = "Disabled"
+				}
+			case 1:
+				cell.textLabel?.text = "Time"
+				cell.detailTextLabel?.text = "6:00pm"
+			case 2:
+				cell.textLabel?.text = "Seasons"
+				cell.detailTextLabel?.text = "All"
+			default: break
+			}
+		case 3:
 			cell.textLabel?.text = "About Allergy Free Austin"
 		default: break
 		}
@@ -168,6 +203,27 @@ class Preferences: UITableViewController {
 				break
 			}
 		case 2:
+			if isLocalEnabled{
+				if isLocalTimerRunning{
+					PollenNotifications.shared.disableLocalTimer()
+					self.isLocalTimerRunning = false
+					self.tableView.reloadData()
+				} else{
+					PollenNotifications.shared.enableLocalTimer { (isRunning) in
+						self.isLocalTimerRunning = isRunning
+						self.tableView.reloadData()
+					}
+				}
+			} else{
+				PollenNotifications.shared.enableLocalNotifications { (isEnabled) in
+					self.isLocalEnabled = isEnabled
+					PollenNotifications.shared.enableLocalTimer(completionHandler: { (isRunning) in
+						self.isLocalTimerRunning = isRunning
+						self.tableView.reloadData()
+					})
+				}
+			}
+		case 3:
 			self.navigationController?.pushViewController(AboutPage.init(style: .grouped), animated: true)
 		default:
 			break

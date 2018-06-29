@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UINavigationControllerDelegate, HomeSlideViewDelegate{
+class ViewController: UIViewController, UINavigationControllerDelegate, HomeSlideViewDelegate, QueryViewDelegate{
 	
 	let preferencesButton = UIButton()
 
@@ -41,6 +41,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, HomeSlid
 		preferencesButton.addTarget(self, action: #selector(preferencesButtonPressed), for: .touchUpInside)
 		homeSlideView.addSubview(preferencesButton)
 		
+		queryView.delegate = self
 		queryView.layer.anchorPoint = CGPoint(x:0.5, y:0.5)
 		queryView.alpha = 0.0
 		queryView.frame = CGRect(x: 0, y: 15 + 70, width: self.view.frame.size.width, height: self.view.frame.size.height - 15 - 70)
@@ -51,6 +52,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, HomeSlid
 
 		reloadData()
 		NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: .pollenDidUpdate, object: nil)
+		
+//		PollenNotifications.shared.enableLocalTimer()
+		PollenNotifications.shared.check()
 	}
 	
 	deinit {
@@ -84,6 +88,21 @@ class ViewController: UIViewController, UINavigationControllerDelegate, HomeSlid
 		nav.modalPresentationStyle = .custom
 		nav.modalTransitionStyle = .crossDissolve
 		self.present(nav, animated: true, completion: nil)
+	}
+	
+	// Query View Delegate
+	func showScheduleAlert() {
+		let alert = UIAlertController.init(title: "At the close of each day, 6 P.M., ATX Pollen will ask \"How were your allergies?\"", message: nil, preferredStyle: .alert)
+		let action1 = UIAlertAction.init(title: "Got it", style: .cancel, handler:nil)
+		alert.addAction(action1)
+		self.present(alert, animated: true, completion: nil)
+	}
+	
+	func showNeedNotificationsAlert(){
+		let alert = UIAlertController.init(title: "Local Notifications need to be enabled", message: nil, preferredStyle: .alert)
+		let action1 = UIAlertAction.init(title: "Okay", style: .cancel, handler:nil)
+		alert.addAction(action1)
+		self.present(alert, animated: true, completion: nil)
 	}
 
 }

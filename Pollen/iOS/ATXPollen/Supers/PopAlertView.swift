@@ -31,19 +31,23 @@ class PopAlertView: UIView, Modal{
 		let dialogViewWidth = frame.width-64
 		
 		let titleLabel = UILabel(frame: CGRect(x: 8, y: 8, width: dialogViewWidth-16, height: 30))
+		titleLabel.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P24)
 		titleLabel.text = title
 		titleLabel.textAlignment = .center
 		dialogView.addSubview(titleLabel)
-		let separatorLineView = UIView()
-		separatorLineView.frame.origin = CGPoint(x: 0, y: titleLabel.frame.height + 8)
-		separatorLineView.frame.size = CGSize(width: dialogViewWidth, height: 1)
-		separatorLineView.backgroundColor = UIColor.groupTableViewBackground
-		dialogView.addSubview(separatorLineView)
-		view.frame.origin = CGPoint(x: 8, y: separatorLineView.frame.height + separatorLineView.frame.origin.y + 8)
-		view.frame.size = CGSize(width: dialogViewWidth - 16 , height: dialogViewWidth - 16)
+
+		view.frame.origin = CGPoint(x: 0, y: titleLabel.frame.height + titleLabel.frame.origin.y + 9)
+		view.frame.size = CGSize(width: dialogViewWidth, height: view.frame.size.height)
 		view.layer.cornerRadius = 4
 		view.clipsToBounds = true
 		dialogView.addSubview(view)
+
+		let separatorLineView = UIView()
+		separatorLineView.frame.origin = CGPoint(x: 0, y: titleLabel.frame.height + titleLabel.frame.origin.y + 8)
+		separatorLineView.frame.size = CGSize(width: dialogViewWidth, height: 1)
+		separatorLineView.backgroundColor = UIColor.groupTableViewBackground
+		dialogView.addSubview(separatorLineView)
+
 		let dialogViewHeight = titleLabel.frame.height + 8 + separatorLineView.frame.height + 8 + view.frame.height + 8
 		dialogView.frame.origin = CGPoint(x: 32, y: frame.height)
 		dialogView.frame.size = CGSize(width: frame.width-64, height: dialogViewHeight)

@@ -8,7 +8,14 @@
 
 import UIKit
 
+protocol QueryViewDelegate {
+	func showScheduleAlert()
+	func showNeedNotificationsAlert()
+}
+
 class QueryView: UIView{
+	
+	var delegate:QueryViewDelegate?
 
 	let myChartsView = MyChartsView()
 
@@ -16,6 +23,8 @@ class QueryView: UIView{
 	let symptomsCoverView = UIImageView()
 
 	let questionButton = UIBorderedButton()
+	
+	var currentAlert:PopAlertView?
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -26,6 +35,19 @@ class QueryView: UIView{
 	}
 	required init(coder aDecoder: NSCoder) {
 		fatalError("This class does not support NSCoding")
+	}
+	
+	var showTrackButton = true{
+		didSet{
+			if showTrackButton{
+				self.trackYourAllergiesButton.isHidden = false
+				self.symptomsCoverView.isHidden = false
+			}
+			else {
+				self.trackYourAllergiesButton.isHidden = true
+				self.symptomsCoverView.isHidden = true
+			}
+		}
 	}
 	
 	func initUI(){
@@ -45,6 +67,11 @@ class QueryView: UIView{
 		self.addSubview(trackYourAllergiesButton)
 //		self.addSubview(questionButton)
 //		segmentedControl.addTarget(self, action: #selector(segmentedControlDidChange), for: .valueChanged)
+		
+		PollenNotifications.shared.isLocalEnabled { (enabled) in
+			if enabled{ self.showTrackButton = false }
+			else {      self.showTrackButton = true }
+		}
 	}
 	
 	override func layoutSubviews() {
@@ -66,8 +93,29 @@ class QueryView: UIView{
 	}
 	
 	@objc func openIntroScreen(){
-		let alert = PopAlertView(title: "(1 / 2)", view: IntroAllergyTrackView())
-		alert.show(animated: true)
+		let introAllergyView = IntroAllergyTrackView(frame: CGRect(x: 0, y: 0, width: self.bounds.size.width*0.66, height: self.bounds.size.height*0.66))
+		currentAlert = PopAlertView(title: "let's track!", view: introAllergyView)
+		introAllergyView.getStartedButton.addTarget(self, action: #selector(openNextScreen), for: .touchUpInside)
+		currentAlert!.show(animated: true)
+	}
+
+	@objc func openNextScreen(){
+		PollenNotifications.shared.isLocalEnabled { (enabled) in
+			if enabled{
+				if let alert = self.currentAlert{
+					alert.dismiss(animated: true)
+				}
+				self.delegate?.showScheduleAlert()
+			}
+			else {
+				self.delegate?.showNeedNotificationsAlert()
+			}
+		}
+
+
+//		let seasonsQuestionView = WhatSeasonsView(frame: CGRect(x: 0, y: 0, width: self.bounds.size.width*0.66, height: self.bounds.size.height*0.66))
+//		currentAlert = PopAlertView(title: "1 / 2", view: seasonsQuestionView)
+//		currentAlert!.show(animated: true)
 	}
 	
 	@objc func openQuestion(){

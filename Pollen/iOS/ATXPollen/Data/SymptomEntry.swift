@@ -40,6 +40,19 @@ enum Exposures : Int{
 	}
 }
 
+// weird global function
+// used when pulling exposures (strings) out of the database
+func exposureFromString(string:String) -> Exposures?{
+	switch string{
+	case "dog": return .dog
+	case "cat": return .cat
+	case "molds": return .molds
+	case "dust": return .dust
+	case "virus": return .virus
+	default: return nil
+	}
+}
+
 struct SymptomEntry{
 	var date:Date
 	var location:(Double, Double)?
