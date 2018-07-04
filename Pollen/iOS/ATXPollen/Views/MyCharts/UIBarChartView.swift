@@ -9,7 +9,7 @@
 import UIKit
 
 protocol BarChartDelegate: class {
-	func barChartDidUpdateSelection(pollenSample:PollenSamples)
+	func barChartDidUpdateSelection(pollenSample:DailyPollenCount)
 }
 
 class UIBarChartView: UIView {
@@ -17,11 +17,11 @@ class UIBarChartView: UIView {
 	weak var delegate:BarChartDelegate? // for calling completed button press function
 	var selected = 0
 	
-	var data:[PollenSamples] = []{
+	var data:[DailyPollenCount] = []{
 		didSet{
 			// build bar chart again
 			self.values = data.compactMap({ $0.strongestSample() }).map({ $0.logValue })
-//			self.values = data.map({ (samples:PollenSamples) -> Float in
+//			self.values = data.map({ (samples:DailyPollenCount) -> Float in
 //				return samples.getSamples().map({$0.logValue}).sorted(by: {$0 > $1}).first ?? 0
 //			})
 			self.labels = data.map {

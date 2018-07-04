@@ -62,10 +62,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, HomeSlid
 	}
 	
 	@objc func reloadData(){
-		homeSlideView.barChart.data = Array(ClinicData.shared.pollenSamples.prefix(15)).map({ $0.relevantToMyAllergies() })
+		homeSlideView.barChart.data = Array(ClinicData.shared.dailyCounts.prefix(15)).map({ $0.relevantToMyAllergies() })
 		homeSlideView.radialChart.data = homeSlideView.barChart.data.first
 		dataView.pollenTypeChartView.reloadData()
 		dataView.stackedChartView.reloadData()
+		dataView.monthlyBarChartView.reloadData()
 		dataView.layoutSubviews()
 	}
 		
@@ -80,7 +81,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, HomeSlid
 		self.dataView.transform = CGAffineTransform.init(scaleX: percent*0.15+0.85, y: percent*0.15+0.85)
 	}
 	
-	func detailRequested(forSample sample: PollenSamples) {
+	func detailRequested(forSample sample: DailyPollenCount) {
 //		let nav = UILightNavigationController()
 		let nav = UINavigationController()
 		let vc = PollenCountViewController()
@@ -93,6 +94,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, HomeSlid
 	
 	// Query View Delegate
 	func showScheduleAlert() {
+		PollenNotifications.shared.enableLocalTimer(completionHandler: nil)
 		let alert = UIAlertController.init(title: "At the close of each day we'll send you a notification asking how were your allergies.", message: nil, preferredStyle: .alert)
 		let action1 = UIAlertAction.init(title: "Got it", style: .cancel, handler:nil)
 		alert.addAction(action1)

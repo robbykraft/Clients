@@ -10,7 +10,7 @@ import UIKit
 
 class UIRadialChart: UIView {
 	
-	var data:PollenSamples?{
+	var data:DailyPollenCount?{
 		didSet{
 			self.refreshViewData()
 		}

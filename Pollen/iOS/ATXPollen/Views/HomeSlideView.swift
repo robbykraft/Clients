@@ -10,7 +10,7 @@ import UIKit
 
 protocol HomeSlideViewDelegate {
 	func slideViewDidOpen(percent:CGFloat)
-	func detailRequested(forSample sample:PollenSamples)
+	func detailRequested(forSample sample:DailyPollenCount)
 }
 
 class HomeSlideView: UIScrollView, BarChartDelegate, UIScrollViewDelegate {
@@ -123,7 +123,7 @@ class HomeSlideView: UIScrollView, BarChartDelegate, UIScrollViewDelegate {
 	}
 
 	// UIBarChartView delegate
-	func barChartDidUpdateSelection(pollenSample: PollenSamples) {
+	func barChartDidUpdateSelection(pollenSample: DailyPollenCount) {
 		self.radialChart.data = pollenSample
 	}
 	

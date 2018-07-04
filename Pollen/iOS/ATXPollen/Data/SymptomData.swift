@@ -19,8 +19,8 @@ class Symptom {
 	var entries:[SymptomEntry] = []
 	
 	private init(){
-		clearCoreData()
-		loadFakeData()
+//		clearCoreData()
+//		loadFakeData()
 		loadSamplesFromCoreData()
 	}
 	

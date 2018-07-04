@@ -24,6 +24,7 @@ class DataView: UIView{
 
 	let pollenTypeChartView = PollenTypeChartView()
 	let stackedChartView = StackedChartView()
+	let monthlyBarChartView = MonthlyBarChartView()
 
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -63,6 +64,8 @@ class DataView: UIView{
 
 		self.addSubview(pollenTypeChartView)
 		self.addSubview(stackedChartView)
+		self.addSubview(monthlyBarChartView)
+		
 		self.addSubview(symptomsCoverView)
 		self.addSubview(trackYourAllergiesButton)
 		self.addSubview(segmentedControl)
@@ -84,11 +87,14 @@ class DataView: UIView{
 //		pollenTypeChartView.frame = self.bounds
 		pollenTypeChartView.frame = CGRect(x: 0, y: 40, width: self.bounds.size.width, height: self.bounds.size.height-40)
 		stackedChartView.frame = CGRect(x: 0, y: 40, width: self.bounds.size.width, height: self.bounds.size.height-40)
-		
+		monthlyBarChartView.frame = CGRect(x: 0, y: 40, width: self.bounds.size.width, height: self.bounds.size.height-40)
+
 		///////////////////
 		stackedChartView.isHidden = true
+		monthlyBarChartView.isHidden = true
 
 		symptomsCoverView.frame = pollenTypeChartView.getSymptomChartsFrame()
+		symptomsCoverView.frame.origin.y += 40
 		if(Symptom.shared.entries.count > 0){ symptomsCoverView.isHidden = true }
 
 		trackYourAllergiesButton.center = CGPoint(x: symptomsCoverView.center.x, y: symptomsCoverView.center.y)
@@ -131,6 +137,7 @@ class DataView: UIView{
 	@objc func segmentedControlDidChange(sender:UISegmentedControl){
 		pollenTypeChartView.isHidden = true
 		stackedChartView.isHidden = true
+		monthlyBarChartView.isHidden = true
 
 		switch sender.selectedSegmentIndex {
 		case 0:
@@ -138,7 +145,7 @@ class DataView: UIView{
 		case 1:
 			stackedChartView.isHidden = false
 		case 2:
-			break;
+			monthlyBarChartView.isHidden = false
 		default:
 			break;
 		}

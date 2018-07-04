@@ -34,7 +34,31 @@ struct PollenSample{
 	}
 }
 
-struct PollenSamples {
+func averageDailyPollenCounts(dailies:[DailyPollenCount]) -> DailyPollenCount{
+	let samples:[PollenSample] = dailies.map { (dailyPollenCount) -> [PollenSample] in
+		return dailyPollenCount.getSamples()
+		}.reduce([]) { (result, pollenSample) -> [PollenSample] in
+			return result + pollenSample
+		}
+	var types:[String:[Int]] = [:]
+	samples.forEach { (sample) in
+		if(types[sample.type.key] == nil){ types[sample.type.key] = [] }
+		types[sample.type.key]?.append(sample.value)
+	}
+	var averages:[String:Int] = [:]
+	types.forEach { (key,value) in
+		if(value.count > 0){
+			averages[key] = value.reduce(0, +) / value.count
+		}
+	}
+	let dictionary:[String:Any] = [
+		"date": Date().timeIntervalSince1970,
+		"counts": averages
+	]
+	return DailyPollenCount(fromDatabase: dictionary)
+}
+
+struct DailyPollenCount {
 	// make sure to use relevantToMyAllergies(). it filters through your list of personal allergies
 
 	var date:Date?
@@ -62,6 +86,15 @@ struct PollenSamples {
 			.sorted(by: { $0.logValue > $1.logValue })
 			.first
 	}
+	
+	func strongestSample(of group:PollenTypeGroup) -> PollenSample?{
+		return self.samples
+			.filter({ (sample) -> Bool in
+				return sample.type.group == group
+			})
+			.sorted(by: { $0.logValue > $1.logValue })
+			.first
+	}
 
 	/** returns the highest PollenRating of pollen entries filtered through your curated list of allergy types */
 	func rating() -> PollenRating{
@@ -71,16 +104,16 @@ struct PollenSamples {
 			.first ?? .none
 	}
 	
-	func filteredBy(group:PollenTypeGroup) -> PollenSamples{
-		var samples = PollenSamples(fromDatabase: [:])
+	func filteredBy(group:PollenTypeGroup) -> DailyPollenCount{
+		var samples = DailyPollenCount(fromDatabase: [:])
 		samples.date = self.date
 		samples.samples = self.samples.filter({ $0.type.group == group })
 		return samples
 	}
 	
 	/** my get back a copy of this with samples filtered through your curated list of allergy types */
-	func relevantToMyAllergies() -> PollenSamples{
-		var samples = PollenSamples(fromDatabase: [:])
+	func relevantToMyAllergies() -> DailyPollenCount{
+		var samples = DailyPollenCount(fromDatabase: [:])
 		samples.date = self.date
 		samples.samples = self.samples.filter({ (sample) -> Bool in
 			return Pollen.shared.myAllergies[sample.type.key] ?? true

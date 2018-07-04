@@ -11,13 +11,13 @@ import Charts
 
 extension PollenTypeChartView{
 
-	func barChartData(from pollenSamples:[PollenSamples]) -> BarChartData {
+	func barChartData(from pollenSamples:[DailyPollenCount]) -> BarChartData {
 		let logValues = pollenSamples
 			.map({ (sample) -> Double in
 				let ss = sample.strongestSample();
 				return (ss != nil) ? Double(ss!.logValue) : 0.0
 			})
-//			.map({ (sample:PollenSamples) -> Double in
+//			.map({ (sample:DailyPollenCount) -> Double in
 //				// flatten values to integers
 //				switch sample.rating(){
 //				case .none: return 0.0

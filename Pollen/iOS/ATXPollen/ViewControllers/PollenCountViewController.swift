@@ -10,7 +10,7 @@ import UIKit
 
 class PollenCountViewController: UITableViewController {
 	
-	var data:PollenSamples?{
+	var data:DailyPollenCount?{
 		didSet{
 			self.tableView.reloadData()
 			if let d = data{

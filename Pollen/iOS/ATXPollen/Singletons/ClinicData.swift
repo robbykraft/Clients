@@ -16,7 +16,7 @@ class ClinicData {
 
 	static let shared = ClinicData()
 
-	var pollenSamples:[PollenSamples] = []
+	var dailyCounts:[DailyPollenCount] = []
 
 	private init(){
 		FirebaseApp.configure()
@@ -45,15 +45,15 @@ class ClinicData {
 			self.downloadAllSamples()
 		}
 	}
-	// MARK: PollenSamples to Core Data
-	func pollenSamplesFromCoreData(data:NSManagedObject) -> PollenSamples?{
+	// MARK: dailyCounts to Core Data
+	func dailyCountsFromCoreData(data:NSManagedObject) -> DailyPollenCount?{
 		let counts = Pollen.shared.types.map({ ($0.key,data.value(forKey: $0.key)) }).reduce([:]) { (dict, entry) -> [String:Any] in
 			var dict = dict
 			dict[entry.0] = entry.1
 			return dict
 		}
 		if let date = data.value(forKey: "date") as? Date{
-			return PollenSamples(fromDatabase: ["date":date.timeIntervalSince1970, "counts":counts])
+			return DailyPollenCount(fromDatabase: ["date":date.timeIntervalSince1970, "counts":counts])
 		}
 		return nil
 	}
@@ -66,11 +66,11 @@ class ClinicData {
 		fetchRequest.sortDescriptors = [sort]
 		do {
 			let sampleData:[NSManagedObject] = try managedContext.fetch(fetchRequest)
-			self.pollenSamples = sampleData.map({ self.pollenSamplesFromCoreData(data: $0) }).compactMap({ $0 })
+			self.dailyCounts = sampleData.map({ self.dailyCountsFromCoreData(data: $0) }).compactMap({ $0 })
 			NotificationCenter.default.post(name: .pollenDidUpdate, object: nil)
 		} catch let error as NSError{ print("could not fetch \(error)") }
 	}
-	func saveCoreData(withSamples samples:PollenSamples){
+	func saveCoreData(withSamples samples:DailyPollenCount){
 		// search core data for an entry that shares the same date as samples. remove it
 		if let samplesDate = samples.date{
 			self.deleteCoreData(samplesData: self.queryCoreDataSamples(on: samplesDate))
@@ -175,7 +175,7 @@ class ClinicData {
 			if let d = data.value as? [String:[String:Any]]{
 				let samplesArray = Array(d.values)
 				samplesArray.forEach({
-					self.saveCoreData(withSamples: PollenSamples(fromDatabase: $0))
+					self.saveCoreData(withSamples: DailyPollenCount(fromDatabase: $0))
 				})
 				self.loadSamplesFromCoreData()
 			}
@@ -186,7 +186,7 @@ class ClinicData {
 		func queryDate(key:String){
 			Database.database().reference().child("collections/" + key).observeSingleEvent(of: .value) { (data) in
 				if let d = data.value as? [String:Any]{
-					self.saveCoreData(withSamples: PollenSamples(fromDatabase: d))
+					self.saveCoreData(withSamples: DailyPollenCount(fromDatabase: d))
 					self.loadSamplesFromCoreData()
 					NotificationCenter.default.post(name: .pollenDidUpdate, object: nil)
 				}
@@ -213,7 +213,7 @@ class ClinicData {
 //		func queryDate(key:String){
 //			Database.database().reference().child("collections/" + key).observeSingleEvent(of: .value) { (data) in
 //				if let d = data.value as? [String:Any]{
-//					self.saveCoreData(withSamples: PollenSamples(fromDatabase: d))
+//					self.saveCoreData(withSamples: dailyCounts(fromDatabase: d))
 //					self.loadSamplesFromCoreData()
 //					NotificationCenter.default.post(name: .pollenDidUpdate, object: nil)
 //				} else{ print("no entry for " + key) }

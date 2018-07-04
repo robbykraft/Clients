@@ -42,7 +42,7 @@ class StackedChartView: UIView, ChartViewDelegate {
 	var dataDates:[Date] = []
 	
 	// data visualized
-	var clinicSampleData:[[PollenSamples]] = [[]]
+	var clinicSampleData:[[DailyPollenCount]] = [[]]
 	var symptomEntryData:[SymptomEntry] = []
 	var allergyDataValues:[Double] = []
 	var exposureEntryData:[[Bool]] = []
@@ -88,7 +88,7 @@ class StackedChartView: UIView, ChartViewDelegate {
 	func reloadData(){
 		// get array of Clinic Sample data between dates lowBounds and upperBounds
 		// this filter function validates all dates exist, so we can use ! from now on.
-		let clinicData = ClinicData.shared.pollenSamples.filter({
+		let clinicData = ClinicData.shared.dailyCounts.filter({
 			if let date = $0.date{ return date.isBetween(lowBounds, and: upperBounds) }
 			return false
 		}).sorted(by: { $0.date! < $1.date! })
@@ -97,24 +97,24 @@ class StackedChartView: UIView, ChartViewDelegate {
 		dataDates = clinicData.map({ $0.date! })
 		
 		// for every species type in [speciesGroups], create a inner array of all filtered clinicData
-		// creating [[PollenSamples],[PollenSamples],[PollenSamples],[PollenSamples]]
+		// creating [[DailyPollenCount],[DailyPollenCount],[DailyPollenCount],[DailyPollenCount]]
 		let clinicDataBySpecies = speciesGroups
-			.map { (group) -> [PollenSamples] in
+			.map { (group) -> [DailyPollenCount] in
 				return clinicData
 					.map({ $0.relevantToMyAllergies() })
 					.map({ $0.filteredBy(group: group) })
 		}
-		// convert [[PollenSamples],[PollenSamples],[PollenSamples],[PollenSamples]]
-		// into    [[PollenSamples],[PollenSamples],[PollenSamples],[PollenSamples]]
+		// convert [[DailyPollenCount],[DailyPollenCount],[DailyPollenCount],[DailyPollenCount]]
+		// into    [[DailyPollenCount],[DailyPollenCount],[DailyPollenCount],[DailyPollenCount]]
 		// but that each inner array is length 1:1 mapped to dates inside clinicData
-		// empty PollenSamples are generated to sit in Dates that had no PollenSample
+		// empty DailyPollenCount are generated to sit in Dates that had no PollenSample
 		let cal = Calendar.current
-		clinicSampleData = clinicDataBySpecies.map { (speciesSamples) -> [PollenSamples] in
-			return clinicData.map({ $0.date! }).map { (date) -> PollenSamples in
+		clinicSampleData = clinicDataBySpecies.map { (speciesSamples) -> [DailyPollenCount] in
+			return clinicData.map({ $0.date! }).map { (date) -> DailyPollenCount in
 				return speciesSamples.filter({
 					guard let sampleDate = $0.date else { return false }
 					return cal.isDate(sampleDate, inSameDayAs: date)
-				}).first ?? PollenSamples(fromDatabase: [:])
+				}).first ?? DailyPollenCount(fromDatabase: [:])
 			}
 		}
 		
@@ -140,8 +140,8 @@ class StackedChartView: UIView, ChartViewDelegate {
 			})
 		}
 		
-		let stackedData = clinicSampleData.map { (samples:[PollenSamples]) -> [Double] in
-			return samples.map({ (s:PollenSamples) -> Double in
+		let stackedData = clinicSampleData.map { (samples:[DailyPollenCount]) -> [Double] in
+			return samples.map({ (s:DailyPollenCount) -> Double in
 				let ss = s.strongestSample()
 				return (ss != nil) ? Double(ss!.logValue) : Double(0.0)
 			})
@@ -174,7 +174,13 @@ class StackedChartView: UIView, ChartViewDelegate {
 		chartView.drawGridBackgroundEnabled = false
 
 		chartView.xAxis.valueFormatter = self
-		
+		chartView.getAxis(.left).drawLabelsEnabled = false
+		chartView.getAxis(.right).drawLabelsEnabled = false
+		chartView.getAxis(.left).drawGridLinesEnabled = false
+		chartView.getAxis(.right).drawGridLinesEnabled = false
+		chartView.xAxis.drawGridLinesEnabled = false
+		chartView.chartDescription?.enabled = false
+
 //		clinicSampleData
 //			.map({ return barChartData(from: $0) })
 //			.enumerated()
