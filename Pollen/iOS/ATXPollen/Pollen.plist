@@ -249,7 +249,7 @@
 				<key>m</key>
 				<integer>500</integer>
 				<key>vh</key>
-				<integer>30000</integer>
+				<real>8000</real>
 			</dict>
 		</dict>
 		<dict>
@@ -270,7 +270,7 @@
 				<key>m</key>
 				<integer>500</integer>
 				<key>vh</key>
-				<integer>30000</integer>
+				<real>8000</real>
 			</dict>
 		</dict>
 		<dict>
@@ -291,7 +291,7 @@
 				<key>m</key>
 				<integer>500</integer>
 				<key>vh</key>
-				<integer>30000</integer>
+				<real>8000</real>
 			</dict>
 		</dict>
 		<dict>
@@ -312,7 +312,7 @@
 				<key>m</key>
 				<integer>500</integer>
 				<key>vh</key>
-				<integer>30000</integer>
+				<real>8000</real>
 			</dict>
 		</dict>
 		<dict>

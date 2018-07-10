@@ -11,17 +11,15 @@ import Charts
 
 
 class PollenTypeChartView: UIView, ChartViewDelegate {
-	
-	// parameters for data
+
+	var lowBounds:Date = Date()
+	var upperBounds:Date = Date()
+
 	let speciesGroups:[PollenTypeGroup] = [.grasses, .weeds, .trees, .molds]
 	let exposureTypes:[Exposures] = [.dog, .cat, .dust, .molds, .virus]
-	var lowBounds = Date()
-	var upperBounds = Date()
-	
-	var dataDates:[Date] = []
 
 	// data visualized
-	var clinicSampleData:[[DailyPollenCount]] = [[]]
+//	var clinicSampleData:[[DailyPollenCount]] = [[]]
 	var symptomEntryData:[SymptomEntry] = []
 	var allergyDataValues:[Double] = []
 	var exposureEntryData:[[Bool]] = []
@@ -100,68 +98,18 @@ class PollenTypeChartView: UIView, ChartViewDelegate {
 		return CGRect(x: firstChart.frame.origin.x, y: firstChart.frame.origin.y, width: firstChart.frame.size.width, height: lastChart.frame.bottom - firstChart.frame.origin.y)
 	}
 	
-	func reloadData(){		
-		// get array of Clinic Sample data between dates lowBounds and upperBounds
-		// this filter function validates all dates exist, so we can use ! from now on.
-		let clinicData = ClinicData.shared.dailyCounts.filter({
-			if let date = $0.date{ return date.isBetween(lowBounds, and: upperBounds) }
-			return false
-		}).sorted(by: { $0.date! < $1.date! })
-		// if no data, return
-		if clinicData.count == 0{ return }
-		dataDates = clinicData.map({ $0.date! })
+	func reloadData(){
+		_ = ChartData.shared
+
+		setupDateChart(dateChart, data:dateChartData(from: ChartData.shared.clinicDataYearDates, level:.day))
 		
-		// for every species type in [speciesGroups], create a inner array of all filtered clinicData
-		// creating [[DailyPollenCount],[DailyPollenCount],[DailyPollenCount],[DailyPollenCount]]
-		let clinicDataBySpecies = speciesGroups
-			.map { (group) -> [DailyPollenCount] in
-				return clinicData
-					.map({ $0.relevantToMyAllergies() })
-					.map({ $0.filteredBy(group: group) })
-		}
-		// convert [[DailyPollenCount],[DailyPollenCount],[DailyPollenCount],[DailyPollenCount]]
-		// into    [[DailyPollenCount],[DailyPollenCount],[DailyPollenCount],[DailyPollenCount]]
-		// but that each inner array is length 1:1 mapped to dates inside clinicData
-		// empty DailyPollenCount are generated to sit in Dates that had no PollenSample
-		let cal = Calendar.current
-		clinicSampleData = clinicDataBySpecies.map { (speciesSamples) -> [DailyPollenCount] in
-			return clinicData.map({ $0.date! }).map { (date) -> DailyPollenCount in
-				return speciesSamples.filter({
-					guard let sampleDate = $0.date else { return false }
-					return cal.isDate(sampleDate, inSameDayAs: date)
-				}).first ?? DailyPollenCount(fromDatabase: [:])
-			}
-		}
-
-		// SYMPTOMS (ALLERGIES AND EXPOSURES)
-		// generate array of symptom data 1:1 for every day, empty SymptomEntry for dates with no prior data
-		symptomEntryData = clinicData.map({ $0.date! }).map { (date) -> SymptomEntry in
-			return Symptom.shared.entries.filter({ return cal.isDate($0.date, inSameDayAs: date) }).first ??
-				SymptomEntry(date: date, location: nil, rating: nil, exposures: nil)
-		}
-		// ALLERGIES
-		allergyDataValues = symptomEntryData.map({ $0.rating != nil ? Double($0.rating!.rawValue)/3 : 0 })
-		// EXPOSURES
-		// for each day [[Bool],[Bool],[Bool],[Bool],[Bool]] for each exposureType
-		let exposureChartData = symptomEntryData
-			.map({ $0.exposures != nil ? $0.exposures! : [] })
-			.map { (exposure) -> [Bool] in return exposureTypes.map({ exposure.contains($0) }) }
-		// row column flip
-		// instead of array with length ~ 365 each containing inner arrays length 5
-		// convert into 5 arrays, each containing array of length 365
-		exposureEntryData = exposureTypes.map { (exposure) -> [Bool] in
-			return exposureChartData.map({ (boolArray) -> Bool in
-				return boolArray[exposure.rawValue]
-			})
-		}
-
-		setupDateChart(dateChart, data:dateChartData(from: clinicData.map({ $0.date! }), level:.day))
-		clinicSampleData
+		// clinicSampleData
+		ChartData.shared.dailyClinicDataByGroups
 			.map({ return barChartData(from: $0) })
 			.enumerated()
 			.forEach({ setupBarChart(groupCharts[$0.offset] as! BarChartView, data: $0.element) })
-		setupFilledChart(symptomCharts[0] as! LineChartView, data: filledChartData(from: allergyDataValues))
-		setupScatterChart(symptomCharts[1] as! ScatterChartView, data: scatterData(from: exposureEntryData))
+		setupFilledChart(symptomCharts[0] as! LineChartView, data: filledChartData(from: ChartData.shared.allergyDataValues))
+		setupScatterChart(symptomCharts[1] as! ScatterChartView, data: scatterData(from: ChartData.shared.exposureDataValues))
 		
 		// reset views
 		allCharts.forEach { (chart) in
@@ -213,7 +161,7 @@ class PollenTypeChartView: UIView, ChartViewDelegate {
 		// clear out entry
 		self.chartLabels.enumerated().forEach({ $0.element.text = speciesGroups[$0.offset].asString() })
 		// deta
-		clinicSampleData
+		ChartData.shared.dailyClinicDataByGroups
 			.map { $0[Int(highlight.x)] }
 			.enumerated()
 			.forEach({
@@ -224,4 +172,95 @@ class PollenTypeChartView: UIView, ChartViewDelegate {
 		self.chartLabels.forEach({ $0.sizeToFit() })
 	}
 
+}
+
+
+
+
+extension PollenTypeChartView{
+	
+	func barChartData(from pollenSamples:[DailyPollenCount]) -> BarChartData {
+		let logValues = pollenSamples
+			.map({ (sample) -> Double in
+				let ss = sample.strongestSample();
+				return (ss != nil) ? Double(ss!.logValue) : 0.0
+			})
+			//			.map({ (sample:DailyPollenCount) -> Double in
+			//				// flatten values to integers
+			//				switch sample.rating(){
+			//				case .none: return 0.0
+			//				case .low: return 0.25
+			//				case .medium: return 0.5
+			//				case .heavy: return 0.75
+			//				case .veryHeavy: return 1.0
+			//				}
+			//			})
+			.enumerated()
+			.map({ BarChartDataEntry(x: Double($0.offset), y: $0.element) })
+		let colors = pollenSamples.map({ Style.shared.colorFor(rating: $0.rating()) })
+		let set1 = BarChartDataSet(values: logValues, label: "Pollen Data")
+		set1.setColors(colors, alpha: 1.0)
+		//		set1.setColor(Style.shared.green)
+		set1.highlightEnabled = true
+		set1.highlightColor = Style.shared.orange
+		set1.drawValuesEnabled = false
+		return BarChartData(dataSet: set1)
+	}
+	
+	func filledChartData(from array:[Double]) -> LineChartData {
+		let values = array.enumerated().map({ ChartDataEntry(x: Double($0.offset), y: $0.element) })
+		let set1 = LineChartDataSet(values: values, label: "Lines")
+		set1.lineWidth = 0.1
+		//		set1.circleRadius = 5.0
+		//		set1.circleHoleRadius = 2.5
+		//		set1.setColor(color)
+		//		set1.setCircleColor(color)
+		set1.highlightColor = Style.shared.orange
+		set1.highlightLineWidth = 1
+		set1.drawValuesEnabled = false
+		set1.drawCirclesEnabled = false
+		set1.drawFilledEnabled = true
+		set1.fillAlpha = 1
+		set1.fillColor = Style.shared.blue
+		//		set1.cubicIntensity = 0.5
+		set1.mode = .cubicBezier
+		return LineChartData(dataSet: set1)
+	}
+	
+	func scatterData(from array:[[Bool]]) -> ScatterChartData{
+		let colors = [Style.shared.orange, Style.shared.lightBlue, Style.shared.purple, Style.shared.softBlue, Style.shared.red]
+		let dataSets = array.enumerated().map { (i, valueArray) -> ChartDataSet in
+			let values = valueArray.map{ return $0 ? i+1 : 0
+				}.enumerated().map({ (j, value) -> ChartDataEntry in
+					return ChartDataEntry(x: Double(j), y: Double(value)/6)
+				}).filter({ $0.y != 0.0 })
+			let set = ScatterChartDataSet(values: values + [ChartDataEntry(x: 0, y: 0)], label: exposureTypes[i].asString())
+			set.setScatterShape(.circle)
+			set.scatterShapeHoleColor = colors[i%5]
+			set.scatterShapeHoleRadius = 3.5
+			set.drawValuesEnabled = false
+			set.setColor(colors[i%5])
+			set.scatterShapeSize = 8
+			return set
+		}
+		return ScatterChartData(dataSets: dataSets)
+	}
+	
+	func dateChartData(from array:[Date], level:Calendar.Component) -> BarChartData {
+		//		let values = array.enumerated().map({ ChartDataEntry(x: Double($0.offset), y: 0, data: $0.element as AnyObject) })
+		//		let dateSet = LineChartDataSet(values: values, label: "Dates")
+		let chartValues = array
+			.enumerated()
+			.map({ BarChartDataEntry(x: Double($0.offset), y: 0.0) })
+		let set1 = BarChartDataSet(values: chartValues, label: "Dates")
+		set1.setColor(UIColor.clear)
+		if let font = UIFont(name: SYSTEM_FONT, size: Style.shared.P11){
+			set1.valueFont = font
+		}
+		set1.highlightEnabled = false
+		set1.drawValuesEnabled = false
+		//		set.valueTextColor = UIColor.clear
+		//		set.axisDependency = .left
+		return BarChartData(dataSet: set1)
+	}
 }

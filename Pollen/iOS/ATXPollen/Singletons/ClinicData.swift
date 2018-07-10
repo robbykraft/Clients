@@ -209,30 +209,6 @@ class ClinicData {
 		}
 	}
 
-//	func queryDatabase(for dates:[Date], completionHandler: (() -> ())? ){
-//		func queryDate(key:String){
-//			Database.database().reference().child("collections/" + key).observeSingleEvent(of: .value) { (data) in
-//				if let d = data.value as? [String:Any]{
-//					self.saveCoreData(withSamples: dailyCounts(fromDatabase: d))
-//					self.loadSamplesFromCoreData()
-//					NotificationCenter.default.post(name: .pollenDidUpdate, object: nil)
-//				} else{ print("no entry for " + key) }
-//			}
-//		}
-//		// begin looping and querying data
-//		var dateKeys = dates.map({ self.collectionsKey(forDate: $0) })
-//		while dateKeys.count > 0{
-//			if let key = dateKeys.first{
-//				queryDate(key: key)
-//				if let index = dateKeys.index(of: key){ dateKeys.remove(at: index) }
-//				else{ return } //something went wrong, return to prevent infinite loop
-//			} else{
-//				print("finished checking dates")
-//				completionHandler?()
-//			}
-//		}
-//	}
-	
 	func allDatesBetween(_ startDate: Date, endDate: Date) -> [Date] {
 		var datesArray: [Date] =  []
 		var startDate = startDate

@@ -341,8 +341,8 @@
 		D5E4AE8220D03C210045BC7F /* Charts */ = {
 			isa = PBXGroup;
 			children = (
-				D5E4AE8320D03C490045BC7F /* ChartStyles.swift */,
 				D5E4AE8520D03CE00045BC7F /* ChartData.swift */,
+				D5E4AE8320D03C490045BC7F /* ChartStyles.swift */,
 			);
 			path = Charts;
 			sourceTree = "<group>";
