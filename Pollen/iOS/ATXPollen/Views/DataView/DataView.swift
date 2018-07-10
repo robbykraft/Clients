@@ -84,7 +84,6 @@ class DataView: UIView{
 		segmentedControl.center = CGPoint(x: self.bounds.size.width*0.5, y: 20)
 
 		// my charts
-//		pollenTypeChartView.frame = self.bounds
 		pollenTypeChartView.frame = CGRect(x: 0, y: 40, width: self.bounds.size.width, height: self.bounds.size.height-40)
 		stackedChartView.frame = CGRect(x: 0, y: 40, width: self.bounds.size.width, height: self.bounds.size.height-40)
 		monthlyBarChartView.frame = CGRect(x: 0, y: 40, width: self.bounds.size.width, height: self.bounds.size.height-40)
@@ -104,6 +103,12 @@ class DataView: UIView{
 		questionButton.frame = CGRect(x: 0, y: 0, width: questionButton.bounds.size.width+40, height: questionButton.bounds.size.height+15)
 		questionButton.color = .black
 		questionButton.center = CGPoint(x: self.bounds.size.width*0.5, y: self.bounds.size.height*0.93)
+	}
+	
+	func reloadData(){
+//		dataView.pollenTypeChartView.reloadData()
+//		dataView.stackedChartView.reloadData()
+//		dataView.monthlyBarChartView.reloadData()
 	}
 	
 	@objc func openIntroScreen(){
@@ -140,14 +145,10 @@ class DataView: UIView{
 		monthlyBarChartView.isHidden = true
 
 		switch sender.selectedSegmentIndex {
-		case 0:
-			pollenTypeChartView.isHidden = false
-		case 1:
-			stackedChartView.isHidden = false
-		case 2:
-			monthlyBarChartView.isHidden = false
-		default:
-			break;
+		case 0: pollenTypeChartView.isHidden = false
+		case 1: stackedChartView.isHidden = false
+		case 2: monthlyBarChartView.isHidden = false
+		default: break;
 		}
 	}
 	

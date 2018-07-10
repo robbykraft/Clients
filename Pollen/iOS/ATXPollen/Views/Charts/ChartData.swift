@@ -16,7 +16,7 @@ class ChartData{
 	var clinicDataYearDates:[Date] = []
 	var pastYearMonths:[Date] = []
 
-	let speciesGroups:[PollenTypeGroup] = [.grasses, .weeds, .trees, .molds]
+	let pollenTypeGroups:[PollenTypeGroup] = [.grasses, .weeds, .trees, .molds]
 	let exposureTypes:[Exposures] = [.dog, .cat, .dust, .molds, .virus]
 
 	// data from past year
@@ -88,12 +88,12 @@ class ChartData{
 
 		// for every species type in [speciesGroups], create a inner array of all filtered clinicData
 		// creating [[DailyPollenCount],[DailyPollenCount],[DailyPollenCount],[DailyPollenCount]]
-		dailyClinicDataByGroups = speciesGroups
+		dailyClinicDataByGroups = pollenTypeGroups
 			.map { (group) -> [DailyPollenCount] in
 				return dailyClinicData
 					.map({ $0.filteredBy(group: group) })
 		}
-		monthlyClinicDataByGroups = speciesGroups
+		monthlyClinicDataByGroups = pollenTypeGroups
 			.map { (group) -> [DailyPollenCount] in
 				return monthlyClinicData
 					.map({ $0.filteredBy(group: group) })

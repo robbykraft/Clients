@@ -11,18 +11,6 @@ import Charts
 
 
 class PollenTypeChartView: UIView, ChartViewDelegate {
-
-	var lowBounds:Date = Date()
-	var upperBounds:Date = Date()
-
-	let speciesGroups:[PollenTypeGroup] = [.grasses, .weeds, .trees, .molds]
-	let exposureTypes:[Exposures] = [.dog, .cat, .dust, .molds, .virus]
-
-	// data visualized
-//	var clinicSampleData:[[DailyPollenCount]] = [[]]
-	var symptomEntryData:[SymptomEntry] = []
-	var allergyDataValues:[Double] = []
-	var exposureEntryData:[[Bool]] = []
 	
 	// charts
 	var allCharts:[BarLineChartViewBase] = []
@@ -54,8 +42,6 @@ class PollenTypeChartView: UIView, ChartViewDelegate {
 	required init(coder aDecoder: NSCoder) { fatalError("This class does not support NSCoding") }
 	
 	func initUI(){		
-		lowBounds = Calendar.current.date(byAdding: .year, value: -1, to: Date())!
-		upperBounds = Date()
 
 		allCharts = [dateChart] + groupCharts + symptomCharts
 		allCharts.forEach({
@@ -66,7 +52,7 @@ class PollenTypeChartView: UIView, ChartViewDelegate {
 		chartLabels.enumerated().forEach({
 			$0.element.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15)
 			$0.element.textColor = .black
-			$0.element.text = speciesGroups[$0.offset].asString()
+			$0.element.text = ChartData.shared.pollenTypeGroups[$0.offset].asString()
 			$0.element.textAlignment = .left
 			$0.element.backgroundColor = Style.shared.whiteSmoke
 			$0.element.layer.cornerRadius = 3
@@ -117,6 +103,7 @@ class PollenTypeChartView: UIView, ChartViewDelegate {
 		}
 		zoomPage = 1
 		dateChart.xAxis.granularity = 1.0
+
 	}
 	
 	func chartTranslated(_ chartView: ChartViewBase, dX: CGFloat, dY: CGFloat) {
@@ -142,7 +129,7 @@ class PollenTypeChartView: UIView, ChartViewDelegate {
 			.forEach { (chart) in
 				chart.highlightValue(x: -1, dataSetIndex: 1, callDelegate: false)
 		}
-		self.chartLabels.enumerated().forEach({ $0.element.text = speciesGroups[$0.offset].asString() })
+		self.chartLabels.enumerated().forEach({ $0.element.text = ChartData.shared.pollenTypeGroups[$0.offset].asString() })
 	}
 	
 	func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
@@ -159,14 +146,14 @@ class PollenTypeChartView: UIView, ChartViewDelegate {
 				chart.highlightValue(x: highlight.x, y: y, dataSetIndex: highlight.dataSetIndex, dataIndex: highlight.dataIndex, callDelegate: false)
 		}
 		// clear out entry
-		self.chartLabels.enumerated().forEach({ $0.element.text = speciesGroups[$0.offset].asString() })
+		self.chartLabels.enumerated().forEach({ $0.element.text = ChartData.shared.pollenTypeGroups[$0.offset].asString() })
 		// deta
 		ChartData.shared.dailyClinicDataByGroups
 			.map { $0[Int(highlight.x)] }
 			.enumerated()
 			.forEach({
 				if let strongest = $0.element.strongestSample(){
-					self.chartLabels[$0.offset].text = "\(speciesGroups[$0.offset].asString()): \(strongest.rating.asString()) (\(strongest.value))"
+					self.chartLabels[$0.offset].text = "\(ChartData.shared.pollenTypeGroups[$0.offset].asString()): \(strongest.rating.asString()) (\(strongest.value))"
 				}
 			})
 		self.chartLabels.forEach({ $0.sizeToFit() })
@@ -185,16 +172,16 @@ extension PollenTypeChartView{
 				let ss = sample.strongestSample();
 				return (ss != nil) ? Double(ss!.logValue) : 0.0
 			})
-			//			.map({ (sample:DailyPollenCount) -> Double in
-			//				// flatten values to integers
-			//				switch sample.rating(){
-			//				case .none: return 0.0
-			//				case .low: return 0.25
-			//				case .medium: return 0.5
-			//				case .heavy: return 0.75
-			//				case .veryHeavy: return 1.0
-			//				}
-			//			})
+//			.map({ (sample:DailyPollenCount) -> Double in
+//				// flatten values to integers
+//				switch sample.rating(){
+//				case .none: return 0.0
+//				case .low: return 0.25
+//				case .medium: return 0.5
+//				case .heavy: return 0.75
+//				case .veryHeavy: return 1.0
+//				}
+//			})
 			.enumerated()
 			.map({ BarChartDataEntry(x: Double($0.offset), y: $0.element) })
 		let colors = pollenSamples.map({ Style.shared.colorFor(rating: $0.rating()) })
@@ -234,7 +221,7 @@ extension PollenTypeChartView{
 				}.enumerated().map({ (j, value) -> ChartDataEntry in
 					return ChartDataEntry(x: Double(j), y: Double(value)/6)
 				}).filter({ $0.y != 0.0 })
-			let set = ScatterChartDataSet(values: values + [ChartDataEntry(x: 0, y: 0)], label: exposureTypes[i].asString())
+			let set = ScatterChartDataSet(values: values + [ChartDataEntry(x: 0, y: 0)], label: ChartData.shared.exposureTypes[i].asString())
 			set.setScatterShape(.circle)
 			set.scatterShapeHoleColor = colors[i%5]
 			set.scatterShapeHoleRadius = 3.5

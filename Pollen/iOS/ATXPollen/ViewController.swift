@@ -64,9 +64,7 @@ class ViewController: UIViewController, UINavigationControllerDelegate, HomeSlid
 	@objc func reloadData(){
 		homeSlideView.barChart.data = Array(ClinicData.shared.dailyCounts.prefix(15)).map({ $0.relevantToMyAllergies() })
 		homeSlideView.radialChart.data = homeSlideView.barChart.data.first
-		dataView.pollenTypeChartView.reloadData()
-		dataView.stackedChartView.reloadData()
-		dataView.monthlyBarChartView.reloadData()
+		dataView.reloadData()
 		dataView.layoutSubviews()
 	}
 		

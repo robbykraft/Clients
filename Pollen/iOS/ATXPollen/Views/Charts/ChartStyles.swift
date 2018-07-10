@@ -23,17 +23,17 @@ import Charts
 extension PollenTypeChartView: IAxisValueFormatter {
 	public func stringForValue(_ value: Double, axis: AxisBase?) -> String {
 //		return "\(Int(value))"
-		if Int(value) >= self.dataDates.count || Int(value) < 0{ return "" }
+		if Int(value) >= ChartData.shared.clinicDataYearDates.count || Int(value) < 0{ return "" }
 		switch zoomPage {
 		case 0:
 			let dateFormatter = DateFormatter()
 			dateFormatter.dateFormat = "MMM yyyy"
-			let date = self.dataDates[Int(value)]
+			let date = ChartData.shared.clinicDataYearDates[Int(value)]
 			return dateFormatter.string(from: date)
 		case 1:
 			let dateFormatter = DateFormatter()
 			dateFormatter.dateFormat = "MMM d"
-			let date = self.dataDates[Int(value)]
+			let date = ChartData.shared.clinicDataYearDates[Int(value)]
 			return dateFormatter.string(from: date)
 //			return Calendar.current.weekdaySymbols[(Calendar.current.component(.weekday, from: date)+6)%7]
 		default:
