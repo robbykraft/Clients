@@ -35,6 +35,8 @@ class ClinicData {
 //		print(deleteCoreData(samplesData: samples))
 
 		loadSamplesFromCoreData()
+		
+		ChartData.shared.reloadData()
 
 		if let lastEntryDate = mostRecentCoreDataEntryDate(){
 			let nextSearchDate = Calendar.current.date(byAdding: .day, value: 1, to: lastEntryDate)!

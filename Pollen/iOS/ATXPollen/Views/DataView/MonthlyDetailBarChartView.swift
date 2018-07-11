@@ -70,6 +70,9 @@ class MonthlyDetailBarChartView: UIView, ChartViewDelegate {
 	}
 	
 	func reloadData(){
+		if ChartData.shared.clinicDataYearDates.count == 0{ return}
+
+		
 		// get array of Clinic Sample data between dates lowBounds and upperBounds
 		// this filter function validates all dates exist, so we can use ! from now on.
 		let clinicData = ClinicData.shared.dailyCounts.filter({

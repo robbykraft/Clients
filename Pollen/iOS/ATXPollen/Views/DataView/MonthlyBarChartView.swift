@@ -11,7 +11,6 @@ import Charts
 
 extension MonthlyBarChartView: IAxisValueFormatter {
 	public func stringForValue(_ value: Double, axis: AxisBase?) -> String {
-		return ""
 //		return "\(Int(value))"
 //		print("requesting \(value)")
 		if value < 0{ return "" }
@@ -55,7 +54,8 @@ class MonthlyBarChartView: UIView, ChartViewDelegate {
 	}
 	
 	func reloadData(){
-		
+		if ChartData.shared.clinicDataYearDates.count == 0{ return}
+
 		let groupSpace = 0.08
 		let barSpace = 0.00
 		let barWidth = 0.23

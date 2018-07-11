@@ -84,8 +84,8 @@ class PollenTypeChartView: UIView, ChartViewDelegate {
 		return CGRect(x: firstChart.frame.origin.x, y: firstChart.frame.origin.y, width: firstChart.frame.size.width, height: lastChart.frame.bottom - firstChart.frame.origin.y)
 	}
 	
-	func reloadData(){
-		_ = ChartData.shared
+	func reloadData(){		
+		if ChartData.shared.clinicDataYearDates.count == 0{ return}
 
 		setupDateChart(dateChart, data:dateChartData(from: ChartData.shared.clinicDataYearDates, level:.day))
 		

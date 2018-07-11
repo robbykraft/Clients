@@ -11,7 +11,6 @@ import Charts
 
 extension StackedChartView: IAxisValueFormatter {
 	public func stringForValue(_ value: Double, axis: AxisBase?) -> String {
-		return ""
 		//		return "\(Int(value))"
 		if Int(value) >= ChartData.shared.clinicDataYearDates.count || Int(value) < 0{ return "" }
 		switch zoomPage {
@@ -70,7 +69,8 @@ class StackedChartView: UIView, ChartViewDelegate {
 	}
 	
 	func reloadData(){
-		
+		if ChartData.shared.clinicDataYearDates.count == 0{ return}
+
 		let stackedData = ChartData.shared.dailyClinicDataByGroups.map { (samples:[DailyPollenCount]) -> [Double] in
 			return samples.map({ (s:DailyPollenCount) -> Double in
 				let ss = s.strongestSample()

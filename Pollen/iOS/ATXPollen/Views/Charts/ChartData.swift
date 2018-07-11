@@ -9,6 +9,11 @@
 import Foundation
 import Charts
 
+extension Notification.Name {
+	static let chartDataDidUpdate = Notification.Name("CHART_DATA_DID_UPDATE")
+}
+
+
 class ChartData{
 	
 	static let shared = ChartData()
@@ -133,7 +138,8 @@ class ChartData{
 				return boolArray[exposure.rawValue]
 			})
 		}
-
+		
+		NotificationCenter.default.post(name: .chartDataDidUpdate, object: nil)
 	}
 	
 

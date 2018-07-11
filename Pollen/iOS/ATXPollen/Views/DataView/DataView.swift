@@ -36,20 +36,7 @@ class DataView: UIView{
 	required init(coder aDecoder: NSCoder) {
 		fatalError("This class does not support NSCoding")
 	}
-	
-	var showTrackButton = true{
-		didSet{
-			if showTrackButton{
-				self.trackYourAllergiesButton.isHidden = false
-				self.symptomsCoverView.isHidden = false
-			}
-			else {
-				self.trackYourAllergiesButton.isHidden = true
-				self.symptomsCoverView.isHidden = true
-			}
-		}
-	}
-	
+
 	func initUI(){
 		
 		symptomsCoverView.image = UIImage(named: "cutout")
@@ -76,6 +63,12 @@ class DataView: UIView{
 			if enabled{ self.showTrackButton = false }
 			else {      self.showTrackButton = true }
 		}
+		
+		NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: .chartDataDidUpdate, object: nil)
+	}
+	
+	deinit {
+		NotificationCenter.default.removeObserver(self, name: .chartDataDidUpdate, object: nil)
 	}
 	
 	override func layoutSubviews() {
@@ -105,10 +98,23 @@ class DataView: UIView{
 		questionButton.center = CGPoint(x: self.bounds.size.width*0.5, y: self.bounds.size.height*0.93)
 	}
 	
-	func reloadData(){
-//		dataView.pollenTypeChartView.reloadData()
-//		dataView.stackedChartView.reloadData()
-//		dataView.monthlyBarChartView.reloadData()
+	@objc func reloadData(){
+		pollenTypeChartView.reloadData()
+		stackedChartView.reloadData()
+		monthlyBarChartView.reloadData()
+	}
+	
+	var showTrackButton = true{
+		didSet{
+			if showTrackButton{
+				self.trackYourAllergiesButton.isHidden = false
+				self.symptomsCoverView.isHidden = false
+			}
+			else {
+				self.trackYourAllergiesButton.isHidden = true
+				self.symptomsCoverView.isHidden = true
+			}
+		}
 	}
 	
 	@objc func openIntroScreen(){
