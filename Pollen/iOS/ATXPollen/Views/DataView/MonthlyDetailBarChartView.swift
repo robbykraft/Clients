@@ -11,19 +11,11 @@ import Charts
 
 extension MonthlyDetailBarChartView: IAxisValueFormatter {
 	public func stringForValue(_ value: Double, axis: AxisBase?) -> String {
-
-		if value < 0{ return "" }
-		
-		let months = Array((0..<12).reversed()).map { (i) -> Date in
-			var minusMonth = DateComponents()
-			minusMonth.month = -i
-			return Calendar.current.date(byAdding: minusMonth, to: Date())!
-		}
-		let mIndex = Calendar.current.component(.month, from: months[ (Int(value)) ]) - 1
-		if mIndex >= 0 && mIndex < 12{
-			return Calendar.current.shortMonthSymbols[mIndex]
-		}
-		return ""
+		let intValue = Int(value)
+		if intValue < 0 || intValue >= ChartData.shared.pastYearMonths.count { return "" }
+		let mIndex = Calendar.current.component(.month, from: ChartData.shared.pastYearMonths[intValue]) - 1
+		if mIndex < 0 || mIndex >= Calendar.current.shortMonthSymbols.count { return "" }
+		return Calendar.current.shortMonthSymbols[mIndex]
 	}
 }
 

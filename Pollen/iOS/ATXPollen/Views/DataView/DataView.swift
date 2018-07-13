@@ -22,6 +22,7 @@ class DataView: UIView{
 	var currentAlert:PopAlertView?
 	let segmentedControl = SegmentedControl(items: ["Chart 1","Chart 2","Chart 3","Chart 4"])
 
+	let overlayChartView = OverylayChartView()
 	let pollenTypeChartView = PollenTypeChartView()
 	let stackedChartView = StackedChartView()
 	let monthlyBarChartView = MonthlyBarChartView()
@@ -49,6 +50,7 @@ class DataView: UIView{
 
 		questionButton.addTarget(self, action: #selector(openQuestion), for: .touchUpInside)
 
+		self.addSubview(overlayChartView)
 		self.addSubview(pollenTypeChartView)
 		self.addSubview(stackedChartView)
 		self.addSubview(monthlyBarChartView)
@@ -77,11 +79,13 @@ class DataView: UIView{
 		segmentedControl.center = CGPoint(x: self.bounds.size.width*0.5, y: 20)
 
 		// my charts
+		overlayChartView.frame = CGRect(x: 0, y: 40, width: self.bounds.size.width, height: self.bounds.size.height-40)
 		pollenTypeChartView.frame = CGRect(x: 0, y: 40, width: self.bounds.size.width, height: self.bounds.size.height-40)
 		stackedChartView.frame = CGRect(x: 0, y: 40, width: self.bounds.size.width, height: self.bounds.size.height-40)
 		monthlyBarChartView.frame = CGRect(x: 0, y: 40, width: self.bounds.size.width, height: self.bounds.size.height-40)
 
 		///////////////////
+		pollenTypeChartView.isHidden = true
 		stackedChartView.isHidden = true
 		monthlyBarChartView.isHidden = true
 
@@ -99,6 +103,7 @@ class DataView: UIView{
 	}
 	
 	@objc func reloadData(){
+		overlayChartView.reloadData()
 		pollenTypeChartView.reloadData()
 		stackedChartView.reloadData()
 		monthlyBarChartView.reloadData()
@@ -146,14 +151,16 @@ class DataView: UIView{
 	}
 	
 	@objc func segmentedControlDidChange(sender:UISegmentedControl){
+		overlayChartView.isHidden = true
 		pollenTypeChartView.isHidden = true
 		stackedChartView.isHidden = true
 		monthlyBarChartView.isHidden = true
 
 		switch sender.selectedSegmentIndex {
-		case 0: pollenTypeChartView.isHidden = false
-		case 1: stackedChartView.isHidden = false
-		case 2: monthlyBarChartView.isHidden = false
+		case 0: overlayChartView.isHidden = false
+		case 1: pollenTypeChartView.isHidden = false
+		case 2: stackedChartView.isHidden = false
+		case 3: monthlyBarChartView.isHidden = false
 		default: break;
 		}
 	}

@@ -49,10 +49,12 @@
 		D59F649120EC3D6E0080D4DE /* MonthlyDetailBarChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59F649020EC3D6E0080D4DE /* MonthlyDetailBarChartView.swift */; };
 		D5A9A3DA20CAD7E1006A762E /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9A3D920CAD7E1006A762E /* Modal.swift */; };
 		D5A9A3DC20CAD825006A762E /* PopAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9A3DB20CAD825006A762E /* PopAlertView.swift */; };
+		D5B0F5C820F78DB300E210D0 /* OverylayChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5B0F5C720F78DB300E210D0 /* OverylayChartView.swift */; };
 		D5C6CD4D20E6B2EF00848F3D /* StackedChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5C6CD4C20E6B2EE00848F3D /* StackedChartView.swift */; };
 		D5CFFEF420D9545400F69F81 /* UICheckButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CFFEF320D9545400F69F81 /* UICheckButton.swift */; };
 		D5CFFEF620D963F700F69F81 /* WhatSeasonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5CFFEF520D963F700F69F81 /* WhatSeasonsView.swift */; };
 		D5D1DF5120B8B32C008DA7F7 /* Pollen.plist in Resources */ = {isa = PBXBuildFile; fileRef = D5D1DF5020B8B32C008DA7F7 /* Pollen.plist */; };
+		D5D837A820F8FAB000BE8883 /* TextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5D837A720F8FAB000BE8883 /* TextFieldTableViewCell.swift */; };
 		D5E4AE8420D03C490045BC7F /* ChartStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E4AE8320D03C490045BC7F /* ChartStyles.swift */; };
 		D5E4AE8620D03CE00045BC7F /* ChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E4AE8520D03CE00045BC7F /* ChartData.swift */; };
 		D5E4AE8820D083260045BC7F /* IntroAllergyTrackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E4AE8720D083260045BC7F /* IntroAllergyTrackView.swift */; };
@@ -125,11 +127,13 @@
 		D59F649020EC3D6E0080D4DE /* MonthlyDetailBarChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyDetailBarChartView.swift; sourceTree = "<group>"; };
 		D5A9A3D920CAD7E1006A762E /* Modal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modal.swift; sourceTree = "<group>"; };
 		D5A9A3DB20CAD825006A762E /* PopAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopAlertView.swift; sourceTree = "<group>"; };
+		D5B0F5C720F78DB300E210D0 /* OverylayChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverylayChartView.swift; sourceTree = "<group>"; };
 		D5C6CD4820E6902200848F3D /* ATXPollen.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ATXPollen.entitlements; sourceTree = "<group>"; };
 		D5C6CD4C20E6B2EE00848F3D /* StackedChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackedChartView.swift; sourceTree = "<group>"; };
 		D5CFFEF320D9545400F69F81 /* UICheckButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICheckButton.swift; sourceTree = "<group>"; };
 		D5CFFEF520D963F700F69F81 /* WhatSeasonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatSeasonsView.swift; sourceTree = "<group>"; };
 		D5D1DF5020B8B32C008DA7F7 /* Pollen.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Pollen.plist; sourceTree = "<group>"; };
+		D5D837A720F8FAB000BE8883 /* TextFieldTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldTableViewCell.swift; sourceTree = "<group>"; };
 		D5E4AE8320D03C490045BC7F /* ChartStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartStyles.swift; sourceTree = "<group>"; };
 		D5E4AE8520D03CE00045BC7F /* ChartData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartData.swift; sourceTree = "<group>"; };
 		D5E4AE8720D083260045BC7F /* IntroAllergyTrackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroAllergyTrackView.swift; sourceTree = "<group>"; };
@@ -299,6 +303,7 @@
 			isa = PBXGroup;
 			children = (
 				D5167FDA20AC9D3E00478CBE /* DataView.swift */,
+				D5B0F5C720F78DB300E210D0 /* OverylayChartView.swift */,
 				D5167FF420ACDC9E00478CBE /* PollenTypeChartView.swift */,
 				D5C6CD4C20E6B2EE00848F3D /* StackedChartView.swift */,
 				D59F648C20EBBC790080D4DE /* MonthlyBarChartView.swift */,
@@ -323,6 +328,7 @@
 			children = (
 				D5167FF020ACD6F700478CBE /* CenteredTableViewCell.swift */,
 				D5167FFB20ACE3F900478CBE /* LineTableViewCell.swift */,
+				D5D837A720F8FAB000BE8883 /* TextFieldTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -552,7 +558,9 @@
 				D5167FE120AC9D8700478CBE /* AllergyQueryView.swift in Sources */,
 				D5CFFEF620D963F700F69F81 /* WhatSeasonsView.swift in Sources */,
 				D5167FD220AC8CB000478CBE /* PollenSample.swift in Sources */,
+				D5D837A820F8FAB000BE8883 /* TextFieldTableViewCell.swift in Sources */,
 				D5351E9E20D2D1EB009AE439 /* PollenNotifications.swift in Sources */,
+				D5B0F5C820F78DB300E210D0 /* OverylayChartView.swift in Sources */,
 				D5CFFEF420D9545400F69F81 /* UICheckButton.swift in Sources */,
 				D5167FC520AC890F00478CBE /* UIBarChartView.swift in Sources */,
 				D5167FF120ACD6F800478CBE /* CenteredTableViewCell.swift in Sources */,

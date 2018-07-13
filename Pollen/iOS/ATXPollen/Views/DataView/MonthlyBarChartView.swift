@@ -11,20 +11,11 @@ import Charts
 
 extension MonthlyBarChartView: IAxisValueFormatter {
 	public func stringForValue(_ value: Double, axis: AxisBase?) -> String {
-//		return "\(Int(value))"
-//		print("requesting \(value)")
-		if value < 0{ return "" }
-
-		let months = Array((0..<12).reversed()).map { (i) -> Date in
-			var minusMonth = DateComponents()
-			minusMonth.month = -i
-			return Calendar.current.date(byAdding: minusMonth, to: Date())!
-		}
-		let mIndex = Calendar.current.component(.month, from: months[ (Int(value)) ]) - 1
-		if mIndex >= 0 && mIndex < 12{
-			return Calendar.current.shortMonthSymbols[mIndex]
-		}
-		return ""
+		let intValue = Int(value)
+		if intValue < 0 || intValue >= ChartData.shared.pastYearMonths.count { return "" }
+		let mIndex = Calendar.current.component(.month, from: ChartData.shared.pastYearMonths[intValue]) - 1
+		if mIndex < 0 || mIndex >= Calendar.current.shortMonthSymbols.count { return "" }
+		return Calendar.current.shortMonthSymbols[mIndex]
 	}
 }
 
@@ -47,10 +38,7 @@ class MonthlyBarChartView: UIView, ChartViewDelegate {
 	
 	override func layoutSubviews() {
 		super.layoutSubviews()
-//		dateChart.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: 40)
-		
-		let h:CGFloat = self.bounds.size.height*0.5
-		chartView.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: h)
+		chartView.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height*0.5)
 	}
 	
 	func reloadData(){
@@ -71,10 +59,6 @@ class MonthlyBarChartView: UIView, ChartViewDelegate {
 				})
 			}
 		
-//		let yVals: (Int) -> BarChartDataEntry = { (i) -> BarChartDataEntry in
-//			return BarChartDataEntry(x: Double(i), y: Double(arc4random_uniform(UInt32(randomMultiplier))))
-//		}
-		
 		let set1 = BarChartDataSet(values: yVals[0], label: ChartData.shared.pollenTypeGroups[0].asString())
 		let set2 = BarChartDataSet(values: yVals[1], label: ChartData.shared.pollenTypeGroups[1].asString())
 		let set3 = BarChartDataSet(values: yVals[2], label: ChartData.shared.pollenTypeGroups[2].asString())
@@ -87,7 +71,6 @@ class MonthlyBarChartView: UIView, ChartViewDelegate {
 
 		let data = BarChartData(dataSets: [set1, set2, set3, set4])
 		data.setValueFont(UIFont(name: SYSTEM_FONT, size: Style.shared.P11))
-//		data.setValueFormatter(LargeValueFormatter())
 		set1.drawValuesEnabled = false
 		set2.drawValuesEnabled = false
 		set3.drawValuesEnabled = false
@@ -100,8 +83,6 @@ class MonthlyBarChartView: UIView, ChartViewDelegate {
 		chartView.getAxis(.left).drawLabelsEnabled = false
 		chartView.getAxis(.right).drawLabelsEnabled = false
 		chartView.xAxis.granularity = 1
-//		chartView.getAxis(.left).setGranularity(0);
-//		chartView.getAxis(.right).setGranularity(0);
 		chartView.getAxis(.left).gridColor = .clear
 		chartView.getAxis(.right).gridColor = .clear
 		chartView.scaleXEnabled = false

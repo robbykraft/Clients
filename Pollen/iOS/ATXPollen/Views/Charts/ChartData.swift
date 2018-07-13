@@ -13,7 +13,6 @@ extension Notification.Name {
 	static let chartDataDidUpdate = Notification.Name("CHART_DATA_DID_UPDATE")
 }
 
-
 class ChartData{
 	
 	static let shared = ChartData()
@@ -115,8 +114,6 @@ class ChartData{
 			})
 		}
 		
-		
-
 		// SYMPTOMS (ALLERGIES AND EXPOSURES)
 		// generate array of symptom data 1:1 for every day, empty SymptomEntry for dates with no prior data
 		dailySymptomData = dailyClinicData.map({ $0.date! }).map { (date) -> SymptomEntry in
@@ -142,9 +139,8 @@ class ChartData{
 		NotificationCenter.default.post(name: .chartDataDidUpdate, object: nil)
 	}
 	
-
-	func barChartData(from pollenSamples:[DailyPollenCount]) -> BarChartData {
-		let logValues = pollenSamples
+	func dailyClinicDataBarChartData() -> BarChartData{
+		let logValues = dailyClinicData
 			.map({ (sample) -> Double in
 				let ss = sample.strongestSample();
 				return (ss != nil) ? Double(ss!.logValue) : 0.0
@@ -161,24 +157,97 @@ class ChartData{
 //			})
 			.enumerated()
 			.map({ BarChartDataEntry(x: Double($0.offset), y: $0.element) })
-		let colors = pollenSamples.map({ Style.shared.colorFor(rating: $0.rating()) })
-		let set1 = BarChartDataSet(values: logValues, label: "Pollen Data")
-		set1.setColors(colors, alpha: 1.0)
-//		set1.setColor(Style.shared.green)
+//		let colors = dailyClinicData.map({ Style.shared.colorFor(rating: $0.rating()) })
+		let set1 = BarChartDataSet(values: logValues, label: nil)
+//		set1.setColors(colors, alpha: 1.0)
+		set1.setColor(Style.shared.green)
 		set1.highlightEnabled = true
 		set1.highlightColor = Style.shared.orange
 		set1.drawValuesEnabled = false
-		return BarChartData(dataSet: set1)
+		let chartData = BarChartData(dataSet: set1)
+		chartData.barWidth = 1.01
+		return chartData
 	}
 	
-	func filledChartData(from array:[Double]) -> LineChartData {
-		let values = array.enumerated().map({ ChartDataEntry(x: Double($0.offset), y: $0.element) })
-		let set1 = LineChartDataSet(values: values, label: "Lines")
+	func dailyClinicDataByGroupsBarChartData() -> [BarChartData]{
+		let logValues = dailyClinicDataByGroups
+			.map({ (dailyPollenCount) -> [Double] in
+				return dailyPollenCount.map({ (sample) -> Double in
+					let ss = sample.strongestSample();
+					return (ss != nil) ? Double(ss!.logValue) : 0.0
+				})
+			})
+//			.map({ (sample) -> Double in
+//				let ss = sample.strongestSample();
+//				return (ss != nil) ? Double(ss!.logValue) : 0.0
+//			})
+//			.map({ (sample:DailyPollenCount) -> Double in
+//				// flatten values to integers
+//				switch sample.rating(){
+//				case .none: return 0.0
+//				case .low: return 0.25
+//				case .medium: return 0.5
+//				case .heavy: return 0.75
+//				case .veryHeavy: return 1.0
+//				}
+//			})
+			.map({ (doubleArray) -> [BarChartDataEntry] in
+				return doubleArray.enumerated().map({ (offset, entry) -> BarChartDataEntry in
+					return BarChartDataEntry(x: Double(offset), y: entry)
+				})
+			})
+//			.enumerated()
+//			.map({ BarChartDataEntry(x: Double($0.offset), y: $0.element) })
+//		let colors = dailyClinicData.map({ Style.shared.colorFor(rating: $0.rating()) })
+		let sets = logValues.map { (chartDataEntry) -> BarChartData in
+			let set = BarChartDataSet(values: chartDataEntry, label: nil)
+//			set.setColors(colors, alpha: 1.0)
+			set.setColor(Style.shared.green)
+			set.highlightEnabled = true
+			set.highlightColor = Style.shared.orange
+			set.drawValuesEnabled = false
+			let chartData = BarChartData(dataSet: set)
+			chartData.barWidth = 1.01
+			return chartData
+		}
+		return sets
+	}
+	
+	func dailyAllergyDataLineChart() -> LineChartData{
+		let values = allergyDataValues
+			.map({ (value) -> Double in
+				return 0.3 + 0.3 * value
+			})
+			.enumerated().map({ ChartDataEntry(x: Double($0.offset), y: $0.element) })
+		let set = LineChartDataSet(values: values, label: nil)
+		set.lineWidth = 3.0
+		set.highlightColor = Style.shared.orange
+		set.highlightLineWidth = 2.0
+		set.drawValuesEnabled = false
+		set.drawCirclesEnabled = true
+		set.drawCircleHoleEnabled = false
+		set.circleRadius = 6.0
+		set.setColor(UIColor.white)
+		set.cubicIntensity = 0.2
+//		set.colors =
+		set.circleColors =
+			allergyDataValues.map({
+				if $0 == 0{ return UIColor.clear }
+//				if $0 == 0{ return UIColor.blue }
+				if $0 < 0.5{ return Style.shared.orange }
+				if $0 < 0.75{ return Style.shared.red }
+				return Style.shared.purple
+			})
+		set.drawFilledEnabled = false
+		set.fillAlpha = 1
+		set.mode = .cubicBezier
+		return LineChartData(dataSet: set)
+	}
+	
+	func dailyAllergyDataFilledLineChart() -> LineChartData {
+		let values = allergyDataValues.enumerated().map({ ChartDataEntry(x: Double($0.offset), y: $0.element) })
+		let set1 = LineChartDataSet(values: values, label: nil)
 		set1.lineWidth = 0.1
-//		set1.circleRadius = 5.0
-//		set1.circleHoleRadius = 2.5
-//		set1.setColor(color)
-//		set1.setCircleColor(color)
 		set1.highlightColor = Style.shared.orange
 		set1.highlightLineWidth = 1
 		set1.drawValuesEnabled = false
@@ -190,7 +259,7 @@ class ChartData{
 		set1.mode = .cubicBezier
 		return LineChartData(dataSet: set1)
 	}
-	
+
 	func scatterData(from array:[[Bool]]) -> ScatterChartData{
 		let colors = [Style.shared.orange, Style.shared.lightBlue, Style.shared.purple, Style.shared.softBlue, Style.shared.red]
 		let dataSets = array.enumerated().map { (i, valueArray) -> ChartDataSet in
@@ -210,21 +279,4 @@ class ChartData{
 		return ScatterChartData(dataSets: dataSets)
 	}
 	
-	func dateChartData(from array:[Date], level:Calendar.Component) -> BarChartData {
-//		let values = array.enumerated().map({ ChartDataEntry(x: Double($0.offset), y: 0, data: $0.element as AnyObject) })
-//		let dateSet = LineChartDataSet(values: values, label: "Dates")
-		let chartValues = array
-			.enumerated()
-			.map({ BarChartDataEntry(x: Double($0.offset), y: 0.0) })
-		let set1 = BarChartDataSet(values: chartValues, label: "Dates")
-		set1.setColor(UIColor.clear)
-		if let font = UIFont(name: SYSTEM_FONT, size: Style.shared.P11){
-			set1.valueFont = font
-		}
-		set1.highlightEnabled = false
-		set1.drawValuesEnabled = false
-//		set.valueTextColor = UIColor.clear
-//		set.axisDependency = .left
-		return BarChartData(dataSet: set1)
-	}
 }

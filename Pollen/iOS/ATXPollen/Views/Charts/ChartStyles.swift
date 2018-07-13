@@ -9,47 +9,17 @@
 import Foundation
 import Charts
 
-//public class DateValueFormatter: NSObject, IAxisValueFormatter {
-//	private let dateFormatter = DateFormatter()
-//	override init() {
-//		super.init()
-//		dateFormatter.dateFormat = "dd MMM HH:mm"
-//	}
+//class ChartStyles:IAxisValueFormatter {
 //	public func stringForValue(_ value: Double, axis: AxisBase?) -> String {
-//		return dateFormatter.string(from: Date(timeIntervalSince1970: value))
+//		let intValue = Int(value)
+//		if intValue < 0 || intValue >= ChartData.shared.clinicDataYearDates.count { return "" }
+//		let date = ChartData.shared.clinicDataYearDates[intValue]
+//		let dateFormatter = DateFormatter()
+//		if      zoomPage == 0 { dateFormatter.dateFormat = "MMM yyyy" }
+//		else if zoomPage == 1 { dateFormatter.dateFormat = "MMM d" }
+//		return dateFormatter.string(from: date)
 //	}
 //}
-
-extension PollenTypeChartView: IAxisValueFormatter {
-	public func stringForValue(_ value: Double, axis: AxisBase?) -> String {
-//		return "\(Int(value))"
-		if Int(value) >= ChartData.shared.clinicDataYearDates.count || Int(value) < 0{ return "" }
-		switch zoomPage {
-		case 0:
-			let dateFormatter = DateFormatter()
-			dateFormatter.dateFormat = "MMM yyyy"
-			let date = ChartData.shared.clinicDataYearDates[Int(value)]
-			return dateFormatter.string(from: date)
-		case 1:
-			let dateFormatter = DateFormatter()
-			dateFormatter.dateFormat = "MMM d"
-			let date = ChartData.shared.clinicDataYearDates[Int(value)]
-			return dateFormatter.string(from: date)
-//			return Calendar.current.weekdaySymbols[(Calendar.current.component(.weekday, from: date)+6)%7]
-		default:
-			return ""
-		}
-//		if Int(value) < self.dataDates.count && Int(value) >= 0{
-//			let dateFormatter = DateFormatter()
-//			dateFormatter.dateFormat = "MMM d"
-//			let date = self.dataDates[Int(value)]
-//			return dateFormatter.string(from: date)
-////			return Calendar.current.weekdaySymbols[(Calendar.current.component(.weekday, from: date)+6)%7]
-//		}
-//		return ""
-	}
-}
-
 
 extension PollenTypeChartView {
 	

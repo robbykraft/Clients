@@ -12,6 +12,9 @@ import Firebase
 import FirebaseInstanceID
 import FirebaseMessaging
 
+let USER_DEFAULTS_NOTIFICATION_HOUR:String = "notificationAlertHour"
+let USER_DEFAULTS_NOTIFICATION_MINUTE:String = "notificationAlertMinute"
+
 class PollenNotifications: NSObject, UNUserNotificationCenterDelegate, MessagingDelegate {
 
 	static let shared = PollenNotifications()
@@ -26,6 +29,28 @@ class PollenNotifications: NSObject, UNUserNotificationCenterDelegate, Messaging
 		
 		// register remote
 		registerRemoteNotifications()
+	}
+	
+	func setNotificationTime(hour:Int, minute:Int){
+		UserDefaults.standard.set(hour, forKey: USER_DEFAULTS_NOTIFICATION_HOUR)
+		UserDefaults.standard.set(minute, forKey: USER_DEFAULTS_NOTIFICATION_MINUTE)
+		UserDefaults.standard.synchronize()
+		print("updated time \(hour):\(minute)")
+		isLocalTimerRunning(completionHandler: { (isRunning) in
+			if isRunning{
+				self.enableLocalTimer(completionHandler: nil)
+			}
+		})
+	}
+	
+	func getNotificationTime() -> (Int, Int){
+		if let hour = UserDefaults.standard.object(forKey:USER_DEFAULTS_NOTIFICATION_HOUR) as? Int{
+			if let minute = UserDefaults.standard.object(forKey:USER_DEFAULTS_NOTIFICATION_MINUTE) as? Int{
+				print("getNotificationTime \(hour):\(minute)")
+				return (hour, minute)
+			}
+		}
+		return (18, 0)
 	}
 	
 	let center = UNUserNotificationCenter.current()
@@ -128,8 +153,9 @@ class PollenNotifications: NSObject, UNUserNotificationCenterDelegate, Messaging
 	
 	func enableLocalTimer(completionHandler: ((Bool) -> ())?) {
 		// create the trigger
-		let sixPM = Calendar.current.date(bySettingHour: 18, minute: 0, second: 0, of: Date())!
-		let triggerDaily = Calendar.current.dateComponents([.hour,.minute,.second], from: sixPM)
+		let (hour, minute) = getNotificationTime()
+		let alertTime = Calendar.current.date(bySettingHour: hour, minute: minute, second: 0, of: Date())!
+		let triggerDaily = Calendar.current.dateComponents([.hour,.minute,.second], from: alertTime)
 		let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDaily, repeats: true)
 		// create the notification
 		let content = UNMutableNotificationContent()

@@ -15,6 +15,10 @@ class Preferences: UITableViewController {
 	var isLocalEnabled = false
 	var isLocalTimerRunning = false
 	
+	let timeInputView = UIView()
+	
+	var timeInputTextField:UITextField?
+	
     override func viewDidLoad() {
         super.viewDidLoad()
 		
@@ -36,8 +40,38 @@ class Preferences: UITableViewController {
 			self.isLocalTimerRunning = isRunning
 			self.tableView.reloadData()
 		}
+		
+		// time picker input accessory
+		let toolbar = UIToolbar().ToolbarPicker(mySelect: #selector(dismissPicker))
+		let datePickerView = UIDatePicker()
+		datePickerView.datePickerMode = UIDatePickerMode.time
 
+		datePickerView.addTarget(self, action: #selector(datePickerDidUpdate), for: .valueChanged)
+
+		let (hour, minute) = PollenNotifications.shared.getNotificationTime()
+		datePickerView.setDate(Calendar.current.date(bySettingHour: hour, minute: minute, second: 0, of: Date())!, animated: false)
+		timeInputView.backgroundColor = Style.shared.whiteSmoke
+		let dW:CGFloat = self.view.frame.size.width - datePickerView.frame.size.width
+		timeInputView.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: datePickerView.frame.size.height + toolbar.frame.size.height)
+		timeInputView.addSubview(toolbar)
+		timeInputView.addSubview(datePickerView)
+		datePickerView.frame.origin = CGPoint(x: dW*0.5, y: toolbar.frame.size.height)
     }
+	
+	@objc func datePickerDidUpdate(sender:UIDatePicker){
+		let hour = Calendar.current.component(.hour, from: sender.date)
+		let minute = Calendar.current.component(.minute, from: sender.date)
+		PollenNotifications.shared.setNotificationTime(hour: hour, minute: minute)
+		if let textField = timeInputTextField{
+			let formatter = DateFormatter()
+			formatter.dateFormat = "h:mm a"
+			textField.text = formatter.string(from: Calendar.current.date(bySettingHour: hour, minute: minute, second: 0, of: Date())!)
+		}
+	}
+	
+	@objc func dismissPicker() {
+		view.endEditing(true)
+	}
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
@@ -77,7 +111,7 @@ class Preferences: UITableViewController {
 //			}
 			return 1
 		case 2:
-			return 3
+			return 2
 		case 3:
 			return 1
 		default:
@@ -151,8 +185,15 @@ class Preferences: UITableViewController {
 					cell.detailTextLabel?.text = "Disabled"
 				}
 			case 1:
-				cell.textLabel?.text = "Time"
-				cell.detailTextLabel?.text = "6:00pm"
+				let cellTime = TextFieldTableViewCell.init(style: .default, reuseIdentifier: "TimeCell")
+				cellTime.textLabel?.text = "Time"
+				let (hour, minute) = PollenNotifications.shared.getNotificationTime()
+				let formatter = DateFormatter()
+				formatter.dateFormat = "h:mm a"
+				cellTime.textField.text = formatter.string(from: Calendar.current.date(bySettingHour: hour, minute: minute, second: 0, of: Date())!)
+				cellTime.textField.inputAccessoryView = timeInputView
+				timeInputTextField = cellTime.textField
+				return cellTime
 			case 2:
 				cell.textLabel?.text = "Seasons"
 				cell.detailTextLabel?.text = "All"
@@ -203,24 +244,26 @@ class Preferences: UITableViewController {
 				break
 			}
 		case 2:
-			if isLocalEnabled{
-				if isLocalTimerRunning{
-					PollenNotifications.shared.disableLocalTimer()
-					self.isLocalTimerRunning = false
-					self.tableView.reloadData()
-				} else{
-					PollenNotifications.shared.enableLocalTimer { (isRunning) in
-						self.isLocalTimerRunning = isRunning
+			if indexPath.row == 0{
+				if isLocalEnabled{
+					if isLocalTimerRunning{
+						PollenNotifications.shared.disableLocalTimer()
+						self.isLocalTimerRunning = false
 						self.tableView.reloadData()
+					} else{
+						PollenNotifications.shared.enableLocalTimer { (isRunning) in
+							self.isLocalTimerRunning = isRunning
+							self.tableView.reloadData()
+						}
 					}
-				}
-			} else{
-				PollenNotifications.shared.enableLocalNotifications { (isEnabled) in
-					self.isLocalEnabled = isEnabled
-					PollenNotifications.shared.enableLocalTimer(completionHandler: { (isRunning) in
-						self.isLocalTimerRunning = isRunning
-						self.tableView.reloadData()
-					})
+				} else{
+					PollenNotifications.shared.enableLocalNotifications { (isEnabled) in
+						self.isLocalEnabled = isEnabled
+						PollenNotifications.shared.enableLocalTimer(completionHandler: { (isRunning) in
+							self.isLocalTimerRunning = isRunning
+							self.tableView.reloadData()
+						})
+					}
 				}
 			}
 		case 3:
@@ -247,4 +290,28 @@ class Preferences: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
 
+}
+
+extension UIToolbar {
+	
+	func ToolbarPicker(mySelect : Selector) -> UIToolbar {
+		
+		let toolBar = UIToolbar()
+		
+		toolBar.barStyle = UIBarStyle.default
+//		toolBar.isTranslucent = true
+		toolBar.backgroundColor = Style.shared.athensGray
+		toolBar.tintColor = UIColor.black
+		toolBar.sizeToFit()
+		
+		let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.plain, target: self, action: mySelect)
+		doneButton.tintColor = Style.shared.blue
+		let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+		
+		toolBar.setItems([ spaceButton, doneButton], animated: false)
+		toolBar.isUserInteractionEnabled = true
+		
+		return toolBar
+	}
+	
 }
