@@ -163,12 +163,42 @@ class ChartData{
 		set1.setColor(Style.shared.green)
 		set1.highlightEnabled = true
 		set1.highlightColor = Style.shared.orange
+		set1.highlightAlpha = 1.0
 		set1.drawValuesEnabled = false
 		let chartData = BarChartData(dataSet: set1)
 		chartData.barWidth = 1.01
 		return chartData
 	}
 	
+	
+	func dailyClinicDataLineChartData() -> LineChartData{
+		let logValues = dailyClinicData
+			.map({ (sample) -> Double in
+				let ss = sample.strongestSample();
+				return (ss != nil) ? Double(ss!.logValue) : 0.0
+			})
+			.enumerated()
+			.map({ ChartDataEntry(x: Double($0.offset), y: $0.element) })
+
+		let set = LineChartDataSet(values: logValues, label: nil)
+//		set.setColor(Style.shared.green)
+		set.setColor(UIColor(white: 0.75, alpha: 1.0))
+		set.highlightEnabled = true
+//		set.highlightColor = Style.shared.orange
+//		set.highlightAlpha = 1.0
+		set.drawValuesEnabled = false
+		set.drawValuesEnabled = false
+		set.drawFilledEnabled = true
+		set.drawCirclesEnabled = false
+		set.drawCircleHoleEnabled = false
+//		set.setColor(UIColor.white)
+		set.fillColor = UIColor(white: 0.75, alpha: 1.0)
+		
+		set.cubicIntensity = 0.2
+		set.mode = .cubicBezier
+		let chartData = LineChartData(dataSet: set)
+		return chartData
+	}
 	func dailyClinicDataByGroupsBarChartData() -> [BarChartData]{
 		let logValues = dailyClinicDataByGroups
 			.map({ (dailyPollenCount) -> [Double] in
@@ -205,6 +235,7 @@ class ChartData{
 			set.setColor(Style.shared.green)
 			set.highlightEnabled = true
 			set.highlightColor = Style.shared.orange
+			set.highlightAlpha = 1.0
 			set.drawValuesEnabled = false
 			let chartData = BarChartData(dataSet: set)
 			chartData.barWidth = 1.01
@@ -212,14 +243,89 @@ class ChartData{
 		}
 		return sets
 	}
+
+	func dailyClinicDataByGroupsLineChartData() -> [LineChartData]{
+		let logValues = dailyClinicDataByGroups
+			.map({ (dailyPollenCount) -> [Double] in
+				return dailyPollenCount.map({ (sample) -> Double in
+					let ss = sample.strongestSample();
+					return (ss != nil) ? Double(ss!.logValue) : 0.0
+				})
+			})
+			.map({ (doubleArray) -> [BarChartDataEntry] in
+				return doubleArray.enumerated().map({ (offset, entry) -> BarChartDataEntry in
+					return BarChartDataEntry(x: Double(offset), y: entry)
+				})
+			})
+		let sets = logValues.map { (chartDataEntry) -> LineChartData in
+			let set = LineChartDataSet(values: chartDataEntry, label: nil)
+//			set.setColors(colors, alpha: 1.0)
+//			set.setColor(Style.shared.green)
+			set.setColor(UIColor.init(white: 0.85, alpha: 1.0))
+			set.highlightEnabled = true
+			set.highlightColor = Style.shared.orange
+//			set.highlightAlpha = 1.0
+			set.drawValuesEnabled = false
+			set.drawFilledEnabled = true
+			set.drawCirclesEnabled = false
+			set.drawCircleHoleEnabled = false
+//			set.circleRadius = 6.0
+			set.setColor(UIColor.white)
+			set.cubicIntensity = 0.2
+			set.mode = .cubicBezier
+			let chartData = LineChartData(dataSet: set)
+//			chartData.barWidth = 1.01
+			
+			return chartData
+		}
+		return sets
+	}
+	
+	func dailyAllergyDataBarChartData() -> BarChartData{
+		let values = allergyDataValues
+			.map({ (value) -> Double in
+				return 0.1 + 0.4 * value
+			})
+			.enumerated().map({ BarChartDataEntry(x: Double($0.offset), y: $0.element) })
+		
+//		let rightSplit = values[146 ..< values.count]
+		
+//		let set = BarChartDataSet(values: Array(rightSplit), label: nil)
+		let set = BarChartDataSet(values: values, label: nil)
+//		set.lineWidth = 3.0
+		set.highlightColor = Style.shared.blue
+		set.highlightAlpha = 1.0
+		set.highlightLineWidth = 2.0
+		set.drawValuesEnabled = false
+//		set.drawCirclesEnabled = true
+//		set.drawCircleHoleEnabled = false
+//		set.circleRadius = 6.0
+		set.setColor(UIColor.white)
+		
+//		set.cubicIntensity = 0.2
+		set.colors =
+//		set.valueColors =
+			allergyDataValues.map({
+				//				if $0 == 0{ return UIColor.clear }
+				if $0 == 0{ return UIColor.clear }
+				if $0 < 0.5{ return Style.shared.yellow }
+				if $0 < 0.75{ return Style.shared.orange }
+				return Style.shared.red
+			})
+		return BarChartData(dataSet: set)
+	}
+	
 	
 	func dailyAllergyDataLineChart() -> LineChartData{
 		let values = allergyDataValues
 			.map({ (value) -> Double in
-				return 0.3 + 0.3 * value
+				return 0.1 + 0.4 * value
 			})
 			.enumerated().map({ ChartDataEntry(x: Double($0.offset), y: $0.element) })
-		let set = LineChartDataSet(values: values, label: nil)
+		
+		let rightSplit = values[146 ..< values.count]
+		
+		let set = LineChartDataSet(values: Array(rightSplit), label: nil)
 		set.lineWidth = 3.0
 		set.highlightColor = Style.shared.orange
 		set.highlightLineWidth = 2.0
@@ -229,7 +335,14 @@ class ChartData{
 		set.circleRadius = 6.0
 		set.setColor(UIColor.white)
 		set.cubicIntensity = 0.2
-//		set.colors =
+		set.valueColors =
+			allergyDataValues.map({
+//				if $0 == 0{ return UIColor.clear }
+				if $0 == 0{ return UIColor.blue }
+				if $0 < 0.5{ return Style.shared.orange }
+				if $0 < 0.75{ return Style.shared.red }
+				return Style.shared.purple
+			})
 		set.circleColors =
 			allergyDataValues.map({
 				if $0 == 0{ return UIColor.clear }

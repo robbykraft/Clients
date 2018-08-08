@@ -9,6 +9,10 @@
 import UIKit
 import Charts
 
+protocol OverlayChartDelegate{
+	func didSelectDate(_ date:Date);
+}
+
 extension OverylayChartView: IAxisValueFormatter {
 	public func stringForValue(_ value: Double, axis: AxisBase?) -> String {
 		let intValue = Int(value)
@@ -26,6 +30,8 @@ class OverylayChartView: UIView, ChartViewDelegate{
 
 	// charts
 	let chartView = CombinedChartView()
+	
+	var delegate:OverlayChartDelegate?
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -46,12 +52,15 @@ class OverylayChartView: UIView, ChartViewDelegate{
 		chartView.highlightFullBarEnabled = false
 		
 		
-		chartView.drawOrder = [DrawOrder.bar.rawValue,
+		chartView.drawOrder = [
 //							   DrawOrder.bubble.rawValue,
 //							   DrawOrder.candle.rawValue,
 							   DrawOrder.line.rawValue,
+							   DrawOrder.bar.rawValue
 //							   DrawOrder.scatter.rawValue
 		]
+		
+		
 		
 		chartView.xAxis.valueFormatter = self
 		chartView.gridBackgroundColor = .clear
@@ -83,21 +92,31 @@ class OverylayChartView: UIView, ChartViewDelegate{
 //		xAxis.valueFormatter = self
 	}
 	
+	func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
+		print("selected \(entry.x)")
+		let index = Int(entry.x)
+		if index < 0 || index >= ChartData.shared.clinicDataYearDates.count{ return }
+		let date = ChartData.shared.clinicDataYearDates[index]
+		delegate?.didSelectDate(date);
+	}
+	
 	override func layoutSubviews() {
 		super.layoutSubviews()
-		chartView.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height*0.5)
+		chartView.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height)
 	}
 	
 	func reloadData(){
 		if ChartData.shared.clinicDataYearDates.count == 0{ return }
 		
 		let data = CombinedChartData()
-		data.lineData = ChartData.shared.dailyAllergyDataLineChart()
-		data.barData = ChartData.shared.dailyClinicDataBarChartData()
+		data.lineData = ChartData.shared.dailyClinicDataLineChartData()
+		data.barData = ChartData.shared.dailyAllergyDataBarChartData()
+		chartView.doubleTapToZoomEnabled = false
 //		data.bubbleData = generateBubbleData()
 //		data.scatterData = generateScatterData()
 		chartView.xAxis.axisMaximum = data.xMax + 0.25
 		chartView.data = data
+		
 	}
 	
 }

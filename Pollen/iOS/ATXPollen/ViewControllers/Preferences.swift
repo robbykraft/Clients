@@ -91,8 +91,8 @@ class Preferences: UITableViewController {
 	
 	override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
 		switch section{
-		case 0: return "Personalized Allergy Report"
-		case 1: return "Daily Clinic Report"
+		case 0: return "Personalize Allergies"
+		case 1: return "Daily Clinic Pollen Report"
 		case 2: return "Symptom Tracking"
 		default: return nil
 		}

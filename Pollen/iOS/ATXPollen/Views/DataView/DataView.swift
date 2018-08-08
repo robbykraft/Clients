@@ -13,19 +13,21 @@ protocol DataViewDelegate {
 	func showNeedNotificationsAlert()
 }
 
-class DataView: UIView{
+class DataView: UIView, OverlayChartDelegate{
 	
 	var delegate:DataViewDelegate?
 	let trackYourAllergiesButton = UIButton()
 	let symptomsCoverView = UIImageView()
 	let questionButton = UIBorderedButton()
 	var currentAlert:PopAlertView?
-	let segmentedControl = SegmentedControl(items: ["Chart 1","Chart 2","Chart 3","Chart 4"])
+	let segmentedControl = SegmentedControl(items: ["combined","by groups"])
 
 	let overlayChartView = OverylayChartView()
 	let pollenTypeChartView = PollenTypeChartView()
-	let stackedChartView = StackedChartView()
-	let monthlyBarChartView = MonthlyBarChartView()
+	
+	let dailyDetailChartView = DailyDetailChartView()
+	
+	let titleLabel = UILabel()
 
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -40,6 +42,10 @@ class DataView: UIView{
 
 	func initUI(){
 		
+		titleLabel.text = "my year in allergies"
+		titleLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P30)
+		titleLabel.textColor = .black
+		
 		symptomsCoverView.image = UIImage(named: "cutout")
 
 		trackYourAllergiesButton.setTitle("track my allergies", for: .normal)
@@ -50,14 +56,17 @@ class DataView: UIView{
 
 		questionButton.addTarget(self, action: #selector(openQuestion), for: .touchUpInside)
 
+		overlayChartView.delegate = self
+		
 		self.addSubview(overlayChartView)
 		self.addSubview(pollenTypeChartView)
-		self.addSubview(stackedChartView)
-		self.addSubview(monthlyBarChartView)
+		self.addSubview(dailyDetailChartView)
 		
 		self.addSubview(symptomsCoverView)
 		self.addSubview(trackYourAllergiesButton)
 		self.addSubview(segmentedControl)
+		
+		self.addSubview(titleLabel)
 		
 		segmentedControl.addTarget(self, action: #selector(segmentedControlDidChange), for: .valueChanged)
 		
@@ -76,18 +85,19 @@ class DataView: UIView{
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		
-		segmentedControl.center = CGPoint(x: self.bounds.size.width*0.5, y: 20)
+		titleLabel.sizeToFit()
+		titleLabel.frame.origin = CGPoint(x: 20, y: -10)
+		
+		segmentedControl.center = CGPoint(x: self.bounds.size.width*0.5, y: 50)
 
 		// my charts
-		overlayChartView.frame = CGRect(x: 0, y: 40, width: self.bounds.size.width, height: self.bounds.size.height-40)
-		pollenTypeChartView.frame = CGRect(x: 0, y: 40, width: self.bounds.size.width, height: self.bounds.size.height-40)
-		stackedChartView.frame = CGRect(x: 0, y: 40, width: self.bounds.size.width, height: self.bounds.size.height-40)
-		monthlyBarChartView.frame = CGRect(x: 0, y: 40, width: self.bounds.size.width, height: self.bounds.size.height-40)
+		overlayChartView.frame = CGRect(x: 0, y: 80, width: self.bounds.size.width, height: self.bounds.size.height*0.5-80)
+		pollenTypeChartView.frame = CGRect(x: 0, y: 80, width: self.bounds.size.width, height: self.bounds.size.height*0.5-80)
+		
+		dailyDetailChartView.frame = CGRect(x: 0, y: self.bounds.size.height*0.5, width: self.bounds.size.width, height: self.bounds.size.height*0.5)
 
 		///////////////////
 		pollenTypeChartView.isHidden = true
-		stackedChartView.isHidden = true
-		monthlyBarChartView.isHidden = true
 
 		symptomsCoverView.frame = pollenTypeChartView.getSymptomChartsFrame()
 		symptomsCoverView.frame.origin.y += 40
@@ -105,8 +115,11 @@ class DataView: UIView{
 	@objc func reloadData(){
 		overlayChartView.reloadData()
 		pollenTypeChartView.reloadData()
-		stackedChartView.reloadData()
-		monthlyBarChartView.reloadData()
+		dailyDetailChartView.reloadData(with: Calendar.current.date(byAdding: .day, value: -1, to: Date())!)
+	}
+	
+	func didSelectDate(_ date: Date) {
+		dailyDetailChartView.reloadData(with: date)
 	}
 	
 	var showTrackButton = true{
@@ -144,7 +157,6 @@ class DataView: UIView{
 			}
 		}
 
-
 //		let seasonsQuestionView = WhatSeasonsView(frame: CGRect(x: 0, y: 0, width: self.bounds.size.width*0.66, height: self.bounds.size.height*0.66))
 //		currentAlert = PopAlertView(title: "1 / 2", view: seasonsQuestionView)
 //		currentAlert!.show(animated: true)
@@ -153,14 +165,10 @@ class DataView: UIView{
 	@objc func segmentedControlDidChange(sender:UISegmentedControl){
 		overlayChartView.isHidden = true
 		pollenTypeChartView.isHidden = true
-		stackedChartView.isHidden = true
-		monthlyBarChartView.isHidden = true
 
 		switch sender.selectedSegmentIndex {
 		case 0: overlayChartView.isHidden = false
 		case 1: pollenTypeChartView.isHidden = false
-		case 2: stackedChartView.isHidden = false
-		case 3: monthlyBarChartView.isHidden = false
 		default: break;
 		}
 	}

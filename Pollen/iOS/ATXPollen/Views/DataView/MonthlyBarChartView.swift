@@ -38,7 +38,7 @@ class MonthlyBarChartView: UIView, ChartViewDelegate {
 	
 	override func layoutSubviews() {
 		super.layoutSubviews()
-		chartView.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height*0.5)
+		chartView.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height)
 	}
 	
 	func reloadData(){

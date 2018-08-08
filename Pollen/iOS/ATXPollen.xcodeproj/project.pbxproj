@@ -58,6 +58,7 @@
 		D5E4AE8420D03C490045BC7F /* ChartStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E4AE8320D03C490045BC7F /* ChartStyles.swift */; };
 		D5E4AE8620D03CE00045BC7F /* ChartData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E4AE8520D03CE00045BC7F /* ChartData.swift */; };
 		D5E4AE8820D083260045BC7F /* IntroAllergyTrackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E4AE8720D083260045BC7F /* IntroAllergyTrackView.swift */; };
+		D5EF92AA211498A700759C3B /* DailyDetailChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5EF92A9211498A700759C3B /* DailyDetailChartView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -137,6 +138,7 @@
 		D5E4AE8320D03C490045BC7F /* ChartStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartStyles.swift; sourceTree = "<group>"; };
 		D5E4AE8520D03CE00045BC7F /* ChartData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartData.swift; sourceTree = "<group>"; };
 		D5E4AE8720D083260045BC7F /* IntroAllergyTrackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroAllergyTrackView.swift; sourceTree = "<group>"; };
+		D5EF92A9211498A700759C3B /* DailyDetailChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyDetailChartView.swift; sourceTree = "<group>"; };
 		E8F13C6D9D00FED51585F67F /* Pods_ATXPollen.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ATXPollen.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -303,6 +305,7 @@
 			isa = PBXGroup;
 			children = (
 				D5167FDA20AC9D3E00478CBE /* DataView.swift */,
+				D5EF92A9211498A700759C3B /* DailyDetailChartView.swift */,
 				D5B0F5C720F78DB300E210D0 /* OverylayChartView.swift */,
 				D5167FF420ACDC9E00478CBE /* PollenTypeChartView.swift */,
 				D5C6CD4C20E6B2EE00848F3D /* StackedChartView.swift */,
@@ -573,6 +576,7 @@
 				D51B3DEE20C826AE001A4D8D /* SymptomData.swift in Sources */,
 				D5167FF520ACDC9E00478CBE /* PollenTypeChartView.swift in Sources */,
 				D59F648D20EBBC790080D4DE /* MonthlyBarChartView.swift in Sources */,
+				D5EF92AA211498A700759C3B /* DailyDetailChartView.swift in Sources */,
 				D51B3DEC20C8240D001A4D8D /* SymptomEntry.swift in Sources */,
 				D5167F8C20AC841000478CBE /* AppDelegate.swift in Sources */,
 				D5167FD820AC93D500478CBE /* ClinicData.swift in Sources */,

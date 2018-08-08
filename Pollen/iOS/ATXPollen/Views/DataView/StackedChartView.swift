@@ -53,9 +53,7 @@ class StackedChartView: UIView, ChartViewDelegate {
 	override func layoutSubviews() {
 		super.layoutSubviews()
 //		dateChart.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: 40)
-		
-		let h:CGFloat = self.bounds.size.height*0.5
-		chartView.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: h)
+		chartView.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height)
 	}
 	
 	func reloadData(){
