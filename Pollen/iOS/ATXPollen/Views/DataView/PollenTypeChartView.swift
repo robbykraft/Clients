@@ -105,7 +105,7 @@ class PollenTypeChartView: UIView, ChartViewDelegate {
 			setupBarChart(groupCharts[offset] as! BarChartView, data: chartData)
 		}
 		setupFilledChart(symptomCharts[0] as! LineChartView, data: ChartData.shared.dailyAllergyDataFilledLineChart())
-		setupScatterChart(symptomCharts[1] as! ScatterChartView, data: ChartData.shared.scatterData(from: ChartData.shared.exposureDataValues))
+		setupScatterChart(symptomCharts[1] as! ScatterChartView, data: ChartData.shared.scatterData(from: ChartData.shared.exposureDataByTypes))
 		
 		// reset views
 		allCharts.forEach { (chart) in

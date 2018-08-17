@@ -136,14 +136,14 @@ class MonthlyDetailBarChartView: UIView, ChartViewDelegate {
 		allergyDataValues = symptomEntryData.map({ $0.rating != nil ? Double($0.rating!.rawValue)/3 : 0 })
 		// EXPOSURES
 		// for each day [[Bool],[Bool],[Bool],[Bool],[Bool]] for each exposureType
-		let exposureChartData = symptomEntryData
+		let exposureDailyData = symptomEntryData
 			.map({ $0.exposures != nil ? $0.exposures! : [] })
 			.map { (exposure) -> [Bool] in return exposureTypes.map({ exposure.contains($0) }) }
 		// row column flip
 		// instead of array with length ~ 365 each containing inner arrays length 5
 		// convert into 5 arrays, each containing array of length 365
 		exposureEntryData = exposureTypes.map { (exposure) -> [Bool] in
-			return exposureChartData.map({ (boolArray) -> Bool in
+			return exposureDailyData.map({ (boolArray) -> Bool in
 				return boolArray[exposure.rawValue]
 			})
 		}

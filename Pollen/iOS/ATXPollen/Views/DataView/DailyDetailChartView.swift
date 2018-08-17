@@ -12,7 +12,7 @@ import Charts
 extension DailyDetailChartView: IAxisValueFormatter {
 	public func stringForValue(_ value: Double, axis: AxisBase?) -> String {
 		let intValue = Int(value)
-		if let columns = columnNames{
+		if let columns = axisNames{
 			if intValue < columns.count{
 				return columns[intValue]
 			}
@@ -23,14 +23,14 @@ extension DailyDetailChartView: IAxisValueFormatter {
 
 class DailyDetailChartView: UIView {
 
-	let titleLabel = UILabel()
+	let dateLabel = UILabel()
 	let scrollView = UIScrollView()
-	
-	var columnNames:[String]?
+	let traceLabel = UILabel()
 	
 	// charts
 	let chartView = HorizontalBarChartView()
-	
+	var axisNames:[String]?
+
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		initUI()
@@ -43,28 +43,29 @@ class DailyDetailChartView: UIView {
 	}
 	
 	func initUI(){
-		titleLabel.text = ""
-		titleLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P24)
-		titleLabel.textColor = .black
-		
-//		chartView.delegate = self
-
+		dateLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P24)
+		dateLabel.textColor = .black
+		traceLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P12)
+		traceLabel.textColor = .black
+		self.addSubview(dateLabel)
+		self.addSubview(traceLabel)
 		self.addSubview(chartView)
-		self.addSubview(titleLabel)
 	}
 	
 	override func layoutSubviews() {
 		super.layoutSubviews()
-		titleLabel.sizeToFit()
-		titleLabel.frame.origin = CGPoint(x: 20, y: 0)
-		chartView.frame = CGRect(x: 0, y: 20, width: self.bounds.size.width, height: self.bounds.size.height*0.5)
+		dateLabel.sizeToFit()
+		dateLabel.frame.origin = CGPoint(x: 20, y: 0)
+		chartView.frame = CGRect(x: 0, y: 20, width: self.bounds.size.width, height: self.bounds.size.height * 0.75)
+		traceLabel.sizeToFit()
+		traceLabel.frame.origin = CGPoint(x: 20, y: self.bounds.size.height * 0.75 + 10)
 	}
 	
 	func reloadData(with date:Date){
 		let formatter = DateFormatter()
 		formatter.dateFormat = "EEEE, MMM d, yyyy"
-		titleLabel.text = formatter.string(from: date)
-		titleLabel.sizeToFit()
+		dateLabel.text = formatter.string(from: date)
+		dateLabel.sizeToFit()
 		
 		if ChartData.shared.clinicDataYearDates.count == 0{ return }
 		
@@ -73,8 +74,9 @@ class DailyDetailChartView: UIView {
 			return false
 		}).first{
 			let samples = todayCounts.getSamples()
-			columnNames = samples.map({ $0.type.name })
-			let yVals = samples
+			let nonTraceSamples = samples.filter({$0.value != 0})
+			axisNames = nonTraceSamples.map({ $0.type.name })
+			let yVals = nonTraceSamples
 				.map({ Double($0.logValue) })
 				.enumerated().map { (arg) -> BarChartDataEntry in
 					let (i, element) = arg
@@ -85,9 +87,26 @@ class DailyDetailChartView: UIView {
 			set.drawIconsEnabled = false
 			set.setColor(Style.shared.blue)
 			
-			//		set.colors = [Style.shared.red, Style.shared.orange, Style.shared.blue, Style.shared.green]
+			let traceElements = samples.filter { (sample) -> Bool in
+				return sample.value == 0
+			}
+			let traceNames = traceElements.map { (sample) -> String in
+				return sample.type.name
+			}
+			let traceString = traceNames.reduce("") { (result, name) -> String in
+				if result == ""{ return name }
+				return result + ", " + name
+			}
+			if traceString.count > 0{
+				traceLabel.text = "Traces of " + traceString
+			} else{
+				traceLabel.text = ""
+			}
+
+			
+//		set.colors = [Style.shared.red, Style.shared.orange, Style.shared.blue, Style.shared.green]
 //			set.colors = [Style.shared.green, Style.shared.blue, Style.shared.red, Style.shared.orange ]
-			//		set.stackLabels = speciesGroups.map({ $0.asString() })
+//		set.stackLabels = speciesGroups.map({ $0.asString() })
 //			set.stackLabels = [
 //				ChartData.shared.pollenTypeGroups[3].asString(),
 //				ChartData.shared.pollenTypeGroups[2].asString(),

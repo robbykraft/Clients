@@ -126,6 +126,15 @@ class Style {
 		case .veryHeavy: return self.colorVeryHeavy
 		}
 	}
+	func colorFor(symptom:Int)->UIColor{
+		switch symptom {
+		case 0: return self.colorNoPollen
+		case 1: return self.colorLow
+		case 2: return self.colorMedium
+		case 3: return self.colorHeavy
+		default: return self.colorNoPollen
+		}
+	}
 		
 	func heading1Attributes() -> [String:NSObject] {
 		var fontSize:CGFloat = 22

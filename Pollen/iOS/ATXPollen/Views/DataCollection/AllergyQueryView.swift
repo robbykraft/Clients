@@ -34,7 +34,7 @@ class AllergyQueryView: UIView {
 		for i in 0 ..< responseButtons.count {
 			let button = responseButtons[i]
 			button.setTitle(labels[i], for: .normal)
-			button.titleLabel?.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P21)
+			button.titleLabel?.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P15)
 			button.color = colors[i]
 		}
 

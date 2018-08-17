@@ -16,18 +16,19 @@ protocol DataViewDelegate {
 class DataView: UIView, OverlayChartDelegate{
 	
 	var delegate:DataViewDelegate?
-	let trackYourAllergiesButton = UIButton()
-	let symptomsCoverView = UIImageView()
+
+	let titleLabel = UILabel()
+	let trackAllergiesButton = UIButton()
+	let trackAllergiesBackground = UIImageView()
+
 	let questionButton = UIBorderedButton()
 	var currentAlert:PopAlertView?
-	let segmentedControl = SegmentedControl(items: ["combined","by groups"])
 
+	let segmentedControl = SegmentedControl(items: ["combined","by groups"])
 	let overlayChartView = OverylayChartView()
 	let pollenTypeChartView = PollenTypeChartView()
-	
 	let dailyDetailChartView = DailyDetailChartView()
-	
-	let titleLabel = UILabel()
+	let myAllergiesView = MyAllergiesView()
 
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -39,20 +40,19 @@ class DataView: UIView, OverlayChartDelegate{
 	required init(coder aDecoder: NSCoder) {
 		fatalError("This class does not support NSCoding")
 	}
-
+	
 	func initUI(){
 		
 		titleLabel.text = "my year in allergies"
 		titleLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P30)
 		titleLabel.textColor = .black
 		
-		symptomsCoverView.image = UIImage(named: "cutout")
-
-		trackYourAllergiesButton.setTitle("track my allergies", for: .normal)
-		trackYourAllergiesButton.setTitleColor(.black, for: .normal)
-		trackYourAllergiesButton.titleLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P30)
-		trackYourAllergiesButton.sizeToFit()
-		trackYourAllergiesButton.addTarget(self, action: #selector(openIntroScreen), for: .touchUpInside)
+		trackAllergiesBackground.image = UIImage(named: "cutout")
+		trackAllergiesButton.setTitle("begin tracking my allergies", for: .normal)
+		trackAllergiesButton.setTitleColor(.black, for: .normal)
+		trackAllergiesButton.titleLabel?.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P24)
+		trackAllergiesButton.sizeToFit()
+		trackAllergiesButton.addTarget(self, action: #selector(openIntroScreen), for: .touchUpInside)
 
 		questionButton.addTarget(self, action: #selector(openQuestion), for: .touchUpInside)
 
@@ -61,20 +61,21 @@ class DataView: UIView, OverlayChartDelegate{
 		self.addSubview(overlayChartView)
 		self.addSubview(pollenTypeChartView)
 		self.addSubview(dailyDetailChartView)
-		
-		self.addSubview(symptomsCoverView)
-		self.addSubview(trackYourAllergiesButton)
+		self.addSubview(myAllergiesView)
+
+		self.addSubview(trackAllergiesBackground)
+		self.addSubview(trackAllergiesButton)
 		self.addSubview(segmentedControl)
 		
 		self.addSubview(titleLabel)
 		
 		segmentedControl.addTarget(self, action: #selector(segmentedControlDidChange), for: .valueChanged)
 		
-		PollenNotifications.shared.isLocalEnabled { (enabled) in
-			if enabled{ self.showTrackButton = false }
-			else {      self.showTrackButton = true }
+		PollenNotifications.shared.isLocalTimerRunning { (isRunning) in
+			if isRunning{ self.showTrackButton = false }
+			else{ self.showTrackButton = true }
 		}
-		
+
 		NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: .chartDataDidUpdate, object: nil)
 	}
 	
@@ -94,17 +95,18 @@ class DataView: UIView, OverlayChartDelegate{
 		overlayChartView.frame = CGRect(x: 0, y: 80, width: self.bounds.size.width, height: self.bounds.size.height*0.5-80)
 		pollenTypeChartView.frame = CGRect(x: 0, y: 80, width: self.bounds.size.width, height: self.bounds.size.height*0.5-80)
 		
-		dailyDetailChartView.frame = CGRect(x: 0, y: self.bounds.size.height*0.5, width: self.bounds.size.width, height: self.bounds.size.height*0.5)
+		dailyDetailChartView.frame = CGRect(x: 0, y: self.bounds.size.height*0.5, width: self.bounds.size.width, height: self.bounds.size.height*0.25)
+		myAllergiesView.frame = CGRect(x: 0, y: self.bounds.size.height*0.75, width: self.bounds.size.width, height: self.bounds.size.height*0.25)
 
 		///////////////////
 		pollenTypeChartView.isHidden = true
 
-		symptomsCoverView.frame = pollenTypeChartView.getSymptomChartsFrame()
-		symptomsCoverView.frame.origin.y += 40
-		if(Symptom.shared.entries.count > 0){ symptomsCoverView.isHidden = true }
+		trackAllergiesBackground.frame = CGRect(x: 0, y: self.bounds.size.height*0.75, width: self.bounds.size.width, height: self.bounds.size.height * 0.25)
+//		trackAllergiesBackground.frame.origin.y += 40
+//		if(Symptom.shared.entries.count > 0){ trackAllergiesBackground.isHidden = true }
 
-		trackYourAllergiesButton.center = CGPoint(x: symptomsCoverView.center.x, y: symptomsCoverView.center.y)
-
+		trackAllergiesButton.center = CGPoint(x: trackAllergiesBackground.center.x, y: trackAllergiesBackground.center.y)
+		
 		questionButton.setTitle("Allergies?", for: .normal)
 		questionButton.sizeToFit()
 		questionButton.frame = CGRect(x: 0, y: 0, width: questionButton.bounds.size.width+40, height: questionButton.bounds.size.height+15)
@@ -116,21 +118,28 @@ class DataView: UIView, OverlayChartDelegate{
 		overlayChartView.reloadData()
 		pollenTypeChartView.reloadData()
 		dailyDetailChartView.reloadData(with: Calendar.current.date(byAdding: .day, value: -1, to: Date())!)
+		myAllergiesView.reloadData(with: Calendar.current.date(byAdding: .day, value: -1, to: Date())!)
+
+		PollenNotifications.shared.isLocalTimerRunning { (isRunning) in
+			if isRunning{ self.showTrackButton = false }
+			else{ self.showTrackButton = true }
+		}
 	}
 	
 	func didSelectDate(_ date: Date) {
 		dailyDetailChartView.reloadData(with: date)
+		myAllergiesView.reloadData(with: date)
 	}
 	
 	var showTrackButton = true{
 		didSet{
 			if showTrackButton{
-				self.trackYourAllergiesButton.isHidden = false
-				self.symptomsCoverView.isHidden = false
+				self.trackAllergiesButton.isHidden = false
+				self.trackAllergiesBackground.isHidden = false
 			}
 			else {
-				self.trackYourAllergiesButton.isHidden = true
-				self.symptomsCoverView.isHidden = true
+				self.trackAllergiesButton.isHidden = true
+				self.trackAllergiesBackground.isHidden = true
 			}
 		}
 	}

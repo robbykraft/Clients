@@ -45,6 +45,7 @@
 		D51B3DEC20C8240D001A4D8D /* SymptomEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51B3DEB20C8240D001A4D8D /* SymptomEntry.swift */; };
 		D51B3DEE20C826AE001A4D8D /* SymptomData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51B3DED20C826AE001A4D8D /* SymptomData.swift */; };
 		D5351E9E20D2D1EB009AE439 /* PollenNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5351E9D20D2D1EB009AE439 /* PollenNotifications.swift */; };
+		D59C68762127558900C08DA8 /* MyAllergiesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59C68752127558900C08DA8 /* MyAllergiesView.swift */; };
 		D59F648D20EBBC790080D4DE /* MonthlyBarChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59F648C20EBBC790080D4DE /* MonthlyBarChartView.swift */; };
 		D59F649120EC3D6E0080D4DE /* MonthlyDetailBarChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59F649020EC3D6E0080D4DE /* MonthlyDetailBarChartView.swift */; };
 		D5A9A3DA20CAD7E1006A762E /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9A3D920CAD7E1006A762E /* Modal.swift */; };
@@ -124,6 +125,7 @@
 		D51B3DEB20C8240D001A4D8D /* SymptomEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymptomEntry.swift; sourceTree = "<group>"; };
 		D51B3DED20C826AE001A4D8D /* SymptomData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SymptomData.swift; path = ATXPollen/Data/SymptomData.swift; sourceTree = SOURCE_ROOT; };
 		D5351E9D20D2D1EB009AE439 /* PollenNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollenNotifications.swift; sourceTree = "<group>"; };
+		D59C68752127558900C08DA8 /* MyAllergiesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAllergiesView.swift; sourceTree = "<group>"; };
 		D59F648C20EBBC790080D4DE /* MonthlyBarChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyBarChartView.swift; sourceTree = "<group>"; };
 		D59F649020EC3D6E0080D4DE /* MonthlyDetailBarChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyDetailBarChartView.swift; sourceTree = "<group>"; };
 		D5A9A3D920CAD7E1006A762E /* Modal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modal.swift; sourceTree = "<group>"; };
@@ -306,6 +308,7 @@
 			children = (
 				D5167FDA20AC9D3E00478CBE /* DataView.swift */,
 				D5EF92A9211498A700759C3B /* DailyDetailChartView.swift */,
+				D59C68752127558900C08DA8 /* MyAllergiesView.swift */,
 				D5B0F5C720F78DB300E210D0 /* OverylayChartView.swift */,
 				D5167FF420ACDC9E00478CBE /* PollenTypeChartView.swift */,
 				D5C6CD4C20E6B2EE00848F3D /* StackedChartView.swift */,
@@ -555,6 +558,7 @@
 				D5167FEE20ACD64700478CBE /* AboutPage.swift in Sources */,
 				D51272DC20B9A49100F21EF4 /* PollenTypeInfo.swift in Sources */,
 				D5167FDB20AC9D3E00478CBE /* DataView.swift in Sources */,
+				D59C68762127558900C08DA8 /* MyAllergiesView.swift in Sources */,
 				D5167FE320ACB1F900478CBE /* UIBorderedButton.swift in Sources */,
 				D5167FFA20ACE3C900478CBE /* PollenCountViewController.swift in Sources */,
 				D5167FC420AC890F00478CBE /* UILineChartView.swift in Sources */,

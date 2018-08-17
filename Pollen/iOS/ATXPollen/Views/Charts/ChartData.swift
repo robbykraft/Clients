@@ -35,7 +35,9 @@ class ChartData{
 
 	var dailySymptomData:[SymptomEntry] = []
 	var allergyDataValues:[Double] = []
-	var exposureDataValues:[[Bool]] = []
+	var exposureDailyData:[[Bool]] = []
+	var exposureDataByTypes:[[Bool]] = []
+	
 
 	fileprivate init(){
 		reloadData()
@@ -124,14 +126,14 @@ class ChartData{
 		allergyDataValues = dailySymptomData.map({ $0.rating != nil ? Double($0.rating!.rawValue)/3 : 0 })
 		// EXPOSURES
 		// for each day [[Bool],[Bool],[Bool],[Bool],[Bool]] for each exposureType
-		let exposureChartData = dailySymptomData
+		exposureDailyData = dailySymptomData
 			.map({ $0.exposures != nil ? $0.exposures! : [] })
 			.map { (exposure) -> [Bool] in return exposureTypes.map({ exposure.contains($0) }) }
 		// row column flip
 		// instead of array with length ~ 365 each containing inner arrays length 5
 		// convert into 5 arrays, each containing array of length 365
-		exposureDataValues = exposureTypes.map { (exposure) -> [Bool] in
-			return exposureChartData.map({ (boolArray) -> Bool in
+		exposureDataByTypes = exposureTypes.map { (exposure) -> [Bool] in
+			return exposureDailyData.map({ (boolArray) -> Bool in
 				return boolArray[exposure.rawValue]
 			})
 		}
@@ -374,14 +376,23 @@ class ChartData{
 	}
 
 	func scatterData(from array:[[Bool]]) -> ScatterChartData{
-		let colors = [Style.shared.orange, Style.shared.lightBlue, Style.shared.purple, Style.shared.softBlue, Style.shared.red]
+		let colors = [
+			UIColor(white: 0, alpha: 1.0),
+			UIColor(white: 0.4, alpha: 1.0),
+			UIColor(white: 0.6, alpha: 1.0),
+			UIColor(white: 0.75, alpha: 1.0),
+			UIColor(white: 0.866, alpha: 1.0)
+		]
 		let dataSets = array.enumerated().map { (i, valueArray) -> ChartDataSet in
-			let values = valueArray.map{ return $0 ? i+1 : 0
+			let values = valueArray.map{ return $0 ? i : 0
 				}.enumerated().map({ (j, value) -> ChartDataEntry in
-					return ChartDataEntry(x: Double(j), y: Double(value)/6)
-				}).filter({ $0.y != 0.0 })
-			let set = ScatterChartDataSet(values: values + [ChartDataEntry(x: 0, y: 0)], label: exposureTypes[i].asString())
-			set.setScatterShape(.circle)
+					return ChartDataEntry(x: Double(j), y: -0.05 - Double(value)/14)
+				})//.filter({ $0.y != 0.0 })
+//			let set = ScatterChartDataSet(values: values + [ChartDataEntry(x: 0, y: 0)], label: exposureTypes[i].asString())
+			print(values)
+			let set = ScatterChartDataSet(values: values, label: exposureTypes[i].asString())
+//			set.setScatterShape(.circle)
+			set.setScatterShape(.square)
 			set.scatterShapeHoleColor = colors[i%5]
 			set.scatterShapeHoleRadius = 3.5
 			set.drawValuesEnabled = false
@@ -389,7 +400,8 @@ class ChartData{
 			set.scatterShapeSize = 8
 			return set
 		}
-		return ScatterChartData(dataSets: dataSets)
+		let data = ScatterChartData(dataSets: dataSets)
+		return data
 	}
 	
 }

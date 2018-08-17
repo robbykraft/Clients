@@ -93,7 +93,11 @@ class ViewController: UIViewController, UINavigationControllerDelegate, HomeSlid
 	// Query View Delegate
 	func showScheduleAlert() {
 		PollenNotifications.shared.enableLocalTimer(completionHandler: nil)
-		let alert = UIAlertController.init(title: "At the close of each day we'll send you a notification asking how were your allergies.", message: nil, preferredStyle: .alert)
+		let (hour, minute) = PollenNotifications.shared.getNotificationTime()
+		let formatter = DateFormatter()
+		formatter.dateFormat = "h:mm a"
+		let timeString = formatter.string(from: Calendar.current.date(bySettingHour: hour, minute: minute, second: 0, of: Date())!)
+		let alert = UIAlertController.init(title: "Setup Complete!", message: "Check your device at " + timeString + ", we'll ask how your allergies were that day.", preferredStyle: .alert)
 		let action1 = UIAlertAction.init(title: "Got it", style: .cancel, handler:nil)
 		alert.addAction(action1)
 		self.present(alert, animated: true, completion: nil)
