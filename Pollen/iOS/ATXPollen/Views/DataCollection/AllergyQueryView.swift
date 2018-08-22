@@ -11,7 +11,7 @@ import UIKit
 class AllergyQueryView: UIView {
 
 	let topQuestionLabel = UILabel()
-	let responseButtons = [UIBorderedButton(), UIBorderedButton(), UIBorderedButton(), UIBorderedButton()]
+	let responseButtons = [UIBorderedSwitch(), UIBorderedSwitch(), UIBorderedSwitch(), UIBorderedSwitch()]
 
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -33,13 +33,19 @@ class AllergyQueryView: UIView {
 		let colors = [UIColor.black, Style.shared.colorLow, Style.shared.colorMedium, Style.shared.colorHeavy]
 		for i in 0 ..< responseButtons.count {
 			let button = responseButtons[i]
+			button.tag = i
 			button.setTitle(labels[i], for: .normal)
 			button.titleLabel?.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P15)
+			button.addTarget(self, action: #selector(buttonDidPress), for: .touchUpInside)
 			button.color = colors[i]
 		}
 
 		self.addSubview(topQuestionLabel)
 		for button in responseButtons { self.addSubview(button) }
+	}
+	
+	@objc func buttonDidPress(sender:UIBorderedSwitch){
+		responseButtons.filter({ $0 != sender }).forEach({ $0.buttonState = .unchecked })
 	}
 
 	override func layoutSubviews() {

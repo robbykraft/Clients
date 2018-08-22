@@ -30,8 +30,19 @@ class Symptom {
 			var components = DateComponents()
 			components.day = -i
 			let date = Calendar.current.date(byAdding: components, to: Date())!
-			let rand = Int(arc4random() % 4)
-			symptoms.append(SymptomEntry(date: date, location: nil, rating: SymptomRating(rawValue: rand), exposures: nil))
+			let rand = Int(arc4random() % 5)
+			var exposures:[Exposures]? = nil
+			let possibleExposures:[Exposures] = [.dog,.cat,.molds,.dust,.virus]
+			for i in 0..<possibleExposures.count{
+				if Int(arc4random() % 4) == 0{
+					if exposures == nil{
+						exposures = [possibleExposures[i]]
+					}
+					else { exposures!.append(possibleExposures[i]) }
+				}
+			}
+			let rating = (rand < 4) ? SymptomRating(rawValue: rand) : nil
+			symptoms.append(SymptomEntry(date: date, location: nil, rating: rating, exposures: exposures))
 		}
 		symptoms.forEach({ updateDatabaseWith(entry: $0) })
 	}

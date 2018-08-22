@@ -29,10 +29,7 @@ class ClinicData {
 	func boot(){
 		// FOR TESTING remove 2 weeks of recent data
 //		let startDate = Calendar.current.date(byAdding: .day, value: -14, to: Date())!
-//		print(startDate)
 //		let samples = queryCoreDataSamples(between: startDate, endDate: Date())
-//		print("deleting \(samples.count) samples")
-//		print(deleteCoreData(samplesData: samples))
 
 		loadSamplesFromCoreData()
 		

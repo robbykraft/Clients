@@ -123,7 +123,7 @@ class UIRadialChart: UIView {
 		let center:CGPoint = CGPoint.init(x: self.frame.size.width*0.5, y: self.frame.size.height*0.5)
 		arcLayer.sublayers = []
 
-		var barHeight:CGFloat = 40.0 + (self.frame.size.width - 320.0) * 0.18
+		var barHeight:CGFloat = 36.0 + (self.frame.size.width - 320.0) * 0.10
 		if(IS_IPAD){
 			barHeight = 110.0;
 		}

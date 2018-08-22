@@ -51,7 +51,7 @@ class Style {
 	let lightGray = UIColor(red:0.9, green:0.9, blue:0.92, alpha:1.00)
 	let red = UIColor(red: 255/255.0, green: 59/255.0, blue: 48/255.0, alpha: 1.0)
 	let orange = UIColor(red: 255/255.0, green: 149/255.0, blue: 0, alpha: 1.0)
-	let yellow = UIColor(red: 210/255.0, green: 170/255.0, blue: 0.1, alpha: 1.0)
+	let yellow = UIColor(red: 215/255.0, green: 185/255.0, blue: 0.05, alpha: 1.0)
 	let blue = UIColor(red: 0, green: 122/255.0, blue: 1.0, alpha: 1.0)
 	let green = UIColor(red:0.00, green:0.65, blue:0.22, alpha:1.00)
 //	let green = UIColor(red: 76/255.0, green: 217/255.0, blue: 100/255.0, alpha: 1.0)

@@ -13,7 +13,7 @@ protocol DataViewDelegate {
 	func showNeedNotificationsAlert()
 }
 
-class DataView: UIView, OverlayChartDelegate{
+class DataView: UIView, OverlayChartDelegate, MyAllergiesDelegate{
 	
 	var delegate:DataViewDelegate?
 
@@ -57,6 +57,7 @@ class DataView: UIView, OverlayChartDelegate{
 		questionButton.addTarget(self, action: #selector(openQuestion), for: .touchUpInside)
 
 		overlayChartView.delegate = self
+		myAllergiesView.delegate = self
 		
 		self.addSubview(overlayChartView)
 		self.addSubview(pollenTypeChartView)
@@ -187,4 +188,53 @@ class DataView: UIView, OverlayChartDelegate{
 		alert.show(animated: true)
 	}
 	
+	func updateSymptom(for date: Date) {
+		let smaller = (UIScreen.main.bounds.size.width < UIScreen.main.bounds.size.height) ? UIScreen.main.bounds.size.width : UIScreen.main.bounds.size.height
+		let allergyQueryView = AllergyQueryView(frame: CGRect(x: 0, y: 0, width: smaller*0.66, height: smaller*0.66))
+		allergyQueryView.responseButtons.forEach({
+			$0.addTarget(self, action: #selector(queryViewSymptomResponse), for: .touchUpInside)
+		})
+		if let dayIndex = ChartData.shared.yearlyIndex(for: date){
+			if let symptomValue = ChartData.shared.allergyDataValues[dayIndex]{
+				allergyQueryView.responseButtons[symptomValue].buttonState = .checked
+			}
+		}
+		let formatter = DateFormatter()
+		formatter.dateFormat = "EEEE, MMM d, yyyy"
+		let alert = PopAlertView(title: formatter.string(from: date), view: allergyQueryView)
+		alert.show(animated: true)
+
+	}
+	
+	func updateExposures(for date: Date) {
+		
+//		if let dayIndex = ChartData.shared.yearlyIndex(for: date){
+//			exposures = ChartData.shared.exposureDailyData[dayIndex].enumerated().compactMap { (offset, element) -> Exposures? in
+//				if element { return Exposures(rawValue: offset)! }
+//				return nil
+//			}
+//		}
+	}
+	
+	func updateSymptomAndExposures(for date: Date) {
+		let smaller = (UIScreen.main.bounds.size.width < UIScreen.main.bounds.size.height) ? UIScreen.main.bounds.size.width : UIScreen.main.bounds.size.height
+		let allergyQueryView = AllergyQueryView(frame: CGRect(x: 0, y: 0, width: smaller*0.66, height: smaller*0.66))
+		allergyQueryView.responseButtons.forEach({
+			$0.addTarget(self, action: #selector(queryViewSymptomResponse), for: .touchUpInside)
+		})
+		if let dayIndex = ChartData.shared.yearlyIndex(for: date){
+			if let symptomValue = ChartData.shared.allergyDataValues[dayIndex]{
+				allergyQueryView.responseButtons[symptomValue].buttonState = .checked
+			}
+		}
+		let formatter = DateFormatter()
+		formatter.dateFormat = "EEEE, MMM d, yyyy"
+		let alert = PopAlertView(title: formatter.string(from: date), view: allergyQueryView)
+		alert.show(animated: true)
+	}
+	
+	@objc func queryViewSymptomResponse(sender:UIBorderedSwitch){
+		print(sender.tag)
+	}
+
 }

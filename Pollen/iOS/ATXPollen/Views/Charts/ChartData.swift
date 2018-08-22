@@ -34,10 +34,20 @@ class ChartData{
 	var monthlyStrongestSampleByGroups:[[PollenSample]] = [[]]
 
 	var dailySymptomData:[SymptomEntry] = []
-	var allergyDataValues:[Double] = []
+	var allergyDataValues:[Int?] = []
 	var exposureDailyData:[[Bool]] = []
 	var exposureDataByTypes:[[Bool]] = []
 	
+	func yearlyIndex(for date:Date) -> Int?{
+		// find the matching day in ChartData index
+		if clinicDataYearDates.count == 0{ return nil }
+		for i in 0..<clinicDataYearDates.count{
+			if Calendar.current.isDate(clinicDataYearDates[i], inSameDayAs: date){
+				return i
+			}
+		}
+		return nil
+	}
 
 	fileprivate init(){
 		reloadData()
@@ -123,7 +133,7 @@ class ChartData{
 				SymptomEntry(date: date, location: nil, rating: nil, exposures: nil)
 		}
 		// ALLERGIES
-		allergyDataValues = dailySymptomData.map({ $0.rating != nil ? Double($0.rating!.rawValue)/3 : 0 })
+		allergyDataValues = dailySymptomData.map({ $0.rating != nil ? $0.rating!.rawValue : nil })
 		// EXPOSURES
 		// for each day [[Bool],[Bool],[Bool],[Bool],[Bool]] for each exposureType
 		exposureDailyData = dailySymptomData
@@ -284,12 +294,16 @@ class ChartData{
 	}
 	
 	func dailyAllergyDataBarChartData() -> BarChartData{
+		
 		let values = allergyDataValues
 			.map({ (value) -> Double in
-				return 0.1 + 0.4 * value
+				if let v = value{
+					return 0.1 + 0.4 * Double(v)/3
+				}
+				return 0
 			})
 			.enumerated().map({ BarChartDataEntry(x: Double($0.offset), y: $0.element) })
-		
+
 //		let rightSplit = values[146 ..< values.count]
 		
 //		let set = BarChartDataSet(values: Array(rightSplit), label: nil)
@@ -308,10 +322,10 @@ class ChartData{
 		set.colors =
 //		set.valueColors =
 			allergyDataValues.map({
-				//				if $0 == 0{ return UIColor.clear }
-				if $0 == 0{ return UIColor.clear }
-				if $0 < 0.5{ return Style.shared.yellow }
-				if $0 < 0.75{ return Style.shared.orange }
+				if $0 == nil{ return UIColor.clear }
+				if $0! == 0{ return Style.shared.green }
+				if $0! == 1{ return Style.shared.yellow }
+				if $0! == 2{ return Style.shared.orange }
 				return Style.shared.red
 			})
 		return BarChartData(dataSet: set)
@@ -321,7 +335,10 @@ class ChartData{
 	func dailyAllergyDataLineChart() -> LineChartData{
 		let values = allergyDataValues
 			.map({ (value) -> Double in
-				return 0.1 + 0.4 * value
+				if let v = value{
+					return 0.1 + 0.4 * Double(v)/3
+				}
+				return 0
 			})
 			.enumerated().map({ ChartDataEntry(x: Double($0.offset), y: $0.element) })
 		
@@ -339,19 +356,19 @@ class ChartData{
 		set.cubicIntensity = 0.2
 		set.valueColors =
 			allergyDataValues.map({
-//				if $0 == 0{ return UIColor.clear }
-				if $0 == 0{ return UIColor.blue }
-				if $0 < 0.5{ return Style.shared.orange }
-				if $0 < 0.75{ return Style.shared.red }
-				return Style.shared.purple
+				if $0 == nil{ return UIColor.clear }
+				if $0! == 0{ return Style.shared.green }
+				if $0! == 1{ return Style.shared.yellow }
+				if $0! == 2{ return Style.shared.orange }
+				return Style.shared.red
 			})
 		set.circleColors =
 			allergyDataValues.map({
-				if $0 == 0{ return UIColor.clear }
-//				if $0 == 0{ return UIColor.blue }
-				if $0 < 0.5{ return Style.shared.orange }
-				if $0 < 0.75{ return Style.shared.red }
-				return Style.shared.purple
+				if $0 == nil{ return UIColor.clear }
+				if $0! == 0{ return Style.shared.green }
+				if $0! == 1{ return Style.shared.yellow }
+				if $0! == 2{ return Style.shared.orange }
+				return Style.shared.red
 			})
 		set.drawFilledEnabled = false
 		set.fillAlpha = 1
@@ -360,7 +377,10 @@ class ChartData{
 	}
 	
 	func dailyAllergyDataFilledLineChart() -> LineChartData {
-		let values = allergyDataValues.enumerated().map({ ChartDataEntry(x: Double($0.offset), y: $0.element) })
+		let values = allergyDataValues.enumerated().map { (offset, element) -> ChartDataEntry in
+			let y = (element == nil) ? 0 : Double(element!)/3
+			return ChartDataEntry(x: Double(offset), y: y)
+		}
 		let set1 = LineChartDataSet(values: values, label: nil)
 		set1.lineWidth = 0.1
 		set1.highlightColor = Style.shared.orange
@@ -389,7 +409,6 @@ class ChartData{
 					return ChartDataEntry(x: Double(j), y: -0.05 - Double(value)/14)
 				})//.filter({ $0.y != 0.0 })
 //			let set = ScatterChartDataSet(values: values + [ChartDataEntry(x: 0, y: 0)], label: exposureTypes[i].asString())
-			print(values)
 			let set = ScatterChartDataSet(values: values, label: exposureTypes[i].asString())
 //			set.setScatterShape(.circle)
 			set.setScatterShape(.square)

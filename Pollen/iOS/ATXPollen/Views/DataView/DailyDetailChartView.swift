@@ -24,6 +24,7 @@ extension DailyDetailChartView: IAxisValueFormatter {
 class DailyDetailChartView: UIView {
 
 	let dateLabel = UILabel()
+	let dateUnderline = UIView()
 	let scrollView = UIScrollView()
 	let traceLabel = UILabel()
 	
@@ -45,9 +46,11 @@ class DailyDetailChartView: UIView {
 	func initUI(){
 		dateLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P24)
 		dateLabel.textColor = .black
+		dateUnderline.backgroundColor = .black
 		traceLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P12)
 		traceLabel.textColor = .black
 		self.addSubview(dateLabel)
+		self.addSubview(dateUnderline)
 		self.addSubview(traceLabel)
 		self.addSubview(chartView)
 	}
@@ -56,7 +59,9 @@ class DailyDetailChartView: UIView {
 		super.layoutSubviews()
 		dateLabel.sizeToFit()
 		dateLabel.frame.origin = CGPoint(x: 20, y: 0)
-		chartView.frame = CGRect(x: 0, y: 20, width: self.bounds.size.width, height: self.bounds.size.height * 0.75)
+		dateUnderline.frame = CGRect(x: 0, y: 0, width: dateLabel.frame.size.width, height: 1)
+		dateUnderline.center = CGPoint(x: dateLabel.center.x, y: dateLabel.center.y + dateLabel.frame.size.height*0.5)
+		chartView.frame = CGRect(x: 0, y: 28, width: self.bounds.size.width, height: self.bounds.size.height * 0.7)
 		traceLabel.sizeToFit()
 		traceLabel.frame.origin = CGPoint(x: 20, y: self.bounds.size.height * 0.75 + 10)
 	}
@@ -66,7 +71,7 @@ class DailyDetailChartView: UIView {
 		formatter.dateFormat = "EEEE, MMM d, yyyy"
 		dateLabel.text = formatter.string(from: date)
 		dateLabel.sizeToFit()
-		
+
 		if ChartData.shared.clinicDataYearDates.count == 0{ return }
 		
 		if let todayCounts = ClinicData.shared.dailyCounts.filter({
@@ -115,7 +120,7 @@ class DailyDetailChartView: UIView {
 //			]
 
 			let data = BarChartData(dataSet: set)
-			chartView.fitBars = true
+			chartView.fitBars = false
 			chartView.scaleYEnabled = false
 			data.setDrawValues(false)
 			chartView.data = data
@@ -133,7 +138,7 @@ class DailyDetailChartView: UIView {
 			
 			chartView.isUserInteractionEnabled = false
 			chartView.dragEnabled = true
-			chartView.setScaleEnabled(true)
+			chartView.setScaleEnabled(false)
 			chartView.pinchZoomEnabled = false
 			chartView.legend.enabled = false
 			chartView.leftAxis.enabled = false
@@ -158,7 +163,7 @@ class DailyDetailChartView: UIView {
 			chartView.drawBarShadowEnabled = false
 			chartView.drawValueAboveBarEnabled = true
 			chartView.maxVisibleCount = 60
-			chartView.fitBars = true
+			chartView.fitBars = false
 			chartView.animate(yAxisDuration: 0.2)
 		}
 		

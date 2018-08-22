@@ -93,16 +93,8 @@ class OverylayChartView: UIView, ChartViewDelegate{
 		data.barData = ChartData.shared.dailyAllergyDataBarChartData()
 		
 		chartView.doubleTapToZoomEnabled = false
-		var fakeData:[[Bool]] = []
-		for _ in 0..<5{
-			var aaa:[Bool] = []
-			for j:Int in 0..<data.lineData.entryCount{
-				aaa.append(j < Int(data.lineData.entryCount/2) ? false : randomBool())
-			}
-			fakeData.append(aaa)
-		}
 		
-		data.scatterData = ChartData.shared.scatterData(from: fakeData)
+		data.scatterData = ChartData.shared.scatterData(from: ChartData.shared.exposureDataByTypes)
 		chartView.xAxis.axisMaximum = data.xMax + 0.25
 		chartView.data = data
 		chartView.legend.enabled = false
