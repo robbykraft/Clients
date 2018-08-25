@@ -73,8 +73,6 @@ class DailyDetailChartView: UIView {
 		
 		if let entries = chartView.data?.dataSets.first?.entryCount{
 			chartView.frame = CGRect(x: 0, y: 28, width: self.bounds.size.width, height: self.bounds.size.height * 0.12 + self.bounds.size.height * 0.1 * CGFloat(entries))
-			print(entries)
-			print(chartView.frame.size.height)
 		} else{
 			chartView.frame = CGRect(x: 0, y: 28, width: self.bounds.size.width, height: self.bounds.size.height * 0.7)
 		}

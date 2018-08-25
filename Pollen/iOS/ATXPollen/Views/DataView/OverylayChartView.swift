@@ -26,15 +26,32 @@ extension OverylayChartView: IAxisValueFormatter {
 	}
 }
 
+enum OverlayChartMode{
+	case combined
+	case groups
+}
+
 class OverylayChartView: UIView, ChartViewDelegate{
+	
+	var mode:OverlayChartMode = .combined{
+		didSet{
+			self.reloadData()
+			self.exposureLabel.isHidden = true
+			self.pollenGroupsLabel.isHidden = true
+			switch mode {
+			case .combined: self.exposureLabel.isHidden = false
+			case .groups: self.pollenGroupsLabel.isHidden = false
+			}
+		}
+	}
 
 	// charts
 	let chartView = CombinedChartView()
 	var delegate:OverlayChartDelegate?
 	
-//	let exposureLabels = [UILabel(), UILabel(), UILabel(), UILabel(), UILabel()]
 	let exposureLabel = UILabel()
-	
+	let pollenGroupsLabel = UILabel()
+
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		initUI()
@@ -47,7 +64,6 @@ class OverylayChartView: UIView, ChartViewDelegate{
 		let attributedString = NSMutableAttributedString(string:exposureString)
 		let fullRange: NSRange = NSMakeRange(0, exposureString.count)
 		attributedString.addAttribute(NSAttributedStringKey.font, value: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P15)!, range: fullRange)
-
 		let exposures:[Exposures] = [.dog, .cat, .dust, .molds, .virus]
 		for exposure in exposures{
 			let range = (exposureString as NSString).range(of: "▇ " + exposure.asString())
@@ -55,9 +71,37 @@ class OverylayChartView: UIView, ChartViewDelegate{
 		}
 		exposureLabel.attributedText = attributedString
 		exposureLabel.sizeToFit()
+
+	
+		var groupColors = [Style.shared.red,
+						   Style.shared.orange,
+						   Style.shared.blue,
+						   Style.shared.green]
+
+//		[.grasses, .weeds, .trees, .molds]
+		
+//		let groupsString = "▇ trees  ▇ grasses  ▇ molds  ▇ weeds"
+		let groupsString = "▇ grasses  ▇ weeds  ▇ trees  ▇ molds"
+		let groupsAttributedString = NSMutableAttributedString(string:groupsString)
+		let groupsFullRange: NSRange = NSMakeRange(0, groupsString.count)
+		groupsAttributedString.addAttribute(NSAttributedStringKey.font, value: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P15)!, range: groupsFullRange)
+//		let groups:[PollenTypeGroup] = [.trees, .grasses, .molds, .weeds]
+		let groups:[PollenTypeGroup] = [.grasses, .weeds, .trees, .molds]
+
+		var i = 0
+		for group in groups{
+			let range = (groupsString as NSString).range(of: "▇ " + group.asString())
+			groupsAttributedString.addAttribute(NSAttributedStringKey.foregroundColor, value: groupColors[i], range: range)
+			i += 1
+		}
+		pollenGroupsLabel.attributedText = groupsAttributedString
+		pollenGroupsLabel.sizeToFit()
+
 		
 		self.addSubview(exposureLabel)
-		
+		self.addSubview(pollenGroupsLabel)
+		pollenGroupsLabel.isHidden = true
+
 //		exposureLabels.enumerated().forEach({
 //			$0.element.text = Exposures(rawValue: $0.offset)?.asString()
 //			$0.element.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P12)
@@ -91,6 +135,10 @@ class OverylayChartView: UIView, ChartViewDelegate{
 		chartView.xAxis.drawGridLinesEnabled = false
 		chartView.xAxis.drawAxisLineEnabled = false
 		chartView.chartDescription?.enabled = false
+		//
+		chartView.doubleTapToZoomEnabled = false
+		chartView.xAxis.axisMinimum = 0
+		chartView.legend.enabled = false
 	}
 	
 	func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
@@ -105,26 +153,28 @@ class OverylayChartView: UIView, ChartViewDelegate{
 		chartView.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height*0.9)
 		exposureLabel.sizeToFit()
 		exposureLabel.center = CGPoint(x: self.bounds.size.width*0.5, y: self.bounds.size.height - exposureLabel.frame.size.height)
-	}
-	
-	func randomBool() -> Bool {
-		return arc4random_uniform(6) == 0
+		pollenGroupsLabel.sizeToFit()
+		pollenGroupsLabel.center = CGPoint(x: self.bounds.size.width*0.5, y: self.bounds.size.height - exposureLabel.frame.size.height)
 	}
 
 	func reloadData(){
 		if ChartData.shared.clinicDataYearDates.count == 0{ return }
 		
 		let data = CombinedChartData()
-		data.lineData = ChartData.shared.dailyClinicDataLineChartData()
-		data.barData = ChartData.shared.dailyAllergyDataBarChartData()
+		switch mode {
+		case .combined:
+			data.lineData = ChartData.shared.dailyClinicDataLineChartData()
+			data.barData = ChartData.shared.dailyAllergyDataBarChartData()
+			data.scatterData = ChartData.shared.scatterData(from: ChartData.shared.exposureDataByTypes)
+		case .groups:
+			data.lineData = ChartData.shared.dailyClinicDataByGroupsLineChartCombinedData()
+			data.barData = ChartData.shared.dailyAllergyDataBarChartDataBlack()
+			data.scatterData = ChartData.shared.scatterDataBlack(from: ChartData.shared.exposureDataByTypes)
+		}
 		
-		chartView.doubleTapToZoomEnabled = false
-		
-		data.scatterData = ChartData.shared.scatterData(from: ChartData.shared.exposureDataByTypes)
-		chartView.xAxis.axisMaximum = data.xMax + 0.25
-		chartView.xAxis.axisMinimum = 0
 		chartView.data = data
-		chartView.legend.enabled = false
+
+		chartView.xAxis.axisMaximum = data.xMax + 0.25
 	}
 	
 }

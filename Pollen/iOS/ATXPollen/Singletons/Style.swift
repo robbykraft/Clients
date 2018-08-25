@@ -63,14 +63,6 @@ class Style {
 	var zoomScale:CGFloat = 1.0
 
 	
-	
-	//	let colors = [
-	//		UIColor(white: 0, alpha: 1.0),
-	//		UIColor(white: 0.4, alpha: 1.0),
-	//		UIColor(white: 0.6, alpha: 1.0),
-	//		UIColor(white: 0.75, alpha: 1.0),
-	//		UIColor(white: 0.866, alpha: 1.0)
-	//	]
 
 	var P64:CGFloat = 64
 	var P48:CGFloat = 48

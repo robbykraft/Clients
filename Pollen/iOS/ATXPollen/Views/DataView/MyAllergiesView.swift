@@ -98,7 +98,7 @@ class MyAllergiesView: UIView {
 		
 		let faceViewSize:CGFloat = self.bounds.size.height*0.6
 		myAllergyFaceView.frame = CGRect(x: 0, y: 0, width: faceViewSize, height: faceViewSize)
-		myAllergyFaceView.center = CGPoint(x: self.bounds.size.width*0.25, y: faceViewSize * 0.5)
+		myAllergyFaceView.center = CGPoint(x: self.bounds.size.width*0.25, y: faceViewSize * 0.6)
 		myAllergyLabel.sizeToFit()
 
 		updateSymptomButton.isHidden = false

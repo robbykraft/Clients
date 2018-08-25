@@ -24,7 +24,7 @@ class DataView: UIView, OverlayChartDelegate, MyAllergiesDelegate, AllergyQueryD
 	let questionButton = UIBorderedButton()
 	var currentAlert:PopAlertView?
 
-	let segmentedControl = SegmentedControl(items: ["combined","by groups"])
+	let segmentedControl = SegmentedControl(items: ["my allergies","pollen"])
 	let overlayChartView = OverylayChartView()
 	let pollenTypeChartView = PollenTypeChartView()
 	let dailyDetailChartView = DailyDetailChartView()
@@ -101,7 +101,7 @@ class DataView: UIView, OverlayChartDelegate, MyAllergiesDelegate, AllergyQueryD
 
 		pollenTypeChartView.isHidden = true
 
-		trackAllergiesBackground.frame = CGRect(x: 0, y: self.bounds.size.height*0.75, width: self.bounds.size.width, height: self.bounds.size.height * 0.25)
+		trackAllergiesBackground.frame = CGRect(x: 0, y: self.bounds.size.height*0.8, width: self.bounds.size.width, height: self.bounds.size.height * 0.2)
 //		trackAllergiesBackground.frame.origin.y += 40
 //		if(Symptom.shared.entries.count > 0){ trackAllergiesBackground.isHidden = true }
 
@@ -148,7 +148,7 @@ class DataView: UIView, OverlayChartDelegate, MyAllergiesDelegate, AllergyQueryD
 	
 	@objc func openIntroScreen(){
 		let introAllergyView = IntroAllergyTrackView(frame: CGRect(x: 0, y: 0, width: self.bounds.size.width*0.66, height: self.bounds.size.height*0.66))
-		currentAlert = PopAlertView(title: "let's track!", view: introAllergyView)
+		currentAlert = PopAlertView(title: "let's track", view: introAllergyView)
 		introAllergyView.getStartedButton.addTarget(self, action: #selector(openNextScreen), for: .touchUpInside)
 		currentAlert!.show(animated: true)
 	}
@@ -173,13 +173,17 @@ class DataView: UIView, OverlayChartDelegate, MyAllergiesDelegate, AllergyQueryD
 	}
 	
 	@objc func segmentedControlDidChange(sender:UISegmentedControl){
-		overlayChartView.isHidden = true
-		pollenTypeChartView.isHidden = true
-
-		switch sender.selectedSegmentIndex {
-		case 0: overlayChartView.isHidden = false
-		case 1: pollenTypeChartView.isHidden = false
-		default: break;
+//		overlayChartView.isHidden = true
+//		pollenTypeChartView.isHidden = true
+//
+//		switch sender.selectedSegmentIndex {
+//		case 0: overlayChartView.isHidden = false
+//		case 1: pollenTypeChartView.isHidden = false
+//		default: break;
+//		}
+		switch overlayChartView.mode {
+		case .combined: overlayChartView.mode = .groups
+		case .groups: overlayChartView.mode = .combined
 		}
 	}
 	
@@ -227,6 +231,7 @@ class DataView: UIView, OverlayChartDelegate, MyAllergiesDelegate, AllergyQueryD
 	}
 	
 	var currentlyEditingDate:Date?
+	var currentlyOpenPopup:PopAlertView?
 	
 	func updateExposures(for date: Date) {
 		currentlyEditingDate = date
@@ -244,23 +249,34 @@ class DataView: UIView, OverlayChartDelegate, MyAllergiesDelegate, AllergyQueryD
 		alert.show(animated: true)
 	}
 	
+	@objc func dismissAllergiesAndOpenExposures(){
+		if let popup = currentlyOpenPopup{
+			popup.dismiss(animated: true)
+			currentlyOpenPopup = nil
+		}
+		if let date = currentlyEditingDate{
+			updateExposures(for: date)
+		}
+	}
+	
 	func updateSymptomAndExposures(for date: Date) {
 		currentlyEditingDate = date
-		
-//		let smaller = (UIScreen.main.bounds.size.width < UIScreen.main.bounds.size.height) ? UIScreen.main.bounds.size.width : UIScreen.main.bounds.size.height
-//		let allergyQueryView = AllergyQueryView(frame: CGRect(x: 0, y: 0, width: smaller*0.66, height: smaller*0.66))
-//		allergyQueryView.responseButtons.forEach({
-//			$0.addTarget(self, action: #selector(symptomQueryViewResponse), for: .touchUpInside)
-//		})
-//		if let dayIndex = ChartData.shared.yearlyIndex(for: date){
-//			if let symptomValue = ChartData.shared.allergyDataValues[dayIndex]{
-//				allergyQueryView.responseButtons[symptomValue].buttonState = .checked
-//			}
-//		}
-//		let formatter = DateFormatter()
-//		formatter.dateFormat = "EEEE, MMM d, yyyy"
-//		let alert = PopAlertView(title: formatter.string(from: date), view: allergyQueryView)
-//		alert.show(animated: true)
+		let smaller = (UIScreen.main.bounds.size.width < UIScreen.main.bounds.size.height) ? UIScreen.main.bounds.size.width : UIScreen.main.bounds.size.height
+		let allergyQueryView = AllergyQueryView(frame: CGRect(x: 0, y: 0, width: smaller*0.66, height: smaller*0.66))
+		allergyQueryView.delegate = self
+		allergyQueryView.responseButtons.forEach { (button) in
+			button.addTarget(self, action: #selector(dismissAllergiesAndOpenExposures), for: .touchUpInside)
+		}
+		if let dayIndex = ChartData.shared.yearlyIndex(for: date){
+			if let symptomValue = ChartData.shared.allergyDataValues[dayIndex]{
+				allergyQueryView.responseButtons[symptomValue].buttonState = .checked
+			}
+		}
+		let formatter = DateFormatter()
+		formatter.dateFormat = "EEEE, MMM d, yyyy"
+		let alert = PopAlertView(title: formatter.string(from: date), view: allergyQueryView)
+		currentlyOpenPopup = alert
+		alert.show(animated: true)
 	}
 	
 
