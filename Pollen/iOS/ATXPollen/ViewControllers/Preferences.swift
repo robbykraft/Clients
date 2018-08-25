@@ -86,7 +86,9 @@ class Preferences: UITableViewController {
 	}
 	
 	override func numberOfSections(in tableView: UITableView) -> Int {
-		return 4
+//		return 4
+		// for testing
+		return 5
 	}
 	
 	override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -114,6 +116,8 @@ class Preferences: UITableViewController {
 			return 2
 		case 3:
 			return 1
+		// for testing
+		case 4: return 1
 		default:
 			return 0
 		}
@@ -201,6 +205,9 @@ class Preferences: UITableViewController {
 			}
 		case 3:
 			cell.textLabel?.text = "About Allergy Free Austin"
+		// for testing
+		case 4:
+			cell.textLabel?.text = "[ Generate test data ]"
 		default: break
 		}
 		return cell
@@ -268,6 +275,10 @@ class Preferences: UITableViewController {
 			}
 		case 3:
 			self.navigationController?.pushViewController(AboutPage.init(style: .grouped), animated: true)
+		// test
+		case 4:
+			Symptom.shared.clearDataAndMakeFakeData()
+			self.tableView.deselectRow(at: indexPath, animated: true)
 		default:
 			break
 		}

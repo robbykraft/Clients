@@ -79,11 +79,11 @@ class MyAllergiesView: UIView {
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		let exposureCenter = [
-			CGPoint(x: self.bounds.size.width*0.75, y: self.bounds.size.height*0.3),
-			CGPoint(x: self.bounds.size.width*0.6, y: self.bounds.size.height*0.3),
-			CGPoint(x: self.bounds.size.width*0.9, y: self.bounds.size.height*0.3),
-			CGPoint(x: self.bounds.size.width*0.675, y: self.bounds.size.height*0.7),
-			CGPoint(x: self.bounds.size.width*0.825, y: self.bounds.size.height*0.7)
+			CGPoint(x: self.bounds.size.width*0.75, y: self.bounds.size.height*0.2),
+			CGPoint(x: self.bounds.size.width*0.6, y: self.bounds.size.height*0.2),
+			CGPoint(x: self.bounds.size.width*0.9, y: self.bounds.size.height*0.2),
+			CGPoint(x: self.bounds.size.width*0.675, y: self.bounds.size.height*0.55),
+			CGPoint(x: self.bounds.size.width*0.825, y: self.bounds.size.height*0.55)
 		]
 		for view in exposureImageViews{
 			view.removeFromSuperview()
@@ -96,7 +96,7 @@ class MyAllergiesView: UIView {
 		addEntryButton.frame.size.width += 50
 		addEntryButton.center = CGPoint(x: self.bounds.size.width*0.5, y: self.bounds.size.height*0.5)
 		
-		let faceViewSize:CGFloat = self.bounds.size.height*0.666
+		let faceViewSize:CGFloat = self.bounds.size.height*0.6
 		myAllergyFaceView.frame = CGRect(x: 0, y: 0, width: faceViewSize, height: faceViewSize)
 		myAllergyFaceView.center = CGPoint(x: self.bounds.size.width*0.25, y: faceViewSize * 0.5)
 		myAllergyLabel.sizeToFit()
@@ -111,6 +111,7 @@ class MyAllergiesView: UIView {
 				let exposureView = UIImageView(image: image)
 				exposureView.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width*0.125, height: self.bounds.size.width*0.125)
 				exposureView.center = exposureCenter[offset]
+				if exposures.count > 3 { exposureView.center.y -= self.bounds.size.width*0.125*0.5 }
 				self.addSubview(exposureView)
 				exposureImageViews.append(exposureView)
 			}
@@ -123,8 +124,8 @@ class MyAllergiesView: UIView {
 		if let symptom = self.symptom{
 			var color = UIColor.black
 			switch symptom.rawValue{
-			case 0: color = UIColor.black
-			case 1: color = Style.shared.green
+			case 0: color = Style.shared.green
+			case 1: color = Style.shared.yellow
 			case 2: color = Style.shared.orange
 			case 3: color = Style.shared.red
 			default: break

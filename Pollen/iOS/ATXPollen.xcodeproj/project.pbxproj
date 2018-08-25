@@ -347,8 +347,8 @@
 			children = (
 				D5E4AE8720D083260045BC7F /* IntroAllergyTrackView.swift */,
 				D5CFFEF520D963F700F69F81 /* WhatSeasonsView.swift */,
-				D5167FDE20AC9D8700478CBE /* ExposureQueryView.swift */,
 				D5167FDF20AC9D8700478CBE /* AllergyQueryView.swift */,
+				D5167FDE20AC9D8700478CBE /* ExposureQueryView.swift */,
 			);
 			path = DataCollection;
 			sourceTree = "<group>";

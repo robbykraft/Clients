@@ -7,7 +7,6 @@ import CoreData
 
 extension Notification.Name {
 	static let pollenDidUpdate = Notification.Name("POLLEN_SAMPLES_DID_UPDATE")
-	static let symptomDidUpdate = Notification.Name("SYMPTOM_ENTRY_DID_UPDATE")
 }
 
 

@@ -37,7 +37,7 @@ class ChartData{
 	var allergyDataValues:[Int?] = []
 	var exposureDailyData:[[Bool]] = []
 	var exposureDataByTypes:[[Bool]] = []
-	
+
 	func yearlyIndex(for date:Date) -> Int?{
 		// find the matching day in ChartData index
 		if clinicDataYearDates.count == 0{ return nil }
@@ -51,9 +51,11 @@ class ChartData{
 
 	fileprivate init(){
 		reloadData()
+		NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: .pollenDidUpdate, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: .symptomDidUpdate, object: nil)
 	}
 	
-	func reloadData(){
+	@objc func reloadData(){
 		// all data is between one year ago and today
 		let yearAgo = Calendar.current.date(byAdding: .year, value: -1, to: Date())!
 		let nowDate = Date()
@@ -174,7 +176,7 @@ class ChartData{
 //		set1.setColors(colors, alpha: 1.0)
 		set1.setColor(Style.shared.green)
 		set1.highlightEnabled = true
-		set1.highlightColor = Style.shared.orange
+		set1.highlightColor = Style.shared.blue
 		set1.highlightAlpha = 1.0
 		set1.drawValuesEnabled = false
 		let chartData = BarChartData(dataSet: set1)
@@ -196,7 +198,7 @@ class ChartData{
 //		set.setColor(Style.shared.green)
 		set.setColor(UIColor(white: 0.75, alpha: 1.0))
 		set.highlightEnabled = true
-//		set.highlightColor = Style.shared.orange
+		set.highlightColor = Style.shared.blue
 //		set.highlightAlpha = 1.0
 		set.drawValuesEnabled = false
 		set.drawValuesEnabled = false
@@ -246,7 +248,7 @@ class ChartData{
 //			set.setColors(colors, alpha: 1.0)
 			set.setColor(Style.shared.green)
 			set.highlightEnabled = true
-			set.highlightColor = Style.shared.orange
+			set.highlightColor = Style.shared.blue
 			set.highlightAlpha = 1.0
 			set.drawValuesEnabled = false
 			let chartData = BarChartData(dataSet: set)
@@ -275,7 +277,7 @@ class ChartData{
 //			set.setColor(Style.shared.green)
 			set.setColor(UIColor.init(white: 0.85, alpha: 1.0))
 			set.highlightEnabled = true
-			set.highlightColor = Style.shared.orange
+			set.highlightColor = Style.shared.blue
 //			set.highlightAlpha = 1.0
 			set.drawValuesEnabled = false
 			set.drawFilledEnabled = true
@@ -346,7 +348,7 @@ class ChartData{
 		
 		let set = LineChartDataSet(values: Array(rightSplit), label: nil)
 		set.lineWidth = 3.0
-		set.highlightColor = Style.shared.orange
+		set.highlightColor = Style.shared.blue
 		set.highlightLineWidth = 2.0
 		set.drawValuesEnabled = false
 		set.drawCirclesEnabled = true
@@ -383,7 +385,7 @@ class ChartData{
 		}
 		let set1 = LineChartDataSet(values: values, label: nil)
 		set1.lineWidth = 0.1
-		set1.highlightColor = Style.shared.orange
+		set1.highlightColor = Style.shared.blue
 		set1.highlightLineWidth = 1
 		set1.drawValuesEnabled = false
 		set1.drawCirclesEnabled = false
@@ -396,26 +398,33 @@ class ChartData{
 	}
 
 	func scatterData(from array:[[Bool]]) -> ScatterChartData{
-		let colors = [
-			UIColor(white: 0, alpha: 1.0),
-			UIColor(white: 0.4, alpha: 1.0),
-			UIColor(white: 0.6, alpha: 1.0),
-			UIColor(white: 0.75, alpha: 1.0),
-			UIColor(white: 0.866, alpha: 1.0)
-		]
-		let dataSets = array.enumerated().map { (i, valueArray) -> ChartDataSet in
-			let values = valueArray.map{ return $0 ? i : 0
-				}.enumerated().map({ (j, value) -> ChartDataEntry in
-					return ChartDataEntry(x: Double(j), y: -0.05 - Double(value)/14)
-				})//.filter({ $0.y != 0.0 })
+		let exposureTypes:[Exposures] = [.dog, .cat, .dust, .molds, .virus]
+
+//		let images:[UIImage] = [#imageLiteral(resourceName: "dog"), #imageLiteral(resourceName: "cat"), #imageLiteral(resourceName: "dust"), #imageLiteral(resourceName: "molds"), #imageLiteral(resourceName: "virus") ]
+
+		let dataSets = array.enumerated().map { (exI, valueArray) -> ChartDataSet in
+			let values = valueArray.enumerated().compactMap({ value -> ChartDataEntry? in
+				return value.element ? ChartDataEntry(x: Double(value.offset), y: -0.05 - Double(exI)/14) : nil
+//				return value.element ? ChartDataEntry(x: Double(value.offset), y: -0.05 - Double(exI)/14, icon: images[exI%5]) : nil
+			})
+//			let valuesold = valueArray.map{ return $0 ? exI : 0
+//				}.enumerated().map({ (j, value) -> ChartDataEntry in
+//					return ChartDataEntry(x: Double(j), y: -0.05 - Double(value)/14)
+//				})//.filter({ $0.y != 0.0 })
+
+			
+//			let values = valueArray.map{ return $0 ? i : 0
+//				}.enumerated().map({ (j, value) -> ChartDataEntry in
+//					return ChartDataEntry(x: Double(j), y: -0.05 - Double(value)/14)
+//				})//.filter({ $0.y != 0.0 })
 //			let set = ScatterChartDataSet(values: values + [ChartDataEntry(x: 0, y: 0)], label: exposureTypes[i].asString())
-			let set = ScatterChartDataSet(values: values, label: exposureTypes[i].asString())
+			let set = ScatterChartDataSet(values: values, label: exposureTypes[exI].asString())
 //			set.setScatterShape(.circle)
 			set.setScatterShape(.square)
-			set.scatterShapeHoleColor = colors[i%5]
+			set.scatterShapeHoleColor = Style.shared.colorFor(exposure: exposureTypes[exI%5])
 			set.scatterShapeHoleRadius = 3.5
 			set.drawValuesEnabled = false
-			set.setColor(colors[i%5])
+			set.setColor( Style.shared.colorFor(exposure: exposureTypes[exI%5]) )
 			set.scatterShapeSize = 8
 			return set
 		}

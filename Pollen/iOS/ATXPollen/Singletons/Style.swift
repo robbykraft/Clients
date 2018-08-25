@@ -61,7 +61,17 @@ class Style {
 	let purple = UIColor(red: 88/255.0, green: 86/255.0, blue: 214/255.0, alpha: 1.0)
 	
 	var zoomScale:CGFloat = 1.0
+
 	
+	
+	//	let colors = [
+	//		UIColor(white: 0, alpha: 1.0),
+	//		UIColor(white: 0.4, alpha: 1.0),
+	//		UIColor(white: 0.6, alpha: 1.0),
+	//		UIColor(white: 0.75, alpha: 1.0),
+	//		UIColor(white: 0.866, alpha: 1.0)
+	//	]
+
 	var P64:CGFloat = 64
 	var P48:CGFloat = 48
 	var P40:CGFloat = 40
@@ -115,6 +125,25 @@ class Style {
 		colorNoEntry = UIColor.black
 		
 		styleUIAppearance()
+	}
+	
+//	func colorFor(exposure:Exposures) -> UIColor{
+//		switch exposure {
+//		case .dog: return UIColor(red: 204/255, green: 54/255, blue: 16/255, alpha: 1.0)
+//		case .cat: return UIColor(red: 1, green: 141/255, blue: 0, alpha: 1.0)
+//		case .dust: return UIColor(red: 49/255, green: 14/255, blue: 8/255, alpha: 1.0)
+//		case .molds: return UIColor(red: 126/255, green: 0, blue: 0, alpha: 1.0)
+//		case .virus: return UIColor(red: 219/255, green: 176/255, blue: 0, alpha: 1.0)
+//		}
+//	}
+	func colorFor(exposure:Exposures) -> UIColor{
+		switch exposure {
+		case .dog: return UIColor(red: 85/255, green: 69/255, blue: 51/255, alpha: 1.0)
+		case .cat: return UIColor(red: 165, green: 151/255, blue: 110/255, alpha: 1.0)
+		case .dust: return UIColor(red: 210/255, green: 207/255, blue: 170/255, alpha: 1.0)
+		case .molds: return UIColor(red: 170/255, green: 188/255, blue: 121/255, alpha: 1.0)
+		case .virus: return UIColor(red: 219/255, green: 176/255, blue: 0, alpha: 1.0)
+		}
 	}
 	
 	func colorFor(rating:PollenRating)->UIColor{

@@ -113,7 +113,9 @@ extension PollenTypeChartView {
 		chart.rightAxis.enabled = false
 		chart.xAxis.enabled = false
 		chart.doubleTapToZoomEnabled = false
-		chart.data = data
+		if data.entryCount > 0{
+			chart.data = data
+		}
 		if let font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15){
 			chart.noDataFont = font
 		}

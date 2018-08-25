@@ -8,10 +8,16 @@
 
 import UIKit
 
+protocol ExposureQueryDelegate{
+	func exposureQueryDidChange(exposures:[Exposures]?)
+}
+
 class ExposureQueryView: UIView {
+	
+	var delegate:ExposureQueryDelegate?
 
 	let topQuestionLabel = UILabel()
-	let responseButtons = [UIBorderedButton(), UIBorderedButton(), UIBorderedButton(), UIBorderedButton()]
+	let responseButtons = [UIBorderedSwitch(), UIBorderedSwitch(), UIBorderedSwitch(), UIBorderedSwitch(), UIBorderedSwitch()]
 
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -26,7 +32,7 @@ class ExposureQueryView: UIView {
 	
 	func initUI(){
 		topQuestionLabel.textColor = UIColor.black
-		topQuestionLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P21)
+		topQuestionLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P18)
 		topQuestionLabel.text = "Exposed to any of these today?"
 		
 		// buttons
@@ -34,6 +40,10 @@ class ExposureQueryView: UIView {
 		for i in 0 ..< responseButtons.count {
 			let button = responseButtons[i]
 			button.setTitle(labels[i], for: .normal)
+			button.setImage(UIImage(named: labels[i]), for: .normal)
+			button.tag = i
+			button.fillColor = Style.shared.blue
+			button.addTarget(self, action: #selector(buttonDidPress), for: .touchUpInside)
 			button.titleLabel?.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P24)
 			button.color = UIColor.black
 		}
@@ -58,6 +68,17 @@ class ExposureQueryView: UIView {
 		for button in responseButtons{
 			button.frame = CGRect(x: buttonX, y: buttonContent.origin.y + i * (buttonH+buttonPad), width: buttonW, height: buttonH)
 			i += 1
+		}
+	}
+	
+	@objc func buttonDidPress(sender:UIBorderedSwitch){
+		let selectedExposures = responseButtons
+			.filter({ $0.buttonState == .checked })
+			.compactMap({  Exposures(rawValue: $0.tag) })
+		if selectedExposures.count > 0 {
+			self.delegate?.exposureQueryDidChange(exposures: selectedExposures)
+		} else {
+			self.delegate?.exposureQueryDidChange(exposures: nil)
 		}
 	}
 

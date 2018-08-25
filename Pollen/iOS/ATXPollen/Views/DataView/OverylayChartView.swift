@@ -32,6 +32,9 @@ class OverylayChartView: UIView, ChartViewDelegate{
 	let chartView = CombinedChartView()
 	var delegate:OverlayChartDelegate?
 	
+//	let exposureLabels = [UILabel(), UILabel(), UILabel(), UILabel(), UILabel()]
+	let exposureLabel = UILabel()
+	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		initUI()
@@ -40,6 +43,27 @@ class OverylayChartView: UIView, ChartViewDelegate{
 	required init(coder aDecoder: NSCoder) { fatalError("This class does not support NSCoding") }
 	
 	func initUI(){
+		let exposureString = "▇ dog  ▇ cat  ▇ dust  ▇ molds  ▇ virus"
+		let attributedString = NSMutableAttributedString(string:exposureString)
+		let fullRange: NSRange = NSMakeRange(0, exposureString.count)
+		attributedString.addAttribute(NSAttributedStringKey.font, value: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P15)!, range: fullRange)
+
+		let exposures:[Exposures] = [.dog, .cat, .dust, .molds, .virus]
+		for exposure in exposures{
+			let range = (exposureString as NSString).range(of: "▇ " + exposure.asString())
+			attributedString.addAttribute(NSAttributedStringKey.foregroundColor, value: Style.shared.colorFor(exposure: exposure), range: range)
+		}
+		exposureLabel.attributedText = attributedString
+		exposureLabel.sizeToFit()
+		
+		self.addSubview(exposureLabel)
+		
+//		exposureLabels.enumerated().forEach({
+//			$0.element.text = Exposures(rawValue: $0.offset)?.asString()
+//			$0.element.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P12)
+//			$0.element.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P12)
+//		})
+		
 		self.addSubview(chartView)
 		chartView.delegate = self
 
@@ -78,7 +102,9 @@ class OverylayChartView: UIView, ChartViewDelegate{
 	
 	override func layoutSubviews() {
 		super.layoutSubviews()
-		chartView.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height)
+		chartView.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height*0.9)
+		exposureLabel.sizeToFit()
+		exposureLabel.center = CGPoint(x: self.bounds.size.width*0.5, y: self.bounds.size.height - exposureLabel.frame.size.height)
 	}
 	
 	func randomBool() -> Bool {
@@ -96,6 +122,7 @@ class OverylayChartView: UIView, ChartViewDelegate{
 		
 		data.scatterData = ChartData.shared.scatterData(from: ChartData.shared.exposureDataByTypes)
 		chartView.xAxis.axisMaximum = data.xMax + 0.25
+		chartView.xAxis.axisMinimum = 0
 		chartView.data = data
 		chartView.legend.enabled = false
 	}
