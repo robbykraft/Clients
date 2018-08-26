@@ -19,7 +19,6 @@ class DataView: UIView, OverlayChartDelegate {
 	
 	var selectedDate:Date = Date()
 
-	let titleLabel = UILabel()
 	let trackAllergiesButton = UIButton()
 	let trackAllergiesBackground = UIImageView()
 
@@ -42,11 +41,7 @@ class DataView: UIView, OverlayChartDelegate {
 	}
 	
 	func initUI(){
-		
-		titleLabel.text = "my year in allergies"
-		titleLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P30)
-		titleLabel.textColor = .black
-		
+
 		trackAllergiesBackground.image = UIImage(named: "cutout")
 		trackAllergiesButton.setTitle("begin tracking my allergies", for: .normal)
 		trackAllergiesButton.setTitleColor(.black, for: .normal)
@@ -62,7 +57,6 @@ class DataView: UIView, OverlayChartDelegate {
 		self.addSubview(trackAllergiesBackground)
 		self.addSubview(trackAllergiesButton)
 		self.addSubview(segmentedControl)
-		self.addSubview(titleLabel)
 		
 		segmentedControl.addTarget(self, action: #selector(segmentedControlDidChange), for: .valueChanged)
 		
@@ -79,11 +73,9 @@ class DataView: UIView, OverlayChartDelegate {
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		
-		titleLabel.sizeToFit()
-		titleLabel.frame.origin = CGPoint(x: 20, y: -10)
-		segmentedControl.center = CGPoint(x: self.bounds.size.width*0.5, y: 50)
+		segmentedControl.center = CGPoint(x: self.bounds.size.width*0.5, y: 20)
 
-		overlayChartView.frame = CGRect(x: 0, y: 80, width: self.bounds.size.width, height: self.bounds.size.height*0.55-80)
+		overlayChartView.frame = CGRect(x: 0, y: 50, width: self.bounds.size.width, height: self.bounds.size.height*0.55-50)
 		dailyDetailChartView.frame = CGRect(x: 0, y: self.bounds.size.height*0.55, width: self.bounds.size.width, height: self.bounds.size.height*0.25)
 		myAllergiesView.frame = CGRect(x: 0, y: self.bounds.size.height*0.8, width: self.bounds.size.width, height: self.bounds.size.height*0.2)
 

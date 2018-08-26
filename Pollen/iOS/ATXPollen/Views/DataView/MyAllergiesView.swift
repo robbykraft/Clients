@@ -74,8 +74,8 @@ class MyAllergiesView: UIView {
 			CGPoint(x: self.bounds.size.width*0.75, y: self.bounds.size.height*0.4),
 			CGPoint(x: self.bounds.size.width*0.6, y: self.bounds.size.height*0.4),
 			CGPoint(x: self.bounds.size.width*0.9, y: self.bounds.size.height*0.4),
-			CGPoint(x: self.bounds.size.width*0.675, y: self.bounds.size.height*0.65),
-			CGPoint(x: self.bounds.size.width*0.825, y: self.bounds.size.height*0.65)
+			CGPoint(x: self.bounds.size.width*0.675, y: self.bounds.size.height*0.7),
+			CGPoint(x: self.bounds.size.width*0.825, y: self.bounds.size.height*0.7)
 		]
 		for view in exposureImageViews{
 			view.removeFromSuperview()

@@ -72,9 +72,9 @@ class DailyDetailChartView: UIView {
 		traceLabel.frame.origin = CGPoint(x: 20, y: self.bounds.size.height - traceLabel.frame.size.height)
 		
 		if let entries = chartView.data?.dataSets.first?.entryCount{
-			chartView.frame = CGRect(x: 0, y: 28, width: self.bounds.size.width, height: self.bounds.size.height * 0.12 + self.bounds.size.height * 0.1 * CGFloat(entries))
+			chartView.frame = CGRect(x: 0, y: dateUnderline.frame.origin.y, width: self.bounds.size.width, height: self.bounds.size.height * 0.12 + self.bounds.size.height * 0.1 * CGFloat(entries))
 		} else{
-			chartView.frame = CGRect(x: 0, y: 28, width: self.bounds.size.width, height: self.bounds.size.height * 0.7)
+			chartView.frame = CGRect(x: 0, y: dateUnderline.frame.origin.y, width: self.bounds.size.width, height: self.bounds.size.height * 0.7)
 		}
 		
 		if chartView.frame.size.height > self.bounds.size.height * 0.666 { chartView.frame.size.height = self.bounds.size.height * 0.666 }

@@ -144,6 +144,7 @@ class PollenNotifications: NSObject, UNUserNotificationCenterDelegate, Messaging
 		case UNNotificationDefaultActionIdentifier:
 			// app opened from pressing notification without answering question - show popup window
 			print("Default")
+			NotificationCenter.default.post(name: .queryRequestSymptomAndExposure, object: nil, userInfo: ["date":Date()])
 		default: print("Unknown action")
 		}
 		completionHandler()
