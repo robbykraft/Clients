@@ -9,9 +9,6 @@
 import Foundation
 import Charts
 
-extension Notification.Name {
-	static let chartDataDidUpdate = Notification.Name("CHART_DATA_DID_UPDATE")
-}
 
 class ChartData{
 	
@@ -23,7 +20,7 @@ class ChartData{
 	let pollenTypeGroups:[PollenTypeGroup] = [.grasses, .weeds, .trees, .molds]
 //	let pollenTypeGroups:[PollenTypeGroup] = [.trees, .grasses, .molds, .weeds]
 
-	let exposureTypes:[Exposures] = [.dog, .cat, .dust, .molds, .virus]
+	let exposureTypes:[Exposures] = (0..<5).indices.map({Exposures(rawValue: $0)!})
 
 	// data from past year
 	var dailyClinicData:[DailyPollenCount] = []
@@ -411,7 +408,8 @@ class ChartData{
 	}
 
 	func scatterData(from array:[[Bool]]) -> ScatterChartData{
-		let exposureTypes:[Exposures] = [.dog, .cat, .dust, .molds, .virus]
+		let exposureTypes:[Exposures] = (0..<5).indices.map({Exposures(rawValue: $0)!})
+//		let exposureTypes:[Exposures] = [.dog, .cat, .dust, .molds, .virus]
 
 //		let images:[UIImage] = [#imageLiteral(resourceName: "dog"), #imageLiteral(resourceName: "cat"), #imageLiteral(resourceName: "dust"), #imageLiteral(resourceName: "molds"), #imageLiteral(resourceName: "virus") ]
 
@@ -455,7 +453,7 @@ class ChartData{
 			UIColor(white: 0.866, alpha: 1.0)
 		]
 
-		let exposureTypes:[Exposures] = [.dog, .cat, .dust, .molds, .virus]
+		let exposureTypes:[Exposures] = (0..<5).indices.map({Exposures(rawValue: $0)!})
 		let dataSets = array.enumerated().map { (exI, valueArray) -> ChartDataSet in
 			let values = valueArray.enumerated().compactMap({ value -> ChartDataEntry? in
 				return value.element ? ChartDataEntry(x: Double(value.offset), y: -0.05 - Double(exI)/14) : nil

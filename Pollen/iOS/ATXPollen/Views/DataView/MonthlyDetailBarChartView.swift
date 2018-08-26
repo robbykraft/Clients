@@ -23,7 +23,7 @@ class MonthlyDetailBarChartView: UIView, ChartViewDelegate {
 	
 	// parameters for data
 	let speciesGroups:[PollenTypeGroup] = [.grasses, .weeds, .trees, .molds]
-	let exposureTypes:[Exposures] = [.dog, .cat, .dust, .molds, .virus]
+	let exposureTypes:[Exposures] = (0..<5).indices.map({Exposures(rawValue: $0)!})
 	var lowBounds = Date()
 	var upperBounds = Date()
 	

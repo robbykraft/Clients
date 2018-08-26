@@ -23,18 +23,18 @@ enum SymptomRating : Int{
 	}
 }
 
-enum Exposures : Int{
+enum Exposures : Int { // CaseIterable // next version of swift
 	case dog
 	case cat
-	case molds
 	case dust
+	case molds
 	case virus
 	func asString() -> String{
 		switch self{
 		case .dog: return "dog"
 		case .cat: return "cat"
-		case .molds: return "molds"
 		case .dust: return "dust"
+		case .molds: return "molds"
 		case .virus: return "virus"
 		}
 	}

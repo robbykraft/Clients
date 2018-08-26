@@ -11,6 +11,7 @@ import UIKit
 class PopAlertView: UIView, Modal{
 	var backgroundView = UIView()
 	var dialogView = UIView()
+	var view:UIView?
 	
 	convenience init(title:String, view:UIView) {
 		self.init(frame: UIScreen.main.bounds)
@@ -24,6 +25,8 @@ class PopAlertView: UIView, Modal{
 	}
 	
 	func initUI(title:String, view:UIView){
+		self.view = view
+		
 		backgroundView.frame = frame
 		backgroundView.backgroundColor = UIColor.black
 		backgroundView.alpha = 0.6

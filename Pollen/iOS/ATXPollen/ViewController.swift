@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UINavigationControllerDelegate, HomeSlideViewDelegate, DataViewDelegate{
+class ViewController: UIViewController, UINavigationControllerDelegate, HomeSlideViewDelegate, DataViewDelegate, AllergyQueryDelegate, ExposureQueryDelegate{
 	
 	let preferencesButton = UIButton()
 
@@ -16,6 +16,8 @@ class ViewController: UIViewController, UINavigationControllerDelegate, HomeSlid
 	let homeSlideView = HomeSlideView()
 	// everything underneath: questions, map
 	let dataView = DataView()
+	
+	weak var popupView:PopAlertView? // pointer to current popup window if exists
 
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
@@ -53,19 +55,25 @@ class ViewController: UIViewController, UINavigationControllerDelegate, HomeSlid
 		reloadData()
 		NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: .pollenDidUpdate, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(reloadData), name: .symptomDidUpdate, object: nil)
-
-//		PollenNotifications.shared.enableLocalTimer()
+		NotificationCenter.default.addObserver(dataView, selector: #selector(reloadData), name: .chartDataDidUpdate, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(querySymptom(notification:)), name: .queryRequestSymptom, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(queryExposure(notification:)), name: .queryRequestExposure, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(querySymptomAndExposure(notification:)), name: .queryRequestSymptomAndExposure, object: nil)
 	}
 	
 	deinit {
 		NotificationCenter.default.removeObserver(self, name: .pollenDidUpdate, object: nil)
+		NotificationCenter.default.removeObserver(self, name: .symptomDidUpdate, object: nil)
+		NotificationCenter.default.removeObserver(dataView, name: .chartDataDidUpdate, object: nil)
+		NotificationCenter.default.removeObserver(self, name: .queryRequestSymptom, object: nil)
+		NotificationCenter.default.removeObserver(self, name: .queryRequestExposure, object: nil)
+		NotificationCenter.default.removeObserver(self, name: .queryRequestSymptomAndExposure, object: nil)
 	}
 	
 	@objc func reloadData(){
 		homeSlideView.barChart.data = Array(ClinicData.shared.dailyCounts.prefix(15)).map({ $0.relevantToMyAllergies() })
 		homeSlideView.radialChart.data = homeSlideView.barChart.data.first
 		dataView.reloadData()
-		dataView.layoutSubviews()
 	}
 		
 	@objc func preferencesButtonPressed(){
@@ -109,5 +117,179 @@ class ViewController: UIViewController, UINavigationControllerDelegate, HomeSlid
 		alert.addAction(action1)
 		self.present(alert, animated: true, completion: nil)
 	}
+	
+	@objc func querySymptom(notification: NSNotification){
+		let date = notification.userInfo?["date"] as? Date ?? Date()
+		queryAllergies(date: date, symptoms: true, exposures: false)
+	}
+	@objc func queryExposure(notification: NSNotification){
+		let date = notification.userInfo?["date"] as? Date ?? Date()
+		queryAllergies(date: date, symptoms: false, exposures: true)
+	}
+	@objc func querySymptomAndExposure(notification: NSNotification){
+		let date = notification.userInfo?["date"] as? Date ?? Date()
+		queryAllergies(date: date, symptoms: true, exposures: true)
+	}
 
+	
+	func queryAllergies(date: Date, symptoms: Bool, exposures: Bool) {
+		if symptoms && !exposures{
+			let popup = symptomPopup(for: date)
+			popup.show(animated: true)
+			self.popupView = popup
+		}
+		if exposures && !symptoms{
+			let popup = exposurePopup(for: date)
+			popup.show(animated: true)
+			self.popupView = popup
+		}
+		if exposures && symptoms{
+			let popup = symptomPopup(for: date)
+			popup.show(animated: true)
+			let queryView = popup.view as? AllergyQueryView
+			queryView?.responseButtons.forEach { (button) in
+				button.addTarget(self, action: #selector(dismissAllergiesAndOpenExposures), for: .touchUpInside)
+			}
+			self.popupView = popup
+		}
+	}
+	
+	@objc func dismissAllergiesAndOpenExposures(){
+		if let popup = self.popupView{
+			let queryView = popup.view as? AllergyQueryView
+			if let date = queryView?.date{
+				popup.dismiss(animated: true)
+				let popup = exposurePopup(for: date)
+				popup.show(animated: true)
+				self.popupView = popup
+			}
+		}
+	}
+
+	
+	func symptomPopup(for date:Date) -> PopAlertView{
+		let size = UIScreen.main.bounds.size
+		let smaller = (size.width < size.height) ? size.width : size.height
+		let allergyQueryView = AllergyQueryView(frame: CGRect(x: 0, y: 0, width: smaller*0.66, height: smaller*0.66))
+		allergyQueryView.delegate = self
+		allergyQueryView.date = date
+		if let symptom = Symptom.shared.entries.filter({ Calendar.current.isDate($0.date, inSameDayAs: date) }).first{
+			if let value = symptom.rating?.rawValue{
+				allergyQueryView.responseButtons[value].buttonState = .checked
+			}
+		}
+		let formatter = DateFormatter()
+		formatter.dateFormat = "EEEE, MMM d, yyyy"
+		return PopAlertView(title: formatter.string(from: date), view: allergyQueryView)
+	}
+	
+	func exposurePopup(for date:Date) -> PopAlertView{
+		let size = UIScreen.main.bounds.size
+		let smaller = (size.width < size.height) ? size.width : size.height
+		let exposureQueryView = ExposureQueryView(frame: CGRect(x: 0, y: 0, width: smaller*0.66, height: smaller*0.9))
+		exposureQueryView.delegate = self
+		exposureQueryView.date = date
+		let exposureTypes:[Exposures] = (0..<5).indices.map({Exposures(rawValue: $0)!})
+		if let symptom = Symptom.shared.entries.filter({ Calendar.current.isDate($0.date, inSameDayAs: date) }).first{
+			if let exposures = symptom.exposures{
+				exposures.enumerated().forEach({
+					let index = exposureTypes.index(of: $0.element)!
+					exposureQueryView.responseButtons[index].buttonState = .checked
+				})
+			}
+		}
+		let formatter = DateFormatter()
+		formatter.dateFormat = "EEEE, MMM d, yyyy"
+		return PopAlertView(title: formatter.string(from: date), view: exposureQueryView)
+	}
+
+	func allergyQueryDidChange(rating: SymptomRating?, date:Date?) {
+		if let d = date{
+			var currentSymptom = Symptom.shared.entries.filter({ Calendar.current.isDate($0.date, inSameDayAs: d) }).first
+			if currentSymptom == nil { currentSymptom = SymptomEntry(date: d, location: nil, rating: nil, exposures: nil) }
+			if var symptom = currentSymptom{
+				symptom.rating = rating
+				Symptom.shared.updateDatabaseWith(entry: symptom)
+			}
+		}
+	}
+	
+	func exposureQueryDidChange(exposures: [Exposures]?, date:Date?) {
+		if let d = date{
+			var currentSymptom = Symptom.shared.entries.filter({ Calendar.current.isDate($0.date, inSameDayAs: d) }).first
+			if currentSymptom == nil { currentSymptom = SymptomEntry(date: d, location: nil, rating: nil, exposures: nil) }
+			if var symptom = currentSymptom{
+				symptom.exposures = exposures
+				Symptom.shared.updateDatabaseWith(entry: symptom)
+			}
+		}
+	}
+	
+	
+	
+//
+//	func updateSymptomAndExposures(for date: Date) {
+//		currentlyEditingDate = date
+//		let smaller = (UIScreen.main.bounds.size.width < UIScreen.main.bounds.size.height) ? UIScreen.main.bounds.size.width : UIScreen.main.bounds.size.height
+//		let allergyQueryView = AllergyQueryView(frame: CGRect(x: 0, y: 0, width: smaller*0.66, height: smaller*0.66))
+//		allergyQueryView.delegate = self
+//		allergyQueryView.responseButtons.forEach { (button) in
+//			button.addTarget(self, action: #selector(dismissAllergiesAndOpenExposures), for: .touchUpInside)
+//		}
+//		if let dayIndex = ChartData.shared.yearlyIndex(for: date){
+//			if let symptomValue = ChartData.shared.allergyDataValues[dayIndex]{
+//				allergyQueryView.responseButtons[symptomValue].buttonState = .checked
+//			}
+//		}
+//		let formatter = DateFormatter()
+//		formatter.dateFormat = "EEEE, MMM d, yyyy"
+//		let alert = PopAlertView(title: formatter.string(from: date), view: allergyQueryView)
+//		currentlyOpenPopup = alert
+//		alert.show(animated: true)
+//	}
+
+
+//	var currentlyEditingDate:Date?
+//	var currentlyOpenPopup:PopAlertView?
+	
+//	func updateExposures(for date: Date) {
+//		currentlyEditingDate = date
+//		let smaller = (UIScreen.main.bounds.size.width < UIScreen.main.bounds.size.height) ? UIScreen.main.bounds.size.width : UIScreen.main.bounds.size.height
+//		let exposureQueryView = ExposureQueryView(frame: CGRect(x: 0, y: 0, width: smaller*0.66, height: smaller*0.9))
+//		exposureQueryView.delegate = self
+//		if let dayIndex = ChartData.shared.yearlyIndex(for: date){
+//			ChartData.shared.exposureDailyData[dayIndex].enumerated().forEach { (i, element) in
+//				if element { exposureQueryView.responseButtons[i].buttonState = .checked }
+//			}
+//		}
+//		let formatter = DateFormatter()
+//		formatter.dateFormat = "EEEE, MMM d, yyyy"
+//		let alert = PopAlertView(title: formatter.string(from: date), view: exposureQueryView)
+//		alert.show(animated: true)
+//	}
+//
+//
+//	func allergyQueryDidChange(rating: SymptomRating?) {
+//		if let date = currentlyEditingDate{
+//			var currentSymptom = Symptom.shared.entries.filter({ Calendar.current.isDate($0.date, inSameDayAs: date) }).first
+//			if currentSymptom == nil { currentSymptom = SymptomEntry(date: date, location: nil, rating: nil, exposures: nil) }
+//			if var symptom = currentSymptom{
+//				symptom.rating = rating
+//				Symptom.shared.updateDatabaseWith(entry: symptom)
+//			}
+//		}
+//	}
+//
+//	func exposureQueryDidChange(exposures: [Exposures]?) {
+//		if let date = currentlyEditingDate{
+//			var currentSymptom = Symptom.shared.entries.filter({ Calendar.current.isDate($0.date, inSameDayAs: date) }).first
+//			if currentSymptom == nil { currentSymptom = SymptomEntry(date: date, location: nil, rating: nil, exposures: nil) }
+//			if var symptom = currentSymptom{
+//				symptom.exposures = exposures
+//				Symptom.shared.updateDatabaseWith(entry: symptom)
+//			}
+//		}
+//	}
+	
+	
 }

@@ -15,6 +15,17 @@ import FirebaseMessaging
 let USER_DEFAULTS_NOTIFICATION_HOUR:String = "notificationAlertHour"
 let USER_DEFAULTS_NOTIFICATION_MINUTE:String = "notificationAlertMinute"
 
+extension Notification.Name {
+	static let pollenDidUpdate = Notification.Name("POLLEN_SAMPLES_DID_UPDATE")
+	static let symptomDidUpdate = Notification.Name("SYMPTOM_ENTRY_DID_UPDATE")
+
+	static let chartDataDidUpdate = Notification.Name("CHART_DATA_DID_UPDATE")
+
+	static let queryRequestSymptom = NSNotification.Name("QUERY_REQUEST_SYMPTOM")
+	static let queryRequestExposure = NSNotification.Name("QUERY_REQUEST_EXPOSURE")
+	static let queryRequestSymptomAndExposure = NSNotification.Name("QUERY_REQUEST_SYMPTOM_AND_EXPOSURE")
+}
+
 class PollenNotifications: NSObject, UNUserNotificationCenterDelegate, MessagingDelegate {
 
 	static let shared = PollenNotifications()
@@ -130,7 +141,9 @@ class PollenNotifications: NSObject, UNUserNotificationCenterDelegate, Messaging
 			let entry = SymptomEntry(date: Date(), location: nil, rating: .none, exposures: nil)
 			Symptom.shared.updateDatabaseWith(entry: entry)
 		case UNNotificationDismissActionIdentifier: print("Dismiss Action")
-		case UNNotificationDefaultActionIdentifier: print("Default")
+		case UNNotificationDefaultActionIdentifier:
+			// app opened from pressing notification without answering question - show popup window
+			print("Default")
 		default: print("Unknown action")
 		}
 		completionHandler()

@@ -8,15 +8,7 @@
 
 import UIKit
 
-protocol MyAllergiesDelegate{
-	func updateSymptom(for date:Date)
-	func updateExposures(for date:Date)
-	func updateSymptomAndExposures(for date:Date)
-}
-
 class MyAllergiesView: UIView {
-	
-	var delegate:MyAllergiesDelegate?
 	
 	var date:Date?
 
@@ -79,11 +71,11 @@ class MyAllergiesView: UIView {
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		let exposureCenter = [
-			CGPoint(x: self.bounds.size.width*0.75, y: self.bounds.size.height*0.2),
-			CGPoint(x: self.bounds.size.width*0.6, y: self.bounds.size.height*0.2),
-			CGPoint(x: self.bounds.size.width*0.9, y: self.bounds.size.height*0.2),
-			CGPoint(x: self.bounds.size.width*0.675, y: self.bounds.size.height*0.55),
-			CGPoint(x: self.bounds.size.width*0.825, y: self.bounds.size.height*0.55)
+			CGPoint(x: self.bounds.size.width*0.75, y: self.bounds.size.height*0.4),
+			CGPoint(x: self.bounds.size.width*0.6, y: self.bounds.size.height*0.4),
+			CGPoint(x: self.bounds.size.width*0.9, y: self.bounds.size.height*0.4),
+			CGPoint(x: self.bounds.size.width*0.675, y: self.bounds.size.height*0.65),
+			CGPoint(x: self.bounds.size.width*0.825, y: self.bounds.size.height*0.65)
 		]
 		for view in exposureImageViews{
 			view.removeFromSuperview()
@@ -155,18 +147,17 @@ class MyAllergiesView: UIView {
 	
 	@objc func updateSymptomDidPress(sender:UIButton){
 		if let date = self.date{
-			delegate?.updateSymptom(for: date)
+			NotificationCenter.default.post(name: .queryRequestSymptom, object: nil, userInfo: ["date":date])
 		}
 	}
 	@objc func updateExposureDidPress(sender:UIButton){
 		if let date = self.date{
-			delegate?.updateExposures(for: date)
+			NotificationCenter.default.post(name: .queryRequestExposure, object: nil, userInfo: ["date":date])
 		}
 	}
-	
 	@objc func addEntryHandler(sender:UIButton){
 		if let date = self.date{
-			delegate?.updateSymptomAndExposures(for: date)
+			NotificationCenter.default.post(name: .queryRequestSymptomAndExposure, object: nil, userInfo: ["date":date])
 		}
 	}
 	

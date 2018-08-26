@@ -9,12 +9,15 @@
 import UIKit
 
 protocol ExposureQueryDelegate{
-	func exposureQueryDidChange(exposures:[Exposures]?)
+	func exposureQueryDidChange(exposures:[Exposures]?, date:Date?)
 }
 
 class ExposureQueryView: UIView {
 	
 	var delegate:ExposureQueryDelegate?
+
+	// please set this date!! this is used by the delegate
+	var date:Date?
 
 	let topQuestionLabel = UILabel()
 	let responseButtons = [UIBorderedSwitch(), UIBorderedSwitch(), UIBorderedSwitch(), UIBorderedSwitch(), UIBorderedSwitch()]
@@ -36,11 +39,11 @@ class ExposureQueryView: UIView {
 		topQuestionLabel.text = "Exposed to any of these today?"
 		
 		// buttons
-		let labels = ["dog", "cat", "molds", "dust", "virus"]
+		let exposureTypes:[Exposures] = (0..<5).indices.map({Exposures(rawValue: $0)!})
 		for i in 0 ..< responseButtons.count {
 			let button = responseButtons[i]
-			button.setTitle(labels[i], for: .normal)
-			button.setImage(UIImage(named: labels[i]), for: .normal)
+			button.setTitle(exposureTypes[i].asString(), for: .normal)
+			button.setImage(UIImage(named: exposureTypes[i].asString()), for: .normal)
 			button.tag = i
 			button.fillColor = Style.shared.blue
 			button.addTarget(self, action: #selector(buttonDidPress), for: .touchUpInside)
@@ -76,9 +79,9 @@ class ExposureQueryView: UIView {
 			.filter({ $0.buttonState == .checked })
 			.compactMap({  Exposures(rawValue: $0.tag) })
 		if selectedExposures.count > 0 {
-			self.delegate?.exposureQueryDidChange(exposures: selectedExposures)
+			self.delegate?.exposureQueryDidChange(exposures: selectedExposures, date:self.date)
 		} else {
-			self.delegate?.exposureQueryDidChange(exposures: nil)
+			self.delegate?.exposureQueryDidChange(exposures: nil, date:self.date)
 		}
 	}
 

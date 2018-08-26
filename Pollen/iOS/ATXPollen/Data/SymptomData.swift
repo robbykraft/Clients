@@ -10,10 +10,6 @@ import Foundation
 import UIKit
 import CoreData
 
-extension Notification.Name {
-	static let symptomDidUpdate = Notification.Name("SYMPTOM_ENTRY_DID_UPDATE")
-}
-
 
 class Symptom {
 	private let SYMPTOM_SAMPLE_ENTITY = "CoreSymptomSample"
@@ -36,7 +32,7 @@ class Symptom {
 			let date = Calendar.current.date(byAdding: components, to: Date())!
 			let rand = Int(arc4random() % 5)
 			var exposures:[Exposures]? = nil
-			let possibleExposures:[Exposures] = [.dog,.cat,.molds,.dust,.virus]
+			let possibleExposures:[Exposures] = [.dog,.cat,.dust,.molds,.virus]
 			for i in 0..<possibleExposures.count{
 				if Int(arc4random() % 4) == 0{
 					if exposures == nil{

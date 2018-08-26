@@ -5,10 +5,6 @@ import Firebase
 import FirebaseDatabase
 import CoreData
 
-extension Notification.Name {
-	static let pollenDidUpdate = Notification.Name("POLLEN_SAMPLES_DID_UPDATE")
-}
-
 
 class ClinicData {
 	private let POLLEN_SAMPLE_ENTITY = "CorePollenSample"

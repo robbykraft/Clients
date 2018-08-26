@@ -9,12 +9,15 @@
 import UIKit
 
 protocol AllergyQueryDelegate{
-	func allergyQueryDidChange(rating:SymptomRating?)
+	func allergyQueryDidChange(rating:SymptomRating?, date:Date?)
 }
 
 class AllergyQueryView: UIView {
 	
 	var delegate:AllergyQueryDelegate?
+	
+	// please set this date!! this is used by the delegate
+	var date:Date?
 
 	let topQuestionLabel = UILabel()
 	let responseLabel = UILabel()
@@ -64,11 +67,11 @@ class AllergyQueryView: UIView {
 		if let checkedButton = responseButtons.filter({ $0.buttonState == .checked }).first{
 			responseLabel.text = checkedButton.titleLabel?.text
 			responseLabel.textColor = colors[checkedButton.tag]
-			self.delegate?.allergyQueryDidChange(rating: SymptomRating(rawValue: checkedButton.tag))
+			self.delegate?.allergyQueryDidChange(rating: SymptomRating(rawValue: checkedButton.tag), date:self.date)
 		} else{
 			responseLabel.text = "no response"
 			responseLabel.textColor = UIColor.black
-			self.delegate?.allergyQueryDidChange(rating: nil)
+			self.delegate?.allergyQueryDidChange(rating: nil, date:self.date)
 		}
 		self.setNeedsLayout()
 	}

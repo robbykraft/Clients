@@ -64,7 +64,7 @@ class OverylayChartView: UIView, ChartViewDelegate{
 		let attributedString = NSMutableAttributedString(string:exposureString)
 		let fullRange: NSRange = NSMakeRange(0, exposureString.count)
 		attributedString.addAttribute(NSAttributedStringKey.font, value: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P15)!, range: fullRange)
-		let exposures:[Exposures] = [.dog, .cat, .dust, .molds, .virus]
+		let exposures:[Exposures] = (0..<5).indices.map({Exposures(rawValue: $0)!})
 		for exposure in exposures{
 			let range = (exposureString as NSString).range(of: "▇ " + exposure.asString())
 			attributedString.addAttribute(NSAttributedStringKey.foregroundColor, value: Style.shared.colorFor(exposure: exposure), range: range)
@@ -158,6 +158,7 @@ class OverylayChartView: UIView, ChartViewDelegate{
 	}
 
 	func reloadData(){
+	
 		if ChartData.shared.clinicDataYearDates.count == 0{ return }
 		
 		let data = CombinedChartData()
