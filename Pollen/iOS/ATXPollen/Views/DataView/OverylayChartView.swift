@@ -51,6 +51,8 @@ class OverylayChartView: UIView, ChartViewDelegate{
 	
 	let exposureLabel = UILabel()
 	let pollenGroupsLabel = UILabel()
+	
+	var _currentlySelectedIndex:Int?
 
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -135,15 +137,77 @@ class OverylayChartView: UIView, ChartViewDelegate{
 		chartView.xAxis.drawGridLinesEnabled = false
 		chartView.xAxis.drawAxisLineEnabled = false
 		chartView.chartDescription?.enabled = false
-		//
 		chartView.doubleTapToZoomEnabled = false
 		chartView.xAxis.axisMinimum = 0
 		chartView.legend.enabled = false
 	}
 	
+	func adjustSelectedIfNeeded(){
+		if let handler:ViewPortHandler = chartView.viewPortHandler{
+			if let high = chartView.highlighted.first{
+//				handler.contentRect.width
+//				let xx = handler.transX
+//				handler.scaleX
+//				handler.transX
+//				handler.transY
+				let canvasWidth = handler.contentRect.width * handler.scaleX
+				if let dataCount = chartView.lineData?.dataSets.first!.entryCount{
+					// we have data
+					let dataScreenWidth = canvasWidth/CGFloat(dataCount)
+					let leftPixel = -(handler.transX)
+					let rightPixel = -(handler.transX - handler.contentRect.width)
+					let leftData = Int(leftPixel/dataScreenWidth)
+					let rightData = Int(rightPixel/dataScreenWidth)
+					if high.x < Double(leftData){
+						if let newHighlight = chartView.getHighlightByTouchPoint(CGPoint(x: handler.contentRect.origin.x, y: 0)){
+							chartView.highlightValues([newHighlight])
+							if let entry = chartView.lineData?.entryForHighlight(newHighlight){
+								chartValueSelected(chartView, entry: entry, highlight: newHighlight)
+							}
+						}
+					} else if high.x > Double(rightData){
+						if let newHighlight = chartView.getHighlightByTouchPoint(CGPoint(x: handler.contentRect.width + handler.contentRect.origin.x, y: 0)){
+							chartView.highlightValues([newHighlight])
+							if let entry = chartView.lineData?.entryForHighlight(newHighlight){
+								chartValueSelected(chartView, entry: entry, highlight: newHighlight)
+							}
+						}
+					}
+				}
+			}
+//			chartView.highlightValues(<#T##highs: [Highlight]?##[Highlight]?#>)
+//			print(handler.contentRect)
+//			print(handler.isInBoundsX(50))
+//			print(handler.scaleX)
+//			print(handler.transX)
+//			print(handler.transY)
+//			print("offsets")
+//			print(handler.offsetLeft)
+//			print(handler.offsetRight)
+//			print(handler.offsetTop)
+//			print(handler.offsetBottom)
+		}
+	}
+	
+	func chartTranslated(_ chartView: ChartViewBase, dX: CGFloat, dY: CGFloat) {
+		adjustSelectedIfNeeded()
+	}
+	
+	func chartScaled(_ chartView: ChartViewBase, scaleX: CGFloat, scaleY: CGFloat) {
+		adjustSelectedIfNeeded()
+	}
+	
+	func chartValueNothingSelected(_ chartView: ChartViewBase) {
+		_currentlySelectedIndex = nil
+	}
+	
 	func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
 		let index = Int(entry.x)
 		if index < 0 || index >= ChartData.shared.clinicDataYearDates.count{ return }
+		if let curr = _currentlySelectedIndex{
+			if curr == index{ return } // duplicate call. this day is already selected
+		}
+		_currentlySelectedIndex = index
 		let date = ChartData.shared.clinicDataYearDates[index]
 		delegate?.didSelectDate(date);
 	}
@@ -174,7 +238,14 @@ class OverylayChartView: UIView, ChartViewDelegate{
 		}
 		
 		chartView.data = data
+		
+		
+//		chartView.lineData?.dataSets.forEach({ (dataset) in
+//			BarLineScatterCandleBubbleChartDataSet
+//		})
+//		chartView.data.isHorizontalHighlightIndicatorEnabled = false
 
+		
 		chartView.xAxis.axisMaximum = data.xMax + 0.25
 	}
 	

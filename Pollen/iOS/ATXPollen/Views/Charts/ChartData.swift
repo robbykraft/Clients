@@ -177,6 +177,7 @@ class ChartData{
 		set1.highlightEnabled = true
 		set1.highlightColor = Style.shared.blue
 		set1.highlightAlpha = 1.0
+		set1.highlightLineWidth = 5.0
 		set1.drawValuesEnabled = false
 		let chartData = BarChartData(dataSet: set1)
 		chartData.barWidth = 1.01
@@ -209,6 +210,7 @@ class ChartData{
 		set.highlightEnabled = true
 		set.highlightColor = Style.shared.blue
 //		set.highlightAlpha = 1.0
+		set.highlightLineWidth = 5.0
 		set.drawValuesEnabled = false
 		set.drawValuesEnabled = false
 		set.drawFilledEnabled = true
@@ -259,6 +261,7 @@ class ChartData{
 			set.highlightEnabled = true
 			set.highlightColor = Style.shared.blue
 			set.highlightAlpha = 1.0
+			set.highlightLineWidth = 5.0
 			set.drawValuesEnabled = false
 			let chartData = BarChartData(dataSet: set)
 			chartData.barWidth = 1.01
@@ -288,6 +291,7 @@ class ChartData{
 			set.highlightEnabled = true
 			set.highlightColor = Style.shared.blue
 //			set.highlightAlpha = 1.0
+			set.highlightLineWidth = 5.0
 			set.drawValuesEnabled = false
 			set.drawFilledEnabled = true
 			set.drawCirclesEnabled = false
@@ -316,7 +320,7 @@ class ChartData{
 		let set = BarChartDataSet(values: values, label: nil)
 		set.highlightColor = Style.shared.blue
 		set.highlightAlpha = 1.0
-		set.highlightLineWidth = 2.0
+		set.highlightLineWidth = 5.0
 		set.drawValuesEnabled = false
 		set.setColor(UIColor.white)
 		set.colors =
@@ -342,7 +346,7 @@ class ChartData{
 		let set = BarChartDataSet(values: values, label: nil)
 		set.highlightColor = Style.shared.blue
 		set.highlightAlpha = 1.0
-		set.highlightLineWidth = 2.0
+		set.highlightLineWidth = 5.0
 		set.drawValuesEnabled = false
 		set.setColor(UIColor.white)
 		set.colors =
@@ -369,7 +373,7 @@ class ChartData{
 		let set = LineChartDataSet(values: Array(rightSplit), label: nil)
 		set.lineWidth = 3.0
 		set.highlightColor = Style.shared.blue
-		set.highlightLineWidth = 2.0
+		set.highlightLineWidth = 5.0
 		set.drawValuesEnabled = false
 		set.drawCirclesEnabled = true
 		set.drawCircleHoleEnabled = false
@@ -406,7 +410,7 @@ class ChartData{
 		let set1 = LineChartDataSet(values: values, label: nil)
 		set1.lineWidth = 0.1
 		set1.highlightColor = Style.shared.blue
-		set1.highlightLineWidth = 1
+		set1.highlightLineWidth = 5.0
 		set1.drawValuesEnabled = false
 		set1.drawCirclesEnabled = false
 		set1.drawFilledEnabled = true
@@ -442,6 +446,9 @@ class ChartData{
 			let set = ScatterChartDataSet(values: values, label: exposureTypes[exI].asString())
 //			set.setScatterShape(.circle)
 			set.setScatterShape(.square)
+			set.highlightLineWidth = 5.0
+			set.highlightColor = Style.shared.blue
+//			set.highlightAlpha = 1.0
 			set.scatterShapeHoleColor = Style.shared.colorFor(exposure: exposureTypes[exI%5])
 			set.scatterShapeHoleRadius = 3.5
 			set.drawValuesEnabled = false
@@ -512,6 +519,7 @@ class ChartData{
 			set.highlightEnabled = true
 			set.highlightColor = Style.shared.blue
 //			set.highlightAlpha = 1.0
+			set.highlightLineWidth = 5.0
 			set.drawValuesEnabled = false
 			set.drawFilledEnabled = true
 			set.drawCirclesEnabled = false
