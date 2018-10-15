@@ -188,6 +188,16 @@ class ChartData{
 		let logValues = dailyClinicData
 			.map({ (sample) -> Double in
 				let ss = sample.strongestSample();
+//				if let rating = ss?.rating{
+//				switch rating{
+//				case PollenRating.none: return 0
+//				case PollenRating.low: return 0.25
+//				case PollenRating.medium: return 0.5
+//				case PollenRating.heavy: return 0.8
+//				case PollenRating.veryHeavy: return 1.0
+//				}
+//				}
+//				return 0
 				return (ss != nil) ? Double(ss!.logValue) : 0.0
 			})
 			.enumerated()

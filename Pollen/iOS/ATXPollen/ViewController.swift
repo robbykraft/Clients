@@ -32,8 +32,10 @@ class ViewController: UIViewController, UINavigationControllerDelegate, HomeSlid
 		super.viewDidLoad()
 						
 		self.view.backgroundColor = Style.shared.whiteSmoke
+		
+		let statusHeight:CGFloat = IS_IPHONE_X ? 0 : 22
 
-		homeSlideView.frame = CGRect(x: 0, y: 22, width: self.view.frame.size.width, height: self.view.frame.size.height-22)
+		homeSlideView.frame = CGRect(x: 0, y: statusHeight, width: self.view.frame.size.width, height: self.view.frame.size.height-statusHeight)
 		homeSlideView.slideViewDelegate = self
 		
 		let prefsImage = UIImage(named: "cogs") ?? UIImage()
@@ -224,72 +226,4 @@ class ViewController: UIViewController, UINavigationControllerDelegate, HomeSlid
 			}
 		}
 	}
-	
-	
-	
-//
-//	func updateSymptomAndExposures(for date: Date) {
-//		currentlyEditingDate = date
-//		let smaller = (UIScreen.main.bounds.size.width < UIScreen.main.bounds.size.height) ? UIScreen.main.bounds.size.width : UIScreen.main.bounds.size.height
-//		let allergyQueryView = AllergyQueryView(frame: CGRect(x: 0, y: 0, width: smaller*0.66, height: smaller*0.66))
-//		allergyQueryView.delegate = self
-//		allergyQueryView.responseButtons.forEach { (button) in
-//			button.addTarget(self, action: #selector(dismissAllergiesAndOpenExposures), for: .touchUpInside)
-//		}
-//		if let dayIndex = ChartData.shared.yearlyIndex(for: date){
-//			if let symptomValue = ChartData.shared.allergyDataValues[dayIndex]{
-//				allergyQueryView.responseButtons[symptomValue].buttonState = .checked
-//			}
-//		}
-//		let formatter = DateFormatter()
-//		formatter.dateFormat = "EEEE, MMM d, yyyy"
-//		let alert = PopAlertView(title: formatter.string(from: date), view: allergyQueryView)
-//		currentlyOpenPopup = alert
-//		alert.show(animated: true)
-//	}
-
-
-//	var currentlyEditingDate:Date?
-//	var currentlyOpenPopup:PopAlertView?
-	
-//	func updateExposures(for date: Date) {
-//		currentlyEditingDate = date
-//		let smaller = (UIScreen.main.bounds.size.width < UIScreen.main.bounds.size.height) ? UIScreen.main.bounds.size.width : UIScreen.main.bounds.size.height
-//		let exposureQueryView = ExposureQueryView(frame: CGRect(x: 0, y: 0, width: smaller*0.66, height: smaller*0.9))
-//		exposureQueryView.delegate = self
-//		if let dayIndex = ChartData.shared.yearlyIndex(for: date){
-//			ChartData.shared.exposureDailyData[dayIndex].enumerated().forEach { (i, element) in
-//				if element { exposureQueryView.responseButtons[i].buttonState = .checked }
-//			}
-//		}
-//		let formatter = DateFormatter()
-//		formatter.dateFormat = "EEEE, MMM d, yyyy"
-//		let alert = PopAlertView(title: formatter.string(from: date), view: exposureQueryView)
-//		alert.show(animated: true)
-//	}
-//
-//
-//	func allergyQueryDidChange(rating: SymptomRating?) {
-//		if let date = currentlyEditingDate{
-//			var currentSymptom = Symptom.shared.entries.filter({ Calendar.current.isDate($0.date, inSameDayAs: date) }).first
-//			if currentSymptom == nil { currentSymptom = SymptomEntry(date: date, location: nil, rating: nil, exposures: nil) }
-//			if var symptom = currentSymptom{
-//				symptom.rating = rating
-//				Symptom.shared.updateDatabaseWith(entry: symptom)
-//			}
-//		}
-//	}
-//
-//	func exposureQueryDidChange(exposures: [Exposures]?) {
-//		if let date = currentlyEditingDate{
-//			var currentSymptom = Symptom.shared.entries.filter({ Calendar.current.isDate($0.date, inSameDayAs: date) }).first
-//			if currentSymptom == nil { currentSymptom = SymptomEntry(date: date, location: nil, rating: nil, exposures: nil) }
-//			if var symptom = currentSymptom{
-//				symptom.exposures = exposures
-//				Symptom.shared.updateDatabaseWith(entry: symptom)
-//			}
-//		}
-//	}
-	
-	
 }

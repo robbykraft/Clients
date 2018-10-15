@@ -81,7 +81,7 @@ class HomeSlideView: UIScrollView, BarChartDelegate, UIScrollViewDelegate {
 		backgroundCircle.fillColor = Style.shared.blue.cgColor
 		sliderLayer.sublayers = [backgroundCircle]
 
-		radialChart.frame = CGRect(x: 0, y: statusBarHeight + (self.frame.size.height - 320.0) * 0.13, width: self.frame.size.width, height: self.frame.size.width)
+		radialChart.frame = CGRect(x: 0, y: 0, width: self.frame.size.width, height: self.frame.size.width)
 		radialChartCenter = CGPoint(x: self.bounds.size.width*0.5, y: statusBarHeight + (self.frame.size.width - 320.0) * 0.4 + self.frame.size.width*0.5 )
 		
 		if(IS_IPAD){
@@ -92,7 +92,7 @@ class HomeSlideView: UIScrollView, BarChartDelegate, UIScrollViewDelegate {
 			radialChartCenter = CGPoint(x: self.bounds.size.width*0.5, y: statusBarHeight + self.frame.size.width*0.5 )
 		} else if(IS_IPHONE_X){
 			radialChart.frame = CGRect(x: 0, y: statusBarHeight + (self.frame.size.height - 320.0) * 0.22, width: self.frame.size.width, height: self.frame.size.width)
-			radialChartCenter = CGPoint(x: self.bounds.size.width*0.5, y: statusBarHeight + (self.frame.size.width - 320.0) * 0.8 + self.frame.size.width*0.5 )
+			radialChartCenter = CGPoint(x: self.bounds.size.width*0.5, y: statusBarHeight + (self.frame.size.width - 320.0) * 1.75 + self.frame.size.width*0.5 )
 		}
 		
 		barChart.frame = CGRect.init(x: 0, y: barChartTop, width: self.frame.size.width, height: 200)
@@ -115,10 +115,9 @@ class HomeSlideView: UIScrollView, BarChartDelegate, UIScrollViewDelegate {
 			touchTape.addSubview(touchTapeLine)
 		}
 		
-		
 		self.contentSize = CGSize(width: self.bounds.width, height: self.bounds.height + barChartTop - 44)
 		if(IS_IPHONE_X){
-			self.contentSize = CGSize(width: self.bounds.width, height: self.bounds.height + barChartTop - 80 - 80 + 22)
+			self.contentSize = CGSize(width: self.bounds.width, height: self.bounds.height + barChartTop - 80 - 80 + 22 + 36)
 		}
 	}
 
