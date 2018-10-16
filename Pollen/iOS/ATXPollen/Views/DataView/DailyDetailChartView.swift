@@ -80,7 +80,11 @@ class DailyDetailChartView: UIView {
 		if chartView.frame.size.height > self.bounds.size.height * 0.666 { chartView.frame.size.height = self.bounds.size.height * 0.666 }
 	}
 	
-	func reloadData(with date:Date){
+	func reloadData(with date:Date?){
+		dateLabel.text = ""
+
+		guard let date = date else {return}
+		
 		let formatter = DateFormatter()
 		formatter.dateFormat = "EEEE, MMM d, yyyy"
 		dateLabel.text = formatter.string(from: date)

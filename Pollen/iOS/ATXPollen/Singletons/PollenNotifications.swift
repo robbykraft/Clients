@@ -94,11 +94,14 @@ class PollenNotifications: NSObject, UNUserNotificationCenterDelegate, Messaging
 						DispatchQueue.main.async {
 							completionHandler?(true)
 						}
+						return
 					}
 				}
 			}
+			DispatchQueue.main.async {
+				completionHandler?(false)
+			}
 		}
-
 	}
 	
 	func registerLocalCategory(){

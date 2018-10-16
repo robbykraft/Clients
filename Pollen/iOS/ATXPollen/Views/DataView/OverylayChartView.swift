@@ -36,11 +36,18 @@ class OverylayChartView: UIView, ChartViewDelegate{
 	var mode:OverlayChartMode = .combined{
 		didSet{
 			self.reloadData()
-			self.exposureLabel.isHidden = true
-			self.pollenGroupsLabel.isHidden = true
-			switch mode {
-			case .combined: self.exposureLabel.isHidden = false
-			case .groups: self.pollenGroupsLabel.isHidden = false
+			PollenNotifications.shared.isLocalTimerRunning { (isRunning) in
+				// set visible label
+				self.exposureLabel.isHidden = true
+				self.pollenGroupsLabel.isHidden = true
+				switch self.mode {
+				case .combined: self.exposureLabel.isHidden = false
+				case .groups: self.pollenGroupsLabel.isHidden = false
+				}
+				// but hide it all if there is person isn't collecting data.
+				if !isRunning{
+					self.exposureLabel.isHidden = true
+				}
 			}
 		}
 	}
@@ -102,7 +109,6 @@ class OverylayChartView: UIView, ChartViewDelegate{
 		
 		self.addSubview(exposureLabel)
 		self.addSubview(pollenGroupsLabel)
-		pollenGroupsLabel.isHidden = true
 
 //		exposureLabels.enumerated().forEach({
 //			$0.element.text = Exposures(rawValue: $0.offset)?.asString()
@@ -140,6 +146,12 @@ class OverylayChartView: UIView, ChartViewDelegate{
 		chartView.doubleTapToZoomEnabled = false
 		chartView.xAxis.axisMinimum = 0
 		chartView.legend.enabled = false
+		
+		// initial conditions
+		PollenNotifications.shared.isLocalTimerRunning { (isRunning) in
+			if isRunning { self.mode = .combined }
+			else { self.mode = .groups }
+		}
 	}
 	
 	func adjustSelectedIfNeeded(){
@@ -239,14 +251,25 @@ class OverylayChartView: UIView, ChartViewDelegate{
 		
 		chartView.data = data
 		
-		
 //		chartView.lineData?.dataSets.forEach({ (dataset) in
 //			BarLineScatterCandleBubbleChartDataSet
 //		})
 //		chartView.data.isHorizontalHighlightIndicatorEnabled = false
 
-		
 		chartView.xAxis.axisMaximum = data.xMax + 0.25
+	}
+	
+	func selectDate(_ date:Date){
+		// force it to highlight a date
+		guard let dayIndex = ChartData.shared.yearlyIndex(for: date) else { return }
+//		let dayIndex = ChartData.shared.clinicDataYearDates.count - 1; if dayIndex < 0 { return }
+		guard let handler = chartView.viewPortHandler else { return }
+		
+		let newHighlight = Highlight(x: Double(dayIndex), y: 0.0, dataSetIndex: 0, dataIndex: 1)
+		chartView.highlightValues([newHighlight])
+		if let entry = chartView.lineData?.entryForHighlight(newHighlight){
+			chartValueSelected(chartView, entry: entry, highlight: newHighlight)
+		}
 	}
 	
 }

@@ -161,8 +161,10 @@ class MyAllergiesView: UIView {
 		}
 	}
 	
-	func reloadData(with date:Date){
+	func reloadData(with date:Date?){
 		self.date = date
+		
+		guard let date = date else { return }
 	
 		// find the matching day in ChartData index
 		if ChartData.shared.clinicDataYearDates.count == 0{ return }

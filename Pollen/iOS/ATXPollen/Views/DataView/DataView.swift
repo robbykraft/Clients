@@ -17,7 +17,7 @@ class DataView: UIView, OverlayChartDelegate {
 	
 	var delegate:DataViewDelegate?
 	
-	var selectedDate:Date = Date()
+	var selectedDate:Date?
 
 	let trackAllergiesButton = UIButton()
 	let trackAllergiesBackground = UIImageView()
@@ -64,6 +64,12 @@ class DataView: UIView, OverlayChartDelegate {
 			if isRunning{ self.showTrackButton = false }
 			else{ self.showTrackButton = true }
 		}
+
+		// initial conditions - relate this with OverlayChartView
+		PollenNotifications.shared.isLocalTimerRunning { (isRunning) in
+			if isRunning { self.segmentedControl.selectedSegmentIndex = 0 }
+			else { self.segmentedControl.selectedSegmentIndex = 1 }
+		}
 	}
 	
 	deinit {
@@ -95,6 +101,12 @@ class DataView: UIView, OverlayChartDelegate {
 		}
 
 		self.layoutSubviews()
+
+		// if no date has been selected (on boot), select most recent date
+		if self.selectedDate == nil, let lastDate = ChartData.shared.clinicDataYearDates.last{
+			self.selectedDate = lastDate
+			overlayChartView.selectDate(lastDate)
+		}
 	}
 	
 	func didSelectDate(_ date: Date) {
