@@ -87,8 +87,8 @@ class HomeSlideView: UIScrollView, BarChartDelegate, UIScrollViewDelegate {
 		if(IS_IPAD){
 			radialChart.frame = CGRect(x: self.frame.size.width*0.05,
 									   y: statusBarHeight+self.frame.size.width*0.05,
-									   width: self.frame.size.width*0.9,
-									   height: self.frame.size.width * 0.9)
+									   width: self.frame.size.width*0.7,
+									   height: self.frame.size.width * 0.7)
 			radialChartCenter = CGPoint(x: self.bounds.size.width*0.5, y: statusBarHeight + self.frame.size.width*0.5 )
 		} else if(IS_IPHONE_X){
 			radialChart.frame = CGRect(x: 0, y: statusBarHeight + (self.frame.size.height - 320.0) * 0.22, width: self.frame.size.width, height: self.frame.size.width)
@@ -98,10 +98,12 @@ class HomeSlideView: UIScrollView, BarChartDelegate, UIScrollViewDelegate {
 		barChart.frame = CGRect.init(x: 0, y: barChartTop, width: self.frame.size.width, height: 200)
 		barChartCenter = CGPoint(x: self.bounds.size.width*0.5, y: barChartTop + 100)
 
-		radialButton.frame = CGRect.init(x: 0, y: 0, width: radialChart.frame.size.width*0.66, height: radialChart.frame.size.height*0.66)
-		
+//		radialButton.frame = CGRect.init(x: 0, y: 0, width: radialChart.frame.size.width*0.66, height: radialChart.frame.size.height*0.66)
+//		radialButton.center = radialChart.center
+
 		radialChart.center = radialChartCenter
 		barChart.center = barChartCenter
+		radialButton.frame = radialChart.frame.insetBy(dx: radialChart.frame.size.width*0.15, dy: radialChart.frame.size.width*0.15)
 
 		touchTape.frame = CGRect(x:self.center.x-25, y:barChartTop - 30-10, width:50, height:3*8+20)
 		touchTape.subviews.forEach{ $0.removeFromSuperview() }

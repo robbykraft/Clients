@@ -86,9 +86,9 @@ class Preferences: UITableViewController {
 	}
 	
 	override func numberOfSections(in tableView: UITableView) -> Int {
-//		return 4
+		return 4
 		// for testing
-		return 5
+//		return 5
 	}
 	
 	override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -204,7 +204,7 @@ class Preferences: UITableViewController {
 			default: break
 			}
 		case 3:
-			cell.textLabel?.text = "About Allergy Free Austin"
+			cell.textLabel?.text = "About Allergen Analytics, LLC"
 		// for testing
 		case 4:
 			cell.textLabel?.text = "[ Generate test data ]"

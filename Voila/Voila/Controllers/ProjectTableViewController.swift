@@ -26,7 +26,7 @@ class ProjectTableViewController: UITableViewController {//}, MFMailComposeViewC
 
 		let addButton = UIBarButtonItem.init(title: "Proposal", style: .done, target: self, action: #selector(makeProposalHandler))
 		self.navigationItem.rightBarButtonItem = addButton
-		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)!, NSForegroundColorAttributeName: Style.shared.highlight], for:.normal)
+		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.font: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)!, NSAttributedString.Key.foregroundColor: Style.shared.highlight], for:.normal)
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -37,7 +37,7 @@ class ProjectTableViewController: UITableViewController {//}, MFMailComposeViewC
 		}
 	}
 	
-	func makeProposalHandler(){
+	@objc func makeProposalHandler(){
 //		Voila.shared.sendProposal(self)
 		self.navigationController?.pushViewController(ProposalViewController(), animated: true)
 	}

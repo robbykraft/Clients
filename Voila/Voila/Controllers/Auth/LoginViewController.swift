@@ -42,8 +42,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 		self.view.addSubview(emailField)
 		self.view.addSubview(passwordField)
 		
-		loginButton.setTitle("Login", for: UIControlState())
-		loginButton.addTarget(self, action: #selector(buttonHandler), for: UIControlEvents.touchUpInside)
+		loginButton.setTitle("Login", for: UIControl.State())
+		loginButton.addTarget(self, action: #selector(buttonHandler), for: UIControl.Event.touchUpInside)
 		loginButton.backgroundColor = lightBlue
 		
 		self.view.addSubview(loginButton)
@@ -62,7 +62,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
 		loginButton.frame = CGRect(x: 0, y: self.view.bounds.size.height * 0.5 + 52 + 20, width: self.view.bounds.size.width, height: 44)
 	}
 	
-	func buttonHandler(){
+	@objc func buttonHandler(){
 		loginWithCredentials(emailField.text!, pass: passwordField.text!)
 	}
 	

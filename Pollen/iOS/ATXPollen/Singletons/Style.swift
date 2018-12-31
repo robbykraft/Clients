@@ -75,13 +75,14 @@ class Style {
 	var P15:CGFloat = 15
 	var P12:CGFloat = 12
 	var P11:CGFloat = 11
-	
+	var P09:CGFloat = 9
+
 	private init() {
 		// custom initialize
 		if(IS_IPAD){
-			P64 = 100
-			P48 = 84
-			P40 = 68
+			P64 = 92
+			P48 = 74
+			P40 = 64
 			P30 = 54
 			P24 = 41
 			P21 = 36
@@ -90,6 +91,7 @@ class Style {
 			P15 = 26
 			P12 = 24
 			P11 = 16
+			P09 = 12
 		}
 		
 		//iphone 7 2.0 2.0

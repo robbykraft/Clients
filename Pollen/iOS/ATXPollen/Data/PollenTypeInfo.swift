@@ -74,7 +74,13 @@ struct PollenType{
 	var levels:PollenTypeLevels
 	func logValue(forValue value:Int) -> Float {
 		var result = Float(value) / Float(levels.vh)
-		if(result > 1.0){ result = 1.0 }
+		// molds have a different range
+		if group == .molds{
+			result = pow(result, 0.25)
+			result = result - 0.175
+			if(result < 0.0){ result = 0.0 }
+			return result
+		}
 		result = pow(result, 0.1)
 		result = result - 0.5;
 		if(result < 0.0){ result = 0.0 }

@@ -38,8 +38,8 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 		self.title = "DETAILS"
 		
 		// buttons
-		deleteButton.setTitle("Delete", for: UIControlState())
-		deleteButton.addTarget(self, action: #selector(deleteProject), for: UIControlEvents.touchUpInside)
+		deleteButton.setTitle("Delete", for: .normal)
+		deleteButton.addTarget(self, action: #selector(deleteProject), for: UIControl.Event.touchUpInside)
 		
 		// ui custom
 		nameField.delegate = self
@@ -127,9 +127,9 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 		self.deregisterFromKeyboardNotifications()
 	}
 	
-	func deleteProject(){
+	@objc func deleteProject(){
 		if let thisProject = Voila.shared.project{
-			Fire.shared.database.child("projects").child(thisProject.key).removeValue { error in
+			Fire.shared.database.child("projects").child(thisProject.key).removeValue { error,_  in
 				if let masterNav = self.navigationController as? MasterNavigationController{
 					masterNav.projectsVC.reloadData({
 						Voila.shared.project = nil
@@ -171,7 +171,7 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 		self.view.endEditing(true)
 		return false
 	}
-	func textFieldDidChange(_ notif: Notification) {
+	@objc func textFieldDidChange(_ notif: Notification) {
 		if(updateTimer != nil){
 			updateTimer?.invalidate()
 			updateTimer = nil
@@ -179,7 +179,7 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 		updateTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateWithDelay), userInfo: nil, repeats: false)
 	}
 	
-	func updateWithDelay() {
+	@objc func updateWithDelay() {
 		// TODO: list all UITextFields here
 		if let project = Voila.shared.project{
 			if let nameText = nameField.text{
@@ -221,17 +221,17 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 	
 	func registerForKeyboardNotifications(){
 		//Adding notifies on keyboard appearing
-		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWasShown(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillBeHidden(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 	}
 	
 	func deregisterFromKeyboardNotifications(){
 		//Removing notifies on keyboard appearing
-		NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-		NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+		NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+		NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
 	}
 	
-	func keyboardWasShown(notification: NSNotification){
+	@objc func keyboardWasShown(notification: NSNotification){
 		//Need to calculate keyboard exact size due to Apple suggestions
 		self.scrollView.isScrollEnabled = true
 		if self.keyboardSize == nil{
@@ -252,7 +252,7 @@ class EditProjectViewController: UIViewController, UITextFieldDelegate{
 		}
 	}
 	
-	func keyboardWillBeHidden(notification: NSNotification){
+	@objc func keyboardWillBeHidden(notification: NSNotification){
 		self.scrollView.contentSize = self.view.bounds.size
 		self.scrollView.scrollRectToVisible(CGRect.init(x: 0, y: 0, width: 1, height: 1), animated: true)
 		self.view.endEditing(true)

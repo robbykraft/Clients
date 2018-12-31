@@ -76,8 +76,8 @@ class Style {
 	
 	func styleUIAppearance(){
 		let navigationBarAppearace = UINavigationBar.appearance()
-		navigationBarAppearace.titleTextAttributes = [NSFontAttributeName : UIFont(name: SYSTEM_FONT_B, size: self.P18)!,
-		                                              NSForegroundColorAttributeName : UIColor.black]
+		navigationBarAppearace.titleTextAttributes = [NSAttributedString.Key.font : UIFont(name: SYSTEM_FONT_B, size: self.P18)!,
+													  NSAttributedString.Key.foregroundColor : UIColor.black]
 		
 		UINavigationBar.appearance().tintColor = self.highlight
 		

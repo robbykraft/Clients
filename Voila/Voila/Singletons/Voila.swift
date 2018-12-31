@@ -56,7 +56,7 @@ class Voila{
 	
 	// make sure to reload app data after deleting!
 	func deleteProject(project:Project, completionHandler:(()->())?){
-		Fire.shared.database.child("projects").child(project.key).removeValue { error in
+		Fire.shared.database.child("projects").child(project.key).removeValue { error,_  in
 			if let completion = completionHandler{
 				completion()
 			}

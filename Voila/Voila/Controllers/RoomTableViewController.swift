@@ -36,7 +36,7 @@ class RoomTableViewController: UITableViewController { //}, MFMailComposeViewCon
 
 		let addButton = UIBarButtonItem.init(title: "Proposal", style: .done, target: self, action: #selector(makeProposalHandler))
 		self.navigationItem.rightBarButtonItem = addButton
-		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)!, NSForegroundColorAttributeName: Style.shared.highlight], for:.normal)
+		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.font: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)!, NSAttributedString.Key.foregroundColor: Style.shared.highlight], for:.normal)
 		
 		
 		titleButton.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
@@ -49,7 +49,7 @@ class RoomTableViewController: UITableViewController { //}, MFMailComposeViewCon
 		self.navigationItem.titleView = titleButton
     }
 	
-	func clickOnButton(button: UIButton) {
+	@objc func clickOnButton(button: UIButton) {
 		let alertController = UIAlertController(title: "Custom Name", message: "Give this room a custom name?", preferredStyle: .alert)
 		alertController.addTextField { (textField : UITextField) -> Void in
 			textField.placeholder = "Room Name"
@@ -72,7 +72,7 @@ class RoomTableViewController: UITableViewController { //}, MFMailComposeViewCon
 		self.present(alertController, animated: true, completion: nil)
 	}
 	
-	func makeProposalHandler(){
+	@objc func makeProposalHandler(){
 		self.navigationController?.pushViewController(ProposalViewController(), animated: true)
 	}
 	
@@ -301,7 +301,7 @@ class RoomTableViewController: UITableViewController { //}, MFMailComposeViewCon
 	}
 	
     // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+	override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
 			switch indexPath.section{
 			case 0:

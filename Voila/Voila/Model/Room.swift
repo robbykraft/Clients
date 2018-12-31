@@ -21,7 +21,7 @@ class Room{
 		if let k = key{
 			self.key = k
 		} else{
-			self.key = Fire.shared.database.childByAutoId().key
+			self.key = Fire.shared.database.childByAutoId().key ?? ""
 		}
 	}
 	

@@ -17,6 +17,9 @@ class ViewController: UIViewController, UINavigationControllerDelegate, HomeSlid
 	// everything underneath: questions, map
 	let dataView = DataView()
 	
+	var tooltip:UIView?
+	var tooltipTimer:Timer?
+	
 	weak var popupView:PopAlertView? // pointer to current popup window if exists
 
 	override func viewWillAppear(_ animated: Bool) {
@@ -61,6 +64,14 @@ class ViewController: UIViewController, UINavigationControllerDelegate, HomeSlid
 		NotificationCenter.default.addObserver(self, selector: #selector(querySymptom(notification:)), name: .queryRequestSymptom, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(queryExposure(notification:)), name: .queryRequestExposure, object: nil)
 		NotificationCenter.default.addObserver(self, selector: #selector(querySymptomAndExposure(notification:)), name: .queryRequestSymptomAndExposure, object: nil)
+		
+		// tooltip and timer
+		if !Pollen.shared.hasSeenCharts {
+			tooltipTimer = Timer.scheduledTimer(timeInterval: 15, target: self, selector: #selector(showToolTip), userInfo: nil, repeats: false)
+		}
+
+//		tooltipTimer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(showToolTip), userInfo: nil, repeats: false)
+
 	}
 	
 	deinit {
@@ -87,6 +98,61 @@ class ViewController: UIViewController, UINavigationControllerDelegate, HomeSlid
 	func slideViewDidOpen(percent: CGFloat) {
 		self.dataView.alpha = percent
 		self.dataView.transform = CGAffineTransform.init(scaleX: percent*0.15+0.85, y: percent*0.15+0.85)
+		
+//		print("slide view did open")
+		if !Pollen.shared.hasSeenCharts{
+//			Pollen.shared.hasSeenChartsHint = true
+			Pollen.shared.hasSeenCharts = true
+			tooltipTimer?.invalidate()
+			tooltipTimer = nil
+		}
+		if tooltip != nil{
+			removeToolTip()
+		}
+	}
+	
+	@objc func showToolTip(){
+		let scale = Style.shared.P18
+		let toolTipView = UIView()
+		toolTipView.frame = CGRect(x: 0, y: 0, width: scale*11, height: scale*4)
+		toolTipView.backgroundColor = Style.shared.lightBlue
+		let arrow = UIView()
+		arrow.frame = CGRect(x: 0, y: 0, width: scale*1.5, height: scale*1.5)
+		arrow.layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+		arrow.transform = CGAffineTransform(rotationAngle: 3.141592/4.0)
+		arrow.backgroundColor = Style.shared.lightBlue
+		arrow.center = CGPoint(x: scale*11*0.5, y: scale*4)
+		toolTipView.addSubview(arrow)
+		
+		let label = UILabel()
+		label.text = "Slide up for charts and data"
+		label.font = UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)
+		label.numberOfLines = 2
+		label.frame.size.width = scale*9
+		label.sizeToFit()
+		label.textAlignment = .center
+		label.center = CGPoint(x: scale*11*0.5, y: scale*4*0.5)
+		label.textColor = .black
+		toolTipView.addSubview(label)
+		
+		let button = UIButton(frame: toolTipView.bounds)
+		button.addTarget(self, action: #selector(removeToolTip), for: .touchUpInside)
+		toolTipView.addSubview(button)
+		
+		homeSlideView.addSubview(toolTipView)
+		toolTipView.center = CGPoint(x: homeSlideView.touchTape.center.x,
+									 y: homeSlideView.touchTape.center.y - scale*4*0.5 - scale*1.5)
+		
+		toolTipView.alpha = 0.0
+		UIView.animate(withDuration: 0.3) {
+			toolTipView.alpha = 1.0
+		}
+		tooltip = toolTipView
+	}
+	
+	@objc func removeToolTip(){
+		tooltip?.removeFromSuperview()
+		tooltip = nil
 	}
 	
 	func detailRequested(forSample sample: DailyPollenCount) {

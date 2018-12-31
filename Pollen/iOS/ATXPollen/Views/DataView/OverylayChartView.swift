@@ -146,7 +146,9 @@ class OverylayChartView: UIView, ChartViewDelegate{
 		chartView.doubleTapToZoomEnabled = false
 		chartView.xAxis.axisMinimum = 0
 		chartView.legend.enabled = false
-		
+//		chartView.getAxis(.left).axisMinimum = 0
+//		chartView.getAxis(.right).axisMinimum = 0
+
 		// initial conditions
 		PollenNotifications.shared.isLocalTimerRunning { (isRunning) in
 			if isRunning { self.mode = .combined }
@@ -257,6 +259,14 @@ class OverylayChartView: UIView, ChartViewDelegate{
 //		chartView.data.isHorizontalHighlightIndicatorEnabled = false
 
 		chartView.xAxis.axisMaximum = data.xMax + 0.25
+		
+		if data.scatterData.entryCount == 0{
+			chartView.getAxis(.left).axisMinimum = 0
+			chartView.getAxis(.right).axisMinimum = 0
+		} else {//if let axisMin = defaultAxisMinimum{
+			chartView.getAxis(.left).axisMinimum = -0.5//axisMin
+			chartView.getAxis(.right).axisMinimum = -0.5//axisMin
+		}
 	}
 	
 	func selectDate(_ date:Date){

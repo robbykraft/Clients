@@ -30,10 +30,10 @@ class AllRoomsTableViewController: UITableViewController {
 		
 		let newBackButton = UIBarButtonItem.init(title: "Done", style: .done, target: self, action: #selector(doneHandler))
 		self.navigationItem.rightBarButtonItem = newBackButton
-		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)!, NSForegroundColorAttributeName: Style.shared.highlight], for:.normal)
+		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.font: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)!, NSAttributedString.Key.foregroundColor: Style.shared.highlight], for:.normal)
 }
 	
-	func doneHandler(){
+	@objc func doneHandler(){
 		// update
 		
 		self.dismiss(animated: true, completion: nil)
@@ -101,7 +101,7 @@ class AllRoomsTableViewController: UITableViewController {
 	}
 	
     // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+	override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
 			let roomNameString = Voila.shared.roomNames[indexPath.row]
 			if Voila.shared.removeRoomFromProject(roomName: roomNameString) == true{

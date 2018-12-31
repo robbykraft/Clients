@@ -22,17 +22,22 @@ extension DailyDetailChartView: IAxisValueFormatter {
 }
 
 class DailyDetailChartView: UIView {
-
+	
 	let dateLabel = UILabel()
 	let dateUnderline = UIView()
 	let bottomUnderline = UIView()
 	let scrollView = UIScrollView()
 	let traceLabel = UILabel()
 	
+	let watermarkView = UIView()
+	let barLabelView = UIView()
+	
 	// charts
 	let chartView = HorizontalBarChartView()
 	var axisNames:[String]?
-
+	var axisValues:[Double] = []
+	var axisDegrees:[String] = []
+	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		initUI()
@@ -52,21 +57,24 @@ class DailyDetailChartView: UIView {
 		traceLabel.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P12)
 		traceLabel.textColor = .black
 		traceLabel.numberOfLines = 0
+		self.addSubview(watermarkView)
 		self.addSubview(dateLabel)
 		self.addSubview(dateUnderline)
 		self.addSubview(bottomUnderline)
 		self.addSubview(traceLabel)
 		self.addSubview(chartView)
+		self.addSubview(barLabelView)
 	}
 	
 	override func layoutSubviews() {
 		super.layoutSubviews()
+		watermarkView.frame = self.bounds
 		dateLabel.sizeToFit()
 		dateLabel.frame.origin = CGPoint(x: 20, y: 0)
 		dateUnderline.frame = CGRect(x: 0, y: 0, width: dateLabel.frame.size.width, height: 1)
 		dateUnderline.center = CGPoint(x: dateLabel.center.x, y: dateLabel.center.y + dateLabel.frame.size.height*0.5)
 		bottomUnderline.frame = CGRect(x: dateUnderline.frame.origin.x, y: self.bounds.size.height, width: self.bounds.size.width - dateUnderline.frame.origin.x*2, height: 1)
-
+		
 		traceLabel.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width-40, height: 200)
 		traceLabel.sizeToFit()
 		traceLabel.frame.origin = CGPoint(x: 20, y: self.bounds.size.height - traceLabel.frame.size.height)
@@ -78,18 +86,63 @@ class DailyDetailChartView: UIView {
 		}
 		
 		if chartView.frame.size.height > self.bounds.size.height * 0.666 { chartView.frame.size.height = self.bounds.size.height * 0.666 }
+		
+		barLabelView.frame = chartView.frame
+		
+		guard let data = chartView.data else { return }
+		
+		let ratingLogData:[(String,Double)] = [
+			(PollenRating.low.asString(), 0.177),
+			(PollenRating.medium.asString(), 0.328),
+			(PollenRating.heavy.asString(), 0.588),
+			(PollenRating.veryHeavy.asString(), 1.0)
+		]
+		
+		// vertical watermark lines
+		watermarkView.subviews.forEach { (view) in
+			view.removeFromSuperview()
+		}
+		let ratingXs = ratingLogData.map { (name, logValue) -> (String, CGFloat) in
+			return (name, chartView.pixelForValues(x: logValue, y: 0.0, axis: .left).x)
+		}
+		ratingXs.forEach { (string, xLocation) in
+			let v = UIView()
+			v.frame = CGRect(x: xLocation, y: self.chartView.frame.origin.y, width: 1, height: self.chartView.frame.size.height)
+			v.backgroundColor = .lightGray
+			watermarkView.addSubview(v)
+		}
+		
+		// pollen intensity labels on bars
+		let rightPad:CGFloat = 3.0
+		barLabelView.subviews.forEach { (view) in
+			view.removeFromSuperview()
+		}
+		for i in 0..<data.dataSets[0].entryCount {
+			if let entry = data.dataSets[0].entryForIndex(i) as? BarChartDataEntry{
+				let barBounds = chartView.getBarBounds(entry: entry)
+				let label = UILabel()
+				label.textAlignment = .right
+				label.text = axisDegrees[i]
+				label.textColor = .white
+				label.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P09)
+				label.sizeToFit()
+				label.center = CGPoint(x: barBounds.origin.x + barBounds.size.width - label.frame.size.width*0.5 - rightPad, y:barBounds.origin.y + barBounds.size.height*0.5)
+				self.barLabelView.addSubview(label)
+			}
+		}
+		
 	}
 	
 	func reloadData(with date:Date?){
 		dateLabel.text = ""
-
+		
 		guard let date = date else {return}
 		
 		let formatter = DateFormatter()
 		formatter.dateFormat = "EEEE, MMM d, yyyy"
 		dateLabel.text = formatter.string(from: date)
 		dateLabel.sizeToFit()
-
+		
 		if ChartData.shared.clinicDataYearDates.count == 0{ return }
 		
 		if let todayCounts = ClinicData.shared.dailyCounts.filter({
@@ -99,14 +152,16 @@ class DailyDetailChartView: UIView {
 			let samples = todayCounts.getSamples()
 			let nonTraceSamples = samples.filter({$0.value != 0})
 			axisNames = nonTraceSamples.map({ $0.type.name })
-			let yVals = nonTraceSamples
+			axisDegrees = nonTraceSamples.map({ $0.rating.asString() })
+			axisValues = nonTraceSamples
 				.map({ Double($0.logValue) })
+			let yVals = axisValues
 				.enumerated().map { (arg) -> BarChartDataEntry in
 					let (i, element) = arg
 					return BarChartDataEntry(x: Double(i), y: element)
-				}
+			}
 			let set = BarChartDataSet(values: yVals, label: "")
-	
+			
 			set.drawIconsEnabled = false
 			set.setColor(Style.shared.blue)
 			
@@ -125,18 +180,8 @@ class DailyDetailChartView: UIView {
 			} else{
 				traceLabel.text = ""
 			}
-
+		
 			
-//		set.colors = [Style.shared.red, Style.shared.orange, Style.shared.blue, Style.shared.green]
-//			set.colors = [Style.shared.green, Style.shared.blue, Style.shared.red, Style.shared.orange ]
-//		set.stackLabels = speciesGroups.map({ $0.asString() })
-//			set.stackLabels = [
-//				ChartData.shared.pollenTypeGroups[3].asString(),
-//				ChartData.shared.pollenTypeGroups[2].asString(),
-//				ChartData.shared.pollenTypeGroups[0].asString(),
-//				ChartData.shared.pollenTypeGroups[1].asString()
-//			]
-
 			let data = BarChartData(dataSet: set)
 			data.barWidth = 0.8
 			chartView.fitBars = false
@@ -152,7 +197,7 @@ class DailyDetailChartView: UIView {
 			chartView.getAxis(.right).drawLabelsEnabled = false
 			chartView.xAxis.drawGridLinesEnabled = false
 			chartView.chartDescription?.enabled = false
-
+			
 			chartView.isUserInteractionEnabled = false
 			chartView.dragEnabled = true
 			chartView.setScaleEnabled(false)
@@ -167,7 +212,7 @@ class DailyDetailChartView: UIView {
 				chartView.xAxis.labelFont = font
 			}
 			chartView.xAxis.enabled = true
-//			chartView.xAxis.granularity = 30.0
+			//			chartView.xAxis.granularity = 30.0
 			chartView.xAxis.granularity = 1.0
 			chartView.xAxis.drawAxisLineEnabled = false
 			chartView.xAxis.drawGridLinesEnabled = false
@@ -176,23 +221,22 @@ class DailyDetailChartView: UIView {
 			if let font = UIFont(name: SYSTEM_FONT, size: Style.shared.P15){
 				chartView.noDataFont = font
 			}
-
+			
 			chartView.getAxis(.left).drawGridLinesEnabled = true
 			chartView.getAxis(.right).drawGridLinesEnabled = true
 			chartView.getAxis(.left).granularity = 1
 			chartView.getAxis(.right).granularity = 1
-//			chartView.xAxis.axisMaximum = 0
 			chartView.getAxis(.left).axisMinimum = 0
 			chartView.getAxis(.right).axisMinimum = 0
 			chartView.getAxis(.left).axisMaximum = 1
 			chartView.getAxis(.right).axisMaximum = 1
-
+			
 			chartView.noDataText = "waiting on data.."
 			chartView.drawBarShadowEnabled = false
 			chartView.drawValueAboveBarEnabled = true
 			chartView.maxVisibleCount = 60
 			chartView.fitBars = false
-			chartView.animate(yAxisDuration: 0.2)
+			//			chartView.animate(yAxisDuration: 0.2)
 		}
 		
 		self.setNeedsLayout()

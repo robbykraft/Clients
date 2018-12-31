@@ -41,6 +41,7 @@
 import Firebase
 import FirebaseAuth
 import FirebaseStorage
+import FirebaseDatabase
 
 enum JSONDataType {
 	case isBool, isInt, isFloat, isString, isArray, isDictionary, isURL, isNULL
@@ -372,7 +373,8 @@ class Fire {
 		
 		// STEP 1 - upload file to storage
 		// TODO: make currentUpload an array, if upload in progress add this to array
-		currentUpload = storage.child(filenameAndPath).putData(data, metadata: uploadMetadata, completion: { (metadata, error) in
+		let fileRef = storage.child(filenameAndPath)
+		currentUpload = fileRef.putData(data, metadata: uploadMetadata, completion: { (metadata, error) in
 			if let e = error {
 				print(e.localizedDescription)
 			} else {
@@ -387,17 +389,23 @@ class Fire {
 					                          "type":fileType.rawValue,
 					                          "size":data.count]
 
-					if let downloadURL = meta.downloadURL(){
-						entry["url"] = downloadURL.absoluteString
-					}
-					if let descriptionString = description{
-						entry["description"] = descriptionString
-					}
-					let key = self.database.child("files/" + storageDir).childByAutoId().key
-					self.database.child("files/" + storageDir).updateChildValues([key:entry]) { (error, ref) in
-						let info:StorageFileMetadata = StorageFileMetadata(filename: filename, fullpath: filenameAndPath, directory: storageDir, contentType: uploadMetadata.contentType ?? "", type: fileType, size: data.count, url: meta.downloadURL(), description: description)
-						completionHandler(info)
-					}
+					fileRef.downloadURL(completion: { (url, error) in
+						if let downloadURL = url{
+							entry["url"] = downloadURL.absoluteString
+							if let descriptionString = description{
+								entry["description"] = descriptionString
+							}
+							let key = self.database.child("files/" + storageDir).childByAutoId().key
+							self.database.child("files/" + storageDir).updateChildValues([key:entry]) { (error, ref) in
+								let info:StorageFileMetadata = StorageFileMetadata(filename: filename, fullpath: filenameAndPath, directory: storageDir, contentType: uploadMetadata.contentType ?? "", type: fileType, size: data.count, url: downloadURL, description: description)
+								completionHandler(info)
+							}
+						} else{
+//							completionHandler()
+						}
+					})
+//					if let downloadURL = meta.downloadURL(){
+//					}
 				}
 			}
 		})

@@ -11,6 +11,8 @@ import Foundation
 let USER_DEFAULTS_MY_ALLERGY_TYPES = "allergies"
 let USER_DEFAULTS_SORT_PLANT_PREFERENCE = "sortAllergiesBy"
 let USER_DEFAULTS_PUSH_NOTIFICATION_TYPES = "notifications"
+let USER_DEFAULTS_HAS_SEEN_CHARTS = "has-seen-charts"
+let USER_DEFAULTS_HAS_SEEN_CHARTS_HINT = "has-seen-charts-hint"
 
 class Pollen {
 
@@ -24,6 +26,13 @@ class Pollen {
 		loadSystemPList()
 		bootUserDefaults()
 	}
+	
+	var hasSeenCharts = false{
+		didSet{ UserDefaults.standard.set(hasSeenCharts, forKey: USER_DEFAULTS_HAS_SEEN_CHARTS) }
+	}
+//	var hasSeenChartsHint = false{
+//		didSet{ UserDefaults.standard.set(hasSeenChartsHint, forKey: USER_DEFAULTS_HAS_SEEN_CHARTS_HINT) }
+//	}
 
 	// this is a mirror of the "types" entry in the database
 	// keys are abbreviation of pollen names, values are dictionaries
@@ -91,6 +100,20 @@ class Pollen {
 		
 		// preferences pane, sort allergy by
 		self.sortAllergiesBy = UserDefaults.standard.object(forKey:USER_DEFAULTS_SORT_PLANT_PREFERENCE) as? Int ?? 0
+
+		
+		// has seen the charts hint notification
+		if let seenCharts = UserDefaults.standard.object(forKey:USER_DEFAULTS_HAS_SEEN_CHARTS) as? Bool{
+			hasSeenCharts = seenCharts
+		} else{
+			hasSeenCharts = false
+		}
+//		if let seenChartsHint = UserDefaults.standard.object(forKey:USER_DEFAULTS_HAS_SEEN_CHARTS_HINT) as? Bool{
+//			hasSeenChartsHint = seenChartsHint
+//		} else{
+//			hasSeenChartsHint = false
+//		}
+
 	}
 	
 }

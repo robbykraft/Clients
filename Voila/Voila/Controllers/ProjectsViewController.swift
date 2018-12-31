@@ -35,11 +35,11 @@ class ProjectsViewController: UITableViewController {
 		
 		let proposalsButton = UIBarButtonItem.init(title: "Proposals", style: .done, target: self, action: #selector(allProposalsHandler))
 		self.navigationItem.leftBarButtonItem = proposalsButton
-		self.navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)!, NSForegroundColorAttributeName: Style.shared.highlight], for:.normal)
+		self.navigationItem.leftBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.font: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)!, NSAttributedString.Key.foregroundColor: Style.shared.highlight], for:.normal)
 		
 		let addButton = UIBarButtonItem.init(title: "+", style: .done, target: self, action: #selector(self.newProjectHandler))
 		self.navigationItem.rightBarButtonItem = addButton
-		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSFontAttributeName: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P24)!, NSForegroundColorAttributeName: Style.shared.highlight], for:.normal)
+		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.font: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P24)!, NSAttributedString.Key.foregroundColor: Style.shared.highlight], for:.normal)
 
 		self.reloadData(nil)
     }
@@ -104,7 +104,7 @@ class ProjectsViewController: UITableViewController {
 		return "Delete"
 	}
 	
-	override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+	override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
 		if editingStyle == .delete {
 			let project = self.projects[indexPath.row]
 			Voila.shared.deleteProject(project: project, completionHandler: {
@@ -115,7 +115,7 @@ class ProjectsViewController: UITableViewController {
 	
 	
 
-	func allProposalsHandler(){
+	@objc func allProposalsHandler(){
 		self.navigationController?.pushViewController(ProposalsTableViewController(), animated: true)
 	}
 	
@@ -147,7 +147,7 @@ class ProjectsViewController: UITableViewController {
 		self.present(alertController, animated: true, completion: nil)
 	}
 	
-	func newProjectHandler(){
+	@objc func newProjectHandler(){
 		let alertController = UIAlertController(title: "New Project Name", message: nil, preferredStyle: .alert)
 		alertController.addTextField { (textField : UITextField) -> Void in
 			textField.placeholder = "Project Name"

@@ -204,12 +204,12 @@ class UIRadialChart: UIView {
 
 	
 	func makeCurvedAttributionText(size:CGSize, textRadius:CGFloat) -> UIImage?{
-		let attributionFont = UIFont(name: SYSTEM_FONT, size: Style.shared.P12) ?? UIFont.systemFont(ofSize: Style.shared.P12)
+		let attributionFont = UIFont(name: SYSTEM_FONT, size: Style.shared.P11) ?? UIFont.systemFont(ofSize: Style.shared.P12)
 		UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
 		if let context = UIGraphicsGetCurrentContext(){
 			context.translateBy (x: size.width / 2, y: size.height / 2 )
 			context.scaleBy (x: 1, y: -1)
-			Style.shared.centreArcPerpendicular(text: "provided by Allergy Free Austin", context: context, radius: textRadius, angle: -CGFloat.pi*0.5, colour: UIColor.gray, font: attributionFont, clockwise: false, maxAngle:nil)
+			Style.shared.centreArcPerpendicular(text: "Brought to you by Allergen Analytics LLC", context: context, radius: textRadius, angle: -CGFloat.pi*0.5, colour: UIColor.gray, font: attributionFont, clockwise: false, maxAngle:nil)
 			let image = UIGraphicsGetImageFromCurrentImageContext()
 			UIGraphicsEndImageContext()
 			return image

@@ -48,9 +48,9 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 		self.title = "MY PROFILE"
 		
 		// buttons
-		signoutButton.setTitle("Sign Out", for: UIControlState())
+		signoutButton.setTitle("Sign Out", for: .normal)
 		profileImageButton.addTarget(self, action: #selector(profilePictureButtonHandler), for: .touchUpInside)
-		signoutButton.addTarget(self, action: #selector(logOut), for: UIControlEvents.touchUpInside)
+		signoutButton.addTarget(self, action: #selector(logOut), for: UIControl.Event.touchUpInside)
 		
 		// ui custom
 		nameField.delegate = self
@@ -152,7 +152,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 		detailField.text = userData["detail"] as? String
 	}
 	
-	func logOut(){
+	@objc func logOut(){
 		do{
 			try Auth.auth().signOut()
 			self.navigationController?.dismiss(animated: true, completion: nil)
@@ -161,7 +161,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 		}
 	}
 	
-	func profilePictureButtonHandler(_ sender:UIButton){
+	@objc func profilePictureButtonHandler(_ sender:UIButton){
 		let alert = UIAlertController.init(title: "Change Profile Image", message: nil, preferredStyle: .actionSheet)
 		let action1 = UIAlertAction.init(title: "Camera", style: .default) { (action) in
 			self.openImagePicker(.camera)
@@ -185,7 +185,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 		self.view.endEditing(true)
 		return false
 	}
-	func textFieldDidChange(_ notif: Notification) {
+	@objc func textFieldDidChange(_ notif: Notification) {
 		if(updateTimer != nil){
 			updateTimer?.invalidate()
 			updateTimer = nil
@@ -193,7 +193,7 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 		updateTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateWithDelay), userInfo: nil, repeats: false)
 	}
 	
-	func updateWithDelay() {
+	@objc func updateWithDelay() {
 		// TODO: list all UITextFields here
 		if let nameText = nameField.text{
 			Fire.shared.updateCurrentUserWith(key:"displayName", object: nameText, completionHandler: nil)
@@ -218,17 +218,18 @@ class ProfileViewController: UIViewController, UITextFieldDelegate, UIImagePicke
 		}
 	}
 	
-	func openImagePicker(_ sourceType:UIImagePickerControllerSourceType) {
+	func openImagePicker(_ sourceType:UIImagePickerController.SourceType) {
 		let imagePicker = UIImagePickerController()
 		imagePicker.delegate = self
 		imagePicker.allowsEditing = false
 		imagePicker.sourceType = sourceType
 		self.navigationController?.present(imagePicker, animated: true, completion: nil)
 	}
-	
-	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-		let image = info[UIImagePickerControllerOriginalImage] as! UIImage
-		let imageData = UIImageJPEGRepresentation(image, 0.5)
+
+	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+		
+		let image = info[.originalImage] as! UIImage
+		let imageData = image.jpegData(compressionQuality: 0.5)
 		if let data = imageData{
 			Fire.shared.uploadFileAndMakeRecord(data, fileType: .JPG, description: nil, completionHandler: { (metadata) in
 				Fire.shared.updateCurrentUserWith(key: "image", object: metadata.filename, completionHandler: { (success) in
