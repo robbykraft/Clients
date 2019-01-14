@@ -19,11 +19,17 @@ class ProjectsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 		self.title = "Voila"
+		
+		let titleView = UIView()
 		let titleImage = UIImageView(image: UIImage(named: "logo"))
-		titleImage.autoresizingMask = [.flexibleBottomMargin, .flexibleHeight, .flexibleRightMargin, .flexibleLeftMargin, .flexibleTopMargin, .flexibleWidth]
+//		titleImage.autoresizingMask = [.flexibleBottomMargin, .flexibleHeight, .flexibleRightMargin, .flexibleLeftMargin, .flexibleTopMargin, .flexibleWidth]
 		titleImage.contentMode = .scaleAspectFit
-		titleImage.frame = CGRect(x: 0, y: 0, width: 100, height: 40)
-		self.navigationItem.titleView = titleImage
+		// 437x130
+		let imageAspect: CGFloat = 437/130
+		titleImage.frame = CGRect(x: 0, y: 0, width: 27*imageAspect, height: 27)
+		titleView.frame = titleImage.frame
+		titleView.addSubview(titleImage)
+		self.navigationItem.titleView = titleView
 
 //		self.view.backgroundColor = .white
 		self.view.backgroundColor = Style.shared.whiteSmoke

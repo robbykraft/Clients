@@ -44,7 +44,7 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 	
 	// picker stuff
 	let taxItems = ["Phila 8%", "PA 6%", "NJ 7%", "0%"]
-	let discountTextItems = ["New Client", "Friends & Family", "Discount"]
+	let discountTextItems = ["No Discount", "New Client", "Friends & Family", "Discount"]
 	let discountItems = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
 //	let renewalItems = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43 ,44, 45, 46, 47, 48, 49 ,50]
 	let pickerTax = UIPickerView()
@@ -181,6 +181,25 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 
 				roomFurniture.numberOfLines = room.furniture.count
 				roomFurniture.font = UIFont(name: SYSTEM_FONT, size: Style.shared.P12)
+				
+//				let furniture = room.furniture.sorted(by: { $0.name < $1.name })
+//				var furnitureString = ""
+//				for i in 0..<furniture.count {
+//					let thisString = "\n" + furniture[i].name + " " + String(describing: furniture[i].copies)
+//					furnitureString += thisString
+//				}
+//				roomFurniture.text = furnitureString
+				roomFurniture.text = "chair 1\nfield recorder 1\npeace lamp 2\nchair 4"
+				
+//				roomFurniture.text = room.furniture
+//					.sorted(by: { $0.name < $1.name })
+//					.map({$0.name + " " + String(describing:$0.copies)})
+//					.reduce("", { (a, b) -> String in
+//						a + "\n" + b
+//					})
+
+				
+				
 //				roomFurniture.text = room.furniture
 //					.compactMap({ $0.name })
 //					.joined(separator: ", ")
@@ -274,6 +293,20 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 		self._8renewalLabel.frame = CGRect.init(x: 5, y: startY + 5 + (32+yPad) * 8,
 		                                        width: self.view.bounds.size.width * 0.5, height:self._8renewalLabel.bounds.size.height)
 
+		// trying something new here
+		guard let project = Voila.shared.project else { return }
+		for i in 0..<project.rooms.count{
+			let room = project.rooms[i]
+			let roomFurniture = self.roomContents[i]
+			roomFurniture.text = room.furniture
+				.sorted(by: { $0.name < $1.name })
+				.map({$0.name + " " + String(describing:$0.copies)})
+				.reduce("", { (a, b) -> String in
+					a + "\n" + b
+				})
+		}
+		// end experiment
+
 		for contents in self.roomContents{
 			contents.sizeToFit()
 		}
@@ -301,7 +334,7 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 			let contents = self.roomContents[i]
 			label.frame = CGRect(x: padding, y: yPos, width: labelW, height: 40)
 			field.frame = CGRect(x: self.view.bounds.size.width-fieldW-padding, y: yPos, width: fieldW, height: 40)
-			contents.frame = CGRect(x: padding*2, y: yPos+45, width: contents.frame.size.width, height: contents.frame.size.height)
+			contents.frame = CGRect(x: padding*2, y: yPos+25, width: contents.frame.size.width, height: contents.frame.size.height)
 			yPos += 50 + contents.frame.size.height
 		}
 		self.contentHeight = yPos
