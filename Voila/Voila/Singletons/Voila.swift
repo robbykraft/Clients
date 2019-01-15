@@ -62,6 +62,21 @@ class Voila{
 			}
 		}
 	}
+	
+	// make sure to reload app data after duplicating!
+	func duplicateProject(project:Project, completionHandler:(()->())?){
+		let dictionary = project.databaseForm()
+		Fire.shared.addData(["name":project.name, "archived":false], asChildAt: "projects", completionHandler: { (success, newKey, ref) in
+			
+			if let key = newKey {
+				let duplicated = Project(key: key, data: dictionary)
+				duplicated.name = "\(duplicated.name) copy"
+				duplicated.synchronize(completionHandler: {
+					completionHandler?()
+				})
+			}
+		})
+	}
 
 	func setCustomRoomName(customName:String, completionHandler:(()->())?){
 		if let p = self.project{

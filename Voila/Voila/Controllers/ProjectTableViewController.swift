@@ -75,7 +75,7 @@ class ProjectTableViewController: UITableViewController {//}, MFMailComposeViewC
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		switch section{
-		case 0: return 1
+		case 0: return 2
 		case 1:
 			if let project = Voila.shared.project{
 				return project.rooms.count + 1
@@ -92,16 +92,23 @@ class ProjectTableViewController: UITableViewController {//}, MFMailComposeViewC
 
 		switch indexPath.section {
 		case 0:
-			cell.textLabel?.text = "Project Details"
-			cell.textLabel?.textColor = Style.shared.gray
-			
-			if let project = Voila.shared.project{
-				if project.email != nil && project.email! != ""{
-					cell.detailTextLabel?.text = ""
-				} else{
-					cell.detailTextLabel?.text = "email needed"
-					cell.detailTextLabel?.textColor = Style.shared.red
+			switch indexPath.row {
+			case 0:
+				cell.textLabel?.text = "✎ Project Details"
+				cell.textLabel?.textColor = Style.shared.gray
+				
+				if let project = Voila.shared.project{
+					if project.email != nil && project.email! != ""{
+						cell.detailTextLabel?.text = ""
+					} else{
+						cell.detailTextLabel?.text = "email needed"
+						cell.detailTextLabel?.textColor = Style.shared.red
+					}
 				}
+			case 1:
+				cell.textLabel?.text = "⊕ Duplicate Project"
+				cell.textLabel?.textColor = Style.shared.gray
+			default: break
 			}
 		default:
 			if let project = Voila.shared.project{
@@ -133,7 +140,17 @@ class ProjectTableViewController: UITableViewController {//}, MFMailComposeViewC
 			case 0:
 				self.navigationController?.pushViewController(EditProjectViewController(), animated: true)
 			case 1:
-				
+//				duplicate
+				if let project = Voila.shared.project {
+					Voila.shared.duplicateProject(project: project) {
+						if let masterNav = self.navigationController as? MasterNavigationController {
+							masterNav.projectsVC.reloadData({
+								Voila.shared.project = nil
+								self.navigationController?.popToRootViewController(animated: true)
+							})
+						}
+					}
+				}
 				break
 			default:
 				break
