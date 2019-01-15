@@ -356,14 +356,14 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 			}
 			let discount:Float = Float(_2discountField.text!)!
 			let renewal:Float = Float(_8renewalField.text!)!  // percent number
-			let discountAmount:Int = Int(discount * 0.01 * Float(rawCost))
+			let discountAmount:Int = Int(round(discount * 0.01 * Float(rawCost)))
 			let totalBefore2:Int = rawCost - discountAmount
-			let salesTaxSum:Int = Int(Float(totalBefore2) * salesTax)
+			let salesTaxSum:Int = Int(round(Float(totalBefore2) * salesTax))
 			let grandTotal:Int = totalBefore2 + salesTaxSum
 //			let grandTotalRounded:Int = Int(Float(grandTotal)*0.01)*100
 			let grandTotalRounded:Int = grandTotal
-			let renewalCost:Int = Int(Float(grandTotal) * renewal * 0.01)
-
+			let renewalCost:Int = Int(round(Float(grandTotal) * renewal * 0.01))
+			
 			project.discountTotal = discountAmount
 			project.discountPct = Int(discount)
 			project.discountText = _1discountTextField.text
@@ -471,11 +471,11 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 			}
 			let discount:Float = Float(_2discountField.text!)!
 			let renewal:Int = Int(_8renewalField.text!)!  // percent number
-			let discountAmount:Int = Int(discount * 0.01 * Float(rawCost))
+			let discountAmount:Int = Int(round(discount * 0.01 * Float(rawCost)))
 			let totalBefore2:Int = rawCost - discountAmount
-			let salesTaxSum:Int = Int(Float(totalBefore2) * salesTax)
+			let salesTaxSum:Int = Int(round(Float(totalBefore2) * salesTax))
 			let grandTotal:Int = totalBefore2 + salesTaxSum
-			let renewalCost:Int = Int(Float(grandTotal) * Float(renewal) * 0.01)
+			let renewalCost:Int = Int(round(Float(grandTotal) * Float(renewal) * 0.01))
 
 			if project.discountTotal != nil || project.discountTotal != discountAmount{
 				project.discountTotal = discountAmount

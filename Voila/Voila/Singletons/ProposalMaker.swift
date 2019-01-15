@@ -95,7 +95,7 @@ class ProposalMaker{
 		let totalAfterDiscount = total - discountTotal
 		let grandTotal:Int = totalAfterDiscount + taxTotal
 		
-		let discountTotalRounded = Int(round(Float(discountTotal)))
+		let discountTotalRounded = discountTotal
 		let totalAfterDiscountRounded:Int = Int(round(Float(totalAfterDiscount)))
 		let taxTotalRounded:Int = Int(round(Float(taxTotal)))
 		let grandTotalRounded:Int = Int(round(Float(grandTotal)))

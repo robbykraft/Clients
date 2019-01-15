@@ -129,7 +129,15 @@ class ProjectTableViewController: UITableViewController {//}, MFMailComposeViewC
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		switch indexPath.section{
 		case 0:
-			self.navigationController?.pushViewController(EditProjectViewController(), animated: true)
+			switch indexPath.row{
+			case 0:
+				self.navigationController?.pushViewController(EditProjectViewController(), animated: true)
+			case 1:
+				
+				break
+			default:
+				break
+			}
 			break
 		default:
 			if let project = Voila.shared.project{
