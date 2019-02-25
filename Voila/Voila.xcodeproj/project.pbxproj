@@ -33,6 +33,8 @@
 		D5A9B52B2189F8FF00D0B9F2 /* ProposalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9B51E2189F8FF00D0B9F2 /* ProposalViewController.swift */; };
 		D5A9B52C2189F8FF00D0B9F2 /* ProjectTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9B51F2189F8FF00D0B9F2 /* ProjectTableViewController.swift */; };
 		D5A9B52E2189F91100D0B9F2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D5A9B52D2189F91100D0B9F2 /* GoogleService-Info.plist */; };
+		D5E9A5C72224394600712222 /* PDFMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E9A5C62224394600712222 /* PDFMaker.swift */; };
+		D5E9A5CC22247E4400712222 /* pdf-template.html in Resources */ = {isa = PBXBuildFile; fileRef = D5E9A5CB22247E4400712222 /* pdf-template.html */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -65,6 +67,8 @@
 		D5A9B51E2189F8FF00D0B9F2 /* ProposalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProposalViewController.swift; sourceTree = "<group>"; };
 		D5A9B51F2189F8FF00D0B9F2 /* ProjectTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectTableViewController.swift; sourceTree = "<group>"; };
 		D5A9B52D2189F91100D0B9F2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		D5E9A5C62224394600712222 /* PDFMaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFMaker.swift; sourceTree = "<group>"; };
+		D5E9A5CB22247E4400712222 /* pdf-template.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "pdf-template.html"; sourceTree = "<group>"; };
 		E612FE75CCEA74A6A8BE65E9 /* Pods-Voila.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Voila.release.xcconfig"; path = "Pods/Target Support Files/Pods-Voila/Pods-Voila.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -119,6 +123,7 @@
 			isa = PBXGroup;
 			children = (
 				D5A9B4E52189F79800D0B9F2 /* AppDelegate.swift */,
+				D5E9A5CA22247E3A00712222 /* HTML */,
 				D5A9B5102189F8FF00D0B9F2 /* Controllers */,
 				D5A9B5092189F8E700D0B9F2 /* Model */,
 				D5A9B5002189F8DE00D0B9F2 /* Singletons */,
@@ -135,6 +140,7 @@
 			isa = PBXGroup;
 			children = (
 				D5A9B5012189F8DE00D0B9F2 /* ProposalMaker.swift */,
+				D5E9A5C62224394600712222 /* PDFMaker.swift */,
 				D5A9B5022189F8DE00D0B9F2 /* Voila.swift */,
 				D5A9B5032189F8DE00D0B9F2 /* Style.swift */,
 				D5A9B5042189F8DE00D0B9F2 /* Fire.swift */,
@@ -186,6 +192,14 @@
 				D5A9B5182189F8FF00D0B9F2 /* ProfileViewController.swift */,
 			);
 			path = Auth;
+			sourceTree = "<group>";
+		};
+		D5E9A5CA22247E3A00712222 /* HTML */ = {
+			isa = PBXGroup;
+			children = (
+				D5E9A5CB22247E4400712222 /* pdf-template.html */,
+			);
+			path = HTML;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -250,6 +264,7 @@
 			files = (
 				D5A9B4F02189F79900D0B9F2 /* LaunchScreen.storyboard in Resources */,
 				D5A9B52E2189F91100D0B9F2 /* GoogleService-Info.plist in Resources */,
+				D5E9A5CC22247E4400712222 /* pdf-template.html in Resources */,
 				D5A9B4ED2189F79900D0B9F2 /* Assets.xcassets in Resources */,
 				D5A9B4EB2189F79800D0B9F2 /* Main.storyboard in Resources */,
 			);
@@ -328,6 +343,7 @@
 				D5A9B5202189F8FF00D0B9F2 /* DetailDetailTableViewCell.swift in Sources */,
 				D5A9B5282189F8FF00D0B9F2 /* EditProjectViewController.swift in Sources */,
 				D5A9B5232189F8FF00D0B9F2 /* RoomTableViewController.swift in Sources */,
+				D5E9A5C72224394600712222 /* PDFMaker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
