@@ -9,7 +9,7 @@
 import UIKit
 import MessageUI
 
-class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailComposeViewControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
+class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailComposeViewControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource, MFMessageComposeViewControllerDelegate {
 	
 	// for the ios keyboard covers textfield thing
 	var activeField: UITextField?
@@ -63,7 +63,7 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 
 		self.title = "Proposal"
 
-		let sendButton = UIBarButtonItem.init(title: "Email", style: .done, target: self, action: #selector(sendProposal))
+		let sendButton = UIBarButtonItem.init(title: "Send", style: .done, target: self, action: #selector(sendProposal))
 		self.navigationItem.rightBarButtonItem = sendButton
 		self.navigationItem.rightBarButtonItem?.setTitleTextAttributes([NSAttributedString.Key.font: UIFont(name: SYSTEM_FONT_B, size: Style.shared.P18)!, NSAttributedString.Key.foregroundColor: Style.shared.highlight], for:.normal)
 
@@ -542,9 +542,25 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 	
 	@objc func sendProposal(){
 		self.view.endEditing(true)
-		self.updateCustomCosts {
-			ProposalMaker.shared.sendProposal(self)
+		
+		let alert = UIAlertController.init(title: "Send proposal over", message: nil, preferredStyle: .actionSheet)
+		let emailAction = UIAlertAction(title: "Email", style: .default) { (action) in
+			self.updateCustomCosts {
+				ProposalMaker.shared.sendEmailProposal(self)
+			}
 		}
+		let textAction = UIAlertAction(title: "Text", style: .default) { (action) in
+			self.updateCustomCosts {
+				ProposalMaker.shared.sendMMSProposal(self)
+			}
+		}
+		let disregardAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in
+			alert.dismiss(animated: true, completion: nil)
+		}
+		alert.addAction(emailAction)
+		alert.addAction(textAction)
+		alert.addAction(disregardAction)
+		self.present(alert, animated: true, completion: nil)
 	}
 	
 	func registerForKeyboardNotifications(){
@@ -580,11 +596,20 @@ class ProposalViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 		activeField = textField
 		textField.selectAll(self)
 	}
+
+	
+	// forward delegate calls back to the singleton... little weird.
 	
 	func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
 		ProposalMaker.shared.mailDidFinish(result)
 		self.dismiss(animated: true, completion: nil)
 	}
+	
+	func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+		ProposalMaker.shared.messageDidFinish(result)
+		self.dismiss(animated: true, completion: nil)
+	}
+
 
 }
 

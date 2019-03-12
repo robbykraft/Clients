@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3A22E071C9AF6E285F427203 /* Pods_Voila.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 646DFCE3D1E7CBC8928B7197 /* Pods_Voila.framework */; };
+		D5843ADC223857FB00888DC8 /* HTMLProposal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5843ADB223857FB00888DC8 /* HTMLProposal.swift */; };
 		D5A9B4E62189F79800D0B9F2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5A9B4E52189F79800D0B9F2 /* AppDelegate.swift */; };
 		D5A9B4EB2189F79800D0B9F2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D5A9B4E92189F79800D0B9F2 /* Main.storyboard */; };
 		D5A9B4ED2189F79900D0B9F2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D5A9B4EC2189F79900D0B9F2 /* Assets.xcassets */; };
@@ -40,6 +41,7 @@
 /* Begin PBXFileReference section */
 		1660F2EEB480FCBE1707D89E /* Pods-Voila.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Voila.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Voila/Pods-Voila.debug.xcconfig"; sourceTree = "<group>"; };
 		646DFCE3D1E7CBC8928B7197 /* Pods_Voila.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Voila.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D5843ADB223857FB00888DC8 /* HTMLProposal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLProposal.swift; sourceTree = "<group>"; };
 		D5A9B4E22189F79800D0B9F2 /* Voila.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Voila.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5A9B4E52189F79800D0B9F2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D5A9B4EA2189F79800D0B9F2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -101,6 +103,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		D5843ADA223857CF00888DC8 /* Proposals */ = {
+			isa = PBXGroup;
+			children = (
+				D5E9A5C62224394600712222 /* PDFMaker.swift */,
+				D5843ADB223857FB00888DC8 /* HTMLProposal.swift */,
+			);
+			path = Proposals;
+			sourceTree = "<group>";
+		};
 		D5A9B4D92189F79800D0B9F2 = {
 			isa = PBXGroup;
 			children = (
@@ -125,6 +136,7 @@
 				D5A9B4E52189F79800D0B9F2 /* AppDelegate.swift */,
 				D5E9A5CA22247E3A00712222 /* HTML */,
 				D5A9B5102189F8FF00D0B9F2 /* Controllers */,
+				D5843ADA223857CF00888DC8 /* Proposals */,
 				D5A9B5092189F8E700D0B9F2 /* Model */,
 				D5A9B5002189F8DE00D0B9F2 /* Singletons */,
 				D5A9B4E92189F79800D0B9F2 /* Main.storyboard */,
@@ -140,7 +152,6 @@
 			isa = PBXGroup;
 			children = (
 				D5A9B5012189F8DE00D0B9F2 /* ProposalMaker.swift */,
-				D5E9A5C62224394600712222 /* PDFMaker.swift */,
 				D5A9B5022189F8DE00D0B9F2 /* Voila.swift */,
 				D5A9B5032189F8DE00D0B9F2 /* Style.swift */,
 				D5A9B5042189F8DE00D0B9F2 /* Fire.swift */,
@@ -338,6 +349,7 @@
 				D5A9B5072189F8DE00D0B9F2 /* Style.swift in Sources */,
 				D5A9B50D2189F8E700D0B9F2 /* Furniture.swift in Sources */,
 				D5A9B50F2189F8E700D0B9F2 /* Project.swift in Sources */,
+				D5843ADC223857FB00888DC8 /* HTMLProposal.swift in Sources */,
 				D5A9B52A2189F8FF00D0B9F2 /* ProposalsTableViewController.swift in Sources */,
 				D5A9B5252189F8FF00D0B9F2 /* ProfileViewController.swift in Sources */,
 				D5A9B5202189F8FF00D0B9F2 /* DetailDetailTableViewCell.swift in Sources */,

@@ -42,12 +42,12 @@ class PDFMaker {
 
 	static let shared = PDFMaker()
 	
-	func sendProposal(_ viewController:UIViewController){
-		if let project = Voila.shared.project{
-			if project.email != nil && project.email! != "" {
-			}
-		}
-	}
+//	func sendProposal(_ viewController:UIViewController){
+//		if let project = Voila.shared.project{
+//			if project.email != nil && project.email! != "" {
+//			}
+//		}
+//	}
 	
 	func pdfProposal(project:Project, confirmKey:String) -> NSData?{
 		
